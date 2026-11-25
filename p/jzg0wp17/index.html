@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>সংখ্যা রূপান্তর ল্যাব · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  --board:#E9EFEC;--panel:#FFFFFF;--ink:#16262B;--muted:#5B6E72;--line:#CBD6D3;
+  --signal:#E89400;--signal-soft:#FFE3A8;--accent:#0E6B66;--accent-soft:#D4ECE9;
+  --ok:#1F8A4C;--bad:#C2412D;--g1:#D4ECE9;--g2:#FFE3A8;
+  --f-display:"Baloo Da 2","Hind Siliguri","Noto Sans Bengali",sans-serif;
+  --f-body:"Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --board:#0E1719;--panel:#152326;--ink:#E3ECEA;--muted:#93A6A8;--line:#26383B;
+  --signal:#FFB21F;--signal-soft:#4A3708;--accent:#45BDB2;--accent-soft:#163A38;
+  --ok:#4CC27E;--bad:#F07560;--g1:#163A38;--g2:#4A3708;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --board:#0E1719;--panel:#152326;--ink:#E3ECEA;--muted:#93A6A8;--line:#26383B;
+  --signal:#FFB21F;--signal-soft:#4A3708;--accent:#45BDB2;--accent-soft:#163A38;
+  --ok:#4CC27E;--bad:#F07560;--g1:#163A38;--g2:#4A3708;color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--board);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+h1,h2{font-family:var(--f-display);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:2rem;font-weight:800}
+h2{font-size:1.3rem;font-weight:700;color:var(--accent)}
+p{margin:0}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--f-display);font-weight:800;color:var(--accent);font-size:1.05rem}
+.brand i{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--accent);color:var(--panel);font-style:normal;font-size:.9rem}
+.eyebrow{font-size:.85rem;color:var(--muted);font-weight:600}
+.mono{font-family:var(--f-mono)}
+header{display:flex;flex-direction:column;gap:4px}
+.lead{color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
+[hidden]{display:none!important}
+
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tab{font:inherit;font-weight:600;font-size:.92rem;line-height:1.3;min-height:56px;padding:6px;border-radius:12px;border:2px solid var(--line);
+  background:var(--panel);color:var(--muted);cursor:pointer}
+.tab[aria-selected="true"]{border-color:var(--accent);background:var(--accent);color:var(--panel)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.field{display:flex;flex-direction:column;gap:4px;flex:1 1 140px}
+.field label{font-size:.85rem;font-weight:600;color:var(--muted)}
+input,select{font:inherit;font-family:var(--f-mono);font-size:1.2rem;font-weight:700;padding:10px 12px;border-radius:10px;
+  border:2px solid var(--line);background:var(--board);color:var(--ink);min-height:50px;width:100%}
+select{font-family:var(--f-body);font-size:1rem}
+.err{color:var(--bad);font-weight:600;font-size:.95rem;min-height:1.4em}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font:inherit;font-family:var(--f-mono);font-size:.95rem;padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--board);color:var(--ink);cursor:pointer;min-height:36px}
+
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{font:inherit;font-weight:600;border-radius:10px;border:2px solid var(--accent);background:var(--panel);color:var(--accent);
+  padding:10px 18px;cursor:pointer;min-height:48px;flex:1}
+.btn.primary{background:var(--accent);color:var(--panel)}
+.btn:disabled{opacity:.45;cursor:default}
+
+/* division ladder */
+.ladder{display:flex;flex-direction:column;gap:6px}
+.step{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;
+  background:var(--board);font-family:var(--f-mono);font-size:1.05rem}
+.step:not(.show),.pv:not(.show),.grp:not(.show){display:none!important}
+.show{animation:pop .35s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.step .eq{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.step .rem{font-weight:700;min-width:44px;text-align:center;padding:2px 8px;border-radius:8px;background:var(--signal-soft);color:var(--ink)}
+.step .k{color:var(--muted);font-size:.8rem;font-family:var(--f-body)}
+.step.hl .rem{background:var(--signal);color:#1A1200}
+.readdir{font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.answer{font-family:var(--f-mono);font-size:1.4rem;font-weight:700;text-align:center;padding:12px;border-radius:12px;background:var(--accent-soft);
+  word-break:break-all}
+.answer sub{font-size:.7em}
+.answer .v{color:var(--accent)}
+
+/* place values */
+.places{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.pv{display:flex;flex-direction:column;align-items:center;min-width:56px;padding:8px 6px;border-radius:10px;background:var(--board);
+  font-family:var(--f-mono)}
+.pv .d{font-size:1.5rem;font-weight:700}
+.pv .w{font-size:.85rem;color:var(--muted)}
+.pv .r{font-size:.95rem;font-weight:700;color:var(--accent);border-top:1px solid var(--line);margin-top:4px;padding-top:2px;width:100%;text-align:center}
+.pv.dot{min-width:18px;background:none;justify-content:center}
+.pv.dot .d{font-size:1.8rem}
+.sum{font-family:var(--f-mono);font-size:1rem;text-align:center;word-break:break-word}
+
+/* groups */
+.groups{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.grp{display:flex;flex-direction:column;align-items:center;padding:8px 10px;border-radius:10px;font-family:var(--f-mono)}
+.grp:nth-child(odd){background:var(--g1)}.grp:nth-child(even){background:var(--g2)}
+.grp .b{font-size:1.25rem;font-weight:700;letter-spacing:.08em}
+.grp .o{font-size:1.4rem;font-weight:800;color:var(--accent)}
+.grp .w{font-size:.75rem;color:var(--muted)}
+.grp.dot{background:none!important;justify-content:center}
+
+table{border-collapse:collapse;width:100%}
+th,td{text-align:center;padding:6px 4px;border-bottom:1px solid var(--line);font-family:var(--f-mono)}
+th{color:var(--muted);font-size:.85rem}
+ul.points{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+.q-ask{font-size:1.05rem}
+.feedback{font-weight:600;min-height:1.6em}
+.feedback.ok{color:var(--ok)}.feedback.bad{color:var(--bad)}
+.score{font-family:var(--f-mono);color:var(--muted)}
+footer{font-size:.85rem;color:var(--muted);text-align:center}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৩ · ৩.১.২ সংখ্যা পদ্ধতির রূপান্তর</span>
+    <h1>সংখ্যা রূপান্তর, ধাপে ধাপে</h1>
+    <p class="lead">যেকোনো সংখ্যা লিখে "পরের ধাপ" চাপো। খাতায় যেভাবে করো, ঠিক সেভাবেই দেখাবে।</p>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-m="dec" aria-selected="true">দশমিক থেকে<br>অন্য পদ্ধতি</button>
+    <button class="tab" role="tab" data-m="toDec" aria-selected="false">অন্য পদ্ধতি থেকে<br>দশমিক</button>
+    <button class="tab" role="tab" data-m="grp" aria-selected="false">বাইনারি ↔<br>অক্টাল/হেক্সা</button>
+  </div>
+
+  <section class="card">
+    <div class="row">
+      <div class="field" style="flex:2 1 160px">
+        <label for="num" id="numLbl">দশমিক সংখ্যা</label>
+        <input id="num" inputmode="decimal" autocomplete="off" spellcheck="false" value="25.375">
+      </div>
+      <div class="field" id="fromWrap" hidden>
+        <label for="from">যে পদ্ধতিতে আছে</label>
+        <select id="from"></select>
+      </div>
+      <div class="field" id="toWrap">
+        <label for="to">যে পদ্ধতিতে নেবো</label>
+        <select id="to"></select>
+      </div>
+    </div>
+    <div class="chips" id="chips" aria-label="উদাহরণ"></div>
+    <p class="err" id="err" aria-live="polite"></p>
+    <div class="btns">
+      <button class="btn primary" id="next">পরের ধাপ</button>
+      <button class="btn" id="all">সব ধাপ দেখাও</button>
+    </div>
+  </section>
+
+  <section class="card" id="work" aria-live="polite"></section>
+
+  <section class="card" id="rule"></section>
+
+  <section class="card">
+    <h2>নিজে চেষ্টা করো</h2>
+    <p class="q-ask" id="qAsk"></p>
+    <div class="row">
+      <div class="field"><label for="qIn">তোমার উত্তর</label><input id="qIn" autocomplete="off" spellcheck="false" autocapitalize="characters"></div>
+    </div>
+    <div class="btns"><button class="btn primary" id="qCheck">মিলিয়ে দেখো</button><button class="btn" id="qNext">নতুন প্রশ্ন</button></div>
+    <p class="feedback" id="qFb" aria-live="polite"></p>
+    <span class="score" id="qScore">স্কোর: 0/0</span>
+  </section>
+
+  <section class="card">
+    <h2>মনে রাখার টেবিল</h2>
+    <div style="overflow-x:auto"><table id="ref"></table></div>
+  </section>
+
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const DIG='0123456789ABCDEF';
+const BN={2:'বাইনারি (2)',8:'অক্টাল (8)',10:'দশমিক (10)',16:'হেক্সাডেসিমাল (16)'};
+const EX={dec:['25.375','156','47','0.625','255'],toDec:[['11011.101',2],['157',8],['2AF',16],['101101',2]],grp:[['11010110.1',2],['3725',8],['B6E',16],['1011101',2]]};
+let mode='dec', steps=[], shown=0;
+
+function opts(sel, list, val){ sel.innerHTML=list.map(b=>`<option value="${b}" ${b==val?'selected':''}>${BN[b]}</option>`).join(''); }
+function setMode(m){
+  mode=m; $('to').disabled=false;
+  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.m===m));
+  $('fromWrap').hidden = m==='dec';
+  $('toWrap').hidden = m==='toDec';
+  if(m==='dec'){ $('numLbl').textContent='দশমিক সংখ্যা'; opts($('to'),[2,8,16],2); $('num').value=EX.dec[0]; $('num').inputMode='decimal'; }
+  if(m==='toDec'){ $('numLbl').textContent='সংখ্যা'; opts($('from'),[2,8,16],2); $('num').value=EX.toDec[0][0]; $('num').inputMode='text'; }
+  if(m==='grp'){ $('numLbl').textContent='সংখ্যা'; opts($('from'),[2,8,16],2); opts($('to'),[8,16],8); $('num').value=EX.grp[0][0]; $('num').inputMode='text'; }
+  syncGrp();
+  $('chips').innerHTML = EX[m].map(e=>{const [v,b]=Array.isArray(e)?e:[e,10];return `<button class="chip" data-v="${v}" data-b="${b}">${v}<sub>${b}</sub></button>`}).join('');
+  document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{$('num').value=c.dataset.v; if(mode!=='dec'){$('from').value=c.dataset.b; syncGrp();} prepare(); showAll();});
+  rule(); prepare(); newQ();
+}
+function syncGrp(){
+  if(mode!=='grp') return;
+  const f=$('from').value;
+  if(f==='2'){ opts($('to'),[8,16],$('to').value==='16'?16:8); $('to').disabled=false; }
+  else { opts($('to'),[2],2); $('to').disabled=true; }
+}
+
+/* ---- parse ---- */
+function parse(str, base){
+  str=str.trim().toUpperCase();
+  if(!str) return {e:'একটি সংখ্যা লেখো।'};
+  if(!/^[0-9A-F]*\.?[0-9A-F]*$/.test(str) || str==='.') return {e:'শুধু অঙ্ক আর একটি দশমিক বিন্দু (.) লেখা যাবে।'};
+  for(const ch of str.replace('.','')) if(DIG.indexOf(ch)>=base) return {e:`${BN[base]} পদ্ধতিতে "${ch}" অঙ্কটি নেই। এখানে শুধু ${DIG.slice(0,base).split('').join(', ')} চলে।`};
+  let [i,f='']=str.split('.');
+  if(i.length>16||f.length>8) return {e:'ছোট সংখ্যা দিয়ে চেষ্টা করো (পূর্ণ অংশ ১৬ অঙ্ক, ভগ্নাংশ ৮ অঙ্ক পর্যন্ত)।'};
+  i=i.replace(/^0+(?=.)/,'')||'0';
+  return {i,f};
+}
+
+/* ---- build steps ---- */
+function prepare(){
+  $('err').textContent=''; steps=[]; shown=0;
+  const w=$('work'); w.innerHTML='';
+  if(mode==='dec') prepDec(w); else if(mode==='toDec') prepToDec(w); else prepGrp(w);
+  updBtns();
+}
+function prepDec(w){
+  const p=parse($('num').value,10); if(p.e){$('err').textContent=p.e;return;}
+  const b=+$('to').value; let n=parseInt(p.i,10);
+  if(n>1e9){$('err').textContent='১০০ কোটির ছোট সংখ্যা দাও।';return;}
+  w.innerHTML=`<h2>পূর্ণ অংশ: বারবার ${b} দিয়ে ভাগ</h2><div class="ladder" id="lad"></div>
+    <p class="readdir" id="rd1" hidden>⬆ ভাগশেষগুলো <b>নিচ থেকে উপরে</b> পড়ো</p>`;
+  const lad=$('lad'); const rems=[];
+  if(n===0){ rems.push('0'); }
+  while(n>0){ const q=Math.floor(n/b), r=n%b; rems.push(DIG[r]);
+    const el=document.createElement('div'); el.className='step';
+    el.innerHTML=`<span class="k">ভাগ</span><span class="eq">${n} ÷ ${b} = ${q}</span><span class="rem" title="ভাগশেষ">${DIG[r]}${r>9?`<small style="font-size:.6em"> (${r})</small>`:''}</span>`;
+    lad.appendChild(el); steps.push(()=>el.classList.add('show')); n=q; }
+  const intAns = rems.slice().reverse().join('');
+  steps.push(()=>{ $('rd1').hidden=false; [...lad.children].reverse().forEach((c,i)=>setTimeout(()=>c.classList.add('hl'),i*180)); });
+  let fracAns='';
+  if(p.f && +p.f>0){
+    w.insertAdjacentHTML('beforeend',`<h2>ভগ্নাংশ অংশ: বারবার ${b} দিয়ে গুণ</h2><div class="ladder" id="lad2"></div>
+      <p class="readdir" id="rd2" hidden>⬇ পূর্ণ অংশগুলো <b>উপর থেকে নিচে</b> পড়ো</p>`);
+    const lad2=$('lad2'); let num=BigInt(p.f), den=10n**BigInt(p.f.length); const B=BigInt(b);
+    for(let k=0;k<6 && num>0n;k++){
+      const prod=num*B, d=Number(prod/den); const before=fmtFrac(num,den,p.f.length);
+      num=prod%den; fracAns+=DIG[d];
+      const el=document.createElement('div'); el.className='step';
+      el.innerHTML=`<span class="k">গুণ</span><span class="eq">${before} × ${b} = ${d}${fmtFrac(num,den,p.f.length).slice(1)}</span><span class="rem" title="পূর্ণ অংশ">${DIG[d]}</span>`;
+      lad2.appendChild(el); steps.push(()=>el.classList.add('show'));
+    }
+    const more = num>0n;
+    steps.push(()=>{ $('rd2').hidden=false; [...lad2.children].forEach((c,i)=>setTimeout(()=>c.classList.add('hl'),i*180)); if(more) $('rd2').insertAdjacentHTML('beforeend',' (৬ ধাপের পর থামানো হলো, উত্তর আনুমানিক)'); });
+  }
+  const src = p.i + (p.f && +p.f>0 ? '.'+p.f.replace(/0+$/,'') : '');
+  steps.push(()=>w.insertAdjacentHTML('beforeend',`<div class="answer">${src}<sub>10</sub> = <span class="v">${intAns}${fracAns?'.'+fracAns:''}</span><sub>${b}</sub></div>`));
+}
+function fmtFrac(num,den,len){ return '0.'+(num.toString().padStart(len,'0').replace(/0+$/,'')||'0'); }
+
+function prepToDec(w){
+  const b=+$('from').value; const p=parse($('num').value,b); if(p.e){$('err').textContent=p.e;return;}
+  w.innerHTML=`<h2>প্রতিটি অঙ্ককে তার স্থানীয় মান দিয়ে গুণ</h2><p class="hint" style="color:var(--muted);font-size:.9rem">স্থানীয় মান = ভিত্তি<sup>অবস্থান</sup>। বিন্দুর বাঁ দিক থেকে অবস্থান 0, 1, 2… আর ডান দিকে −1, −2…</p>
+    <div class="places" id="pl"></div><p class="sum" id="sum"></p>`;
+  const pl=$('pl'); const terms=[]; let total=0;
+  const add=(ch,pos)=>{ const d=DIG.indexOf(ch), v=d*Math.pow(b,pos); total+=v;
+    const el=document.createElement('div'); el.className='pv';
+    el.innerHTML=`<span class="d">${ch}</span><span class="w">${b}<sup>${pos}</sup></span><span class="r">${fmt(v)}</span>`;
+    pl.appendChild(el); steps.push(()=>el.classList.add('show')); terms.push(`${d}×${b}<sup>${pos}</sup>`); };
+  [...p.i].forEach((ch,k)=>add(ch,p.i.length-1-k));
+  if(p.f){ const dot=document.createElement('div'); dot.className='pv dot show'; dot.innerHTML='<span class="d">.</span>'; pl.appendChild(dot);
+    [...p.f].forEach((ch,k)=>add(ch,-(k+1))); }
+  steps.push(()=>{ $('sum').innerHTML=terms.join(' + '); });
+  steps.push(()=>w.insertAdjacentHTML('beforeend',`<div class="answer">${p.i}${p.f?'.'+p.f:''}<sub>${b}</sub> = <span class="v">${fmt(total)}</span><sub>10</sub></div>`));
+}
+function fmt(v){ return Number.isInteger(v)? String(v) : String(+v.toFixed(8)); }
+
+function prepGrp(w){
+  const f=+$('from').value, t=+$('to').value; const p=parse($('num').value,f); if(p.e){$('err').textContent=p.e;return;}
+  if(f===2){
+    const k=t===8?3:4;
+    let I=p.i, F=p.f;
+    const padI=(k-I.length%k)%k, padF=F?(k-F.length%k)%k:0;
+    w.innerHTML=`<h2>ডান থেকে ${k} টি করে বিট নিয়ে গ্রুপ</h2>
+      <p style="color:var(--muted);font-size:.9rem">কারণ ${t} = 2<sup>${k}</sup>। পূর্ণ অংশে বিন্দুর <b>বাঁ দিকে</b>, ভগ্নাংশে বিন্দুর <b>ডান দিকে</b> গ্রুপ করো। ঘর না ভরলে 0 বসাও${padI||padF?' (ধূসর 0 গুলো যোগ করা হয়েছে)':''}।</p>
+      <div class="groups" id="gr"></div>`;
+    I='0'.repeat(padI)+I; F=F+'0'.repeat(padF);
+    const gr=$('gr'); let ans='';
+    const mk=(bits,padL,padR)=>{ const v=parseInt(bits,2); ans+=DIG[v];
+      const shownBits=[...bits].map((c,i)=>(i<padL||i>=k-padR)?`<span style="opacity:.4">${c}</span>`:c).join('');
+      const w8=[...Array(k)].map((_,i)=>2**(k-1-i)).join(' ');
+      const el=document.createElement('div'); el.className='grp';
+      el.innerHTML=`<span class="b">${shownBits}</span><span class="w">${w8}</span><span class="o">${DIG[v]}</span>`;
+      gr.appendChild(el); steps.push(()=>el.classList.add('show')); };
+    for(let i=0;i<I.length;i+=k) mk(I.slice(i,i+k), i===0?padI:0, 0);
+    if(F){ const d=document.createElement('div'); d.className='grp dot show'; d.innerHTML='<span class="b">.</span>'; gr.appendChild(d); ans+='.';
+      for(let i=0;i<F.length;i+=k) mk(F.slice(i,i+k),0, i+k>=F.length?padF:0); }
+    const clean=ans.replace(/^0+(?=[0-9A-F])/,'');
+    steps.push(()=>w.insertAdjacentHTML('beforeend',`<div class="answer">${p.i}${p.f?'.'+p.f:''}<sub>2</sub> = <span class="v">${clean}</span><sub>${t}</sub></div>`));
+  } else {
+    const k=f===8?3:4;
+    w.innerHTML=`<h2>প্রতিটি অঙ্ককে ${k} বিটের বাইনারিতে লেখো</h2>
+      <p style="color:var(--muted);font-size:.9rem">কারণ ${f} = 2<sup>${k}</sup>। প্রতিটি অঙ্কের জন্য ঠিক ${k} টি বিট, সামনে 0 দিয়ে ঘর ভরাও।</p><div class="groups" id="gr"></div>`;
+    const gr=$('gr'); let ans='';
+    const mk=ch=>{ const bits=DIG.indexOf(ch).toString(2).padStart(k,'0'); ans+=bits;
+      const el=document.createElement('div'); el.className='grp';
+      el.innerHTML=`<span class="o">${ch}</span><span class="b">${bits}</span>`; gr.appendChild(el); steps.push(()=>el.classList.add('show')); };
+    [...p.i].forEach(mk);
+    if(p.f){ const d=document.createElement('div'); d.className='grp dot show'; d.innerHTML='<span class="o">.</span>'; gr.appendChild(d); ans+='.'; [...p.f].forEach(mk); }
+    let [ai,af]=ans.split('.'); ai=ai.replace(/^0+(?=.)/,''); if(af!==undefined) af=af.replace(/0+$/,'');
+    steps.push(()=>w.insertAdjacentHTML('beforeend',`<div class="answer">${p.i}${p.f?'.'+p.f:''}<sub>${f}</sub> = <span class="v">${ai}${af?'.'+af:''}</span><sub>2</sub></div>`));
+  }
+}
+
+function updBtns(){ $('next').disabled=shown>=steps.length; $('all').disabled=shown>=steps.length; }
+function nextStep(){ if(shown<steps.length){ steps[shown++](); updBtns(); } }
+function showAll(){ while(shown<steps.length) steps[shown++](); updBtns(); }
+$('next').onclick=nextStep; $('all').onclick=showAll;
+$('num').addEventListener('input',prepare);
+$('num').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();nextStep();}});
+$('to').onchange=()=>{prepare();rule();};
+$('from').onchange=()=>{syncGrp();prepare();rule();};
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>setMode(t.dataset.m));
+
+function rule(){
+  const R={
+    dec:`<h2>নিয়মটা সহজ কথায়</h2><ul class="points">
+      <li><b>পূর্ণ অংশ:</b> যে পদ্ধতিতে নেবে, তার ভিত্তি দিয়ে বারবার ভাগ করো যতক্ষণ না ভাগফল 0 হয়। ভাগশেষগুলো <b>নিচ থেকে উপরে</b> পড়ো।</li>
+      <li><b>ভগ্নাংশ অংশ:</b> ভিত্তি দিয়ে বারবার গুণ করো। প্রতিবার গুণফলের পূর্ণ অংশটা তুলে রাখো, <b>উপর থেকে নিচে</b> পড়ো।</li>
+      <li>হেক্সাডেসিমালে ভাগশেষ 10–15 হলে লেখো A–F।</li></ul>`,
+    toDec:`<h2>নিয়মটা সহজ কথায়</h2><ul class="points">
+      <li>প্রতিটি অঙ্ক × (ভিত্তি)<sup>অবস্থান</sup>, তারপর সব যোগ করো।</li>
+      <li>বিন্দুর ঠিক বাঁয়ের অঙ্কের অবস্থান 0। বাঁ দিকে গেলে 1, 2, 3… ডান দিকে গেলে −1, −2…</li>
+      <li>যেমন 2<sup>−1</sup> = 0.5, 2<sup>−2</sup> = 0.25, 8<sup>−1</sup> = 0.125।</li></ul>`,
+    grp:`<h2>নিয়মটা সহজ কথায়</h2><ul class="points">
+      <li>অক্টাল ↔ বাইনারি: প্রতি অক্টাল অঙ্ক = <b>3 বিট</b> (কারণ 8 = 2³)।</li>
+      <li>হেক্সা ↔ বাইনারি: প্রতি হেক্সা অঙ্ক = <b>4 বিট</b> (কারণ 16 = 2⁴)।</li>
+      <li>অক্টাল ↔ হেক্সা করতে হলে মাঝখানে বাইনারি দিয়ে যাও।</li></ul>`,
+  };
+  $('rule').innerHTML=R[mode];
+}
+
+/* ---- quiz ---- */
+let q, right=0, total=0;
+function rnd(a,b){return a+Math.floor(Math.random()*(b-a+1));}
+function newQ(){
+  if(mode==='dec'){ const b=[2,8,16][rnd(0,2)], n=rnd(10,b===2?63:255); q={a:n.toString(b).toUpperCase(), t:`${n}<sub>10</sub> কে ${BN[b]} পদ্ধতিতে নাও।`}; }
+  else if(mode==='toDec'){ const b=[2,8,16][rnd(0,2)], n=rnd(10,b===2?63:255); q={a:String(n), t:`${n.toString(b).toUpperCase()}<sub>${b}</sub> কে দশমিকে নাও।`}; }
+  else { const t=[8,16][rnd(0,1)], n=rnd(20,255); const rev=Math.random()<.5;
+    q = rev ? {a:n.toString(2), t:`${n.toString(t).toUpperCase()}<sub>${t}</sub> কে বাইনারিতে নাও।`}
+            : {a:n.toString(t).toUpperCase(), t:`${n.toString(2)}<sub>2</sub> কে ${BN[t]} পদ্ধতিতে নাও।`}; }
+  $('qAsk').innerHTML=q.t; $('qIn').value=''; $('qFb').textContent=''; $('qFb').className='feedback';
+}
+function check(){
+  const v=$('qIn').value.trim().toUpperCase().replace(/^0+(?=.)/,''); if(!v) return;
+  total++; const ok=v===q.a; if(ok) right++;
+  $('qFb').className='feedback '+(ok?'ok':'bad');
+  $('qFb').innerHTML= ok ? 'ঠিক হয়েছে! 🎉' : `হয়নি। সঠিক উত্তর: <span class="mono">${q.a}</span>`;
+  $('qScore').textContent=`স্কোর: ${right}/${total}`;
+}
+$('qCheck').onclick=check; $('qNext').onclick=newQ;
+$('qIn').addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+
+$('ref').innerHTML='<tr><th>দশমিক</th><th>বাইনারি</th><th>অক্টাল</th><th>হেক্সা</th></tr>'+
+  [...Array(16)].map((_,n)=>`<tr><td>${n}</td><td>${n.toString(2).padStart(4,'0')}</td><td>${n.toString(8)}</td><td>${DIG[n]}</td></tr>`).join('');
+
+setMode('dec');
+</script>
+</body>
+</html>
