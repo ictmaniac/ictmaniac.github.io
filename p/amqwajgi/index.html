@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>বাইনারি যোগ-বিয়োগ ল্যাব · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=1">
+<style>
+.grid{display:grid;gap:2px;justify-content:end;font-family:var(--f-mono);font-weight:700}
+.grid .c{width:30px;height:38px;display:grid;place-items:center;border-radius:6px;font-size:1.25rem;transition:background .25s}
+.grid .c.cy{height:24px;font-size:.85rem;color:var(--bad)}
+.grid .c.op{color:var(--muted)}
+.grid .c.cur{background:var(--signal-soft)}
+.grid .c.res{color:var(--accent)}
+.grid .rule{grid-column:1/-1;height:3px;background:var(--ink);border-radius:2px}
+@media (max-width:420px){.grid .c{width:24px;font-size:1.1rem}}
+.say{padding:10px 12px;border-radius:10px;background:var(--board);min-height:3.2em}
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rules table td{font-size:.95rem;padding:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৩ · ৩.১.৩ বাইনারি গাণিতিক প্রক্রিয়া</span>
+    <h1>বাইনারি যোগ-বিয়োগ, ঘর ধরে ধরে</h1>
+    <p class="lead">দুটি বাইনারি সংখ্যা লেখো, তারপর "পরের ঘর" চাপো। ডান থেকে বাঁয়ে প্রতিটি ঘরে কী হয় দেখাবে।</p>
+  </header>
+  <div class="tabs" id="ops">
+    <button class="tab m" data-k="+" aria-selected="true">যোগ (+)</button>
+    <button class="tab m" data-k="-" aria-selected="false">বিয়োগ (−)</button>
+  </div>
+
+  <section class="card">
+    <div class="row">
+      <div class="field"><label for="a">প্রথম সংখ্যা</label><input id="a" inputmode="numeric" value="1011" autocomplete="off"></div>
+      <div class="field"><label for="b">দ্বিতীয় সংখ্যা</label><input id="b" inputmode="numeric" value="111" autocomplete="off"></div>
+    </div>
+    <div class="chips" id="chips"></div>
+    <p class="err" id="err" aria-live="polite"></p>
+    <div class="scroll-x"><div class="grid" id="grid"></div></div>
+    <p class="say" id="say" aria-live="polite"></p>
+    <div class="btns"><button class="btn primary" id="next">পরের ঘর</button><button class="btn" id="all">সব দেখাও</button></div>
+    <p class="answer" id="chk" hidden></p>
+  </section>
+
+  <section class="card">
+    <h2>নিয়ম মুখস্থ রাখো</h2>
+    <div class="rules">
+      <div><h3>যোগ</h3><table>
+        <tr><td>0 + 0</td><td>= 0</td></tr><tr><td>0 + 1</td><td>= 1</td></tr><tr><td>1 + 0</td><td>= 1</td></tr>
+        <tr><td>1 + 1</td><td>= <b>10</b></td></tr><tr><td>1 + 1 + 1</td><td>= <b>11</b></td></tr></table>
+        <p class="hint">10 মানে লিখি 0, হাতে থাকে 1 (ক্যারি)।</p></div>
+      <div><h3>বিয়োগ</h3><table>
+        <tr><td>0 − 0</td><td>= 0</td></tr><tr><td>1 − 0</td><td>= 1</td></tr><tr><td>1 − 1</td><td>= 0</td></tr>
+        <tr><td>0 − 1</td><td>= <b>1</b></td></tr></table>
+        <p class="hint">0 − 1 করতে বাঁয়ের ঘর থেকে ধার (বরো) নিতে হয়। ধার করা 1 এই ঘরে এসে হয় 2 (10<sub>2</sub>), তাই 2 − 1 = 1।</p></div>
+    </div>
+  </section>
+
+  <section class="card" id="quiz"></section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<script src="../../a/im.js?v=1"></script>
+<script>
+const {$}=IM;
+let OP='+', cols=[], k=0;
+const EX={'+':[['1011','111'],['1101','1011'],['11111','1'],['101.1','11.1']],'-':[['1101','110'],['10000','1'],['11010','1011'],['110.01','10.1']]};
+function chips(){ $('chips').innerHTML=EX[OP].map(([x,y])=>`<button class="chip" data-a="${x}" data-b="${y}">${x} ${OP==='+'?'+':'−'} ${y}</button>`).join('');
+  $('chips').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{$('a').value=c.dataset.a;$('b').value=c.dataset.b;prep();showAll();}); }
+function val(s){const [i,f='']=s.split('.');let v=parseInt(i||'0',2);for(let j=0;j<f.length;j++)v+=(+f[j])/2**(j+1);return v;}
+function prep(){
+  $('err').textContent=''; $('chk').hidden=true; k=0;
+  let A=$('a').value.trim(), B=$('b').value.trim();
+  const ok=s=>/^[01]+(\.[01]+)?$/.test(s);
+  if(!ok(A)||!ok(B)){ $('err').textContent='শুধু 0 আর 1 লেখো (চাইলে একটি বিন্দু)।'; $('grid').innerHTML=''; $('say').textContent=''; cols=[]; upd(); return; }
+  if(A.replace('.','').length>14||B.replace('.','').length>14){ $('err').textContent='১৪ অঙ্কের মধ্যে রাখো।'; return; }
+  let swapped=false;
+  if(OP==='-' && val(A)<val(B)){ [A,B]=[B,A]; swapped=true; }
+  const fa=(A.split('.')[1]||'').length, fb=(B.split('.')[1]||'').length, F=Math.max(fa,fb);
+  const pad=(s,f)=>s.replace('.','')+'0'.repeat(F-f);
+  let a=pad(A,fa), b=pad(B,fb); const L=Math.max(a.length,b.length)+1;
+  a=a.padStart(L,'0'); b=b.padStart(L,'0');
+  // compute steps
+  cols=[]; let c=0;
+  for(let i=L-1;i>=0;i--){
+    const x=+a[i], y=+b[i]; let r, out, msg;
+    if(OP==='+'){ const s=x+y+c; r=s%2; out=s>>1;
+      msg = `${x} + ${y}${c?' + হাতের 1':''} = ${s} ${s>1?`= ${s.toString(2)}<sub>2</sub>`:''} → লিখি <b>${r}</b>${out?', হাতে থাকে <b>1</b>':''}`; }
+    else { let s=x-c-y; out=0; if(s<0){s+=2;out=1;} r=s;
+      msg = `${x}${c?' − ধার দেওয়া 1':''} − ${y}` + (out?` → পারি না, বাঁ থেকে ধার নিই (এখানে ${x-c+2}) → ${x-c+2} − ${y} = <b>${r}</b>`:` = <b>${r}</b>`); }
+    cols.push({i,r,carry:out,msg}); c=out;
+  }
+  const lead=i=>i===0 && OP==='+' ? cols[cols.length-1] : null;
+  // grid
+  const W=L+1; const dotAt = F? L-F : -1;
+  let h=''; const cell=(t,cls,id)=>`<div class="c ${cls||''}" ${id?`id="${id}"`:''}>${t}</div>`;
+  const row=(prefix,arr,cls,ids)=>{ h+=cell(prefix,'op'); for(let i=0;i<L;i++){ if(i===dotAt) h+=cell('.',cls); h+=cell(arr[i],cls,ids?ids+i:null);} };
+  const cy=Array(L).fill(''); row('',cy,'cy','cy');
+  const na=pad(A,fa).length, nb=pad(B,fb).length;
+  const strip=(s,n)=>[...s].map((ch,i)=> i<L-n ? '' : ch);
+  row('',strip(a,na),'', 'ra'); row(OP==='+'?'+':'−',strip(b,nb),'', 'rb');
+  h+=`<div class="rule"></div>`; row('',Array(L).fill(''),'res','rr');
+  const ncol = L+1+(F?1:0);
+  $('grid').style.gridTemplateColumns=`repeat(${ncol},auto)`;
+  $('grid').innerHTML=h;
+  $('say').innerHTML = swapped ? `প্রথম সংখ্যাটি ছোট, তাই উল্টে বড় থেকে ছোট বিয়োগ করছি। উত্তরের আগে − চিহ্ন বসবে। (চিহ্নসহ বিয়োগ শিখতে ৩.১.৫ এর 2's complement দেখো।)` : 'ডান দিকের ঘর থেকে শুরু। "পরের ঘর" চাপো।';
+  prep.meta={A,B,F,swapped,L}; upd();
+}
+function stepOnce(){
+  if(k>=cols.length) return;
+  const s=cols[k]; document.querySelectorAll('.c.cur').forEach(e=>e.classList.remove('cur'));
+  ['ra','rb','rr'].forEach(r=>{const e=$(r+s.i); e&&e.classList.add('cur');});
+  const isLast = k===cols.length-1;
+  if(!(isLast && s.r===0)) $('rr'+s.i).textContent=s.r;
+  if(s.carry && s.i>0) $('cy'+(s.i-1)).textContent= OP==='+'?'1':'−1';
+  $('say').innerHTML = `ঘর ${k+1}: ${s.msg}`;
+  k++; if(k===cols.length) finish(); upd();
+}
+function finish(){
+  const {A,B,F,swapped}=prep.meta; const res=cols.map(c=>c.r).reverse().join('');
+  let ri=res.slice(0,res.length-F).replace(/^0+(?=.)/,''), rf=F?res.slice(res.length-F):'';
+  const R=(swapped?'−':'')+ri+(F?'.'+rf:'');
+  const va=val(A), vb=val(B); const dv= OP==='+'? va+vb : (swapped? vb-va : va-vb);
+  $('chk').hidden=false;
+  $('chk').innerHTML=`উত্তর: <span class="v">${R}</span><sub>2</sub><br><span class="hint" style="font-family:var(--f-body)">দশমিকে মিলিয়ে দেখো: ${swapped?vb:va} ${OP==='+'?'+':'−'} ${swapped?va:vb} = ${dv} ✔</span>`;
+}
+function showAll(){ while(k<cols.length) stepOnce(); }
+function upd(){ $('next').disabled=$('all').disabled = k>=cols.length; }
+$('next').onclick=stepOnce; $('all').onclick=showAll;
+['a','b'].forEach(i=>$(i).addEventListener('input',prep));
+IM.tabs($('ops'),o=>{OP=o; const e=EX[o][0]; $('a').value=e[0]; $('b').value=e[1]; chips(); prep(); newQ();});
+
+// quiz
+const qr=$('quiz');
+qr.innerHTML=`<h2>নিজে চেষ্টা করো</h2><p class="q-ask" id="qa"></p><div class="row"><div class="field"><label for="qi">উত্তর (বাইনারিতে)</label><input id="qi" inputmode="numeric" autocomplete="off"></div></div>
+<div class="btns"><button class="btn primary" id="qc">মিলিয়ে দেখো</button><button class="btn" id="qn">নতুন প্রশ্ন</button></div><p class="feedback" id="qf" aria-live="polite"></p><span class="score" id="qs">স্কোর: 0/0</span>`;
+let q,right=0,total=0;
+function newQ(){ let x=IM.rnd(5,40), y=IM.rnd(3,30); if(OP==='-'&&y>x)[x,y]=[y,x];
+  q={x,y,ans:(OP==='+'?x+y:x-y).toString(2)}; $('qa').innerHTML=`<span class="mono" style="font-size:1.2rem">${x.toString(2)} ${OP==='+'?'+':'−'} ${y.toString(2)} = ?</span>`; $('qi').value=''; $('qf').textContent=''; }
+$('qc').onclick=()=>{ const v=$('qi').value.trim().replace(/^0+(?=.)/,''); if(!v)return; total++; const ok=v===q.ans; if(ok)right++;
+  $('qf').className='feedback '+(ok?'ok':'bad'); $('qf').innerHTML=ok?'ঠিক হয়েছে! 🎉':`হয়নি। সঠিক উত্তর <span class="mono">${q.ans}</span> (দশমিকে ${OP==='+'?q.x+q.y:q.x-q.y})। উপরে বসিয়ে ধাপগুলো দেখো।`; $('qs').textContent=`স্কোর: ${right}/${total}`; };
+$('qi').addEventListener('keydown',e=>{if(e.key==='Enter')$('qc').click();});
+$('qn').onclick=newQ;
+chips(); prep(); newQ();
+</script>
+</body>
+</html>

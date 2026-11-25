@@ -1,0 +1,223 @@
+/* ICT Maniac shared helpers (Chapter 3 labs) */
+const IM = (() => {
+  const $ = id => document.getElementById(id);
+  const NS = 'http://www.w3.org/2000/svg';
+
+  /* ---------- Boolean expression parser ----------
+     Accepts: A-Z variables, 0/1, + (OR), · . * & (AND), juxtaposition AB (AND),
+     ' after a term (NOT), ~ ! ¬ before a term (NOT), ⊕ ^ (XOR), ⊙ (XNOR), ( ) */
+  function parse(src) {
+    const s = src.replace(/\s+/g, '').replace(/[×∙•]/g, '·').replace(/[’`´]/g, "'").replace(/[–−]/g, '-');
+    if (!s) throw new Error('একটি রাশি লেখো।');
+    let i = 0;
+    const peek = () => s[i];
+    const isAtomStart = c => c && (/[A-Za-z01(~!¬]/.test(c));
+    function pOr() { let l = pXor(); while (peek() === '+' || peek() === '|') { i++; l = { op: 'OR', a: l, b: pXor() }; } return l; }
+    function pXor() { let l = pAnd(); while (peek() === '⊕' || peek() === '^' || peek() === '⊙') { const o = s[i++] === '⊙' ? 'XNOR' : 'XOR'; l = { op: o, a: l, b: pAnd() }; } return l; }
+    function pAnd() {
+      let l = pNot();
+      while (true) {
+        if (peek() === '·' || peek() === '.' || peek() === '*' || peek() === '&') { i++; l = { op: 'AND', a: l, b: pNot() }; }
+        else if (isAtomStart(peek())) { l = { op: 'AND', a: l, b: pNot() }; }
+        else break;
+      }
+      return l;
+    }
+    function pNot() {
+      if (peek() === '~' || peek() === '!' || peek() === '¬') { i++; return { op: 'NOT', a: pNot() }; }
+      let a = pAtom();
+      while (peek() === "'") { i++; a = { op: 'NOT', a }; }
+      return a;
+    }
+    function pAtom() {
+      const c = peek();
+      if (c === undefined) throw new Error('রাশিটি অসম্পূর্ণ। শেষে কিছু বাকি আছে।');
+      if (c === '(') { i++; const e = pOr(); if (peek() !== ')') throw new Error('বন্ধনী ")" বন্ধ করা হয়নি।'); i++; return { op: 'P', a: e }; }
+      if (c === '0' || c === '1') { i++; return { op: 'C', v: +c }; }
+      if (/[A-Za-z]/.test(c)) { i++; return { op: 'V', n: c.toUpperCase() }; }
+      throw new Error(`"${c}" চিহ্নটি বুঝতে পারিনি।`);
+    }
+    const ast = pOr();
+    if (i < s.length) throw new Error(`"${s[i]}" এর কাছে ভুল আছে।`);
+    const vars = new Set(); (function walk(n) { if (!n) return; if (n.op === 'V') vars.add(n.n); walk(n.a); walk(n.b); })(ast);
+    return { ast, vars: [...vars].sort() };
+  }
+  function ev(n, env) {
+    switch (n.op) {
+      case 'C': return n.v; case 'V': return env[n.n] ? 1 : 0; case 'P': return ev(n.a, env);
+      case 'NOT': return 1 - ev(n.a, env);
+      case 'AND': return ev(n.a, env) & ev(n.b, env);
+      case 'OR': return ev(n.a, env) | ev(n.b, env);
+      case 'XOR': return ev(n.a, env) ^ ev(n.b, env);
+      case 'XNOR': return 1 - (ev(n.a, env) ^ ev(n.b, env));
+    }
+  }
+  function show(n) {
+    switch (n.op) {
+      case 'C': return String(n.v); case 'V': return n.n; case 'P': return '(' + show(n.a) + ')';
+      case 'NOT': return (n.a.op === 'V' || n.a.op === 'C' || n.a.op === 'P' || n.a.op === 'NOT') ? show(n.a) + "'" : '(' + show(n.a) + ")'";
+      case 'AND': return show(n.a) + '·' + show(n.b);
+      case 'OR': return show(n.a) + ' + ' + show(n.b);
+      case 'XOR': return show(n.a) + ' ⊕ ' + show(n.b);
+      case 'XNOR': return show(n.a) + ' ⊙ ' + show(n.b);
+    }
+  }
+  const rows = n => [...Array(1 << n)].map((_, r) => [...Array(n)].map((_, k) => (r >> (n - 1 - k)) & 1));
+  const envOf = (vars, r) => Object.fromEntries(vars.map((v, k) => [v, r[k]]));
+
+  /* ---------- toggles ---------- */
+  function toggles(cont, names, st, onChange, label) {
+    cont.innerHTML = names.map(n => `<button class="toggle" data-k="${n}" aria-pressed="false"><span class="name">${label ? label(n) : 'ইনপুট ' + n}</span><span class="val">0</span></button>`).join('');
+    cont.querySelectorAll('.toggle').forEach(b => b.onclick = () => { st[b.dataset.k] ^= 1; onChange(); });
+    return () => cont.querySelectorAll('.toggle').forEach(b => { const v = st[b.dataset.k] ? 1 : 0; b.setAttribute('aria-pressed', !!v); b.querySelector('.val').textContent = v; });
+  }
+
+  /* ---------- truth table ---------- */
+  function tt(table, vars, cols, st, onPick) {
+    table.classList.add('tt');
+    const R = rows(vars.length);
+    table.innerHTML = `<thead><tr>${vars.map(v => `<th>${v}</th>`).join('')}${cols.map((c, k) => `<th class="${k === 0 ? 'sep' : ''}">${c.h}</th>`).join('')}</tr></thead>
+      <tbody>${R.map(r => { const e = envOf(vars, r); return `<tr tabindex="0" data-r="${r.join('')}">${r.map(v => `<td>${v}</td>`).join('')}${cols.map((c, k) => `<td class="y ${k === 0 ? 'sep' : ''} ${c.cls || ''}">${c.f(e)}</td>`).join('')}</tr>`; }).join('')}</tbody>`;
+    table.querySelectorAll('tbody tr').forEach(tr => {
+      const go = () => { [...tr.dataset.r].forEach((b, k) => st[vars[k]] = +b); onPick && onPick(); };
+      tr.onclick = go; tr.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } };
+    });
+    return () => table.querySelectorAll('tbody tr').forEach(tr => tr.classList.toggle('active', tr.dataset.r === vars.map(v => st[v] ? 1 : 0).join('')));
+  }
+
+  /* ---------- gate shapes (local coords, height h) ---------- */
+  const FN = {
+    AND: a => a.every(Boolean) ? 1 : 0, OR: a => a.some(Boolean) ? 1 : 0, NOT: a => a[0] ? 0 : 1, BUF: a => a[0] ? 1 : 0,
+    NAND: a => a.every(Boolean) ? 0 : 1, NOR: a => a.some(Boolean) ? 0 : 1,
+    XOR: a => a.reduce((x, y) => x ^ y, 0), XNOR: a => 1 - a.reduce((x, y) => x ^ y, 0),
+  };
+  function shape(t, h) {
+    const m = h / 2;
+    const AND = `M0 0 H26 A${m} ${m} 0 0 1 26 ${h} H0 Z`;
+    const OR = `M0 0 Q14 ${m} 0 ${h} Q36 ${h} 58 ${m} Q36 0 0 0 Z`;
+    const bub = x => `<circle class="gate-bub" cx="${x}" cy="${m}" r="5"/>`;
+    switch (t) {
+      case 'AND': return { d: AND, out: 26 + m, pin: 0 };
+      case 'NAND': return { d: AND, out: 26 + m + 10, pin: 0, extra: bub(26 + m + 5) };
+      case 'OR': return { d: OR, out: 58, pin: 6 };
+      case 'NOR': return { d: OR, out: 68, pin: 6, extra: bub(63) };
+      case 'XOR': return { d: OR, out: 58, pin: 6, pre: -8, extra: `<path d="M-8 0 Q6 ${m} -8 ${h}" fill="none" stroke="var(--accent)" stroke-width="2.5"/>` };
+      case 'XNOR': return { d: OR, out: 68, pin: 6, pre: -8, extra: `<path d="M-8 0 Q6 ${m} -8 ${h}" fill="none" stroke="var(--accent)" stroke-width="2.5"/>` + bub(63) };
+      case 'NOT': return { d: `M0 ${m - 18} L0 ${m + 18} L32 ${m} Z`, out: 42, pin: 0, extra: bub(37) };
+      case 'BUF': return { d: `M0 ${m - 18} L0 ${m + 18} L32 ${m} Z`, out: 32, pin: 0 };
+    }
+  }
+
+  /* ---------- circuit renderer ----------
+     spec = { vb:[w,h], inputs:[{id,x,y,lbl?}], gates:[{id,t,x,y,h?,in:[src|{s,p:[[x,y]..]}],mx?:[..],lbl?}],
+              outputs:[{id,s,x,y,lbl?, p?}], dots:[[x,y,src]], extra:'svg', st:{}, onChange } */
+  function circuit(svg, spec) {
+    const st = spec.st || {};
+    const vals = Object.assign({}, spec.init || {});
+    spec.inputs.forEach(i => { if (st[i.id] === undefined) st[i.id] = 0; });
+    const pos = {}; // source id -> [x,y]
+    spec.inputs.forEach(i => pos[i.id] = [i.x + 40, i.y]);
+    const G = spec.gates.map(g => {
+      const n = g.in.length, h = g.h || (n > 2 ? n * 15 + 8 : 44), sh = shape(g.t, h);
+      pos[g.id] = [g.x + sh.out, g.y + h / 2];
+      return { ...g, n, h, sh };
+    });
+    let wires = '', bodies = '', top = '';
+    const wireIds = [];
+    const path = (src, pts, end) => {
+      const [sx, sy] = pos[src];
+      let d = `M${sx} ${sy}`;
+      pts.forEach(([x, y]) => d += ` L${x} ${y}`);
+      d += ` L${end[0]} ${end[1]}`;
+      const k = wireIds.length; wireIds.push(src);
+      wires += `<path class="wire" data-w="${k}" d="${d}"/><path class="flow" data-w="${k}" d="${d}"/>`;
+    };
+    G.forEach(g => {
+      g.in.forEach((src0, k) => {
+        const src = typeof src0 === 'string' ? src0 : src0.s;
+        const py = g.n === 1 ? g.y + g.h / 2 : g.y + g.h * (k + 1) / (g.n + 1);
+        const px = g.x + (g.sh.pre !== undefined ? g.sh.pre + 6 : g.sh.pin);
+        let pts;
+        if (typeof src0 !== 'string' && src0.p) pts = src0.p;
+        else { const [sx, sy] = pos[src]; const mx = g.mx && g.mx[k] !== undefined ? g.mx[k] : px - 14; pts = sy === py ? [] : [[mx, sy], [mx, py]]; }
+        path(src, pts, [px, py]);
+      });
+      bodies += `<g transform="translate(${g.x} ${g.y})"><path class="gate-body" d="${g.sh.d}"/>${g.sh.extra || ''}<text class="gate-label" x="${g.t === 'NOT' || g.t === 'BUF' ? 3 : 8}" y="${g.h / 2 + 4}">${g.lbl ?? g.t}</text></g>`;
+    });
+    (spec.outputs || []).forEach(o => {
+      const [sx, sy] = pos[o.s];
+      path(o.s, o.p || (sy === o.y ? [] : [[o.x - 30, sy], [o.x - 30, o.y]]), [o.x - 14, o.y]);
+      top += `<g class="bulb" data-o="${o.id}"><circle class="bulb-halo" cx="${o.x}" cy="${o.y}" r="22"/><circle class="bulb-glass" cx="${o.x}" cy="${o.y}" r="13"/>
+        <text class="lbl" x="${o.x + 18}" y="${o.y + 5}">${o.lbl ?? o.id}</text><text class="bit" data-ob="${o.id}" x="${o.x - 4}" y="${o.y + 5}">0</text></g>`;
+    });
+    spec.inputs.forEach(i => {
+      top += `<g class="sw" data-i="${i.id}" tabindex="0" role="button" aria-label="ইনপুট ${i.lbl ?? i.id} বদলাও">
+        <rect x="${i.x}" y="${i.y - 16}" width="40" height="32" rx="8"/>
+        <text class="lbl" x="${i.x + 5}" y="${i.y + 5}">${i.lbl ?? i.id}</text><text class="bit" data-ib="${i.id}" x="${i.x + 27}" y="${i.y + 5}">0</text></g>`;
+    });
+    const dots = (spec.dots || []).map(([x, y, s]) => `<circle class="jdot" data-d="${s}" cx="${x}" cy="${y}" r="4"/>`).join('');
+    svg.setAttribute('viewBox', `0 0 ${spec.vb[0]} ${spec.vb[1]}`);
+    svg.classList.add('circuit');
+    svg.innerHTML = wires + dots + bodies + top + (spec.extra || '');
+    function evaluate() {
+      spec.inputs.forEach(i => vals[i.id] = st[i.id] ? 1 : 0);
+      G.forEach(g => { if (vals[g.id] === undefined) vals[g.id] = 0; });
+      for (let pass = 0; pass < 30; pass++) {
+        let changed = false;
+        G.forEach(g => {
+          const v = FN[g.t](g.in.map(s => vals[typeof s === 'string' ? s : s.s]));
+          if (v !== vals[g.id]) { vals[g.id] = v; changed = true; }
+        });
+        if (!changed) break;
+      }
+      return vals;
+    }
+    function render() {
+      evaluate();
+      svg.querySelectorAll('[data-w]').forEach(p => p.classList.toggle('on', !!vals[wireIds[+p.dataset.w]]));
+      svg.querySelectorAll('[data-d]').forEach(p => p.classList.toggle('on', !!vals[p.dataset.d]));
+      svg.querySelectorAll('.sw').forEach(g => g.classList.toggle('on', !!vals[g.dataset.i]));
+      svg.querySelectorAll('[data-ib]').forEach(t => t.textContent = vals[t.dataset.ib]);
+      (spec.outputs || []).forEach(o => {
+        svg.querySelector(`[data-o="${o.id}"]`).classList.toggle('on', !!vals[o.s]);
+        svg.querySelector(`[data-ob="${o.id}"]`).textContent = vals[o.s];
+      });
+      return vals;
+    }
+    svg.querySelectorAll('.sw').forEach(g => {
+      const f = () => { st[g.dataset.i] ^= 1; spec.onChange ? spec.onChange() : render(); };
+      g.addEventListener('click', f);
+      g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); f(); } });
+    });
+    return { st, vals, render, evaluate };
+  }
+
+  /* ---------- tabs ---------- */
+  function tabs(cont, onPick) {
+    const b = [...cont.querySelectorAll('.tab')];
+    b.forEach(t => t.onclick = () => { b.forEach(x => x.setAttribute('aria-selected', x === t)); onPick(t.dataset.k); });
+  }
+
+  /* ---------- 0/1 quiz ---------- */
+  function quiz01(root, gen) {
+    root.innerHTML = `<h2>আগে অনুমান করো</h2><p class="q-ask"></p>
+      <div class="q-btns"><button data-a="0">0</button><button data-a="1">1</button></div>
+      <p class="feedback" aria-live="polite"></p>
+      <div class="q-foot"><span class="score">স্কোর: 0/0</span><button class="btn primary" style="flex:none">পরের প্রশ্ন</button></div>`;
+    let q, right = 0, total = 0;
+    const ask = root.querySelector('.q-ask'), fb = root.querySelector('.feedback'), sc = root.querySelector('.score'), bs = root.querySelectorAll('.q-btns button');
+    const next = () => { q = gen(); ask.innerHTML = q.ask; fb.textContent = ''; fb.className = 'feedback'; bs.forEach(b => b.disabled = false); };
+    bs.forEach(b => b.onclick = () => {
+      const v = +b.dataset.a, ok = v === q.ans; total++; if (ok) right++;
+      fb.className = 'feedback ' + (ok ? 'ok' : 'bad');
+      fb.innerHTML = ok ? `ঠিক! উত্তর ${q.ans}।` : `হয়নি। সঠিক উত্তর ${q.ans}।${q.why ? ' ' + q.why : ''}`;
+      sc.textContent = `স্কোর: ${right}/${total}`; bs.forEach(x => x.disabled = true);
+      q.after && q.after();
+    });
+    root.querySelector('.q-foot .btn').onclick = next;
+    next();
+    return { reset() { right = total = 0; sc.textContent = 'স্কোর: 0/0'; next(); } };
+  }
+  const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  return { $, parse, ev, show, rows, envOf, toggles, tt, circuit, tabs, quiz01, rnd, FN };
+})();

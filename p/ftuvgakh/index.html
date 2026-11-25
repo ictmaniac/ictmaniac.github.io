@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>কোড ল্যাব · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=1">
+<style>
+.cells{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.cell{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 10px;border-radius:10px;background:var(--board);font-family:var(--f-mono)}
+.cell:nth-child(odd){background:var(--g1)}.cell:nth-child(even){background:var(--g2)}
+.cell .ch{font-size:1.5rem;font-weight:800;font-family:var(--f-body)}
+.cell .b{font-size:1.05rem;font-weight:700;letter-spacing:.06em}
+.cell .s{font-size:.75rem;color:var(--muted)}
+.nib{display:inline-block;padding:0 2px;border-radius:4px}
+.nib.z{background:var(--accent-soft);color:var(--accent)}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vs>div{background:var(--board);border-radius:10px;padding:10px;text-align:center}
+.vs .mono{font-weight:700;word-break:normal;overflow-wrap:break-word}
+#atab td:nth-child(1){font-family:var(--f-body);font-weight:700;font-size:1.2rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৩ · ৩.১.৬–৩.১.১১ কোড: BCD, ASCII, EBCDIC, ইউনিকোড</span>
+    <h1>কম্পিউটার অক্ষর চেনে কীভাবে?</h1>
+    <p class="lead">প্রতিটি অঙ্ক বা অক্ষরের জন্য একটি নির্দিষ্ট বিট-নকশা আছে, তাকেই কোড বলে। কিছু লিখে দেখো কোডে কী হয়।</p>
+  </header>
+  <div class="tabs" id="tabs">
+    <button class="tab m" data-k="bcd" aria-selected="true">BCD</button>
+    <button class="tab m" data-k="ascii" aria-selected="false">ASCII</button>
+    <button class="tab m" data-k="ebcdic" aria-selected="false">EBCDIC</button>
+    <button class="tab" data-k="uni" aria-selected="false">ইউনিকোড</button>
+  </div>
+
+  <section class="card" id="p-bcd">
+    <h2>BCD (Binary Coded Decimal)</h2>
+    <p class="hint">দশমিক সংখ্যার <b>প্রতিটি অঙ্ককে আলাদা করে</b> ৪ বিটে লেখা হয়। একে 8421 কোডও বলে।</p>
+    <div class="field"><label for="bIn">দশমিক সংখ্যা</label><input id="bIn" value="259" inputmode="numeric" autocomplete="off"></div>
+    <p class="err" id="bErr"></p>
+    <div class="cells" id="bCells"></div>
+    <div class="vs">
+      <div><h3>BCD</h3><p class="mono" id="bBcd"></p><p class="hint" id="bBcdN"></p></div>
+      <div><h3>সরাসরি বাইনারি</h3><p class="mono" id="bBin"></p><p class="hint" id="bBinN"></p></div>
+    </div>
+    <ul class="points">
+      <li>৪ বিটে 16টি নকশা হয়, কিন্তু BCD তে শুধু 0000–1001 (0–9) ব্যবহার হয়। <b>1010 থেকে 1111</b> এই ৬টি অবৈধ।</li>
+      <li>BCD সহজে পড়া যায়, তবে সরাসরি বাইনারির চেয়ে বেশি বিট লাগে।</li>
+    </ul>
+  </section>
+
+  <section class="card" id="p-ascii" hidden>
+    <h2>ASCII</h2>
+    <p class="hint">American Standard Code for Information Interchange। ৭ বিটের কোড, তাই 2<sup>7</sup> = 128টি অক্ষর। সামনে একটি 0 বা প্যারিটি বিট যোগ করে ৮ বিটের ASCII-8 বানানো হয়।</p>
+    <div class="field"><label for="aIn">ইংরেজিতে কিছু লেখো</label><input id="aIn" value="ICT" maxlength="16" autocomplete="off" style="font-family:var(--f-body)"></div>
+    <p class="err" id="aErr"></p>
+    <div class="cells" id="aCells"></div>
+    <div class="scroll-x"><table id="atab"></table></div>
+    <ul class="points">
+      <li>A = 65, B = 66 … Z = 90; a = 97 … z = 122; 0 = 48 … 9 = 57; স্পেস = 32।</li>
+      <li>বড় হাতের আর ছোট হাতের অক্ষরে পার্থক্য ঠিক 32 (একটি বিট)।</li>
+    </ul>
+  </section>
+
+  <section class="card" id="p-ebcdic" hidden>
+    <h2>EBCDIC</h2>
+    <p class="hint">Extended Binary Coded Decimal Interchange Code। IBM এর তৈরি ৮ বিটের কোড, তাই 2<sup>8</sup> = 256টি অক্ষর। প্রথম ৪ বিট <span class="nib z">জোন</span>, শেষ ৪ বিট ডিজিট।</p>
+    <div class="field"><label for="eIn">A–Z, 0–9 দিয়ে কিছু লেখো</label><input id="eIn" value="HSC 26" maxlength="16" autocomplete="off" style="font-family:var(--f-body)"></div>
+    <p class="err" id="eErr"></p>
+    <div class="cells" id="eCells"></div>
+    <div class="scroll-x"><table>
+      <tr><th>অক্ষর</th><th>জোন</th><th>ডিজিট</th><th>হেক্সা</th></tr>
+      <tr><td>A–I</td><td>1100 (C)</td><td>0001–1001</td><td>C1–C9</td></tr>
+      <tr><td>J–R</td><td>1101 (D)</td><td>0001–1001</td><td>D1–D9</td></tr>
+      <tr><td>S–Z</td><td>1110 (E)</td><td>0010–1001</td><td>E2–E9</td></tr>
+      <tr><td>0–9</td><td>1111 (F)</td><td>0000–1001</td><td>F0–F9</td></tr>
+    </table></div>
+  </section>
+
+  <section class="card" id="p-uni" hidden>
+    <h2>ইউনিকোড</h2>
+    <p class="hint">পৃথিবীর সব ভাষার অক্ষরের জন্য একটি কোড। মূল রূপটি ১৬ বিটের, তাই 2<sup>16</sup> = 65,536টি অক্ষর রাখা যায়। বাংলা অক্ষরের ঘর U+0980 থেকে U+09FF।</p>
+    <div class="field"><label for="uIn">বাংলা বা যেকোনো ভাষায় লেখো</label><input id="uIn" value="আমি A" maxlength="12" autocomplete="off" style="font-family:var(--f-body)"></div>
+    <div class="cells" id="uCells"></div>
+    <ul class="points">
+      <li>ইংরেজি অক্ষরের ইউনিকোড মান ASCII এর মতোই (A = U+0041 = 65)।</li>
+      <li>একটি বাংলা "যুক্তাক্ষর" আসলে কয়েকটি অক্ষর মিলে তৈরি, তাই একাধিক কোড দেখাবে।</li>
+    </ul>
+  </section>
+
+  <section class="card" id="quiz"></section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<script src="../../a/im.js?v=1"></script>
+<script>
+const {$}=IM;
+const b4=n=>n.toString(2).padStart(4,'0');
+function bcd(){
+  const v=$('bIn').value.trim(); $('bErr').textContent='';
+  if(!/^\d{1,8}$/.test(v)){ $('bErr').textContent='৮ অঙ্কের মধ্যে একটি দশমিক সংখ্যা লেখো।'; return; }
+  $('bCells').innerHTML=[...v].map(d=>`<div class="cell show"><span class="ch">${d}</span><span class="b">${b4(+d)}</span><span class="s">8 4 2 1</span></div>`).join('');
+  const B=[...v].map(d=>b4(+d)).join(' '), P=parseInt(v,10).toString(2);
+  $('bBcd').textContent=B; $('bBcdN').textContent=`${v.length*4} বিট`;
+  $('bBin').textContent=P; $('bBinN').textContent=`${P.length} বিট`;
+}
+const pad=(n,l)=>n.toString(2).padStart(l,'0');
+function ascii(){
+  const t=$('aIn').value; $('aErr').textContent='';
+  const bad=[...t].filter(c=>c.charCodeAt(0)>127);
+  if(bad.length) $('aErr').textContent=`"${bad[0]}" ASCII তে নেই, এটা ইউনিকোডে দেখো।`;
+  const cs=[...t].filter(c=>c.charCodeAt(0)<=127);
+  $('aCells').innerHTML=cs.map(c=>`<div class="cell show"><span class="ch">${c===' '?'␣':c}</span><span class="b">${pad(c.charCodeAt(0),7)}</span><span class="s">${c.charCodeAt(0)}</span></div>`).join('');
+  $('atab').innerHTML='<tr><th>অক্ষর</th><th>দশমিক</th><th>হেক্সা</th><th>ASCII-7</th><th>ASCII-8</th></tr>'+cs.map(c=>{const n=c.charCodeAt(0);return `<tr><td>${c===' '?'␣':c}</td><td>${n}</td><td>${n.toString(16).toUpperCase()}</td><td>${pad(n,7)}</td><td>${pad(n,8)}</td></tr>`}).join('');
+}
+function ebc(ch){
+  const c=ch.toUpperCase();
+  if(c===' ') return 0x40;
+  if(c>='0'&&c<='9') return 0xF0+(+c);
+  const k=c.charCodeAt(0)-65; if(k<0||k>25) return null;
+  if(k<9) return 0xC1+k; if(k<18) return 0xD1+(k-9); return 0xE2+(k-18);
+}
+function ebcdic(){
+  const t=$('eIn').value; $('eErr').textContent='';
+  const out=[]; for(const ch of t){ const v=ebc(ch); if(v===null){ $('eErr').textContent=`"${ch}" এখানে দেখানো হচ্ছে না (শুধু A–Z, 0–9, স্পেস)।`; continue;} out.push([ch.toUpperCase(),v]); }
+  $('eCells').innerHTML=out.map(([c,v])=>{const s=pad(v,8);return `<div class="cell show"><span class="ch">${c===' '?'␣':c}</span><span class="b"><span class="nib z">${s.slice(0,4)}</span><span class="nib">${s.slice(4)}</span></span><span class="s">${v.toString(16).toUpperCase()}</span></div>`}).join('');
+}
+function uni(){
+  const t=$('uIn').value;
+  $('uCells').innerHTML=[...t].map(c=>{const n=c.codePointAt(0);const hx=n.toString(16).toUpperCase().padStart(4,'0');const b=pad(n,16);
+    return `<div class="cell show"><span class="ch">${c===' '?'␣':(/\p{M}/u.test(c)?'◌'+c:c)}</span><span class="s">U+${hx}</span><span class="b" style="font-size:.8rem">${b.slice(0,8)} ${b.slice(8)}</span><span class="s">${n}</span></div>`}).join('');
+}
+$('bIn').oninput=bcd; $('aIn').oninput=ascii; $('eIn').oninput=ebcdic; $('uIn').oninput=uni;
+IM.tabs($('tabs'),k=>{['bcd','ascii','ebcdic','uni'].forEach(x=>$('p-'+x).hidden=x!==k);});
+bcd(); ascii(); ebcdic(); uni();
+
+// quiz: mixed
+const qr=$('quiz');
+qr.innerHTML=`<h2>নিজে চেষ্টা করো</h2><p class="q-ask" id="qa"></p><div class="q-btns" id="qb"></div><p class="feedback" id="qf" aria-live="polite"></p><div class="q-foot"><span class="score" id="qs">স্কোর: 0/0</span><button class="btn primary" style="flex:none" id="qn">পরের প্রশ্ন</button></div>`;
+let right=0,total=0;
+function newQ(){
+  const type=IM.rnd(0,2); let ask, ans, opts;
+  if(type===0){ const L=String.fromCharCode(IM.rnd(65,90)); ans=L; ask=`ASCII কোড <span class="mono">${pad(L.charCodeAt(0),7)}</span> কোন অক্ষর?`;
+    opts=new Set([L]); while(opts.size<4) opts.add(String.fromCharCode(IM.rnd(65,90))); }
+  else if(type===1){ const n=IM.rnd(10,99); ans=b4(Math.floor(n/10))+' '+b4(n%10); ask=`${n} এর BCD কোনটি?`;
+    opts=new Set([ans, pad(n,8).replace(/(.{4})/,'$1 '), b4(n%10)+' '+b4(Math.floor(n/10))]); while(opts.size<4) opts.add(b4(IM.rnd(0,9))+' '+b4(IM.rnd(0,9))); }
+  else { const pick=[['ASCII-7','128'],['ASCII-8','256'],['EBCDIC','256'],['ইউনিকোড (১৬ বিট)','65536'],['BCD এর বৈধ নকশা','10']][IM.rnd(0,4)];
+    ans=pick[1]; ask=`${pick[0]} এ মোট কতগুলো ভিন্ন কোড/অক্ষর সম্ভব?`; opts=new Set(['128','256','65536','10','16']); }
+  const arr=[...opts].slice(0,4); if(!arr.includes(ans)) arr[0]=ans; arr.sort(()=>Math.random()-.5);
+  $('qa').innerHTML=ask; $('qf').textContent=''; $('qf').className='feedback';
+  $('qb').innerHTML=arr.map(v=>`<button>${v}</button>`).join('');
+  $('qb').querySelectorAll('button').forEach(b=>b.onclick=()=>{const ok=b.textContent===ans;total++;if(ok)right++;$('qf').className='feedback '+(ok?'ok':'bad');$('qf').innerHTML=ok?'ঠিক!':`হয়নি। সঠিক উত্তর: <span class="mono">${ans}</span>`;$('qs').textContent=`স্কোর: ${right}/${total}`;$('qb').querySelectorAll('button').forEach(x=>x.disabled=true);});
+}
+$('qn').onclick=newQ; newQ();
+</script>
+</body>
+</html>

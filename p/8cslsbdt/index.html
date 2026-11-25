@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>বুলিয়ান সরলীকরণ ল্যাব · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=1">
+<style>
+.law-tag{display:inline-block;font-size:.8rem;font-weight:600;padding:1px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);margin-top:2px}
+.save{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;text-align:center}
+.save div{background:var(--board);border-radius:10px;padding:8px}
+.save b{font-family:var(--f-mono);font-size:1.4rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৩ · ৩.২.৪ বুলিয়ান রাশির সরলীকরণ</span>
+    <h1>বুলিয়ান রাশি সরল করো, ধাপে ধাপে</h1>
+    <p class="lead">একটি অংক বেছে নাও, তারপর "পরের ধাপ" চাপো। প্রতিটি ধাপে কোন সূত্র লাগলো সেটাও দেখাবে।</p>
+  </header>
+  <section class="card">
+    <h2>অংক বেছে নাও</h2>
+    <div class="chips" id="chips"></div>
+  </section>
+
+  <section class="card" aria-live="polite">
+    <div class="steps" id="steps"></div>
+    <div class="btns"><button class="btn primary" id="next">পরের ধাপ</button><button class="btn" id="all">সব দেখাও</button></div>
+    <div id="done" hidden>
+      <div class="save">
+        <div><span class="hint">আগে লাগতো</span><br><b id="g0"></b><br><span class="hint">টি গেট</span></div>
+        <div style="background:none;font-size:1.4rem">→</div>
+        <div><span class="hint">এখন লাগবে</span><br><b id="g1" style="color:var(--ok)"></b><br><span class="hint">টি গেট</span></div>
+      </div>
+      <p class="hint" style="margin-top:8px;text-align:center">সত্যক সারণিতে শুরু আর শেষের রাশি সব সারিতে মিলেছে ✔</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>যেসব সূত্র বেশি লাগে</h2>
+    <div class="scroll-x"><table>
+      <tr><td>A + A' = 1</td><td>A · A' = 0</td></tr>
+      <tr><td>A + 1 = 1</td><td>A · 0 = 0</td></tr>
+      <tr><td>A + A = A</td><td>A · A = A</td></tr>
+      <tr><td>A + AB = A</td><td>A(A + B) = A</td></tr>
+      <tr><td>A + A'B = A + B</td><td>(A + B)(A + C) = A + BC</td></tr>
+      <tr><td>(A + B)' = A'B'</td><td>(AB)' = A' + B'</td></tr>
+    </table></div>
+    <p class="hint">কৌশল: আগে সাধারণ অংশ বাইরে আনো (কমন নাও), তারপর A + A' = 1 বা 1 + X = 1 খোঁজো।</p>
+  </section>
+
+  <section class="card">
+    <h2>নিজের উত্তর যাচাই করো</h2>
+    <p class="hint">মূল রাশি আর তোমার সরল করা উত্তর লেখো। ঠিক হলে সবুজ টিক পাবে।</p>
+    <div class="field"><label for="o">মূল রাশি</label><input id="o" value="A'B + AB + AB'" autocomplete="off" autocapitalize="characters"></div>
+    <div class="field"><label for="u">তোমার উত্তর</label><input id="u" value="A + B" autocomplete="off" autocapitalize="characters"></div>
+    <p class="err" id="err"></p>
+    <p class="proved answer" id="res" style="font-family:var(--f-body);font-size:1.05rem"></p>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<script src="../../a/im.js?v=1"></script>
+<script>
+const {$}=IM;
+const P=[
+ {t:"AB + AB'", s:[["A(B + B')","বণ্টন: A কমন নিলাম"],["A·1","পূরক: B + B' = 1"],["A","অভেদ: A·1 = A"]]},
+ {t:"A + AB", s:[["A(1 + B)","বণ্টন: A কমন নিলাম"],["A·1","নাল: 1 + B = 1"],["A","অভেদ: A·1 = A"]]},
+ {t:"(A + B)(A + C)", s:[["AA + AC + AB + BC","গুণ করে ছড়িয়ে দিলাম"],["A + AC + AB + BC","সমশক্তি: AA = A"],["A(1 + C + B) + BC","A কমন নিলাম"],["A·1 + BC","নাল: 1 + যেকোনো কিছু = 1"],["A + BC","অভেদ: A·1 = A"]]},
+ {t:"A'B'C + A'BC + AB'C + ABC", s:[["A'C(B' + B) + AC(B' + B)","প্রথম দুটি থেকে A'C, শেষ দুটি থেকে AC কমন"],["A'C·1 + AC·1","পূরক: B' + B = 1"],["A'C + AC","অভেদ"],["C(A' + A)","C কমন নিলাম"],["C","পূরক ও অভেদ: A' + A = 1, C·1 = C"]]},
+ {t:"AB + A'C + BC", s:[["AB + A'C + BC(A + A')","BC কে 1 = (A + A') দিয়ে গুণ করলাম"],["AB + A'C + ABC + A'BC","ছড়িয়ে দিলাম"],["AB(1 + C) + A'C(1 + B)","AB আর A'C কমন নিলাম"],["AB + A'C","নাল ও অভেদ: 1 + X = 1"]]},
+ {t:"(A + B)' + (A' + B)'", s:[["A'B' + AB'","ডি-মরগান: (A + B)' = A'B', (A' + B)' = AB'"],["B'(A' + A)","B' কমন নিলাম"],["B'","পূরক: A' + A = 1"]]},
+ {t:"A(A' + B) + B(B + C)", s:[["AA' + AB + BB + BC","গুণ করে ছড়িয়ে দিলাম"],["0 + AB + B + BC","পূরক: AA' = 0, সমশক্তি: BB = B"],["B(A + 1 + C)","B কমন নিলাম"],["B","নাল ও অভেদ"]]},
+ {t:"A'B + AB + A'B'", s:[["B(A' + A) + A'B'","প্রথম দুটি থেকে B কমন"],["B + A'B'","পূরক ও অভেদ"],["(B + A')(B + B')","বণ্টন: X + YZ = (X + Y)(X + Z)"],["B + A'","পূরক ও অভেদ: B + B' = 1"]]},
+];
+const gates=n=>{let c=0;(function w(x){if(!x)return;if(['AND','OR','XOR','XNOR'].includes(x.op))c++;if(x.op==='NOT'&&x.a.op!=='NOT')c++;w(x.a);w(x.b);})(n);return c;};
+// AND chains count as one gate per pair; good enough to compare before/after
+$('chips').innerHTML=P.map((p,i)=>`<button class="chip" data-i="${i}">${p.t}</button>`).join('');
+let k=0,cur;
+$('chips').querySelectorAll('.chip').forEach(c=>c.onclick=()=>load(+c.dataset.i));
+function load(i){
+  cur=P[i]; k=1; $('done').hidden=true;
+  $('chips').querySelectorAll('.chip').forEach(c=>c.style.borderColor=+c.dataset.i===i?'var(--accent)':'');
+  const rows=[[cur.t,'প্রশ্ন'],...cur.s];
+  $('steps').innerHTML=rows.map(([e,w],j)=>`<div class="stp ${j===0?'show':''}"><span class="n">${j}</span><div><div class="e">${j===0?'':'= '}${e}</div><span class="law-tag">${w}</span></div></div>`).join('');
+  upd();
+}
+function upd(){ const n=cur.s.length+1; $('next').disabled=$('all').disabled=k>=n; if(k>=n) finish(); }
+function finish(){ const a=IM.parse(cur.t).ast, b=IM.parse(cur.s[cur.s.length-1][0]).ast; $('g0').textContent=gates(a); $('g1').textContent=gates(b); $('done').hidden=false; }
+$('next').onclick=()=>{ $('steps').children[k].classList.add('show'); k++; upd(); };
+$('all').onclick=()=>{ while(k<cur.s.length+1){ $('steps').children[k].classList.add('show'); k++; } upd(); };
+function check(){
+  $('err').textContent=''; let a,b;
+  try{a=IM.parse($('o').value);b=IM.parse($('u').value);}catch(e){$('err').textContent=e.message;$('res').textContent='';return;}
+  const v=[...new Set([...a.vars,...b.vars])].sort(); if(v.length>5){$('err').textContent='৫টির বেশি চলক নয়।';return;}
+  const vv=v.length?v:['A']; const bad=IM.rows(vv.length).filter(r=>{const e=IM.envOf(vv,r);return IM.ev(a.ast,e)!==IM.ev(b.ast,e);});
+  $('res').innerHTML = bad.length===0 ? `<span class="ok-txt">ঠিক আছে ✔</span> দুটো রাশি সমান। গেট ${gates(a.ast)} টি → ${gates(b.ast)} টি।`
+    : `<span class="bad-txt">মিলছে না ✗</span> যেমন ${vv.map((x,i)=>x+'='+bad[0][i]).join(', ')} হলে মূল রাশি = ${IM.ev(a.ast,IM.envOf(vv,bad[0]))}, কিন্তু তোমার উত্তর = ${IM.ev(b.ast,IM.envOf(vv,bad[0]))}।`;
+}
+$('o').oninput=check; $('u').oninput=check;
+load(3); check();
+</script>
+</body>
+</html>

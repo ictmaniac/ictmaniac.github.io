@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>ডি-মরগান ল্যাব · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=1">
+<style>
+.pair{display:grid;grid-template-columns:1fr;gap:10px}
+.cbox{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:8px 8px 10px}
+.cbox h3{font-family:var(--f-mono);text-align:center;font-size:1.05rem}
+.same{text-align:center;font-weight:700;color:var(--ok)}
+.rule{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;font-family:var(--f-mono);font-weight:700;font-size:1.2rem}
+.rule span{padding:6px 10px;border-radius:10px;background:var(--board)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৩ · ৩.২.৩ ডি-মরগানের উপপাদ্য</span>
+    <h1>ডি-মরগানের উপপাদ্য</h1>
+    <p class="lead">দুটি আলাদা সার্কিট, কিন্তু ফলাফল সবসময় এক। সুইচ চেপে মিলিয়ে দেখো।</p>
+  </header>
+  <div class="tabs" id="tabs">
+    <button class="tab m" data-k="0" aria-selected="true">(A+B)' = A'·B'</button>
+    <button class="tab m" data-k="1" aria-selected="false">(A·B)' = A'+B'</button>
+  </div>
+
+  <div class="pair">
+    <div class="cbox"><h3 id="h1"></h3><svg id="c1"></svg></div>
+    <div class="cbox"><h3 id="h2"></h3><svg id="c2"></svg></div>
+  </div>
+  <div class="controls" id="tg"></div>
+  <p class="same" id="same" aria-live="polite"></p>
+
+  <section class="card">
+    <h2>সত্যক সারণি দিয়ে প্রমাণ</h2>
+    <div class="scroll-x"><table id="tt"></table></div>
+    <p class="hint" id="ttnote"></p>
+  </section>
+
+  <section class="card">
+    <h2>মনে রাখার কৌশল: "দাগ ভাঙো, চিহ্ন বদলাও"</h2>
+    <div class="rule"><span>লম্বা দাগ → ছোট ছোট দাগ</span><span>+ ↔ ·</span></div>
+    <div class="chips" id="chips"></div>
+    <div class="steps" id="steps"></div>
+    <div class="btns"><button class="btn primary" id="next">পরের ধাপ</button><button class="btn" id="all">সব দেখাও</button></div>
+  </section>
+
+  <section class="card">
+    <h2>সহজ কথায়</h2>
+    <ul class="points">
+      <li><b>১ম উপপাদ্য:</b> যোগফলের পূরক = পূরকগুলোর গুণফল। (A+B)' = A'·B'। অর্থাৎ NOR গেট = বাবলওয়ালা ইনপুটের AND গেট।</li>
+      <li><b>২য় উপপাদ্য:</b> গুণফলের পূরক = পূরকগুলোর যোগফল। (A·B)' = A'+B'। অর্থাৎ NAND গেট = বাবলওয়ালা ইনপুটের OR গেট।</li>
+      <li>যেকোনো সংখ্যক চলকেও খাটে: (A+B+C)' = A'·B'·C' এবং (ABC)' = A'+B'+C'।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<script src="../../a/im.js?v=1"></script>
+<script>
+const {$}=IM;
+const st={A:0,B:0};
+let c1,c2,sync,syncTT,T=0;
+function mk(){
+  const inA={id:'A',x:4,y:40}, inB={id:'B',x:4,y:100};
+  if(T===0){
+    $('h1').textContent="বাম: (A + B)'"; $('h2').textContent="ডান: A' · B'";
+    c1=IM.circuit($('c1'),{vb:[360,140],st,onChange:render,inputs:[inA,inB],
+      gates:[{id:'o',t:'OR',x:110,y:48,in:['A','B'],mx:[80,80]},{id:'n',t:'NOT',x:200,y:48,in:['o']}],outputs:[{id:'Y',s:'n',x:320,y:70}]});
+    c2=IM.circuit($('c2'),{vb:[360,140],st,onChange:render,inputs:[inA,inB],
+      gates:[{id:'na',t:'NOT',x:80,y:18,in:['A']},{id:'nb',t:'NOT',x:80,y:78,in:['B']},{id:'a',t:'AND',x:190,y:48,in:['na','nb'],mx:[160,160]}],outputs:[{id:'Y',s:'a',x:320,y:70}]});
+  } else {
+    $('h1').textContent="বাম: (A · B)'"; $('h2').textContent="ডান: A' + B'";
+    c1=IM.circuit($('c1'),{vb:[360,140],st,onChange:render,inputs:[inA,inB],
+      gates:[{id:'o',t:'AND',x:110,y:48,in:['A','B'],mx:[80,80]},{id:'n',t:'NOT',x:200,y:48,in:['o']}],outputs:[{id:'Y',s:'n',x:320,y:70}]});
+    c2=IM.circuit($('c2'),{vb:[360,140],st,onChange:render,inputs:[inA,inB],
+      gates:[{id:'na',t:'NOT',x:80,y:18,in:['A']},{id:'nb',t:'NOT',x:80,y:78,in:['B']},{id:'a',t:'OR',x:190,y:48,in:['na','nb'],mx:[160,160]}],outputs:[{id:'Y',s:'a',x:320,y:70}]});
+  }
+  sync=IM.toggles($('tg'),['A','B'],st,render);
+  const f1=T===0?e=>1-(e.A|e.B):e=>1-(e.A&e.B), f2=T===0?e=>(1-e.A)&(1-e.B):e=>(1-e.A)|(1-e.B);
+  syncTT=IM.tt($('tt'),['A','B'],[
+    {h:"A'",f:e=>1-e.A,cls:''},{h:"B'",f:e=>1-e.B},
+    {h:T===0?'A+B':'A·B',f:e=>T===0?e.A|e.B:e.A&e.B},
+    {h:T===0?"(A+B)'":"(A·B)'",f:f1},{h:T===0?"A'·B'":"A'+B'",f:f2}],st,render);
+  $('ttnote').innerHTML='শেষ দুই কলাম প্রতিটি সারিতে হুবহু মিলে গেছে, তাই উপপাদ্য প্রমাণিত ✔';
+  render();
+}
+function render(){ const a=c1.render().n, b=c2.render().a; sync(); syncTT();
+  $('same').innerHTML=`বাম = ${a}, ডান = ${b} → ${a===b?'দুটো সমান ✔':'আলাদা ✗'}`; }
+IM.tabs($('tabs'),k=>{T=+k;mk();});
+
+const EX=[
+ ["(A + B + C)'",["(A + B + C)'","A' · B' · C'   ← দাগ ভাঙলাম, + হলো ·"]],
+ ["(ABC)'",["(A·B·C)'","A' + B' + C'   ← দাগ ভাঙলাম, · হলো +"]],
+ ["(AB + C)'",["(AB + C)'","(AB)' · C'   ← বড় দাগ ভাঙলাম, মাঝের + হলো ·","(A' + B') · C'   ← (AB)' এর দাগও ভাঙলাম","A'C' + B'C'   ← গুণ ছড়িয়ে দিলাম"]],
+ ["((A + B)' + C)'",["((A + B)' + C)'","(A + B)'' · C'   ← বাইরের দাগ ভাঙলাম","(A + B) · C'   ← দুই দাগ কেটে গেল: X'' = X","AC' + BC'"]],
+];
+let k=0,list=[];
+$('chips').innerHTML=EX.map((e,i)=>`<button class="chip" data-i="${i}">${e[0]}</button>`).join('');
+$('chips').querySelectorAll('.chip').forEach(c=>c.onclick=()=>load(+c.dataset.i));
+function load(i){ list=EX[i][1]; k=1; $('steps').innerHTML=list.map((s,j)=>`<div class="stp ${j===0?'show':''}"><span class="n">${j+1}</span><div class="e">${s.replace(/←(.*)$/,'<br><span class="hint" style="font-family:var(--f-body);font-weight:500">$1</span>')}</div></div>`).join(''); upd(); }
+function upd(){ $('next').disabled=$('all').disabled=k>=list.length; }
+$('next').onclick=()=>{ if(k<list.length){$('steps').children[k].classList.add('show');k++;upd();} };
+$('all').onclick=()=>{ while(k<list.length){$('steps').children[k].classList.add('show');k++;} upd(); };
+mk(); load(2);
+</script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>চিহ্নযুক্ত সংখ্যা ও 2's complement · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=1">
+<style>
+.reg{display:flex;flex-direction:column;gap:2px;align-items:center}
+.lbls{display:flex;gap:4px;justify-content:center}
+.read{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center}
+.read .k{font-size:.95rem}
+.read .k small{display:block;color:var(--muted);font-size:.8rem;line-height:1.3}
+.read .val{font-family:var(--f-mono);font-weight:800;font-size:1.3rem;text-align:right;color:var(--accent)}
+.brow{display:grid;grid-template-columns:96px 1fr;gap:8px;align-items:center;padding:8px;border-radius:10px;background:var(--board)}
+.brow .t{font-size:.85rem;font-weight:600;line-height:1.3}
+.brow .bits .bitc{width:30px;height:38px;font-size:1.05rem}
+@media (max-width:420px){.brow{grid-template-columns:1fr}.brow .bits .bitc{width:30px}}
+.stp .bits{justify-content:flex-start}
+.flip{animation:flip .5s}
+@keyframes flip{0%{transform:rotateX(0)}50%{transform:rotateX(90deg)}100%{transform:rotateX(0)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৩ · ৩.১.৪–৩.১.৫ চিহ্নযুক্ত সংখ্যা ও পরিপূরক</span>
+    <h1>চিহ্নযুক্ত সংখ্যা ও 2's complement</h1>
+    <p class="lead">কম্পিউটারে − চিহ্ন বলে কিছু নেই। সবচেয়ে বাঁয়ের বিটটাই চিহ্ন বলে দেয়। নিজে বিট চেপে দেখো।</p>
+  </header>
+  <section class="card">
+    <h2>৮ বিটের রেজিস্টার</h2>
+    <p class="hint">যেকোনো বিটে চাপ দাও। বাঁয়ের সবুজ দাগের বিটটি <b>চিহ্ন বিট</b>: 0 মানে ধনাত্মক (+), 1 মানে ঋণাত্মক (−)।</p>
+    <div class="reg"><div class="bits" id="reg"></div><div class="lbls" id="regw"></div></div>
+    <div class="btns"><button class="btn" id="inv" style="flex:1">সব উল্টাও (1's)</button><button class="btn" id="neg" style="flex:1">−সংখ্যা বানাও (2's)</button><button class="btn" id="zero" style="flex:none">0</button></div>
+    <div class="read">
+      <span class="k">চিহ্নহীন (unsigned)<small>সব বিট সংখ্যা ধরে</small></span><span class="val" id="rU"></span>
+      <span class="k">চিহ্ন-মান (sign-magnitude)<small>প্রথম বিট চিহ্ন, বাকি ৭টি মান</small></span><span class="val" id="rS"></span>
+      <span class="k">1's complement<small>ঋণাত্মক হলে বাকি বিট উল্টে পড়ো</small></span><span class="val" id="r1"></span>
+      <span class="k">2's complement<small>কম্পিউটার আসলে যেটা ব্যবহার করে</small></span><span class="val" id="r2"></span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>দশমিক থেকে 2's complement, ধাপে ধাপে</h2>
+    <div class="row"><div class="field"><label for="n">দশমিক সংখ্যা (−128 থেকে 127)</label><input id="n" value="-25" inputmode="numeric" autocomplete="off"></div></div>
+    <div class="chips" id="nchips"></div>
+    <p class="err" id="nerr"></p>
+    <div class="steps" id="nsteps"></div>
+    <div class="btns"><button class="btn primary" id="nnext">পরের ধাপ</button><button class="btn" id="nall">সব দেখাও</button></div>
+  </section>
+
+  <section class="card">
+    <h2>2's complement দিয়ে বিয়োগ</h2>
+    <p class="hint">কম্পিউটার বিয়োগ করে না, যোগ করে! A − B = A + (B এর 2's complement)।</p>
+    <div class="row">
+      <div class="field"><label for="sa">A</label><input id="sa" value="20" inputmode="numeric"></div>
+      <div class="field"><label for="sb">B</label><input id="sb" value="35" inputmode="numeric"></div>
+    </div>
+    <div class="chips" id="schips"></div>
+    <p class="err" id="serr"></p>
+    <div class="steps" id="ssteps"></div>
+    <div class="btns"><button class="btn primary" id="snext">পরের ধাপ</button><button class="btn" id="sall">সব দেখাও</button></div>
+  </section>
+
+  <section class="card">
+    <h2>সহজ কথায়</h2>
+    <ul class="points">
+      <li><b>চিহ্ন-মান:</b> প্রথম বিট চিহ্ন, বাকিগুলো সংখ্যার মান। সমস্যা: +0 (00000000) আর −0 (10000000) দুটো শূন্য হয়ে যায়।</li>
+      <li><b>1's complement:</b> সব বিট উল্টে দাও (0↔1)।</li>
+      <li><b>2's complement:</b> 1's complement + 1। এখানে শূন্য একটাই, আর যোগ দিয়েই বিয়োগ হয়ে যায়। তাই কম্পিউটার এটাই ব্যবহার করে।</li>
+      <li>৮ বিটে সীমা: চিহ্ন-মানে −127 থেকে +127, 2's complement-এ <b>−128 থেকে +127</b>।</li>
+      <li>শর্টকাট: ডান থেকে প্রথম 1 পর্যন্ত বিটগুলো যেমন আছে রাখো, তার বাঁয়ের সব বিট উল্টে দাও।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<script src="../../a/im.js?v=1"></script>
+<script>
+const {$}=IM;
+const W=[128,64,32,16,8,4,2,1];
+let R=[0,0,0,1,1,0,0,1];
+const bitHTML=(arr,opt={})=>`<div class="bits">${arr.map((b,i)=>`<span class="bitc ro ${b?'on':''} ${i===0&&opt.sign!==false?'sign':''} ${opt.cls||''}">${b}</span>`).join('')}</div>`;
+const toBits=n=>W.map(w=>(((n%256)+256)%256)&w?1:0);
+const uval=a=>a.reduce((s,b,i)=>s+b*W[i],0);
+const invert=a=>a.map(b=>1-b);
+function renderReg(anim){
+  $('reg').innerHTML=R.map((b,i)=>`<button class="bitc ${b?'on':''} ${i===0?'sign':''} ${anim&&anim.includes(i)?'flip':''}" data-i="${i}" aria-label="বিট ${7-i}">${b}</button>`).join('');
+  $('regw').innerHTML=W.map((w,i)=>`<span class="bitw">${i===0?'চিহ্ন':w}</span>`).join('');
+  $('reg').querySelectorAll('button').forEach(b=>b.onclick=()=>{R[+b.dataset.i]^=1;renderReg();});
+  const u=uval(R), mag=uval([0,...R.slice(1)]);
+  $('rU').textContent=u;
+  $('rS').textContent=(R[0]?'−':'+')+mag;
+  $('r1').textContent=R[0]? '−'+uval([0,...invert(R).slice(1)]) : '+'+mag;
+  $('r2').textContent=R[0]? (u-256) : '+'+u;
+}
+$('inv').onclick=()=>{R=invert(R);renderReg([0,1,2,3,4,5,6,7]);};
+$('neg').onclick=()=>{const v=R[0]?uval(R)-256:uval(R); R=toBits(-v); renderReg([0,1,2,3,4,5,6,7]);};
+$('zero').onclick=()=>{R=Array(8).fill(0);renderReg();};
+
+function stepper(boxId,nextId,allId){
+  let list=[],k=0;
+  const box=$(boxId);
+  const upd=()=>{$(nextId).disabled=$(allId).disabled=k>=list.length;};
+  $(nextId).onclick=()=>{if(k<list.length){box.children[k].classList.add('show');k++;upd();}};
+  $(allId).onclick=()=>{while(k<list.length){box.children[k].classList.add('show');k++;}upd();};
+  return items=>{list=items;k=0;box.innerHTML=items.map((it,i)=>`<div class="stp"><span class="n">${i+1}</span><div><div class="e">${it.e}</div></div><span class="w">${it.w||''}</span></div>`).join('');
+    if(items.length){box.children[0].classList.add('show');k=1;} upd();};
+}
+const nS=stepper('nsteps','nnext','nall');
+function convN(){
+  $('nerr').textContent='';
+  const v=$('n').value.trim().replace('−','-');
+  if(!/^[+-]?\d+$/.test(v)||+v<-128||+v>127){ $('nerr').textContent='−128 থেকে 127 এর মধ্যে একটি পূর্ণ সংখ্যা লেখো।'; nS([]); return; }
+  const n=+v, m=Math.abs(n), mb=toBits(m);
+  const st=[{e:`|${String(n).replace('-','−')}| = ${m} → 8 বিটে ${bitHTML(mb,{sign:false})}`, w:`আগে চিহ্ন ছাড়া ${m} কে বাইনারিতে নাও, সামনে 0 দিয়ে ৮ ঘর ভরাও।`}];
+  if(n>=0){ st.push({e:`উত্তর: ${bitHTML(mb)}`, w:'ধনাত্মক সংখ্যার 2\'s complement নিজেই। চিহ্ন বিট 0।'}); }
+  else if(n===-128){ st.push({e:`উত্তর: ${bitHTML(toBits(-128))}`, w:'−128 একটি বিশেষ ক্ষেত্র: ৮ বিটে +128 লেখা যায় না, কিন্তু 10000000 = −128।'}); }
+  else {
+    const one=invert(mb), two=toBits(n);
+    st.push({e:`1's complement (সব উল্টাও): ${bitHTML(one)}`, w:'প্রতিটি 0 কে 1 আর 1 কে 0 করো।'});
+    st.push({e:`+1 যোগ করো: ${bitHTML(two)}`, w:`${uval(one)} + 1 = ${uval(two)} → এটাই 2's complement।`});
+    st.push({e:`${n}<sub>10</sub> = <span class="v">${two.join('')}</span><sub>2</sub>`, w:`চিহ্ন-মান রূপে হতো ${[1,...mb.slice(1)].join('')}। দুটো আলাদা, খেয়াল করো।`});
+  }
+  nS(st);
+}
+const sS=stepper('ssteps','snext','sall');
+function sub(){
+  $('serr').textContent='';
+  const a=+$('sa').value, b=+$('sb').value;
+  if(![a,b].every(x=>Number.isInteger(x)&&x>=0&&x<=127)){ $('serr').textContent='A আর B 0 থেকে 127 এর মধ্যে লেখো।'; sS([]); return; }
+  const A=toBits(a), B=toBits(b), B1=invert(B), B2=toBits(-b), sum=uval(A)+uval(B2), carry=sum>255?1:0, Rr=toBits(sum), r=a-b;
+  const st=[
+    {e:`A = ${a} → ${bitHTML(A)}`, w:'A কে ৮ বিটে লেখো।'},
+    {e:`B = ${b} → ${bitHTML(B)}`, w:'B কে ৮ বিটে লেখো।'},
+    {e:`B এর 1's → ${bitHTML(B1)}`, w:'সব বিট উল্টাও।'},
+    {e:`B এর 2's → ${bitHTML(B2)}`, w:'1 যোগ করো। এটাই −B।'},
+    {e:`A + (−B) = ${carry?'<span style="color:var(--bad)">1</span>':''}${bitHTML(Rr)}`, w: carry? 'যোগ করো। ৯ম ঘরে যে বাড়তি 1 (ক্যারি) এলো, সেটা ফেলে দাও।' : 'যোগ করো। ৯ম ঘরে কোনো ক্যারি আসেনি।'},
+  ];
+  if(Rr[0]===0) st.push({e:`চিহ্ন বিট 0 → ধনাত্মক। উত্তর = <span class="v">+${uval(Rr)}</span>`, w:`মিলিয়ে দেখো: ${a} − ${b} = ${r} ✔`});
+  else st.push({e:`চিহ্ন বিট 1 → ঋণাত্মক। আবার 2's নিই: ${bitHTML(toBits(-r))} = ${-r} → উত্তর <span class="v">${r}</span>`, w:`ফলাফল ঋণাত্মক হলে মান জানতে আরেকবার 2's complement করো। মিলিয়ে দেখো: ${a} − ${b} = ${r} ✔`});
+  sS(st);
+}
+$('nchips').innerHTML=['-25','-1','45','-100','-128'].map(x=>`<button class="chip" data-v="${x}">${x}</button>`).join('');
+$('nchips').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{$('n').value=c.dataset.v;convN();$('nall').click();});
+$('schips').innerHTML=[[20,35],[45,18],[7,7],[100,1]].map(([x,y])=>`<button class="chip" data-a="${x}" data-b="${y}">${x} − ${y}</button>`).join('');
+$('schips').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{$('sa').value=c.dataset.a;$('sb').value=c.dataset.b;sub();$('sall').click();});
+$('n').addEventListener('input',convN); $('sa').addEventListener('input',sub); $('sb').addEventListener('input',sub);
+renderReg(); convN(); sub();
+</script>
+</body>
+</html>

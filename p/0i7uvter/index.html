@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>বুলিয়ান উপপাদ্য ল্যাব · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=1">
+<style>
+.laws{display:flex;flex-wrap:wrap;gap:8px}
+.law{font:inherit;font-size:.9rem;font-weight:600;padding:6px 12px;border-radius:999px;border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;min-height:40px}
+.law[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--panel)}
+.grp-h{font-size:.85rem;font-weight:700;color:var(--muted);width:100%;margin-top:4px}
+.eqbig{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;text-align:center}
+.side{background:var(--board);border-radius:12px;padding:10px 6px}
+.side .f{font-family:var(--f-mono);font-weight:700;font-size:1.15rem;word-break:break-word}
+.side .r{font-family:var(--f-mono);font-weight:800;font-size:1.8rem;color:var(--signal)}
+.eqsign{font-family:var(--f-mono);font-size:1.6rem;font-weight:800}
+.eqsign.ok{color:var(--ok)}
+.proved{padding:10px;border-radius:10px;background:var(--accent-soft);font-weight:600;text-align:center}
+.post{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.post table td{font-size:.95rem;padding:3px}
+@media (max-width:420px){.post{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৩ · ৩.২ ও ৩.২.১ বুলিয়ান অ্যালজেবরা, স্বতঃসিদ্ধ ও উপপাদ্য</span>
+    <h1>বুলিয়ান অ্যালজেবরার নিয়ম</h1>
+    <p class="lead">একটি নিয়ম বেছে নাও। ইনপুট বদলে দেখো, বাম পাশ আর ডান পাশ সবসময় সমান থাকে। সত্যক সারণিই প্রমাণ।</p>
+  </header>
+  <section class="card">
+    <h2>মূল কথা</h2>
+    <ul class="points">
+      <li>বুলিয়ান চলকের মান শুধু দুটি: <b>0</b> (মিথ্যা) অথবা <b>1</b> (সত্য)।</li>
+      <li>মৌলিক অপারেশন তিনটি: যোগ (OR, <span class="mono">+</span>), গুণ (AND, <span class="mono">·</span>), পূরক (NOT, <span class="mono">A'</span>)।</li>
+    </ul>
+    <h3>স্বতঃসিদ্ধ (Postulates)</h3>
+    <div class="post">
+      <div><b class="hint">যোগ</b><table><tr><td>0+0=0</td></tr><tr><td>0+1=1</td></tr><tr><td>1+0=1</td></tr><tr><td>1+1=1</td></tr></table></div>
+      <div><b class="hint">গুণ</b><table><tr><td>0·0=0</td></tr><tr><td>0·1=0</td></tr><tr><td>1·0=0</td></tr><tr><td>1·1=1</td></tr></table></div>
+      <div><b class="hint">পূরক</b><table><tr><td>0'=1</td></tr><tr><td>1'=0</td></tr></table></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>একটি উপপাদ্য বেছে নাও</h2>
+    <div class="laws" id="laws"></div>
+  </section>
+
+  <section class="card" aria-live="polite">
+    <h3 id="lname"></h3>
+    <div class="eqbig">
+      <div class="side"><div class="f" id="lf"></div><div class="r" id="lr"></div><div class="hint">বাম পাশ</div></div>
+      <div class="eqsign ok">=</div>
+      <div class="side"><div class="f" id="rf"></div><div class="r" id="rr"></div><div class="hint">ডান পাশ</div></div>
+    </div>
+    <div class="controls" id="tg"></div>
+    <div class="scroll-x"><table id="tt"></table></div>
+    <p class="proved" id="proved"></p>
+    <div id="proof"></div>
+  </section>
+
+  <section class="card">
+    <h2>নিজে যাচাই করো</h2>
+    <p class="hint">যেকোনো দুটি রাশি লেখো। সমান কিনা সত্যক সারণি দিয়ে দেখাবে। লেখার নিয়ম: OR = +, AND = পাশাপাশি বা ., NOT = ' (যেমন A'B + C)</p>
+    <div class="row">
+      <div class="field"><label for="x1">বাম পাশ</label><input id="x1" value="A + A'B" autocomplete="off" autocapitalize="characters"></div>
+      <div class="field"><label for="x2">ডান পাশ</label><input id="x2" value="A + B" autocomplete="off" autocapitalize="characters"></div>
+    </div>
+    <p class="err" id="xerr"></p>
+    <p class="proved" id="xres"></p>
+    <div class="scroll-x"><table id="xtt"></table></div>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<script src="../../a/im.js?v=1"></script>
+<script>
+const {$}=IM;
+const LAWS=[
+ ['অভেদ (Identity)','A + 0','A'],['অভেদ (Identity)','A · 1','A'],
+ ['শূন্য/নাল (Null)','A + 1','1'],['শূন্য/নাল (Null)','A · 0','0'],
+ ['সমশক্তি (Idempotent)','A + A','A'],['সমশক্তি (Idempotent)','A · A','A'],
+ ['পূরক (Complement)',"A + A'",'1'],['পূরক (Complement)',"A · A'",'0'],
+ ['দ্বি-পূরক (Involution)',"(A')'",'A'],
+ ['বিনিময় (Commutative)','A + B','B + A'],['বিনিময় (Commutative)','A · B','B · A'],
+ ['সংযোজন (Associative)','A + (B + C)','(A + B) + C'],['সংযোজন (Associative)','A · (B · C)','(A · B) · C'],
+ ['বণ্টন (Distributive)','A · (B + C)','A·B + A·C'],['বণ্টন (Distributive)','A + B·C','(A + B)·(A + C)',['(A+B)(A+C) = AA + AC + AB + BC','= A + AC + AB + BC   [AA = A]','= A(1 + C + B) + BC','= A·1 + BC = A + BC   [1 + X = 1]']],
+ ['শোষণ (Absorption)','A + A·B','A',['A + AB = A(1 + B)','= A · 1   [1 + B = 1]','= A']],
+ ['শোষণ (Absorption)','A · (A + B)','A',['A(A + B) = AA + AB','= A + AB   [AA = A]','= A(1 + B) = A']],
+ ['বিশেষ উপপাদ্য',"A + A'·B",'A + B',["A + A'B = (A + A')(A + B)   [বণ্টন]",'= 1 · (A + B)   [A + A\' = 1]','= A + B']],
+ ['বিশেষ উপপাদ্য',"A · (A' + B)",'A · B',["A(A' + B) = AA' + AB",'= 0 + AB = AB']],
+];
+const GROUPS=[[0,8,'এক চলকের উপপাদ্য'],[9,14,'দুই-তিন চলকের সূত্র'],[15,18,'শোষণ ও বিশেষ উপপাদ্য']];
+let cur=0; const st={A:0,B:0,C:0};
+$('laws').innerHTML=GROUPS.map(([a,b,h])=>`<span class="grp-h">${h}</span>`+LAWS.slice(a,b+1).map((L,k)=>`<button class="law" data-i="${a+k}" aria-pressed="false">${L[1]} = ${L[2]}</button>`).join('')).join('');
+$('laws').querySelectorAll('.law').forEach(b=>b.onclick=()=>pick(+b.dataset.i));
+let L,R,vars,syncT,syncTT;
+function pick(i){
+  cur=i; $('laws').querySelectorAll('.law').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===i));
+  const law=LAWS[i]; L=IM.parse(law[1]); R=IM.parse(law[2]);
+  vars=[...new Set([...L.vars,...R.vars])].sort(); if(!vars.length) vars=['A'];
+  $('lname').textContent=law[0]; $('lf').textContent=law[1]; $('rf').textContent=law[2];
+  syncT=IM.toggles($('tg'),vars,st,render);
+  syncTT=IM.tt($('tt'),vars,[{h:law[1],f:e=>IM.ev(L.ast,e)},{h:law[2],f:e=>IM.ev(R.ast,e)}],st,render);
+  $('proved').innerHTML=`সত্যক সারণির প্রতিটি সারিতে দুই পাশের মান সমান ✔ তাই <span class="mono">${law[1]} = ${law[2]}</span> প্রমাণিত।`;
+  $('proof').innerHTML= law[3] ? `<h3 style="margin-top:6px">বীজগণিতীয় প্রমাণ</h3><div class="steps">${law[3].map((s,k)=>`<div class="stp show"><span class="n">${k+1}</span><div class="e">${s}</div></div>`).join('')}</div>` : '';
+  render();
+}
+function render(){
+  $('lr').textContent=IM.ev(L.ast,st); $('rr').textContent=IM.ev(R.ast,st); syncT(); syncTT();
+}
+function check(){
+  $('xerr').textContent=''; $('xres').textContent=''; $('xtt').innerHTML='';
+  let a,b; try{a=IM.parse($('x1').value);b=IM.parse($('x2').value);}catch(e){$('xerr').textContent=e.message;return;}
+  const v=[...new Set([...a.vars,...b.vars])].sort(); if(v.length>4){$('xerr').textContent='৪টির বেশি চলক নয় (A, B, C, D)।';return;}
+  const vv=v.length?v:['A']; let same=true;
+  IM.rows(vv.length).forEach(r=>{const e=IM.envOf(vv,r); if(IM.ev(a.ast,e)!==IM.ev(b.ast,e)) same=false;});
+  const tmp={}; IM.tt($('xtt'),vv,[{h:'বাম',f:e=>IM.ev(a.ast,e)},{h:'ডান',f:e=>{const x=IM.ev(b.ast,e);return x===IM.ev(a.ast,e)?x:`<span class="bad-txt">${x} ✗</span>`}}],tmp);
+  $('xres').innerHTML= same? '<span class="ok-txt">দুই পাশ সমান ✔</span>' : '<span class="bad-txt">দুই পাশ সমান নয় ✗</span> (লাল দাগের সারিগুলো দেখো)';
+}
+$('x1').oninput=check; $('x2').oninput=check;
+pick(17); check();
+</script>
+</body>
+</html>
