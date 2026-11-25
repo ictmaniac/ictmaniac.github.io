@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>কাউন্টার ল্যাব · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=1">
+<style>
+.ffs{display:flex;gap:8px;justify-content:center;align-items:flex-end}
+.ff{display:flex;flex-direction:column;align-items:center;gap:2px}
+.ff .box{width:58px;height:62px;border-radius:12px;border:2.5px solid var(--accent);background:var(--accent-soft);display:grid;place-items:center;font-family:var(--f-mono);font-size:1.8rem;font-weight:800;color:var(--accent);transition:all .3s}
+.ff .box.on{background:var(--signal);border-color:var(--signal);color:#1A1200}
+.ff .box.flip{animation:flip .4s}
+@keyframes flip{50%{transform:rotateY(90deg)}}
+.ff small{font-family:var(--f-mono);color:var(--muted);font-size:.8rem}
+.dec{font-family:var(--f-mono);font-size:2rem;font-weight:800;text-align:center}
+.dec small{font-size:.9rem;color:var(--muted);font-family:var(--f-body)}
+svg.wave{width:100%;height:auto;display:block}
+.wv{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linejoin:round}
+.wv.clk{stroke:var(--muted)}
+.wl{font-family:var(--f-mono);font-size:11px;font-weight:700;fill:var(--ink)}
+.grid-l{stroke:var(--line);stroke-width:1}
+.now{fill:var(--signal);opacity:.18}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৩ · ৩.২.১২ কাউন্টার</span>
+    <h1>কাউন্টার: ক্লক গোনার সার্কিট</h1>
+    <p class="lead">প্রতিটি ক্লক পালসে কাউন্টারের মান এক করে বাড়ে। ক্লক চাপো বা "চালাও" দাও, আর নিচের তরঙ্গচিত্রে দেখো প্রতিটি বিট কীভাবে বদলায়।</p>
+  </header>
+  <section class="card">
+    <div class="tabs" id="mode">
+      <button class="tab" data-k="16" aria-selected="true">মড-16 (0–15)</button>
+      <button class="tab" data-k="10" aria-selected="false">দশক (0–9)</button>
+      <button class="tab" data-k="d" aria-selected="false">ডাউন কাউন্টার</button>
+    </div>
+    <div class="ffs" id="ffs"></div>
+    <div class="dec" id="dec"></div>
+    <div class="btns">
+      <button class="btn primary" id="clk">CLK ↑</button>
+      <button class="btn" id="run">▶ চালাও</button>
+      <button class="btn" id="rst" style="flex:none">রিসেট</button>
+    </div>
+    <p class="hint" id="say" aria-live="polite"></p>
+  </section>
+
+  <section class="card">
+    <h2>তরঙ্গচিত্র (Timing Diagram)</h2>
+    <div class="scroll-x"><svg class="wave" id="wave"></svg></div>
+    <p class="hint">খেয়াল করো: Q0 প্রতি ক্লকে উল্টায়। Q1 উল্টায় যখন Q0 1 থেকে 0 হয়। Q2 উল্টায় যখন Q1 1 থেকে 0 হয়… প্রতিটি বিটের কম্পাঙ্ক আগেরটির অর্ধেক। তাই কাউন্টার <b>কম্পাঙ্ক বিভাজক</b> হিসেবেও কাজ করে।</p>
+  </section>
+
+  <section class="card">
+    <h2>সহজ কথায়</h2>
+    <ul class="points">
+      <li>কাউন্টার হলো ফ্লিপ-ফ্লপের সারি, যা ক্লক পালস গোনে।</li>
+      <li>n টি ফ্লিপ-ফ্লপ দিয়ে 0 থেকে 2<sup>n</sup> − 1 পর্যন্ত গোনা যায়। ৪টি দিয়ে 0–15, তাই একে মড-16 কাউন্টার বলে।</li>
+      <li><b>রিপল (অ্যাসিনক্রোনাস) কাউন্টার:</b> প্রথম ফ্লিপ-ফ্লপে ক্লক যায়, বাকিগুলো আগেরটির আউটপুট থেকে ক্লক পায়।</li>
+      <li><b>সিনক্রোনাস কাউন্টার:</b> সব ফ্লিপ-ফ্লপ একসাথে একই ক্লক পায়, তাই দ্রুত।</li>
+      <li><b>দশক কাউন্টার (Decade):</b> 0 থেকে 9 গুনে আবার 0 তে ফেরে (1010 আসামাত্র রিসেট)। ঘড়ি, মিটারে লাগে।</li>
+      <li><b>আপ কাউন্টার</b> বাড়িয়ে গোনে, <b>ডাউন কাউন্টার</b> কমিয়ে গোনে।</li>
+    </ul>
+  </section>
+
+  <section class="card" id="quiz"></section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<script src="../../a/im.js?v=1"></script>
+<script>
+const {$}=IM;
+let M='16', n=0, hist=[0], timer=null;
+const MAXH=20;
+function mod(){return M==='10'?10:16;}
+function render(flipMask){
+  const b=n.toString(2).padStart(4,'0');
+  $('ffs').innerHTML=[...b].map((x,i)=>`<div class="ff"><div class="box ${x==='1'?'on':''} ${flipMask&(1<<(3-i))?'flip':''}">${x}</div><small>Q${3-i}</small></div>`).join('');
+  $('dec').innerHTML=`${b}<sub style="font-size:.5em">2</sub> = ${n} <small>(দশমিক)</small>`;
+  wave();
+}
+function step(){
+  const old=n, m=mod();
+  if(M==='d') n=(n+15)%16; else n=(n+1)%m;
+  hist.push(n); if(hist.length>MAXH) hist.shift();
+  const fl=old^n; const names=[0,1,2,3].filter(k=>fl&(1<<k)).map(k=>'Q'+k);
+  let s=`${old} → ${n}: উল্টালো ${names.join(', ')}।`;
+  if(M==='10'&&old===9) s+=' 9 এর পর 1010 হতে চাইলো, তাই রিসেট হয়ে 0।';
+  if(M==='16'&&old===15) s+=' 15 এর পর আবার 0 থেকে শুরু (ওভারফ্লো)।';
+  $('say').textContent=s;
+  render(fl);
+}
+function wave(){
+  const W=36, X0=34, H=22, gap=14, rowsN=5, w=X0+W*MAXH+6, h=rowsN*(H+gap)+6;
+  let s=`<rect class="now" x="${X0+W*(hist.length-1)}" y="0" width="${W}" height="${h}"/>`;
+  for(let i=0;i<=MAXH;i++) s+=`<line class="grid-l" x1="${X0+W*i}" y1="0" x2="${X0+W*i}" y2="${h}"/>`;
+  const yb=r=>r*(H+gap)+H+4;
+  // clock
+  let d=''; hist.forEach((_,i)=>{const x=X0+W*i; d+=`${i?'L':'M'}${x} ${yb(0)} L${x} ${yb(0)-H} L${x+W/2} ${yb(0)-H} L${x+W/2} ${yb(0)} L${x+W} ${yb(0)}`;});
+  s+=`<text class="wl" x="2" y="${yb(0)-6}">CLK</text><path class="wv clk" d="${d}"/>`;
+  for(let k=0;k<4;k++){
+    const y=yb(k+1); let p='';
+    hist.forEach((v,i)=>{const bit=(v>>k)&1, x=X0+W*i, yy=bit?y-H:y; p+=(i?`L${x} ${yy}`:`M${x} ${yy}`)+` L${x+W} ${yy}`;});
+    s+=`<text class="wl" x="2" y="${y-6}">Q${k}</text><path class="wv" d="${p}"/>`;
+  }
+  hist.forEach((v,i)=>s+=`<text class="wl" x="${X0+W*i+W/2-4}" y="${h}" style="font-size:9px;fill:var(--muted)">${v}</text>`);
+  $('wave').setAttribute('viewBox',`0 0 ${w} ${h+4}`); $('wave').style.minWidth='560px'; $('wave').innerHTML=s;
+}
+$('clk').onclick=step;
+$('run').onclick=()=>{ if(timer){clearInterval(timer);timer=null;$('run').textContent='▶ চালাও';} else {timer=setInterval(step,800);$('run').textContent='⏸ থামাও';} };
+$('rst').onclick=()=>{ n=M==='d'?15:0; hist=[n]; $('say').textContent='রিসেট করা হলো।'; render(0); };
+IM.tabs($('mode'),k=>{M=k; $('rst').click();});
+render(0);
+IM.quiz01;
+const qr=$('quiz');
+qr.innerHTML=`<h2>নিজে চেষ্টা করো</h2><p class="q-ask" id="qa"></p><div class="q-btns" id="qb"></div><p class="feedback" id="qf"></p><div class="q-foot"><span class="score" id="qs">স্কোর: 0/0</span><button class="btn primary" style="flex:none" id="qn">পরের প্রশ্ন</button></div>`;
+let right=0,total=0;
+function newQ(){
+  const t=IM.rnd(0,2); let ask,ans,opts;
+  if(t===0){const v=IM.rnd(0,14);ask=`মড-16 কাউন্টারে এখন ${v.toString(2).padStart(4,'0')}। পরের ক্লকে কত হবে?`;ans=(v+1).toString(2).padStart(4,'0');opts=[ans,(v+2).toString(2).padStart(4,'0'),v.toString(2).padStart(4,'0'),((v+1)^1).toString(2).padStart(4,'0')];}
+  else if(t===1){const k=IM.rnd(2,6);ask=`${k}টি ফ্লিপ-ফ্লপ দিয়ে সর্বোচ্চ কত পর্যন্ত গোনা যায়?`;ans=String(2**k-1);opts=[ans,String(2**k),String(k*2),String(2**(k-1))];}
+  else {ask='দশক কাউন্টার 1001 এর পরের ক্লকে কত হয়?';ans='0000';opts=['0000','1010','1000','1111'];}
+  opts=[...new Set(opts)].sort(()=>Math.random()-.5);
+  $('qa').textContent=ask; $('qf').textContent=''; $('qf').className='feedback';
+  $('qb').innerHTML=opts.map(o=>`<button>${o}</button>`).join('');
+  $('qb').querySelectorAll('button').forEach(b=>b.onclick=()=>{const ok=b.textContent===ans;total++;if(ok)right++;$('qf').className='feedback '+(ok?'ok':'bad');$('qf').textContent=ok?'ঠিক!':'হয়নি। সঠিক উত্তর: '+ans;$('qs').textContent=`স্কোর: ${right}/${total}`;$('qb').querySelectorAll('button').forEach(x=>x.disabled=true);});
+}
+$('qn').onclick=newQ; newQ();
+</script>
+</body>
+</html>

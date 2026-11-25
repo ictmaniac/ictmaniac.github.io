@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>ফ্লিপ-ফ্লপ ও রেজিস্টার ল্যাব · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=1">
+<style>
+.warn{padding:10px 12px;border-radius:10px;background:var(--bad-soft);color:var(--bad);font-weight:600}
+.state{padding:10px 12px;border-radius:10px;background:var(--board);font-weight:600;text-align:center}
+.ffs{display:flex;gap:8px;justify-content:center;align-items:center}
+.ff{display:flex;flex-direction:column;align-items:center;gap:2px}
+.ff .box{width:56px;height:60px;border-radius:12px;border:2.5px solid var(--accent);background:var(--accent-soft);display:grid;place-items:center;font-family:var(--f-mono);font-size:1.7rem;font-weight:800;color:var(--accent);transition:all .3s}
+.ff .box.on{background:var(--signal);border-color:var(--signal);color:#1A1200}
+.ff .box.bump{animation:bump .35s}
+@keyframes bump{50%{transform:translateY(-6px)}}
+.ff small{font-family:var(--f-mono);color:var(--muted);font-size:.8rem}
+.arr{color:var(--muted);font-size:1.2rem}
+.din{display:flex;flex-direction:column;align-items:center;gap:4px}
+.log{font-family:var(--f-mono);font-size:.9rem;display:flex;flex-direction:column;gap:2px;max-height:180px;overflow:auto}
+.log div{padding:2px 8px;border-radius:6px;background:var(--board)}
+.clk{font:inherit;font-weight:800;min-height:56px;border-radius:12px;border:2px solid var(--accent);background:var(--accent);color:var(--panel);cursor:pointer;padding:0 18px}
+.clk:active{transform:translateY(2px)}
+.dq{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৩ · ৩.২.১১ ফ্লিপ-ফ্লপ ও রেজিস্টার</span>
+    <h1>ফ্লিপ-ফ্লপ: যে সার্কিট মনে রাখে</h1>
+    <p class="lead">সাধারণ গেটের আউটপুট শুধু এখনকার ইনপুটের উপর নির্ভর করে। ফ্লিপ-ফ্লপ আগের অবস্থাও মনে রাখে, তাই এটি ১ বিটের মেমোরি।</p>
+  </header>
+  <div class="tabs" id="tabs">
+    <button class="tab" data-k="sr" aria-selected="true">SR ল্যাচ</button>
+    <button class="tab" data-k="d" aria-selected="false">D ফ্লিপ-ফ্লপ</button>
+    <button class="tab" data-k="reg" aria-selected="false">রেজিস্টার</button>
+  </div>
+
+  <section class="card" id="p-sr">
+    <h2>NOR গেট দিয়ে SR ল্যাচ</h2>
+    <p class="hint">দুটি NOR গেটের আউটপুট একে অপরের ইনপুটে ফিরে যায় (ফিডব্যাক)। এই কারণেই সার্কিটটি মনে রাখতে পারে।</p>
+    <div class="stage" style="border:none;padding:0"><svg id="csr"></svg></div>
+    <div class="controls" id="tgsr"></div>
+    <p class="state" id="srs" aria-live="polite"></p>
+    <div class="scroll-x"><table>
+      <tr><th>S</th><th>R</th><th>Q</th><th>অবস্থা</th></tr>
+      <tr><td>0</td><td>0</td><td>আগের মান</td><td style="font-family:var(--f-body)">মনে রাখে (Hold)</td></tr>
+      <tr><td>1</td><td>0</td><td>1</td><td style="font-family:var(--f-body)">সেট (Set)</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td style="font-family:var(--f-body)">রিসেট (Reset)</td></tr>
+      <tr><td>1</td><td>1</td><td>?</td><td style="font-family:var(--f-body)">অবৈধ (Invalid)</td></tr>
+    </table></div>
+    <p class="hint">পরীক্ষা করো: S = 1 করো (Q = 1 হবে), তারপর S আবার 0 করো। Q কিন্তু 1-ই থাকবে! এটাই মেমোরি।</p>
+  </section>
+
+  <section class="card" id="p-d" hidden>
+    <h2>D ফ্লিপ-ফ্লপ</h2>
+    <p class="hint">D (Data) তে যা থাকে, <b>ক্লক পালস এলে তবেই</b> সেটা Q তে যায়। ক্লক না এলে D বদলালেও Q বদলায় না। SR এর অবৈধ অবস্থার সমস্যা এখানে নেই।</p>
+    <div class="dq">
+      <button class="toggle" id="dD" aria-pressed="false" style="min-width:130px"><span class="name">D</span><span class="val">0</span></button>
+      <button class="clk" id="dClk">CLK ↑</button>
+      <div class="ff"><div class="box" id="dQ">0</div><small>Q</small></div>
+      <div class="ff"><div class="box on" id="dQn">1</div><small>Q'</small></div>
+    </div>
+    <div class="log" id="dLog"></div>
+  </section>
+
+  <section class="card" id="p-reg" hidden>
+    <h2>৪ বিটের শিফট রেজিস্টার</h2>
+    <p class="hint">রেজিস্টার হলো কয়েকটি ফ্লিপ-ফ্লপের সারি, যা একসাথে কয়েক বিট ডেটা রাখে। প্রতি ক্লকে সব বিট এক ঘর ডানে সরে, আর বাঁ দিক দিয়ে নতুন বিট ঢোকে।</p>
+    <div class="ffs" id="regv"></div>
+    <div class="btns">
+      <button class="toggle" id="rIn" aria-pressed="true" style="flex:1"><span class="name">ইনপুট বিট</span><span class="val">1</span></button>
+      <button class="clk" id="rClk" style="flex:1">CLK ↑ (সরাও)</button>
+    </div>
+    <h3>প্যারালাল লোড</h3>
+    <div class="row" style="align-items:center">
+      <div class="bits" id="pl"></div>
+      <button class="btn" id="load" style="flex:1">একসাথে লোড করো</button>
+      <button class="btn" id="rclr" style="flex:none">0</button>
+    </div>
+    <div class="log" id="rLog"></div>
+  </section>
+
+  <section class="card">
+    <h2>সহজ কথায়</h2>
+    <ul class="points">
+      <li><b>ফ্লিপ-ফ্লপ:</b> দুটি স্থির অবস্থা (0 বা 1) এর যেকোনো একটিতে থাকতে পারে, নতুন ইনপুট না আসা পর্যন্ত। তাই এটি ১ বিট মেমোরি।</li>
+      <li>Q আর Q' সবসময় একে অপরের উল্টো থাকার কথা।</li>
+      <li>প্রকারভেদ: RS, D, JK, T ফ্লিপ-ফ্লপ।</li>
+      <li><b>রেজিস্টার:</b> n বিট রাখতে n টি ফ্লিপ-ফ্লপ লাগে। প্রসেসরের ভেতরের অস্থায়ী মেমোরি।</li>
+      <li><b>শিফট রেজিস্টার:</b> প্রতি ক্লকে বিটগুলো পাশের ঘরে সরে যায়।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<script src="../../a/im.js?v=1"></script>
+<script>
+const {$}=IM;
+// SR latch
+const ss={S:0,R:0};
+const csr=IM.circuit($('csr'),{vb:[400,220],st:ss,onChange:rsr,init:{n1:0,n2:1},
+  inputs:[{id:'R',x:4,y:40},{id:'S',x:4,y:180}],
+  gates:[{id:'n1',t:'NOR',x:170,y:30,in:['R',{s:'n2',p:[[272,172],[272,124],[156,98],[156,59.33]]}],mx:[140]},
+         {id:'n2',t:'NOR',x:170,y:150,in:[{s:'n1',p:[[258,52],[258,104],[148,128],[148,164.67]]},'S'],mx:[0,140]}],
+  outputs:[{id:'Q',s:'n1',x:355,y:52},{id:'Qn',s:'n2',x:355,y:172,lbl:"Q'"}]});
+const tsr=IM.toggles($('tgsr'),['S','R'],ss,rsr,n=>n==='S'?'S (সেট)':'R (রিসেট)');
+function rsr(){ const v=csr.render(); tsr();
+  let m;
+  if(ss.S&&ss.R) m=`<span class="warn" style="display:block">S = R = 1: Q আর Q' দুটোই 0! এটা অবৈধ অবস্থা, তাই ব্যবহার নিষেধ।</span>`;
+  else if(ss.S) m=`সেট: Q = 1`; else if(ss.R) m=`রিসেট: Q = 0`; else m=`S = R = 0: আগের মান ধরে রেখেছে, Q = ${v.n1}`;
+  $('srs').innerHTML=m; }
+rsr();
+// D flip-flop
+let D=0,Q=0,clk=0;
+const dlog=[];
+function rd(){ $('dD').setAttribute('aria-pressed',!!D); $('dD').querySelector('.val').textContent=D;
+  $('dQ').textContent=Q; $('dQ').classList.toggle('on',!!Q); $('dQn').textContent=1-Q; $('dQn').classList.toggle('on',!Q);
+  $('dLog').innerHTML=dlog.slice(-8).reverse().map(x=>`<div>${x}</div>`).join(''); }
+$('dD').onclick=()=>{D^=1; dlog.push(`D = ${D} করা হলো → Q বদলায়নি (${Q}), ক্লকের অপেক্ষায়`); rd();};
+$('dClk').onclick=()=>{clk++; const old=Q; Q=D; dlog.push(`ক্লক ${clk}: D = ${D} → Q = ${Q}${old!==Q?' (বদলালো)':''}`); $('dQ').classList.add('bump'); setTimeout(()=>$('dQ').classList.remove('bump'),360); rd();};
+rd();
+// shift register
+let R=[0,0,0,0], rin=1, PL=[1,0,1,1], rc=0; const rlog=[];
+function rr(bump){
+  $('regv').innerHTML=`<div class="din"><small class="hint">ইনপুট</small><div class="ff"><div class="box ${rin?'on':''}" style="width:40px;height:44px;font-size:1.2rem">${rin}</div></div></div><span class="arr">→</span>`+
+    R.map((b,i)=>`<div class="ff"><div class="box ${b?'on':''} ${bump?'bump':''}">${b}</div><small>Q${3-i}</small></div>${i<3?'<span class="arr">→</span>':''}`).join('');
+  $('rIn').setAttribute('aria-pressed',!!rin); $('rIn').querySelector('.val').textContent=rin;
+  $('pl').innerHTML=PL.map((b,i)=>`<button class="bitc ${b?'on':''}" data-i="${i}">${b}</button>`).join('');
+  $('pl').querySelectorAll('button').forEach(b=>b.onclick=()=>{PL[+b.dataset.i]^=1;rr();});
+  $('rLog').innerHTML=rlog.slice(-8).reverse().map(x=>`<div>${x}</div>`).join('');
+}
+$('rIn').onclick=()=>{rin^=1;rr();};
+$('rClk').onclick=()=>{rc++; const out=R[3]; R=[rin,...R.slice(0,3)]; rlog.push(`ক্লক ${rc}: ${rin} ঢুকলো, ${out} বেরিয়ে গেল → ${R.join('')}`); rr(true);};
+$('load').onclick=()=>{R=[...PL]; rlog.push(`প্যারালাল লোড: ${R.join('')} (৪টি বিট একসাথে)`); rr(true);};
+$('rclr').onclick=()=>{R=[0,0,0,0]; rlog.push('সব মুছে 0000'); rr();};
+rr();
+IM.tabs($('tabs'),k=>{['sr','d','reg'].forEach(x=>$('p-'+x).hidden=x!==k);});
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>এনকোডার ও ডিকোডার ল্যাব · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=1">
+<style>
+.keys{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.key{font:inherit;font-family:var(--f-mono);font-weight:700;font-size:1.05rem;min-height:52px;border-radius:12px;border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.key[aria-pressed="true"]{background:var(--signal);border-color:var(--signal);color:#1A1200}
+.leds{display:grid;grid-template-columns:repeat(8,1fr);gap:2px}
+.led{display:flex;flex-direction:column;align-items:center;gap:2px;font-family:var(--f-mono);font-size:.8rem;color:var(--muted);min-width:0}
+.led i{width:26px;height:26px;border-radius:50%;background:var(--panel);border:2.5px solid var(--wire-off);transition:all .25s}
+.led.on i{background:var(--signal);border-color:var(--signal);box-shadow:0 0 0 6px color-mix(in srgb,var(--signal) 30%,transparent)}
+.led b{font-size:1rem;color:var(--ink)}
+.eqs{display:flex;flex-direction:column;gap:6px;font-family:var(--f-mono);font-size:1rem}
+.eqs div{padding:6px 10px;border-radius:8px;background:var(--board);word-break:break-word}
+.eqs .t.on{color:var(--signal);font-weight:800}
+.eqs .r{float:right;font-weight:800}
+.outbits{display:flex;gap:10px;justify-content:center}
+.ob{display:flex;flex-direction:column;align-items:center;font-family:var(--f-mono)}
+.ob span{width:52px;height:56px;border-radius:12px;display:grid;place-items:center;font-size:1.7rem;font-weight:800;background:var(--board);color:var(--muted);transition:all .25s}
+.ob.on span{background:var(--signal);color:#1A1200}
+.ob small{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৩ · ৩.২.৮–৩.২.৯ এনকোডার ও ডিকোডার</span>
+    <h1>এনকোডার ও ডিকোডার</h1>
+    <p class="lead">ডিকোডার বাইনারি কোড পড়ে ঠিক একটি লাইন জ্বালায়। এনকোডার উল্টো কাজ করে: একটি বোতাম চাপলে তার বাইনারি কোড বানায়।</p>
+  </header>
+  <div class="tabs" id="tabs">
+    <button class="tab" data-k="dec" aria-selected="true">ডিকোডার</button>
+    <button class="tab" data-k="enc" aria-selected="false">এনকোডার</button>
+  </div>
+
+  <div id="p-dec">
+    <section class="card">
+      <h2>২ থেকে ৪ লাইন ডিকোডার</h2>
+      <p class="hint">n টি ইনপুট থাকলে 2<sup>n</sup> টি আউটপুট। প্রতি মুহূর্তে শুধু একটি আউটপুট 1 হয়।</p>
+      <div class="stage" style="border:none;padding:0"><svg id="c1"></svg></div>
+      <div class="controls" id="tg1"></div>
+      <div class="scroll-x"><table id="tt1"></table></div>
+    </section>
+    <section class="card">
+      <h2>৩ থেকে ৮ লাইন ডিকোডার</h2>
+      <div class="controls" id="tg3"></div>
+      <div class="leds" id="leds3"></div>
+      <p class="readout expr" id="r3" style="font-size:1.05rem"></p>
+      <p class="hint">প্রতিটি আউটপুট একটি AND গেট দিয়ে তৈরি। যেমন D5 = A·B'·C (কারণ 5 = 101)।</p>
+    </section>
+  </div>
+
+  <div id="p-enc" hidden>
+    <section class="card">
+      <div class="tabs" id="etabs">
+        <button class="tab" data-k="8" aria-selected="true">৮ থেকে ৩ (অক্টাল → বাইনারি)</button>
+        <button class="tab" data-k="10" aria-selected="false">দশমিক → BCD</button>
+      </div>
+      <p class="hint" id="ehint"></p>
+      <div class="keys" id="keys"></div>
+      <div class="outbits" id="obits"></div>
+      <div class="eqs" id="eqs"></div>
+      <p class="hint">এনকোডার শুধু OR গেট দিয়ে তৈরি। যে আউটপুট বিটে যে ইনপুটগুলোর বাইনারিতে 1 আছে, সেগুলো ওই OR গেটে যায়।</p>
+    </section>
+  </div>
+
+  <section class="card">
+    <h2>কোথায় লাগে?</h2>
+    <ul class="points">
+      <li><b>ডিকোডার:</b> মেমোরির ঠিকানা থেকে নির্দিষ্ট ঘর বাছাই, সেভেন-সেগমেন্ট ডিসপ্লে চালানো।</li>
+      <li><b>এনকোডার:</b> কীবোর্ডে চাপা বোতামকে বাইনারি কোডে রূপান্তর।</li>
+      <li>এনকোডারে 2<sup>n</sup> (বা কম) ইনপুট আর n টি আউটপুট। ডিকোডারে ঠিক উল্টো।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<script src="../../a/im.js?v=1"></script>
+<script>
+const {$}=IM;
+// 2-to-4 decoder
+const s1={A:0,B:0};
+const c1=IM.circuit($('c1'),{vb:[400,290],st:s1,onChange:r1,
+  inputs:[{id:'A',x:4,y:24},{id:'B',x:4,y:64}],
+  gates:[{id:'na',t:'NOT',x:70,y:178,in:['A'],mx:[54]},{id:'nb',t:'NOT',x:70,y:232,in:['B'],mx:[62]},
+    {id:'d0',t:'AND',x:250,y:8,in:['na','nb'],mx:[170,210],lbl:"A'B'"},
+    {id:'d1',t:'AND',x:250,y:76,in:['na','B'],mx:[170,190],lbl:"A'B"},
+    {id:'d2',t:'AND',x:250,y:144,in:['A','nb'],mx:[150,210],lbl:"AB'"},
+    {id:'d3',t:'AND',x:250,y:212,in:['A','B'],mx:[150,190],lbl:'AB'}],
+  outputs:[{id:'D0',s:'d0',x:345,y:30},{id:'D1',s:'d1',x:345,y:98},{id:'D2',s:'d2',x:345,y:166},{id:'D3',s:'d3',x:345,y:234}],
+  dots:[[54,24,'A'],[150,24,'A'],[62,64,'B'],[190,64,'B'],[170,200,'na'],[210,254,'nb']],
+  extra:'<text class="lbl sm" x="140" y="284">A</text><text class="lbl sm" x="160" y="284">A\'</text><text class="lbl sm" x="183" y="284">B</text><text class="lbl sm" x="200" y="284">B\'</text>'});
+const t1=IM.toggles($('tg1'),['A','B'],s1,r1);
+const tt1=IM.tt($('tt1'),['A','B'],[0,1,2,3].map(i=>({h:'D'+i,f:e=>(e.A*2+e.B)===i?1:0})),s1,r1);
+function r1(){c1.render();t1();tt1();}
+r1();
+// 3-to-8
+const s3={A:0,B:0,C:0};
+const t3=IM.toggles($('tg3'),['A','B','C'],s3,r3);
+function r3(){ t3(); const n=s3.A*4+s3.B*2+s3.C;
+  $('leds3').innerHTML=[...Array(8)].map((_,i)=>`<div class="led ${i===n?'on':''}"><i></i><b>D${i}</b></div>`).join('');
+  $('r3').innerHTML=`ABC = ${s3.A}${s3.B}${s3.C} = ${n} → শুধু <span class="v">D${n}</span> জ্বলছে = ${['A','B','C'].map(v=>v+(s3[v]?'':"'")).join('·')}`; }
+r3();
+// encoder
+let E=8, pressed=3;
+function enc(){
+  const nb=E===8?3:4, names=E===8?['A2','A1','A0']:['A','B','C','D'];
+  $('ehint').innerHTML=E===8?'৮টি ইনপুট (D0–D7), ৩টি আউটপুট। যেকোনো একটি বোতাম চাপো।':'১০টি ইনপুট (0–9), ৪টি আউটপুট (BCD 8421)। যেকোনো একটি বোতাম চাপো।';
+  $('keys').innerHTML=[...Array(E)].map((_,i)=>`<button class="key" data-i="${i}" aria-pressed="${i===pressed}">${E===8?'D'+i:i}</button>`).join('');
+  $('keys').querySelectorAll('.key').forEach(k=>k.onclick=()=>{pressed=+k.dataset.i;enc();});
+  const bits=pressed.toString(2).padStart(nb,'0');
+  $('obits').innerHTML=[...bits].map((b,i)=>`<div class="ob ${b==='1'?'on':''}"><span>${b}</span><small>${names[i]}</small></div>`).join('');
+  $('eqs').innerHTML=names.map((nm,i)=>{const w=1<<(nb-1-i); const terms=[...Array(E)].map((_,k)=>k).filter(k=>k&w);
+    return `<div>${nm} = ${terms.map(k=>`<span class="t ${k===pressed?'on':''}">D${k}</span>`).join(' + ')}<span class="r">${bits[i]}</span></div>`;}).join('');
+}
+IM.tabs($('etabs'),k=>{E=+k;pressed=Math.min(pressed,E-1);enc();});
+IM.tabs($('tabs'),k=>{$('p-dec').hidden=k!=='dec';$('p-enc').hidden=k!=='enc';});
+enc();
+</script>
+</body>
+</html>
