@@ -1,4 +1,5 @@
 ---
+story: 1
 title: XOR ও XNOR ল্যাব
 eyebrow: ৩.২.৭ XOR ও XNOR গেট
 h1: XOR ও XNOR গেট
@@ -10,6 +11,8 @@ lead: XOR বলে "দুটো আলাদা হলে 1", XNOR বলে "
 .lab-bg{fill:var(--panel);opacity:0;transition:opacity .4s}
 .lab-bg.show{opacity:.9;animation:none}
 </style>
+  <section class="card" id="main"><h2>XOR আর XNOR, পাশাপাশি</h2><div id="st"></div></section>
+  <h2 class="labh">🧪 এবার নিজে চেষ্টা করো</h2>
   <div class="tabs" id="tabs">
     <button class="tab m" data-k="XOR" aria-selected="true">XOR</button>
     <button class="tab m" data-k="XNOR" aria-selected="false">XNOR</button>
@@ -121,17 +124,29 @@ const q=IM.quiz01($('quiz'),()=>{const a=IM.rnd(0,1),b=IM.rnd(0,1),y=G==='XOR'?a
 main(); pload(0);
 
 IM.mcq(document.getElementById('mcq3'),[{"q": "XOR গেটের আউটপুট 1 হয় যখন—", "o": ["দুটো ইনপুট একই", "দুটো ইনপুট আলাদা", "দুটোই 1", "দুটোই 0"], "a": 1, "w": "আলাদা হলে 1।"}, {"q": "A ⊕ B = ?", "o": ["AB + A'B'", "A'B + AB'", "A + B", "(AB)'"], "a": 1, "w": "XOR এর SOP রূপ।"}, {"q": "XNOR কে বলে—", "o": ["সমতা যাচাইকারী গেট", "সার্বজনীন গেট", "অ্যাডার", "মেমোরি"], "a": 0, "w": "একই হলে 1।"}, {"q": "A ⊕ A = ?", "o": ["A", "1", "0", "A'"], "a": 2, "w": "একই, তাই 0।"}]);
-/*TOUR*/{const T=IM.T;
-IM.tour([
- {m:'<b>XOR</b> গেটের নিয়ম: দুটো ইনপুট <b>আলাদা</b> হলে আউটপুট 1, <b>একই</b> হলে 0।',do(){T.tab('XOR');T.tog('#tg','A',0);T.tog('#tg','B',0);}},
- {m:'A = 0, B = 0: দুটোই একই, তাই Y = <b>0</b>।',el:'#g1',do(){T.tab('XOR');T.tog('#tg','A',0);T.tog('#tg','B',0);}},
- {m:'A = 1, B = 0: এবার দুটো আলাদা, তাই Y = <b>1</b>। বাল্ব জ্বলে উঠলো।',el:'#g1',do(){T.tab('XOR');T.tog('#tg','A',1);T.tog('#tg','B',0);}},
- {m:'A = 1, B = 1: দুটোই একই, তাই Y = <b>0</b>। OR গেট হলে এখানে 1 হতো, এটাই XOR এর আসল পার্থক্য।',el:'#g1',do(){T.tab('XOR');T.tog('#tg','A',1);T.tog('#tg','B',1);}},
- {m:'সত্যক সারণিতে দেখো: শুধু <b>01</b> আর <b>10</b> সারিতে Y = 1।',el:'#tt',do(){T.tab('XOR');}},
- {m:'মৌলিক গেট দিয়ে XOR বানানো যায়: <b>Y = A\'B + AB\'</b>। সুইচ চেপে ভিতরের গেটগুলোর মান দেখো।',el:'#g2',do(){T.tab('XOR');}},
- {m:'<b>XNOR</b> ঠিক উল্টো: দুটো ইনপুট <b>একই</b> হলে আউটপুট 1। Y = (A ⊕ B)\'।',el:'#g1',do(){T.tab('XNOR');T.tog('#tg','A',1);T.tog('#tg','B',1);}},
- {m:'XNOR এ A = 0, B = 1: আলাদা, তাই Y = <b>0</b>। XNOR কে <b>সমতা যাচাইকারী</b> গেটও বলে।',el:'#g1',do(){T.tab('XNOR');T.tog('#tg','A',0);T.tog('#tg','B',1);}},
- {m:'সার্কিট দেখে সমীকরণ লেখার নিয়ম: বাঁ থেকে ডানে প্রতিটি গেটের আউটপুট আলাদা করে লেখো।',el:'#g3',do(){T.click('#pchips .chip');T.click('#pall');}}
-]);
+/*TOUR*/{const S=IM.S;
+const K=IM.CK,G1=K.gate('XOR',100,226,'X',1,{id:'g1'}),G2=K.gate('XNOR',240,226,'XN',1,{id:'g2'});
+const svg=`<svg viewBox="0 0 340 470"><g class="root">
+${K.w('A',0,[[90,78],[90,160]])}${K.w('B',0,[[250,78],[250,185]])}
+${K.w('A',1,[[90,160],[G1.i[0][0],160],G1.i[0]])}${K.w('A',1,[[90,160],[G2.i[0][0],160],G2.i[0]])}
+${K.w('B',1,[[250,185],[G1.i[1][0],185],G1.i[1]])}${K.w('B',1,[[250,185],[G2.i[1][0],185],G2.i[1]])}
+${K.w('X',2,[G1.o,[100,354]])}${K.w('XN',2,[G2.o,[240,354]])}
+${K.jn('A',90,160)}${K.jn('B',250,185)}${K.sw('A',90,30)}${K.sw('B',250,30)}${G1.s}${G2.s}
+<text class="sub" x="100" y="208">আলাদা হলে 1</text><text class="sub" x="240" y="208">একই হলে 1</text>
+${K.lamp('X',100,376,'A ⊕ B')}${K.lamp('XN',240,376,'A ⊙ B')}</g></svg>`;
+const Z1=[30,140,150,300],Z2=[170,140,150,300];
+IM.cstory(document.getElementById('st'),{svg,inputs:['A','B'],calc:v=>({A:v.A,B:v.B,X:v.A^v.B,XN:(v.A^v.B)?0:1}),
+ table:{cols:['A','B','XOR','XNOR'],rows:[[0,0],[0,1],[1,0],[1,1]]},flow:['ইনপুট','XOR','XNOR','সারণি'],
+ info:{XOR:{t:'XOR গেট',d:'ইনপুট দুটি <b>আলাদা</b> হলে 1। Y = A ⊕ B = A·B̅ + A̅·B'},XNOR:{t:'XNOR গেট',d:'ইনপুট দুটি <b>একই</b> হলে 1। XOR এর উল্টো। Y = A ⊙ B'},sw:{t:'সুইচ',d:'চাপ দিলে 0 আর 1 বদলায়।'}},
+ onTry:(v,o)=>`A = ${v.A}, B = ${v.B} → XOR = <b>${o.X}</b>, XNOR = <b>${o.XN}</b> (${v.A===v.B?'একই':'আলাদা'})`,
+ frames:[
+ {m:'দুই গেট পাশাপাশি: <b>XOR</b> আর <b>XNOR</b>। দুটোই একই ইনপুট A, B পায়।',v:{A:0,B:0},cam:'full',f:0},
+ {m:'<b>A = 0, B = 0</b>: ইনপুট <b>একই</b>। তাই XNOR জ্বলে।',v:{A:0,B:0},cam:Z2,f:3,fill:[0],row:0,focus:'#g2'},
+ {m:'<b>A = 0, B = 1</b>: ইনপুট <b>আলাদা</b>। তাই <b>XOR</b> জ্বলে।',v:{A:0,B:1},cam:Z1,f:2,fill:[0,1],row:1,focus:'#g1'},
+ {m:'<b>A = 1, B = 0</b>: আবার আলাদা, XOR = 1।',v:{A:1,B:0},cam:'full',f:2,fill:[0,1,2],row:2},
+ {m:'<b>A = 1, B = 1</b>: একই! XOR = 0, <b>XNOR = 1</b>।',v:{A:1,B:1},cam:Z2,f:3,fill:[0,1,2,3],row:3,focus:'#g2'},
+ {m:'সারণি দেখো: XNOR সবসময় <b>XOR এর উল্টো</b>।',v:{A:1,B:1},cam:'full',f:4,fill:[0,1,2,3]},
+ {m:'সূত্র: <b>A ⊕ B = A·B̅ + A̅·B</b>। এবার নিজে সুইচে চাপ দাও।',v:{A:0,B:1},cam:'full',f:4,fill:[0,1,2,3],row:1}
+]});
 }/*ENDTOUR*/
 </script>

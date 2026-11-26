@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=11">
+<link rel="stylesheet" href="../../a/im.css?v=12">
 <style>
 .cols{display:flex;gap:6px;justify-content:center}
 .col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1 1 0;max-width:72px;min-width:0}
@@ -32,6 +32,8 @@
     <h1>অঙ্কের দাম, ঘরের দাম</h1>
     <p class="lead">একই অঙ্ক কোন ঘরে বসেছে তার উপর তার মান বদলায়। ▲ ▼ চেপে বা "+1 গোনো" চেপে দেখো।</p>
   </header>
+  <section class="card" id="main"><h2>ধাপে ধাপে বুঝি</h2><div id="st"></div></section>
+  <h2 class="labh">🧪 এবার নিজে চেষ্টা করো</h2>
   <div class="tabs" id="bases">
     <button class="tab" data-k="10" aria-selected="true">দশমিক<br>(10)</button>
     <button class="tab" data-k="2" aria-selected="false">বাইনারি<br>(2)</button>
@@ -83,7 +85,8 @@
   </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=11"></script>
+<script src="../../a/im.js?v=12"></script>
+<script src="../../a/imstory.js?v=12"></script>
 <script>
 const {$}=IM; const DIG='0123456789ABCDEF';
 let B=10, N=5, d=[], timer=null;
@@ -135,17 +138,24 @@ $('qn').onclick=newQ; newQ();
 setBase(10);
 
 IM.mcq(document.getElementById('mcq3'),[{"q": "বাইনারি পদ্ধতির ভিত্তি—", "o": ["2", "8", "10", "16"], "a": 0, "w": "অঙ্ক শুধু 0 ও 1।"}, {"q": "হেক্সাডেসিমালে F এর মান—", "o": ["14", "15", "16", "10"], "a": 1, "w": "A=10 … F=15।"}, {"q": "(505)₁₀ এ বাম দিকের 5 এর স্থানীয় মান—", "o": ["5", "50", "500", "5000"], "a": 2, "w": "5 × 10² = 500।"}, {"q": "অক্টালে ব্যবহৃত অঙ্ক—", "o": ["0–7", "0–8", "1–8", "0–9"], "a": 0, "w": "ভিত্তি 8, তাই 0 থেকে 7।"}]);
-/*TOUR*/{const T=IM.T;
-IM.tour([
- {m:'একই অঙ্ক কোন <b>ঘরে</b> বসেছে, তার উপর তার মান নির্ভর করে। এটাকে <b>স্থানীয় মান</b> বলে।',do(){T.tab('10','#bases');}},
- {m:'দশমিকে 505: বাম দিকের 5 এর মান 5×10² = <b>500</b>, ডানের 5 এর মান মাত্র <b>5</b>।',el:'#cols',do(){T.tab('10','#bases');}},
- {m:'প্রতিটি ঘরের মান = অঙ্ক × ভিত্তি<sup>ঘর</sup>। সব যোগ করলে সংখ্যার মান।',el:'#sum',do(){T.tab('10','#bases');}},
- {m:'বাইনারিতে ভিত্তি <b>2</b>, অঙ্ক শুধু 0 আর 1। ঘরের মান 1, 2, 4, 8, 16…',el:'#cols',do(){T.tab('2','#bases');}},
- {m:'+1 গুনলাম: শেষ ঘরে 1 এর বেশি হতে পারে না, তাই 0 হয়ে পাশের ঘরে <b>হাতে ১</b> যায়।',el:'#cols',do(){T.tab('2','#bases');T.click('#inc');}},
- {m:'অক্টালে ভিত্তি <b>8</b>, অঙ্ক 0–7। ঘরের মান 1, 8, 64…',el:'#cols',do(){T.tab('8','#bases');}},
- {m:'হেক্সাডেসিমালে ভিত্তি <b>16</b>, অঙ্ক 0–9 আর A–F (A = 10 … F = 15)।',el:'#cols',do(){T.tab('16','#bases');}},
- {m:'নিজে চেষ্টা করো: ▲ ▼ চেপে অঙ্ক বদলাও, মান কীভাবে বদলায় দেখো।',el:'#num'}
-]);
+/*TOUR*/{const S=IM.S;
+const C=(t,l,c,id)=>S.col(t,l,c,id);
+const D505=(c1,c2,c3,lab)=>S.row(C('5',lab?'১০০':undefined,c1,'d2'),C('0',lab?'১০':undefined,c2,'d1'),C('5',lab?'১':undefined,c3,'d0'));
+IM.story(document.getElementById('st'),[
+ {f:1,m:'এই সংখ্যাটা দেখো: <b>505</b>। এখানে দুইটা <b>5</b> আছে।',h:D505('','w','')+S.cap('দুইটা 5 এর দাম কি একই?','q')},
+ {f:1,m:'প্রতিটা ঘরের একটা <b>দাম</b> আছে। ডান থেকে: ১, ১০, ১০০।',h:D505('w','w','w',1)+S.cap('ঘরের দাম = <b>স্থানীয় মান</b>','q')},
+ {f:2,m:'বাঁয়ের <b>5</b> বসেছে ১০০ এর ঘরে। তাই তার মান <b>৫ × ১০০ = ৫০০</b>।',h:D505('y','w','w',1)+S.eq('5 × 100 = <span class="y">500</span>','e2')},
+ {f:2,m:'ডানের <b>5</b> বসেছে ১ এর ঘরে। তার মান মাত্র <b>৫</b>।',h:D505('g','w','y',1)+S.eq('5 × 100 = <span class="g">500</span>','e2','sm')+S.eq('5 × 1 = <span class="y">5</span>','e0')},
+ {f:2,m:'একই অঙ্ক, কিন্তু <b>ঘর আলাদা হলে মান আলাদা</b>।',h:D505('g','w','g',1)+S.eq('500 + 0 + 5','e2')+S.eq('= 505','e9','big g')},
+ {f:3,m:'নিয়ম: <b>অঙ্ক × ভিত্তি<sup>ঘর</sup></b>। দশমিকের ভিত্তি ১০।',h:S.row(C('5','10²','','d2'),C('0','10¹','w','d1'),C('5','10⁰','','d0'))+S.eq('মান = অঙ্ক × ভিত্তি<sup>ঘর</sup>','e2','sm y')},
+ {f:3,m:'<b>বাইনারি</b>তে ভিত্তি <b>২</b>। অঙ্ক শুধু 0 আর 1।',h:S.row(C('1','2³','','b3'),C('0','2²','w','b2'),C('1','2¹','','b1'),C('1','2⁰','','b0'))+S.tag('ভিত্তি = 2','','t')},
+ {f:3,m:'বাইনারির ঘরের দাম: <b>৮, ৪, ২, ১</b> (প্রতিবার দ্বিগুণ)।',h:S.row(C('1','8','','b3'),C('0','4','w','b2'),C('1','2','','b1'),C('1','1','','b0'))+S.tag('ঘরের দাম দ্বিগুণ হয়','','t')},
+ {f:4,m:'যেখানে <b>1</b> আছে, শুধু সেই ঘরের দাম যোগ করো।',h:S.row(C('1','8','y','b3'),C('0','4','w','b2'),C('1','2','y','b1'),C('1','1','y','b0'))+S.eq('8 + 2 + 1','e2')},
+ {f:4,m:'তাই <b>1011₂ = 11₁₀</b>।',h:S.row(C('1','8','g','b3'),C('0','4','w','b2'),C('1','2','g','b1'),C('1','1','g','b0'))+S.eq('8 + 2 + 1','e2','sm')+S.eq('= 11<sub>10</sub>','e9','big g')},
+ {f:5,m:'<b>অক্টাল</b>: ভিত্তি ৮, অঙ্ক 0 থেকে 7। ঘরের দাম ৬৪, ৮, ১।',h:S.row(C('1','64','','o2'),C('5','8','','o1'),C('7','1','','o0'))+S.eq('64 + 40 + 7 = <span class="g">111</span>','e2','sm')},
+ {f:5,m:'<b>হেক্সাডেসিমাল</b>: ভিত্তি ১৬। ১০ থেকে ১৫ এর জন্য <b>A–F</b>।',h:S.row(C('2','16','','h1'),C('F','1','y','h0'))+S.cap('<b>F = 15</b> (A=10, B=11 … F=15)','c')+S.eq('2×16 + 15 = <span class="g">47</span>','e2','sm')},
+ {f:5,m:'সব পদ্ধতিতে একই নিয়ম। শুধু <b>ভিত্তি</b> আলাদা।',h:S.eq('বাইনারি <span class="b">2</span> · অক্টাল <span class="b">8</span>','e1','sm')+S.eq('দশমিক <span class="b">10</span> · হেক্সা <span class="b">16</span>','e3','sm')+S.eq('মান = অঙ্ক × ভিত্তি<sup>ঘর</sup>','e2','y')}
+],{flow:['ঘর','মান','নিয়ম','বাইনারি','অন্যগুলো']});
 }/*ENDTOUR*/
 </script>
 </body>

@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=11">
+<link rel="stylesheet" href="../../a/im.css?v=12">
 <style>
 .ffs{display:flex;gap:8px;justify-content:center;align-items:flex-end}
 .ff{display:flex;flex-direction:column;align-items:center;gap:2px}
@@ -35,6 +35,8 @@ svg.wave{width:100%;height:auto;display:block}
     <h1>কাউন্টার: ক্লক গোনার সার্কিট</h1>
     <p class="lead">প্রতিটি ক্লক পালসে কাউন্টারের মান এক করে বাড়ে। ক্লক চাপো বা "চালাও" দাও, আর নিচের তরঙ্গচিত্রে দেখো প্রতিটি বিট কীভাবে বদলায়।</p>
   </header>
+  <section class="card" id="main"><h2>কাউন্টার গোনে কীভাবে</h2><div id="st"></div></section>
+  <h2 class="labh">🧪 এবার নিজে চেষ্টা করো</h2>
   <section class="card">
     <div class="tabs" id="mode">
       <button class="tab" data-k="16" aria-selected="true">মড-16 (0–15)</button>
@@ -76,7 +78,8 @@ svg.wave{width:100%;height:auto;display:block}
   </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=11"></script>
+<script src="../../a/im.js?v=12"></script>
+<script src="../../a/imstory.js?v=12"></script>
 <script>
 const {$}=IM;
 let M='16', n=0, hist=[0], timer=null;
@@ -137,17 +140,19 @@ function newQ(){
 $('qn').onclick=newQ; newQ();
 
 IM.mcq(document.getElementById('mcq3'),[{"q": "৪টি ফ্লিপ-ফ্লপের কাউন্টার কয়টি অবস্থা গুনতে পারে?", "o": ["৪", "৮", "১৬", "১০"], "a": 2, "w": "2⁴ = 16।"}, {"q": "ডিকেড কাউন্টার 9 এর পরে যায়—", "o": ["10", "0", "15", "1"], "a": 1, "w": "Mod-10, তাই 0 তে ফেরে।"}, {"q": "কাউন্টার তৈরি হয়—", "o": ["ফ্লিপ-ফ্লপ দিয়ে", "অ্যাডার দিয়ে", "এনকোডার দিয়ে", "শুধু AND দিয়ে"], "a": 0, "w": "প্রতিটি ফ্লিপ-ফ্লপ ১ বিট।"}, {"q": "কাউন্টার এক ধাপ বাড়ে কখন?", "o": ["ইনপুট বদলালে", "প্রতি ক্লক পালসে", "রিসেট দিলে", "কখনো না"], "a": 1, "w": "ক্লক পালস গোনে।"}]);
-/*TOUR*/{const T=IM.T;
-IM.tour([
- {m:'<b>কাউন্টার</b> হলো ফ্লিপ-ফ্লপের সারি, যা প্রতিটি <b>ক্লক পালসে</b> এক করে গোনে।',do(){T.tab('16','#mode');}},
- {m:'৪টি ফ্লিপ-ফ্লপ দিয়ে 0000 থেকে 1111, মানে 0 থেকে 15 পর্যন্ত গোনা যায় (16টি অবস্থা)।',el:'#ffs',do(){T.tab('16','#mode');T.click('#rst');}},
- {m:'একটা ক্লক দিলাম: 0000 → <b>0001</b>। ডানের বিট সবসময় বদলায়।',el:'#ffs',do(){T.tab('16','#mode');T.click('#rst');T.click('#clk');}},
- {m:'আরও ক্লক: 0001 → 0010 → 0011। কোনো বিট 1 থেকে 0 হলে পাশের বিট উল্টায়।',el:'#ffs',do(){T.tab('16','#mode');T.click('#rst');T.click('#clk',3);}},
- {m:'তরঙ্গচিত্রে দেখো: প্রতিটি বিট আগেরটার অর্ধেক গতিতে বদলায়।',el:'#wave',do(){T.tab('16','#mode');T.click('#rst');T.click('#clk',6);}},
- {m:'<b>ডিকেড কাউন্টার</b> (Mod-10): 9 (1001) এর পরেই 0 তে ফিরে যায়।',el:'#ffs',do(){T.tab('10','#mode');T.click('#clk',9);}},
- {m:'<b>ডাউন কাউন্টার</b>: 15 থেকে উল্টো দিকে গোনে।',el:'#ffs',do(){T.tab('d','#mode');T.click('#clk',2);}},
- {m:'নিজে চেষ্টা করো: "▶ চালাও" চেপে কাউন্টার চলতে দেখো।',el:'#run'}
-]);
+/*TOUR*/{const S=IM.S;
+const N=(n,fl)=>{const b=n.toString(2).padStart(3,'0');return S.tag('⏱ ক্লক: '+n,'y','ck')+S.row(...[0,1,2].map(i=>S.col(b[i],'Q'+(2-i),fl&&fl.includes(2-i)?'y':(b[i]==='1'?'g':'w'),'q'+i)))+S.eq('= '+n+'<sub>10</sub>','v','big');};
+IM.story(document.getElementById('st'),[
+ {f:1,m:'<b>কাউন্টার</b>: প্রতিটা ক্লক পালসে মান <b>১ করে বাড়ে</b>। শুরু 000।',h:N(0)},
+ {f:2,m:'ক্লক ১: <b>Q0</b> উল্টে 1 হলো।',h:N(1,[0])},
+ {f:2,m:'ক্লক ২: Q0 1 থেকে 0 হলো, তাই পাশের <b>Q1</b> উল্টালো।',h:N(2,[0,1])},
+ {f:2,m:'ক্লক ৩: শুধু Q0 উল্টালো।',h:N(3,[0])},
+ {f:2,m:'ক্লক ৪: Q0, Q1 দুটোই 1 থেকে 0, তাই <b>Q2</b> উল্টালো।',h:N(4,[0,1,2])},
+ {f:3,m:'নিয়ম: Q0 প্রতি ক্লকে, Q1 প্রতি <b>২</b> ক্লকে, Q2 প্রতি <b>৪</b> ক্লকে উল্টায়।',h:S.eq('Q0: প্রতি 1','r0','sm',0)+S.eq('Q1: প্রতি 2','r1','sm',1)+S.eq('Q2: প্রতি 4','r2','sm',2)},
+ {f:3,m:'চলতে চলতে ক্লক ৭: <b>111</b>। ৩ বিটে এটাই সর্বোচ্চ।',h:N(7)},
+ {f:4,m:'ক্লক ৮: সব উল্টে আবার <b>000</b>! মোট <b>2³ = 8</b>টা অবস্থা।',h:S.tag('⏱ ক্লক: 8','y','ck')+S.row(...[0,1,2].map(i=>S.col('0','Q'+(2-i),'y','q'+i)))+S.eq('আবার 0 থেকে','v','big')},
+ {f:5,m:'<b>অ্যাসিনক্রোনাস</b> (রিপল): একটা ফ্লিপ-ফ্লপ পরেরটাকে চালায়। <b>সিনক্রোনাস</b>: সবাই একই ক্লকে।',h:S.eq('রিপল: একটার পর একটা','r0','sm')+S.eq('সিনক্রোনাস: সব একসাথে','r1','sm g')}
+],{flow:['শুরু','গোনা','নিয়ম','ঘুরে আসা','ধরন']});
 }/*ENDTOUR*/
 </script>
 </body>

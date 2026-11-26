@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=11">
+<link rel="stylesheet" href="../../a/im.css?v=12">
 <style>
 .rip{display:flex;flex-direction:column;gap:8px;align-items:stretch}
 .rrow{display:grid;grid-template-columns:52px repeat(4,1fr);gap:6px;align-items:center}
@@ -30,6 +30,8 @@
     <h1>যোগ করার সার্কিট: অ্যাডার</h1>
     <p class="lead">কম্পিউটারের সব যোগ এই ছোট সার্কিটগুলো দিয়েই হয়। সুইচ চেপে দেখো যোগফল (S) আর হাতে থাকা (C) কীভাবে আসে।</p>
   </header>
+  <section class="card" id="main"><h2>হাফ অ্যাডার: সংকেত কোন পথে যায়</h2><div id="st"></div></section>
+  <h2 class="labh">🧪 এবার নিজে চেষ্টা করো</h2>
   <div class="tabs" id="tabs">
     <button class="tab" data-k="h" aria-selected="true">হাফ অ্যাডার</button>
     <button class="tab" data-k="f" aria-selected="false">ফুল অ্যাডার</button>
@@ -80,7 +82,8 @@
   </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=11"></script>
+<script src="../../a/im.js?v=12"></script>
+<script src="../../a/imstory.js?v=12"></script>
 <script>
 const {$}=IM;
 const sh={A:0,B:0};
@@ -135,16 +138,39 @@ IM.quiz01($('quiz'),()=>{ const full=Math.random()<.5, a=IM.rnd(0,1),b=IM.rnd(0,
   return {ask:`${full?'ফুল':'হাফ'} অ্যাডারে A = ${a}, B = ${b}${full?`, C<sub>in</sub> = ${c}`:''} হলে ${askS?'যোগফল S':'ক্যারি C'} কত?`, ans: askS? sum&1 : sum>>1, why:`${a} + ${b}${full?' + '+c:''} = ${sum} = ${(sum>>1)}${sum&1}₂`}; });
 
 IM.mcq(document.getElementById('mcq3'),[{"q": "হাফ অ্যাডারের যোগফল S = ?", "o": ["A·B", "A + B", "A ⊕ B", "(AB)'"], "a": 2, "w": "XOR গেট।"}, {"q": "হাফ অ্যাডারের ক্যারি C = ?", "o": ["A·B", "A ⊕ B", "A + B", "A'B"], "a": 0, "w": "AND গেট।"}, {"q": "ফুল অ্যাডারে ইনপুট কয়টি?", "o": ["২", "৩", "৪", "১"], "a": 1, "w": "A, B আর Cin।"}, {"q": "একটি ফুল অ্যাডার = ?", "o": ["দুটি হাফ অ্যাডার + OR গেট", "দুটি AND", "একটি XOR", "তিনটি হাফ অ্যাডার"], "a": 0, "w": "সবচেয়ে বেশি আসা প্রশ্ন।"}]);
-/*TOUR*/{const T=IM.T;
-IM.tour([
- {m:'<b>হাফ অ্যাডার</b> দুটি বিট যোগ করে: যোগফল <b>S = A ⊕ B</b>, হাতে থাকে <b>C = A · B</b>।',do(){T.tab('h','#tabs');T.tog('#tgh','A',0);T.tog('#tgh','B',0);}},
- {m:'1 + 0 = 1: S = 1, C = 0।',el:'#ch',do(){T.tab('h','#tabs');T.tog('#tgh','A',1);T.tog('#tgh','B',0);}},
- {m:'1 + 1 = 10: S = <b>0</b>, C = <b>1</b>। তাই XOR আর AND গেট লাগে।',el:'#ch',do(){T.tab('h','#tabs');T.tog('#tgh','A',1);T.tog('#tgh','B',1);}},
- {m:'হাফ অ্যাডার আগের ঘরের হাতের সংখ্যা নিতে পারে না। তাই <b>ফুল অ্যাডার</b> লাগে: ৩টি বিট যোগ (A, B, Cin)।',el:'#cf',do(){T.tab('f','#tabs');T.tog('#tgf','A',0);T.tog('#tgf','B',0);T.tog('#tgf','Ci',0);}},
- {m:'1 + 1 + 1 = 11: S = 1, Cout = 1।',el:'#cf',do(){T.tab('f','#tabs');T.tog('#tgf','A',1);T.tog('#tgf','B',1);T.tog('#tgf','Ci',1);}},
- {m:'একটা ফুল অ্যাডার = দুটো হাফ অ্যাডার + একটা OR গেট।',el:'#ttf',do(){T.tab('f','#tabs');}},
- {m:'৪ বিটের <b>প্যারালাল অ্যাডার</b>: ৪টি ফুল অ্যাডার পাশাপাশি, একটার Cout পরেরটার Cin এ যায়।',el:'#rs',do(){T.tab('r','#tabs');T.click('#go');}}
-]);
+/*TOUR*/{const S=IM.S;
+const K=IM.CK,X=K.gate('XOR',100,226,'S',1,{id:'gX'}),N=K.gate('AND',240,222,'C',1,{id:'gN'});
+const svg=`<svg viewBox="0 0 340 470"><g class="root">
+${K.w('A',0,[[90,78],[90,160]])}${K.w('B',0,[[250,78],[250,185]])}
+${K.w('A',1,[[90,160],[X.i[0][0],160],X.i[0]])}${K.w('A',1,[[90,160],[N.i[0][0],160],N.i[0]])}
+${K.w('B',1,[[250,185],[X.i[1][0],185],X.i[1]])}${K.w('B',1,[[250,185],[N.i[1][0],185],N.i[1]])}
+${K.w('S',2,[X.o,[100,350]])}${K.w('C',2,[N.o,[240,350]])}
+${K.jn('A',90,160)}${K.jn('B',250,185)}
+${K.sw('A',90,30)}${K.sw('B',250,30)}${X.s}${N.s}
+<text class="sub" x="100" y="205">যোগফল দেয়</text><text class="sub" x="240" y="205">হাতের ১ দেয়</text>
+${K.lamp('S',100,372,'S (যোগফল)')}${K.lamp('C',240,372,'C (ক্যারি)')}
+<text class="big" id="hsum" x="170" y="456"></text></g></svg>`;
+const sum=on=>(sv,v)=>{sv.querySelector('#hsum').innerHTML=on?`${v.A} + ${v.B} = <tspan style="fill:#1F8A4C">${v.A&v.B}</tspan>${v.A^v.B}`:'';};
+const IN=[30,0,280,200],XZ=[40,140,140,300],NZ=[180,140,140,300],OUT=[40,290,260,170];
+IM.cstory(document.getElementById('st'),{svg,inputs:['A','B'],calc:v=>({A:v.A,B:v.B,S:v.A^v.B,C:v.A&v.B}),
+ table:{cols:['A','B','S','C'],rows:[[0,0],[0,1],[1,0],[1,1]]},flow:['ইনপুট','XOR','AND','আউটপুট'],
+ info:{XOR:{t:'XOR গেট',d:'ইনপুট দুটি <b>আলাদা</b> হলে 1, একই হলে 0। এটাই যোগফল <b>S</b>।'},AND:{t:'AND গেট',d:'দুটি ইনপুটই 1 হলে তবেই 1। এটাই হাতের <b>C</b>।'},S:{t:'S (যোগফল)',d:'S = A ⊕ B'},C:{t:'C (ক্যারি)',d:'C = A · B, পরের ঘরে যায়।'}},
+ onTry:(v,o)=>`A = ${v.A}, B = ${v.B} → <b>S = ${o.S}, C = ${o.C}</b>। ${v.A} + ${v.B} = ${o.C}${o.S}`,
+ frames:[
+ {m:'<b>হাফ অ্যাডার</b>: দুইটা বিট যোগ করে। উপরে ইনপুট <b>A, B</b>, মাঝে দুই গেট, নিচে দুই বাতি।',v:{A:0,B:0},cam:'full',f:0,go:sum(0)},
+ {m:'শুরু: <b>A = 0, B = 0</b>। কোনো তারে বিদ্যুৎ নেই (ধূসর)।',v:{A:0,B:0},cam:IN,f:1,row:0,go:sum(0)},
+ {m:'০ + ০ = ০। তাই <b>S = 0, C = 0</b>।',v:{A:0,B:0},cam:'full',f:4,fill:[0],row:0,go:sum(1)},
+ {m:'এবার <b>B = 1</b>। <b>হলুদ</b> মানে 1। B এর সংকেত দুই ভাগ হয়ে দুই গেটেই যায়।',v:{A:0,B:1},cam:IN,f:1,fill:[0],row:1,go:sum(0)},
+ {m:'<b>XOR</b>: ইনপুট <b>আলাদা</b> (0, 1), তাই <b>S = 1</b>।',v:{A:0,B:1},cam:XZ,f:2,fill:[0],row:1,focus:'#gX',go:sum(0)},
+ {m:'<b>AND</b>: দুটোই 1 নয়, তাই <b>C = 0</b>।',v:{A:0,B:1},cam:NZ,f:3,fill:[0,1],row:1,focus:'#gN',go:sum(0)},
+ {m:'<b>A = 1, B = 0</b> হলেও একই: S = 1, C = 0।',v:{A:1,B:0},cam:'full',f:4,fill:[0,1,2],row:2,go:sum(1)},
+ {m:'শেষ জোড়া: <b>A = 1, B = 1</b>।',v:{A:1,B:1},cam:IN,f:1,fill:[0,1,2],row:3,go:sum(0)},
+ {m:'<b>XOR</b>: ইনপুট <b>একই</b> (1, 1), তাই <b>S = 0</b>।',v:{A:1,B:1},cam:XZ,f:2,fill:[0,1,2],row:3,focus:'#gX',go:sum(0)},
+ {m:'<b>AND</b>: দুটোই 1, তাই <b>C = 1</b>। এটাই হাতের ১!',v:{A:1,B:1},cam:NZ,f:3,fill:[0,1,2],row:3,focus:'#gN',go:sum(0)},
+ {m:'পাশাপাশি পড়ো: <b>C S = 1 0</b>। মানে <b>১ + ১ = ১০</b>।',v:{A:1,B:1},cam:OUT,f:4,fill:[0,1,2,3],row:3,go:sum(1)},
+ {m:'সূত্র: <b>S = A ⊕ B</b>, <b>C = A · B</b>। এবার নিজে A, B সুইচে চাপ দাও।',v:{A:1,B:1},cam:'full',f:0,fill:[0,1,2,3],go:sum(1)},
+ {m:'তিনটা বিট (A, B, আগের হাতের Cin) যোগ করতে <b>ফুল অ্যাডার</b> লাগে: দুইটা হাফ অ্যাডার + একটা OR। নিচের ল্যাবে দেখো।',v:{A:1,B:1},cam:'full',f:0,fill:[0,1,2,3],go:sum(1)}
+]});
 }/*ENDTOUR*/
 </script>
 </body>

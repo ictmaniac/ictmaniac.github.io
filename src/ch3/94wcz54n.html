@@ -1,4 +1,5 @@
 ---
+story: 1
 title: সত্যক সারণি মেকার
 eyebrow: ৩.২.২ সত্যক সারণি
 h1: সত্যক সারণি বানাও, ধাপে ধাপে
@@ -13,6 +14,8 @@ lead: যেকোনো বুলিয়ান রাশি লেখো। �
 .kbd{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
 .kbd button{font:inherit;font-family:var(--f-mono);font-weight:700;font-size:1.05rem;min-height:42px;border-radius:8px;border:1px solid var(--line);background:var(--board);color:var(--ink);cursor:pointer}
 </style>
+  <section class="card" id="main"><h2>সত্যক সারণি, কলাম ধরে</h2><div id="st"></div></section>
+  <h2 class="labh">🧪 এবার নিজে চেষ্টা করো</h2>
   <section class="card">
     <div class="field"><label for="ex">বুলিয়ান রাশি</label><input id="ex" value="A'B + AC" autocomplete="off" autocapitalize="characters" spellcheck="false"></div>
     <div class="kbd" id="kbd"></div>
@@ -93,17 +96,22 @@ $('ex').oninput=build;
 build();
 IM.mcq(document.getElementById('mcq3'),[{"q": "৩টি চলকের সত্যক সারণিতে সারি কয়টি?", "o": ["3", "6", "8", "9"], "a": 2, "w": "2³ = 8।"}, {"q": "৪টি চলকে সারি কয়টি?", "o": ["8", "12", "16", "32"], "a": 2, "w": "2⁴ = 16।"}, {"q": "A·B এর মান 1 হয় কখন?", "o": ["A=0,B=0", "A=1,B=0", "A=0,B=1", "A=1,B=1"], "a": 3, "w": "AND এ দুটোই 1 হতে হবে।"}, {"q": "A+B এর মান 0 হয় কখন?", "o": ["A=0,B=0", "A=1,B=0", "A=0,B=1", "A=1,B=1"], "a": 0, "w": "OR এ সব 0 হলেই শুধু 0।"}]);
 
-/*TOUR*/{const T=IM.T;
-const EXL=i=>T.click(`#chips .chip:nth-child(${i})`);
-IM.tour([
- {m:'সত্যক সারণি: প্রতিটি ইনপুট সমন্বয়ে আউটপুট কত হয়, সেটা সারি ধরে লেখা। n চলকে <b>2ⁿ</b> সারি।',do(){EXL(1);}},
- {m:'রাশি <b>A\'B + AC</b>: ৩টি চলক, তাই 2³ = <b>8</b> সারি।',el:'#tt',do(){EXL(1);}},
- {m:'প্রথমে ছোট অংশ: A\' এর কলাম। A এর মান উল্টে দিলেই হয়।',el:'#tt',do(){EXL(1);T.click('#next');}},
- {m:'এবার A\'B: A\' আর B দুটোই 1 হলেই 1।',el:'#tt',do(){EXL(1);T.click('#next',2);}},
- {m:'এভাবে এক এক কলাম করে শেষে পুরো রাশির মান বের হয়।',el:'#tt',do(){EXL(1);T.click('#all');}},
- {m:'আরেকটা: <b>(A + B)\'</b>। শুধু A = B = 0 হলে 1।',el:'#tt',do(){EXL(2);T.click('#all');}},
- {m:'<b>A ⊕ B</b>: আলাদা হলে 1। নিচে ১ এর সারিগুলো থেকে SOP রাশিও লেখা হয়।',el:'#sop',do(){EXL(4);T.click('#all');}},
- {m:'নিজে লেখো: উপরের বাক্সে যেকোনো রাশি লিখলে সারণি তৈরি হবে।',el:'#ex'}
-]);
+/*TOUR*/{const S=IM.S;
+const O=x=>`<span class="ov">${x}</span>`;
+const C=[{h:'A',v:'0011'},{h:'B',v:'0101'},{h:O('B'),v:'1010'},{h:'Y',v:'1011'}];
+const T=(n,st,hr)=>{let o=`<div class="rw2 t">${C.slice(0,n).map((c,j)=>S.dg(c.h,'sm w','h'+j)).join('')}</div>`;
+ for(let r=0;r<4;r++)o+=`<div class="rw2 t">${C.slice(0,n).map((c,j)=>{const s=st[j]||'e';return s==='e'?S.dg('?','sm ghost','c'+j+r):S.dg(c.v[r],'sm '+(r===hr?'r':s==='y'?'y':s==='g'?'g':''),'c'+j+r);}).join('')}</div>`;
+ return o;};
+IM.story(document.getElementById('st'),[
+ {f:1,m:'রাশি: <b>Y = A + '+O('B')+'</b>। এর সত্যক সারণি বানাবো।',h:S.eq('Y = A + '+O('B'),'e','big')},
+ {f:1,m:'ইনপুট ২টা (A, B)। তাই সারি হবে <b>2² = 4</b>টা।',h:S.eq('Y = A + '+O('B'),'e','sm')+S.eq('2<sup>2</sup> = 4 সারি','n','y')},
+ {f:2,m:'প্রথমে ইনপুটের দুই কলাম, এখনো খালি।',h:T(2,['e','e'])},
+ {f:2,m:'<b>A</b>: উপরের অর্ধেক 0, নিচের অর্ধেক 1।',h:T(2,['y','e'])},
+ {f:2,m:'<b>B</b>: 0, 1, 0, 1 পালা করে। এতে সব জোড়া আসে।',h:T(2,['f','y'])},
+ {f:3,m:'এবার ছোট অংশ <b>'+O('B')+'</b>: B কে উল্টে দাও।',h:T(3,['f','f','y'])},
+ {f:4,m:'শেষে <b>Y = A + '+O('B')+'</b>: A বা '+O('B')+' যেকোনো একটা 1 হলেই 1।',h:T(4,['f','f','f','g'])},
+ {f:4,m:'শুধু <b>A = 0, B = 1</b> হলে Y = 0 (লাল সারি)।',h:T(4,['f','f','f','g'],1)},
+ {f:5,m:'নিয়ম: <b>n</b> ইনপুট হলে <b>2ⁿ</b> সারি। ৩ ইনপুটে 8 সারি।',h:S.eq('2 → 4 সারি','n','sm')+S.eq('3 → 8 সারি','n2','sm y')+S.eq('n → 2<sup>n</sup>','e','big g')}
+],{flow:['গোনা','ইনপুট','ছোট অংশ','ফল','নিয়ম']});
 }/*ENDTOUR*/
 </script>

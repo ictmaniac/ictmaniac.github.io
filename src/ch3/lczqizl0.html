@@ -1,4 +1,5 @@
 ---
+story: 1
 title: চিহ্নযুক্ত সংখ্যা ও 2's complement
 eyebrow: ৩.১.৪–৩.১.৫ চিহ্নযুক্ত সংখ্যা ও পরিপূরক
 h1: চিহ্নযুক্ত সংখ্যা ও 2's complement
@@ -19,6 +20,8 @@ lead: কম্পিউটারে − চিহ্ন বলে কিছু 
 .flip{animation:flip .5s}
 @keyframes flip{0%{transform:rotateX(0)}50%{transform:rotateX(90deg)}100%{transform:rotateX(0)}}
 </style>
+  <section class="card" id="main"><h2>−5 কীভাবে লেখে?</h2><div id="st"></div></section>
+  <h2 class="labh">🧪 এবার নিজে চেষ্টা করো</h2>
   <section class="card">
     <h2>৮ বিটের রেজিস্টার</h2>
     <p class="hint">যেকোনো বিটে চাপ দাও। বাঁয়ের সবুজ দাগের বিটটি <b>চিহ্ন বিট</b>: 0 মানে ধনাত্মক (+), 1 মানে ঋণাত্মক (−)।</p>
@@ -141,15 +144,22 @@ $('n').addEventListener('input',convN); $('sa').addEventListener('input',sub); $
 renderReg(); convN(); sub();
 IM.mcq(document.getElementById('mcq3'),[{"q": "৮ বিটে -5 এর 2's complement—", "o": ["10000101", "11111010", "11111011", "00000101"], "a": 2, "w": "5 = 00000101, উল্টে 11111010, +1 = 11111011।"}, {"q": "চিহ্ন বিট 1 মানে সংখ্যাটি—", "o": ["ধনাত্মক", "ঋণাত্মক", "শূন্য", "দশমিক"], "a": 1, "w": "বাম দিকের বিট 1 হলে ঋণাত্মক।"}, {"q": "1's complement বানাতে—", "o": ["সব বিট উল্টাও", "1 যোগ করো", "বাম দিকে সরাও", "কিছু না"], "a": 0, "w": "0 কে 1, 1 কে 0।"}, {"q": "2's complement = ?", "o": ["1's complement − 1", "1's complement + 1", "মূল সংখ্যা × 2", "চিহ্ন বিট বাদ"], "a": 1, "w": "উল্টে তারপর 1 যোগ।"}]);
 
-/*TOUR*/{const T=IM.T;
-IM.tour([
- {m:'কম্পিউটার ঋণাত্মক সংখ্যা রাখে <b>চিহ্ন বিট</b> দিয়ে: বাম দিকের বিট 0 মানে ধনাত্মক, 1 মানে ঋণাত্মক।',do(){T.click('#zero');}},
- {m:'৮ বিটের রেজিস্টারে এখন সব 0। বিটে টাচ করে মান বদলানো যায়।',el:'#reg',do(){T.click('#zero');}},
- {m:'<b>1\'s complement</b>: সব বিট উল্টে দাও, 0 হবে 1 আর 1 হবে 0।',el:'#reg',do(){T.click('#zero');T.click('#inv');}},
- {m:'<b>2\'s complement</b> = 1\'s complement + 1। এটাই কম্পিউটারে ঋণাত্মক সংখ্যা রাখার আসল নিয়ম।',el:'#nsteps',do(){T.click('#nchips .chip:nth-child(1)');}},
- {m:'−1 এর 2\'s complement <b>11111111</b>। −128 হলো ৮ বিটের সবচেয়ে ছোট সংখ্যা।',el:'#nsteps',do(){T.click('#nchips .chip:nth-child(2)');}},
- {m:'2\'s complement দিয়ে বিয়োগ <b>যোগের</b> মতো করা যায়: A − B = A + (B এর 2\'s complement)।',el:'#ssteps',do(){T.click('#schips .chip:nth-child(1)');}},
- {m:'45 − 18: শেষে ক্যারি বাদ দিলে উত্তর ধনাত্মক 27।',el:'#ssteps',do(){T.click('#schips .chip:nth-child(2)');}}
-]);
+/*TOUR*/{const S=IM.S;
+const R=(s,cl,p,lab)=>`<div class="rw2 t">${[...s].map((d,i)=>S.dg(d,'xs '+(typeof cl==='function'?cl(i):(cl||'')),(p||'b')+i)).join('')}</div>`+(lab?S.cap(lab,'l'+(p||'b')):'');
+const sg=i=>i===0?'y':'';
+IM.story(document.getElementById('st'),[
+ {f:1,m:'কম্পিউটারে <b>−</b> চিহ্ন বলে কিছু নেই। তাহলে −5 লিখবে কীভাবে?',h:S.eq('−5 = ?','q','big')},
+ {f:1,m:'সবচেয়ে <b>বাঁয়ের বিট</b> (হলুদ) হলো <b>চিহ্ন বিট</b>।',h:R('00000101',sg)+S.cap('<b>0</b> = ধনাত্মক (+), <b>1</b> = ঋণাত্মক (−)','c')},
+ {f:1,m:'<b>+5</b> = 00000101। চিহ্ন বিট 0, তাই ধনাত্মক।',h:R('00000101',sg)+S.eq('+5','q','g')},
+ {f:2,m:'−5 বানাতে <b>2\'s complement</b>। মাত্র তিন ধাপ।',h:S.eq('① +5 লেখো','s1','sm',0)+S.eq('② সব বিট উল্টাও','s2','sm',1)+S.eq('③ 1 যোগ করো','s3','sm',2)},
+ {f:2,m:'① <b>+5</b> লেখো।',h:S.eq('① +5 লেখো','s1','sm y')+R('00000101')},
+ {f:2,m:'② সব বিট <b>উল্টাও</b>: 0 হবে 1, 1 হবে 0।',h:S.eq('② সব বিট উল্টাও','s1','sm y')+R('11111010','r')+S.cap('এটা 1\'s complement','c')},
+ {f:2,m:'③ শেষে <b>1 যোগ</b> করো।',h:S.eq('③ 1 যোগ করো','s1','sm y')+R('11111010',i=>i===7?'y':'r')+R('00000001',i=>i===7?'y':'w','p')+'<div class="ln2" data-id="ln" style="width:245px"></div>'+R('11111011',i=>i===7?'g':'','x')},
+ {f:3,m:'চিহ্ন বিট <b>1</b>, তাই ঋণাত্মক। <b>−5 = 11111011</b>।',h:R('11111011',sg)+S.eq('−5','q','g')},
+ {f:4,m:'যাচাই: <b>+5 + (−5)</b> = 0 হওয়া উচিত।',h:R('00000101','','p')+R('11111011')+'<div class="ln2" data-id="ln" style="width:245px"></div>'},
+ {f:4,m:'যোগ করলে ৯টা বিট হয়। বাড়তি <b>লাল 1</b> ফেলে দাও। বাকি সব 0 ✓',h:R('00000101','','p')+R('11111011')+'<div class="ln2" data-id="ln" style="width:245px"></div>'+`<div class="rw2 t">${S.dg('1','xs r','ov')}${[...'00000000'].map((d,i)=>S.dg(d,'xs g','x'+i)).join('')}</div>`+S.eq('= 0 ✓','q','g')},
+ {f:5,m:'মনে রাখো: শুধু উল্টালে <b>1\'s complement</b>, উল্টে 1 যোগ করলে <b>2\'s complement</b>।',h:S.eq('1\'s = উল্টাও','s1','sm')+S.eq('2\'s = উল্টাও + 1','s2','sm g')},
+ {f:5,m:'8 বিটে 2\'s complement দিয়ে লেখা যায় <b>−128 থেকে +127</b>।',h:S.eq('−128 … +127','q','big')+S.cap('মোট 2<sup>8</sup> = 256টা সংখ্যা','c')}
+],{flow:['চিহ্ন বিট','তিন ধাপ','ফল','যাচাই','মনে রাখো']});
 }/*ENDTOUR*/
 </script>

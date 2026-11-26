@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=11">
+<link rel="stylesheet" href="../../a/im.css?v=12">
 <style>
 .keys{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
 .key{font:inherit;font-family:var(--f-mono);font-weight:700;font-size:1.05rem;min-height:52px;border-radius:12px;border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
@@ -37,6 +37,8 @@
     <h1>এনকোডার ও ডিকোডার</h1>
     <p class="lead">ডিকোডার বাইনারি কোড পড়ে ঠিক একটি লাইন জ্বালায়। এনকোডার উল্টো কাজ করে: একটি বোতাম চাপলে তার বাইনারি কোড বানায়।</p>
   </header>
+  <section class="card" id="main"><h2>ডিকোডার ও এনকোডার</h2><div id="st"></div></section>
+  <h2 class="labh">🧪 এবার নিজে চেষ্টা করো</h2>
   <div class="tabs" id="tabs">
     <button class="tab" data-k="dec" aria-selected="true">ডিকোডার</button>
     <button class="tab" data-k="enc" aria-selected="false">এনকোডার</button>
@@ -87,7 +89,8 @@
   </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=11"></script>
+<script src="../../a/im.js?v=12"></script>
+<script src="../../a/imstory.js?v=12"></script>
 <script>
 const {$}=IM;
 // 2-to-4 decoder
@@ -130,17 +133,23 @@ IM.tabs($('tabs'),k=>{$('p-dec').hidden=k!=='dec';$('p-enc').hidden=k!=='enc';})
 enc();
 IM.mcq(document.getElementById('mcq3'),[{"q": "৮টি ইনপুট লাইনের এনকোডারে আউটপুট লাইন কয়টি?", "o": ["2", "3", "4", "8"], "a": 1, "w": "2³ = 8, তাই ৩টি।"}, {"q": "3-to-8 ডিকোডারে আউটপুট কয়টি?", "o": ["3", "6", "8", "16"], "a": 2, "w": "n ইনপুটে 2ⁿ আউটপুট।"}, {"q": "ডিকোডারে একসাথে কয়টি আউটপুট 1 হয়?", "o": ["সবগুলো", "একটি", "দুটি", "কোনোটিই না"], "a": 1, "w": "ইনপুট কোড অনুযায়ী ঠিক একটি লাইন চালু হয়।"}, {"q": "কিবোর্ডের চাপা কী থেকে কোড বানায়—", "o": ["ডিকোডার", "এনকোডার", "অ্যাডার", "কাউন্টার"], "a": 1, "w": "এনকোডার অনেক লাইন থেকে কোড বানায়।"}]);
 
-/*TOUR*/{const T=IM.T;
-IM.tour([
- {m:'<b>ডিকোডার</b> বাইনারি কোড পড়ে ঠিক <b>একটি</b> আউটপুট লাইন জ্বালায়। n ইনপুটে 2ⁿ আউটপুট।',do(){T.tab('dec','#tabs');}},
- {m:'A = 0, B = 0 → কোড 00 = 0, তাই শুধু <b>D0</b> জ্বলছে (A\'B\')।',el:'#c1',do(){T.tab('dec','#tabs');T.tog('#tg1','A',0);T.tog('#tg1','B',0);}},
- {m:'A = 1, B = 0 → কোড 10 = 2, তাই এবার শুধু <b>D2</b> জ্বলছে (AB\')।',el:'#c1',do(){T.tab('dec','#tabs');T.tog('#tg1','A',1);T.tog('#tg1','B',0);}},
- {m:'A = 1, B = 1 → 11 = 3, শুধু <b>D3</b>। প্রতিটি আউটপুট একটা AND গেট।',el:'#c1',do(){T.tab('dec','#tabs');T.tog('#tg1','A',1);T.tog('#tg1','B',1);}},
- {m:'৩ থেকে ৮ লাইন ডিকোডার: ABC = 101 = 5, তাই শুধু <b>D5</b> জ্বলে।',el:'#leds3',do(){T.tab('dec','#tabs');T.tog('#tg3','A',1);T.tog('#tg3','B',0);T.tog('#tg3','C',1);}},
- {m:'<b>এনকোডার</b> উল্টো কাজ করে: অনেক ইনপুটের একটা চাপলে তার বাইনারি কোড বের হয়।',el:'#keys',do(){T.tab('enc','#tabs');T.tab('8','#etabs');}},
- {m:'D6 চাপলে আউটপুট <b>110</b>। এনকোডার শুধু OR গেট দিয়ে তৈরি।',el:'#obits',do(){T.tab('enc','#tabs');T.tab('8','#etabs');T.click('#keys .key:nth-child(7)');}},
- {m:'দশমিক থেকে BCD: ৯ চাপলে ৪ বিটের কোড <b>1001</b>। কিবোর্ডে এভাবেই কোড তৈরি হয়।',el:'#obits',do(){T.tab('enc','#tabs');T.tab('10','#etabs');T.click('#keys .key:nth-child(10)');}}
-]);
+/*TOUR*/{const S=IM.S;
+const O=x=>`<span class="ov">${x}</span>`;
+const IN=(a,b)=>S.row(S.col(a,'A','y','ia'),S.col(b,'B','y','ib'));
+const OUT=k=>S.row(...[0,1,2,3].map(i=>S.col(i===k?'1':'0','D'+i,i===k?'g':'w','d'+i)));
+const DC=(a,b,k)=>IN(a,b)+S.ar('↓','a')+S.tag('ডিকোডার','','t')+S.ar('↓','a2')+OUT(k);
+IM.story(document.getElementById('st'),[
+ {f:1,m:'<b>ডিকোডার</b>: বাইনারি কোড পড়ে <b>ঠিক একটা</b> লাইন জ্বালায়।',h:DC('?','?',-1)},
+ {f:1,m:'ইনপুট ২ বিট, তাই আউটপুট লাইন <b>2² = 4</b>টা।',h:DC('?','?',-1)+S.eq('2 → 4','n','sm y')},
+ {f:2,m:'ইনপুট <b>00</b> → শুধু <b>D0</b> জ্বলে।',h:DC('0','0',0)},
+ {f:2,m:'<b>01</b> → <b>D1</b>।',h:DC('0','1',1)},
+ {f:2,m:'<b>10</b> → <b>D2</b>। (10 মানে দশমিকে 2)',h:DC('1','0',2)},
+ {f:2,m:'<b>11</b> → <b>D3</b>।',h:DC('1','1',3)},
+ {f:3,m:'ভিতরে প্রতিটা লাইন একটা <b>AND গেট</b>।',h:S.eq('D0 = '+O('A')+O('B'),'q0','sm',0)+S.eq('D1 = '+O('A')+'B','q1','sm',1)+S.eq('D2 = A'+O('B'),'q2','sm y',2)+S.eq('D3 = AB','q3','sm',3)},
+ {f:4,m:'<b>এনকোডার</b> উল্টো কাজ করে: একটা লাইন চাপো, তার <b>কোড</b> বের হয়।',h:S.row(...[0,1,2,3].map(i=>S.col(i===3?'1':'0','D'+i,i===3?'y':'w','d'+i)))+S.ar('↓','a')+S.tag('এনকোডার','','t')+S.ar('↓','a2')+S.row(S.col('1','A','g','ia'),S.col('1','B','g','ib'))},
+ {f:4,m:'ক্যালকুলেটরে <b>7</b> চাপলে এনকোডার পাঠায় <b>0111</b>।',h:S.dg('7','y','k')+S.ar('↓','a')+S.tag('এনকোডার','','t')+S.ar('↓','a2')+S.row(...'0111'.split('').map((d,i)=>S.dg(d,'sm g','o'+i)))},
+ {f:5,m:'মনে রাখো: ডিকোডার <b>n → 2ⁿ</b>, এনকোডার <b>2ⁿ → n</b>।',h:S.eq('ডিকোডার: n → 2<sup>n</sup>','n','')+S.eq('এনকোডার: 2<sup>n</sup> → n','n2','g')}
+],{flow:['কী করে','কোড → লাইন','ভিতরে','এনকোডার','মনে রাখো']});
 }/*ENDTOUR*/
 </script>
 </body>

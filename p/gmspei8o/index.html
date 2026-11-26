@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=11">
+<link rel="stylesheet" href="../../a/im.css?v=12">
 <style>
 svg.scene .arm{stroke:#5B7DB8;stroke-width:13;stroke-linecap:round}
 svg.scene .arm2{stroke:#7E9CD3;stroke-width:10;stroke-linecap:round}
@@ -88,9 +88,9 @@ svg.scene .batt{fill:#22C55E;transition:width .9s}
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
-<script src="../../a/im.js?v=11"></script>
+<script src="../../a/im.js?v=12"></script>
 <script src="../../a/three.min.js"></script>
-<script src="../../a/im3d.js?v=11"></script>
+<script src="../../a/im3d.js?v=12"></script>
 <script>
 const {$,say,bn}=IM;
 const X={pwr:{t:'🔋 পাওয়ার সিস্টেম',d:'রোবটকে শক্তি দেয়। সাধারণত রিচার্জেবল লেড-এসিড ব্যাটারি, কাজের আগে চার্জ দিতে হয়।'},sen:{t:'👁️ সেন্সিং (অনুভূতি)',d:'সেন্সর ও ক্যামেরা দিয়ে রোবট দেখে, স্পর্শ বোঝে, দূরত্ব মাপে। মানুষের চোখ-কানের মতো।'},ctl:{t:'🧠 কন্ট্রোলার (কম্পিউটার)',d:'রোবটের মস্তিষ্ক। মেমরিতে রাখা প্রোগ্রাম অনুযায়ী সিদ্ধান্ত নেয়। প্রতিটি কাজের জন্য আলাদা নির্দেশনা দিতে হয়।'},act:{t:'⚙️ অ্যাকচুয়েটর',d:'বৈদ্যুতিক মোটরের ব্যবস্থা যা হাত-পা নাড়ায়। একে রোবটের পেশি বলে।'},man:{t:'🤏 ম্যানিপুলেশন',d:'আশপাশের বস্তু ধরা, তোলা, অবস্থান বদলানো। আঙুল দিয়ে ধরে, পা দিয়ে চলাফেরা করে।'},bin:{t:'ঝুড়ি',d:'বাক্স রাখার জায়গা। রোবট প্রোগ্রাম অনুযায়ী ঠিক এখানেই রাখে।'},belt:{t:'কনভেয়র বেল্ট',d:'চলন্ত বেল্ট যা বাক্স রোবটের কাছে নিয়ে আসে।'}};

@@ -1,4 +1,5 @@
 ---
+story: 1
 title: বুলিয়ান সরলীকরণ ল্যাব
 eyebrow: ৩.২.৪ বুলিয়ান রাশির সরলীকরণ
 h1: বুলিয়ান রাশি সরল করো, ধাপে ধাপে
@@ -10,6 +11,8 @@ lead: একটি অংক বেছে নাও, তারপর "পরে�
 .save div{background:var(--board);border-radius:10px;padding:8px}
 .save b{font-family:var(--f-mono);font-size:1.4rem}
 </style>
+  <section class="card" id="main"><h2>সরলীকরণ, ধাপে ধাপে</h2><div id="st"></div></section>
+  <h2 class="labh">🧪 এবার নিজে চেষ্টা করো</h2>
   <section class="card">
     <h2>অংক বেছে নাও</h2>
     <div class="chips" id="chips"></div>
@@ -97,16 +100,18 @@ $('o').oninput=check; $('u').oninput=check;
 load(3); check();
 IM.mcq(document.getElementById('mcq3'),[{"q": "AB + AB' সরল করলে—", "o": ["A", "B", "AB", "1"], "a": 0, "w": "A(B + B') = A·1 = A।"}, {"q": "A(A + B) সরল করলে—", "o": ["A+B", "AB", "A", "B"], "a": 2, "w": "শোষণ সূত্র।"}, {"q": "(A + B)' = ?", "o": ["A'+B'", "A'B'", "AB", "A+B"], "a": 1, "w": "ডি-মরগান: OR এর NOT = NOT গুলোর AND।"}, {"q": "A + A'B সরল করলে—", "o": ["A", "B", "A+B", "AB"], "a": 2, "w": "A + A'B = A + B।"}]);
 
-/*TOUR*/{const T=IM.T;
-const CH=(i,n)=>{T.click(`#chips .chip:nth-child(${i})`);T.click('#next',n);};
-IM.tour([
- {m:'বড় রাশি সরল করলে <b>কম গেট</b> লাগে, সার্কিট সস্তা হয়। এসো ধাপে ধাপে করি।',do(){CH(1,0);}},
- {m:'প্রথম ধাপ: সাধারণ অংশ (কমন) বাইরে আনো।',el:'#steps',do(){CH(1,1);}},
- {m:'এবার সূত্র খোঁজো: <b>A + A\' = 1</b> বা <b>1 + X = 1</b>।',el:'#steps',do(){CH(1,2);}},
- {m:'প্রতিটি ধাপের পাশে কোন সূত্র লাগলো সেটা লেখা থাকে। পরীক্ষাতেও এভাবে লিখবে।',el:'#steps',do(){CH(1,3);}},
- {m:'সরল করা শেষ। নিচে দেখো আগে কয়টা গেট লাগতো আর এখন কয়টা লাগবে।',el:'#done',do(){T.click('#chips .chip:nth-child(1)');T.click('#all');}},
- {m:'আরেকটা অংক: এবার পুরোটা একসাথে দেখো।',el:'#steps',do(){T.click('#chips .chip:nth-child(2)');T.click('#all');}},
- {m:'যেসব সূত্র সবচেয়ে বেশি লাগে সেগুলো এই টেবিলে। মুখস্থ রাখো।',el:'#o'}
-]);
+/*TOUR*/{const S=IM.S;
+const O=x=>`<span class="ov">${x}</span>`;
+IM.story(document.getElementById('st'),[
+ {f:1,m:'সরল করবো: <b>Y = AB + A'+O('B')+'</b>। লক্ষ্য: কম গেট, একই ফল।',h:S.eq('Y = AB + A'+O('B'),'e','big')},
+ {f:2,m:'দুই পদেই <b>A</b> আছে। A কে বাইরে আনো।',h:S.eq('Y = AB + A'+O('B'),'e0','sm')+S.eq('= A(B + '+O('B')+')','e','big')+S.tag('বণ্টন বিধি','','t')},
+ {f:2,m:'B আর '+O('B')+' এর একটা 1 হবেই। তাই <b>B + '+O('B')+' = 1</b>।',h:S.eq('Y = AB + A'+O('B'),'e0','sm')+S.eq('= A · 1','e','big')+S.tag('B + '+O('B')+' = 1','y','t')},
+ {f:3,m:'<b>A · 1 = A</b>। তাই <b>Y = A</b>!',h:S.eq('Y = AB + A'+O('B'),'e0','sm')+S.eq('Y = A','e','big g')+S.tag('A · 1 = A','g','t')},
+ {f:3,m:'যাচাই: B যাই হোক, Y সবসময় A এর সমান।',h:S.eq('A=1, B=0: 0 + 1 = 1 ✓','c1','sm g',0)+S.eq('A=1, B=1: 1 + 0 = 1 ✓','c2','sm g',1)+S.eq('A=0: 0 + 0 = 0 ✓','c3','sm g',2)},
+ {f:4,m:'আরেকটা: <b>Y = A + AB</b>।',h:S.eq('Y = A + AB','e','big')},
+ {f:4,m:'A বাইরে আনো: <b>A(1 + B)</b>।',h:S.eq('Y = A + AB','e0','sm')+S.eq('= A(1 + B)','e','big')},
+ {f:4,m:'<b>1 + B = 1</b>। তাই Y = A · 1 = <b>A</b>। (শোষণ বিধি)',h:S.eq('Y = A + AB','e0','sm')+S.eq('Y = A','e','big g')+S.tag('শোষণ বিধি','g','t')},
+ {f:5,m:'সরল মানে <b>কম গেট</b>: AND, OR, NOT এর বদলে শুধু একটা তার!',h:S.row(S.tag('আগে: ৪টা গেট','r','b1'),S.tag('পরে: ০টা গেট','g','b2'))+S.eq('Y = A','e','big g')}
+],{flow:['রাশি','বাইরে আনো','ফল','আরেকটা','লাভ']});
 }/*ENDTOUR*/
 </script>

@@ -15,7 +15,7 @@ import sys, os, re, glob
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC, OUT = os.path.join(ROOT, 'src'), os.path.join(ROOT, 'p')
-V = '11'  # bump after changing a/im.css or a/im.js so phones load the new kit
+V = '12'  # bump after changing a/im.css or a/im.js so phones load the new kit
 
 FONTS = '''<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,7 +47,7 @@ DOCK = '<div class="dock"><div class="in"><button class="pv" aria-label="আগ�
 def page(txt):
     m = re.match(r'---\n(.*?)\n---\n', txt, re.S)
     if not m:  # complete page: only refresh the kit version
-        return re.sub(r'(a/im\.(?:css|js))\?v=\d+', r'\1?v=' + V, txt)
+        return re.sub(r'(a/im(?:\.css|\.js|story\.js|3d\.js))\?v=\d+', r'\1?v=' + V, txt)
     meta = dict(l.split(': ', 1) for l in m.group(1).splitlines())
     rest = txt[m.end():]
     style = ''
@@ -63,6 +63,7 @@ def page(txt):
             + (EXPL if kit else '') + body.rstrip() + '\n' + FOOT
             + (DOCK if kit else '') + f'<script src="../../a/im.js?v={V}"></script>\n'
             + (f'<script src="../../a/three.min.js"></script>\n<script src="../../a/im3d.js?v={V}"></script>\n' if meta.get('three') == '1' else '')
+            + (f'<script src="../../a/imstory.js?v={V}"></script>\n' if meta.get('story') == '1' else '')
             + script.strip() + '\n</body>\n</html>\n')
 
 

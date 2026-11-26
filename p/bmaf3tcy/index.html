@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=11">
+<link rel="stylesheet" href="../../a/im.css?v=12">
 <style>
 :root{
   --board:#F3F6FC;--panel:#FFFFFF;--ink:#14213D;--muted:#5A6785;--line:#D5DEEE;
@@ -134,6 +134,8 @@ footer{font-size:.85rem;color:var(--muted);text-align:center}
     <p class="lead" id="g-lead"></p>
   </header>
 
+  <section class="card" id="main"><h2>তিন মৌলিক গেট, পাশাপাশি</h2><div id="st"></div></section>
+  <h2 class="labh">🧪 এবার নিজে চেষ্টা করো</h2>
   <div class="tabs" role="tablist" aria-label="গেট বেছে নাও">
     <button class="tab" role="tab" data-g="AND">AND</button>
     <button class="tab" role="tab" data-g="OR">OR</button>
@@ -203,7 +205,8 @@ footer{font-size:.85rem;color:var(--muted);text-align:center}
 <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 
-<script src="../../a/im.js?v=11"></script>
+<script src="../../a/im.js?v=12"></script>
+<script src="../../a/imstory.js?v=12"></script>
 <script>
 const $ = id => document.getElementById(id);
 const SHAPES = {
@@ -328,18 +331,33 @@ if (pick && GATES[pick.toUpperCase()]) GATE = pick.toUpperCase();
 build();
 
 IM.mcq(document.getElementById('mcq9'),[{"q": "AND গেটের আউটপুট 1 হয় যখন—", "o": ["যেকোনো একটি ইনপুট 1", "সব ইনপুট 1", "সব ইনপুট 0", "কখনো না"], "a": 1, "w": "সব 1 হলেই শুধু 1।"}, {"q": "OR গেটের আউটপুট 0 হয় যখন—", "o": ["সব ইনপুট 0", "একটি ইনপুট 1", "সব ইনপুট 1", "সবসময়"], "a": 0, "w": "একটা 1 থাকলেই OR = 1।"}, {"q": "NOT গেটে ইনপুট কয়টি?", "o": ["১", "২", "৩", "যেকোনো"], "a": 0, "w": "একটি ইনপুট উল্টে দেয়।"}, {"q": "সিরিজে লাগানো দুটি সুইচ কোন গেটের মতো?", "o": ["OR", "AND", "NOT", "XOR"], "a": 1, "w": "দুটোই চালু হলে বাতি জ্বলে।"}]);
-/*TOUR*/{const T=IM.T;const $=id=>document.getElementById(id);
-const G=g=>{const t=document.querySelector(`.tab[data-g="${g}"]`);if(t.getAttribute('aria-selected')!=='true')t.click();};
-const SI=(k,v)=>{if(+$('bit'+k).textContent!==v)$('t'+k).click();};
-IM.tour([
- {m:'<b>AND গেট</b>: সব ইনপুট <b>1</b> হলেই শুধু আউটপুট 1। যেকোনো একটা 0 হলেই 0।',do(){G('AND');SI('A',0);SI('B',0);}},
- {m:'A = 1, B = 0: একটা ইনপুট 0, তাই বাল্ব জ্বলে না। Y = <b>0</b>।',el:'#gate',do(){G('AND');SI('A',1);SI('B',0);}},
- {m:'A = 1, B = 1: দুটোই 1, তাই Y = <b>1</b>। দুটো সুইচ সিরিজে লাগানো বাতির মতো।',el:'#gate',do(){G('AND');SI('A',1);SI('B',1);}},
- {m:'<b>OR গেট</b>: যেকোনো একটা ইনপুট 1 হলেই আউটপুট 1।',el:'#gate',do(){G('OR');SI('A',0);SI('B',1);}},
- {m:'OR এ শুধু A = B = 0 হলেই Y = <b>0</b>। প্যারালাল সুইচের মতো।',el:'#gate',do(){G('OR');SI('A',0);SI('B',0);}},
- {m:'<b>NOT গেট</b>: ইনপুট উল্টে দেয়। 1 দিলে 0, 0 দিলে 1।',el:'#gate',do(){G('NOT');SI('A',1);}},
- {m:'সত্যক সারণিতে সব সম্ভাব্য ইনপুটের আউটপুট একসাথে দেখো।',el:'#tt',do(){G('AND');}}
-]);
+/*TOUR*/{const S=IM.S;
+const K=IM.CK,G1=K.gate('AND',62,230,'AND',1,{id:'g1',w:58}),G2=K.gate('OR',170,230,'OR',1,{id:'g2',w:58}),G3=K.gate('NOT',278,236,'NA',1,{id:'g3',w:52});
+const svg=`<svg viewBox="0 0 340 460"><g class="root">
+${K.w('A',0,[[110,78],[110,150]])}${K.w('B',0,[[230,78],[230,175]])}
+${K.w('A',1,[[110,150],[G1.i[0][0],150],G1.i[0]])}${K.w('A',1,[[110,150],[G2.i[0][0],150],G2.i[0]])}${K.w('A',1,[[110,150],[G3.i[0][0],150],G3.i[0]])}
+${K.w('B',1,[[230,175],[G1.i[1][0],175],G1.i[1]])}${K.w('B',1,[[230,175],[G2.i[1][0],175],G2.i[1]])}
+${K.w('AND',2,[G1.o,[62,356]])}${K.w('OR',2,[G2.o,[170,356]])}${K.w('NA',2,[G3.o,[278,356]])}
+${K.jn('A',110,150)}${K.jn('B',230,175)}${K.sw('A',110,30)}${K.sw('B',230,30)}${G1.s}${G2.s}${G3.s}
+<text class="sub" x="62" y="214">গুণ ( · )</text><text class="sub" x="170" y="214">যোগ ( + )</text><text class="sub" x="278" y="214">উল্টো ( ‾ )</text>
+${K.lamp('AND',62,378,'A·B')}${K.lamp('OR',170,378,'A+B')}${K.lamp('NA',278,378,'A̅')}</g></svg>`;
+const IN=[40,0,260,200],Z1=[0,140,124,290],Z2=[108,140,124,290],Z3=[216,140,124,290];
+IM.cstory(document.getElementById('st'),{svg,inputs:['A','B'],calc:v=>({A:v.A,B:v.B,AND:v.A&v.B,OR:v.A|v.B,NA:v.A?0:1}),
+ table:{cols:['A','B','A·B','A+B','A̅'],rows:[[0,0],[0,1],[1,0],[1,1]]},flow:['ইনপুট','AND','OR','NOT'],
+ info:{AND:{t:'AND গেট',d:'সব ইনপুট 1 হলে তবেই আউটপুট 1। যুক্তির "এবং", গণিতের গুণ।'},OR:{t:'OR গেট',d:'যেকোনো একটা ইনপুট 1 হলেই আউটপুট 1। যুক্তির "অথবা", গণিতের যোগ।'},NOT:{t:'NOT গেট',d:'একটাই ইনপুট, আউটপুট সবসময় উল্টো। 0 → 1, 1 → 0।'},sw:{t:'সুইচ',d:'চাপ দিলে 0 আর 1 বদলায়।'}},
+ onTry:(v,o)=>`A = ${v.A}, B = ${v.B} → AND = <b>${o.AND}</b>, OR = <b>${o.OR}</b>, NOT A = <b>${o.NA}</b>`,
+ frames:[
+ {m:'তিনটা <b>মৌলিক গেট</b>, একই দুই ইনপুট <b>A, B</b> থেকে সংকেত পায়।',v:{A:0,B:0},cam:'full',f:0},
+ {m:'শুরু: <b>A = 0, B = 0</b>। দেখো, শুধু <b>NOT</b> এর বাতি জ্বলছে।',v:{A:0,B:0},cam:'full',f:1,fill:[0],row:0},
+ {m:'<b>AND</b> = গুণ। 0 · 0 = <b>0</b>।',v:{A:0,B:0},cam:Z1,f:2,fill:[0],row:0,focus:'#g1'},
+ {m:'<b>NOT</b> উল্টে দেয়: A = 0, তাই আউটপুট <b>1</b>।',v:{A:0,B:0},cam:Z3,f:4,fill:[0],row:0,focus:'#g3'},
+ {m:'এবার <b>B = 1</b>। হলুদ সংকেত AND আর OR দুই গেটেই গেলো।',v:{A:0,B:1},cam:IN,f:1,fill:[0],row:1},
+ {m:'<b>OR</b> = যোগ। একটা 1 থাকলেই আউটপুট <b>1</b>।',v:{A:0,B:1},cam:Z2,f:3,fill:[0,1],row:1,focus:'#g2'},
+ {m:'<b>AND</b> এর দুটোই 1 লাগে। একটা 0, তাই আউটপুট <b>0</b>।',v:{A:0,B:1},cam:Z1,f:2,fill:[0,1],row:1,focus:'#g1'},
+ {m:'<b>A = 1, B = 0</b>: OR জ্বলে, AND নেভা। <b>NOT</b> এখন 0 (উল্টো)।',v:{A:1,B:0},cam:'full',f:4,fill:[0,1,2],row:2},
+ {m:'<b>A = 1, B = 1</b>: এবার <b>AND</b> জ্বললো, কারণ দুটোই 1।',v:{A:1,B:1},cam:Z1,f:2,fill:[0,1,2,3],row:3,focus:'#g1'},
+ {m:'মনে রাখো: AND গুণ, OR যোগ, NOT উল্টো। এবার নিজে <b>A, B সুইচে চাপ</b> দাও।',v:{A:1,B:1},cam:'full',f:0,fill:[0,1,2,3]}
+]});
 }/*ENDTOUR*/
 </script>
 </body>

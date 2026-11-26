@@ -1,4 +1,5 @@
 ---
+story: 1
 title: NAND ও NOR ল্যাব
 eyebrow: ৩.২.৬ সার্বজনীন গেট NAND ও NOR
 h1: NAND ও NOR: সার্বজনীন গেট
@@ -9,6 +10,8 @@ lead: শুধু NAND (বা শুধু NOR) দিয়েই AND, OR, NO
 .sub .tab{font-size:.95rem}
 .derive{font-family:var(--f-mono);font-weight:700;background:var(--board);border-radius:10px;padding:10px;text-align:center;word-break:break-word}
 </style>
+  <section class="card" id="main"><h2>NAND = AND + NOT</h2><div id="st"></div></section>
+  <h2 class="labh">🧪 এবার নিজে চেষ্টা করো</h2>
   <div class="tabs" id="tabs">
     <button class="tab m" data-k="NAND" aria-selected="true">NAND</button>
     <button class="tab m" data-k="NOR" aria-selected="false">NOR</button>
@@ -92,16 +95,30 @@ const q=IM.quiz01($('quiz'),()=>{const a=IM.rnd(0,1),b=IM.rnd(0,1),y=G==='NAND'?
 main();
 
 IM.mcq(document.getElementById('mcq3'),[{"q": "সার্বজনীন গেট কোনগুলো?", "o": ["AND, OR", "NAND, NOR", "XOR, XNOR", "NOT, AND"], "a": 1, "w": "এদের দিয়েই সব গেট বানানো যায়।"}, {"q": "NAND গেটে A = B = 1 হলে Y—", "o": ["1", "0", "A", "B"], "a": 1, "w": "AND = 1, উল্টে 0।"}, {"q": "NOR গেটে Y = 1 হয় কখন?", "o": ["A=B=1", "A=B=0", "A=1,B=0", "সবসময়"], "a": 1, "w": "OR = 0 হলেই।"}, {"q": "NAND এর দুই ইনপুট জুড়ে দিলে পাওয়া যায়—", "o": ["AND", "OR", "NOT", "XOR"], "a": 2, "w": "(A·A)' = A'।"}]);
-/*TOUR*/{const T=IM.T;
-IM.tour([
- {m:'<b>NAND</b> = AND এর পরে NOT। শুধু দুটো ইনপুট 1 হলেই আউটপুট 0, বাকি সব 1।',do(){T.tab('NAND','#tabs');T.tog('#tg','A',0);T.tog('#tg','B',0);}},
- {m:'A = 1, B = 1: AND = 1, উল্টে Y = <b>0</b>।',el:'#g1',do(){T.tab('NAND','#tabs');T.tog('#tg','A',1);T.tog('#tg','B',1);}},
- {m:'<b>NOR</b> = OR এর পরে NOT। শুধু দুটো ইনপুট 0 হলেই আউটপুট 1।',el:'#g1',do(){T.tab('NOR','#tabs');T.tog('#tg','A',0);T.tog('#tg','B',0);}},
- {m:'NAND আর NOR কে <b>সার্বজনীন গেট</b> বলে, কারণ শুধু এদের দিয়েই সব গেট বানানো যায়।',el:'#tt',do(){T.tab('NOR','#tabs');}},
- {m:'শুধু NAND দিয়ে <b>NOT</b>: দুই ইনপুট জুড়ে দিলে (A·A)\' = A\'।',el:'#g2',do(){T.tab('NAND','#tabs');T.tab('NOT','#sub');}},
- {m:'শুধু NAND দিয়ে <b>AND</b>: NAND এর পরে আরেকটা NAND (NOT হিসেবে)।',el:'#g2',do(){T.tab('NAND','#tabs');T.tab('AND','#sub');}},
- {m:'শুধু NAND দিয়ে <b>OR</b>: আগে দুটো ইনপুট উল্টাও, তারপর NAND। ডি-মরগান থেকে আসে।',el:'#g2',do(){T.tab('NAND','#tabs');T.tab('OR','#sub');}},
- {m:'নিচে কয়টা গেট লাগলো সেটা লেখা আছে। নিজে সুইচ চেপে মিলিয়ে দেখো।',el:'#cnt'}
-]);
+/*TOUR*/{const S=IM.S;
+const K=IM.CK,G1=K.gate('AND',80,170,'P',1,{id:'g1',w:58}),G2=K.gate('NOT',80,262,'Y1',2,{id:'g2',w:50}),G3=K.gate('NAND',250,200,'Y2',1,{id:'g3',w:62});
+const svg=`<svg viewBox="0 0 340 460"><g class="root">
+${K.w('A',0,[[110,78],[110,120]])}${K.w('B',0,[[230,78],[230,140]])}
+${K.w('A',1,[[110,120],[G1.i[0][0],120],G1.i[0]])}${K.w('A',1,[[110,120],[G3.i[0][0],120],G3.i[0]])}
+${K.w('B',1,[[230,140],[G1.i[1][0],140],G1.i[1]])}${K.w('B',1,[[230,140],[G3.i[1][0],140],G3.i[1]])}
+${K.w('P',2,[G1.o,G2.i[0]])}${K.w('Y1',3,[G2.o,[80,356]])}${K.w('Y2',2,[G3.o,[250,356]])}
+${K.jn('A',110,120)}${K.jn('B',230,140)}${K.sw('A',110,30)}${K.sw('B',230,30)}${G1.s}${G2.s}${G3.s}
+<text class="lbl" x="80" y="112">AND + NOT</text><text class="lbl" x="250" y="112">একটাই NAND</text>
+${K.lamp('Y1',80,378,'Y₁')}${K.lamp('Y2',250,378,'Y₂')}<text class="big" id="eqn" x="170" y="452"></text></g></svg>`;
+const L=[0,90,170,300],R=[170,90,170,300];
+const same=on=>sv=>{sv.querySelector('#eqn').textContent=on?'Y₁ = Y₂ সবসময়!':'';};
+IM.cstory(document.getElementById('st'),{svg,inputs:['A','B'],calc:v=>({A:v.A,B:v.B,P:v.A&v.B,Y1:(v.A&v.B)?0:1,Y2:(v.A&v.B)?0:1}),
+ table:{cols:['A','B','Y₁','Y₂'],rows:[[0,0],[0,1],[1,0],[1,1]]},flow:['AND+NOT','NAND','মিলিয়ে দেখো','সার্বজনীন'],
+ info:{AND:{t:'AND গেট',d:'দুটোই 1 হলে 1।'},NOT:{t:'NOT গেট',d:'উল্টে দেয়।'},NAND:{t:'NAND গেট',d:'AND এর পরে NOT। নিচের ছোট গোল দাগটাই "উল্টো" বোঝায়। দুটোই 1 হলে শুধু তখনই 0।'},sw:{t:'সুইচ',d:'চাপ দিলে 0 আর 1 বদলায়।'}},
+ onTry:(v,o)=>`A = ${v.A}, B = ${v.B} → Y₁ = <b>${o.Y1}</b>, Y₂ = <b>${o.Y2}</b>। দুটো সবসময় এক!`,
+ frames:[
+ {m:'বামে <b>AND এর পরে NOT</b>। ডানে একটাই <b>NAND</b> গেট। দুটোকে মিলিয়ে দেখবো।',v:{A:0,B:0},cam:'full',f:0,go:same(0)},
+ {m:'<b>A = 0, B = 0</b>: AND দেয় 0, NOT উল্টে করে <b>1</b>।',v:{A:0,B:0},cam:L,f:1,fill:[0],row:0,focus:'#g2',go:same(0)},
+ {m:'<b>NAND</b> একাই একই কাজ করে: আউটপুট <b>1</b>। নিচের ছোট গোল মানে "উল্টো"।',v:{A:0,B:0},cam:R,f:2,fill:[0],row:0,focus:'#g3',go:same(0)},
+ {m:'<b>A = 0, B = 1</b> আর <b>A = 1, B = 0</b>: দুই পাশেই 1।',v:{A:1,B:0},cam:'full',f:3,fill:[0,1,2],row:2,go:same(0)},
+ {m:'<b>A = 1, B = 1</b>: শুধু এখনই দুই পাশে <b>0</b>।',v:{A:1,B:1},cam:'full',f:3,fill:[0,1,2,3],row:3,go:same(1)},
+ {m:'তাই <b>NAND = AND + NOT</b>। একইভাবে <b>NOR = OR + NOT</b>।',v:{A:1,B:1},cam:'full',f:3,fill:[0,1,2,3],go:same(1)},
+ {m:'শুধু NAND (বা শুধু NOR) দিয়ে AND, OR, NOT সব বানানো যায়। তাই এরা <b>সার্বজনীন গেট</b>। নিচের ল্যাবে দেখো।',v:{A:0,B:1},cam:'full',f:4,fill:[0,1,2,3],row:1,go:same(1)}
+]});
 }/*ENDTOUR*/
 </script>

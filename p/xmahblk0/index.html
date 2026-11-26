@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=11">
+<link rel="stylesheet" href="../../a/im.css?v=12">
 <style>
 .pair{display:grid;grid-template-columns:1fr;gap:10px}
 .cbox{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:8px 8px 10px}
@@ -26,6 +26,8 @@
     <h1>ডি-মরগানের উপপাদ্য</h1>
     <p class="lead">দুটি আলাদা সার্কিট, কিন্তু ফলাফল সবসময় এক। সুইচ চেপে মিলিয়ে দেখো।</p>
   </header>
+  <section class="card" id="main"><h2>ডি-মরগান, সার্কিটে যাচাই</h2><div id="st"></div></section>
+  <h2 class="labh">🧪 এবার নিজে চেষ্টা করো</h2>
   <div class="tabs" id="tabs">
     <button class="tab m" data-k="0" aria-selected="true">(A+B)' = A'·B'</button>
     <button class="tab m" data-k="1" aria-selected="false">(A·B)' = A'+B'</button>
@@ -66,7 +68,8 @@
   </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=11"></script>
+<script src="../../a/im.js?v=12"></script>
+<script src="../../a/imstory.js?v=12"></script>
 <script>
 const {$}=IM;
 const st={A:0,B:0};
@@ -115,16 +118,33 @@ $('all').onclick=()=>{ while(k<list.length){$('steps').children[k].classList.add
 mk(); load(2);
 IM.mcq(document.getElementById('mcq3'),[{"q": "(AB)' = ?", "o": ["A'B'", "A'+B'", "A+B", "AB"], "a": 1, "w": "AND এর NOT = NOT গুলোর OR।"}, {"q": "(A+B)' = ?", "o": ["A'+B'", "A'B'", "AB", "A+B"], "a": 1, "w": "OR এর NOT = NOT গুলোর AND।"}, {"q": "ডি-মরগানে কী বদলায়?", "o": ["AND ↔ OR আর প্রতিটির NOT", "শুধু চলক", "শুধু ক্রম", "কিছুই না"], "a": 0, "w": "ভাঙো লাইন, বদলাও চিহ্ন।"}, {"q": "NAND গেট আর কোনটা সমান (ডি-মরগান অনুযায়ী)?", "o": ["ইনপুট উল্টানো OR", "ইনপুট উল্টানো AND", "XOR", "NOR"], "a": 0, "w": "(AB)' = A' + B'।"}]);
 
-/*TOUR*/{const T=IM.T;
-IM.tour([
- {m:'<b>ডি-মরগানের প্রথম উপপাদ্য</b>: (A + B)\' = A\' · B\'। OR এর NOT = NOT গুলোর AND।',do(){T.tab('0','#tabs');T.tog('#tg','A',0);T.tog('#tg','B',0);}},
- {m:'A = 0, B = 0: দুই সার্কিটেই আউটপুট <b>1</b>।',el:'#c1',do(){T.tab('0','#tabs');T.tog('#tg','A',0);T.tog('#tg','B',0);}},
- {m:'A = 1, B = 0: দুই পাশেই <b>0</b>। যেকোনো ইনপুটে দুই সার্কিট সমান।',el:'#c2',do(){T.tab('0','#tabs');T.tog('#tg','A',1);T.tog('#tg','B',0);}},
- {m:'<b>দ্বিতীয় উপপাদ্য</b>: (A · B)\' = A\' + B\'। AND এর NOT = NOT গুলোর OR।',el:'#c1',do(){T.tab('1','#tabs');T.tog('#tg','A',1);T.tog('#tg','B',1);}},
- {m:'সত্যক সারণির প্রতিটি সারিতে দুই পাশ সমান ✔',el:'#tt',do(){T.tab('1','#tabs');}},
- {m:'মনে রাখার কৌশল: <b>দাগ ভাঙো, চিহ্ন বদলাও</b>। + হবে ·, আর · হবে +।',el:'#steps',do(){T.click('#chips .chip:nth-child(1)');}},
- {m:'বড় রাশিতে ধাপে ধাপে ডি-মরগান প্রয়োগ।',el:'#steps',do(){T.click('#chips .chip:nth-child(1)');T.click('#all');}}
-]);
+/*TOUR*/{const S=IM.S;
+const K=IM.CK,G1=K.gate('NOR',80,180,'L',1,{id:'g1',w:60,t:'NOR'}),N1=K.gate('NOT',215,170,'nA',1,{id:'n1',w:44}),N2=K.gate('NOT',285,170,'nB',1,{id:'n2',w:44}),G2=K.gate('AND',250,262,'R',2,{id:'g2',w:58});
+const svg=`<svg viewBox="0 0 340 460"><g class="root">
+${K.w('A',0,[[110,78],[110,120]])}${K.w('B',0,[[230,78],[230,140]])}
+${K.w('A',1,[[110,120],[G1.i[0][0],120],G1.i[0]])}${K.w('A',1,[[110,120],[N1.i[0][0],120],N1.i[0]])}
+${K.w('B',1,[[230,140],[G1.i[1][0],140],G1.i[1]])}${K.w('B',1,[[230,140],[N2.i[0][0],140],N2.i[0]])}
+${K.w('nA',2,[N1.o,[N1.o[0],242],[G2.i[0][0],242],G2.i[0]])}${K.w('nB',2,[N2.o,[N2.o[0],248],[G2.i[1][0],248],G2.i[1]])}
+${K.w('L',2,[G1.o,[80,356]])}${K.w('R',3,[G2.o,[250,356]])}
+${K.jn('A',110,120)}${K.jn('B',230,140)}${K.sw('A',110,30)}${K.sw('B',230,30)}${G1.s}${N1.s}${N2.s}${G2.s}
+<text class="lbl" x="80" y="112">(A + B)̅</text><text class="lbl" x="250" y="112">A̅ · B̅</text>
+${K.lamp('L',80,378,'বাম')}${K.lamp('R',250,378,'ডান')}<text class="big" id="eqn" x="170" y="452"></text></g></svg>`;
+const L=[0,100,170,300],R=[165,100,175,300];
+const same=on=>sv=>{sv.querySelector('#eqn').textContent=on?'(A+B)̅ = A̅·B̅':'';};
+IM.cstory(document.getElementById('st'),{svg,inputs:['A','B'],calc:v=>({A:v.A,B:v.B,L:(v.A|v.B)?0:1,nA:v.A?0:1,nB:v.B?0:1,R:(v.A?0:1)&(v.B?0:1)}),
+ table:{cols:['A','B','বাম','ডান'],rows:[[0,0],[0,1],[1,0],[1,1]]},flow:['বাম পাশ','ডান পাশ','মিলিয়ে দেখো','সূত্র'],
+ info:{NOR:{t:'NOR = (A+B)̅',d:'আগে OR, পরে উল্টো।'},NOT:{t:'NOT গেট',d:'প্রতিটা ইনপুট আলাদা করে উল্টে দেয়।'},AND:{t:'AND গেট',d:'উল্টানো দুই ইনপুটকে গুণ করে: A̅ · B̅'},sw:{t:'সুইচ',d:'চাপ দিলে 0 আর 1 বদলায়।'}},
+ onTry:(v,o)=>`A = ${v.A}, B = ${v.B} → বাম = <b>${o.L}</b>, ডান = <b>${o.R}</b>। সবসময় সমান!`,
+ frames:[
+ {m:'ডি-মরগানের ১ম সূত্র যাচাই করবো। বামে <b>(A + B)̅</b>, ডানে <b>A̅ · B̅</b>।',v:{A:0,B:0},cam:'full',f:0,go:same(0)},
+ {m:'বাম পাশ: আগে <b>যোগ</b> (OR), তারপর পুরোটা <b>উল্টো</b>। A = 0, B = 0 → <b>1</b>।',v:{A:0,B:0},cam:L,f:1,fill:[0],row:0,focus:'#g1',go:same(0)},
+ {m:'ডান পাশ: আগে প্রতিটা <b>আলাদা উল্টো</b>, তারপর <b>গুণ</b> (AND)। ফল একই <b>1</b>।',v:{A:0,B:0},cam:R,f:2,fill:[0],row:0,focus:'#g2',go:same(0)},
+ {m:'<b>A = 0, B = 1</b>: দুই পাশেই <b>0</b>।',v:{A:0,B:1},cam:'full',f:3,fill:[0,1],row:1,go:same(0)},
+ {m:'<b>A = 1, B = 0</b>: দুই পাশেই <b>0</b>।',v:{A:1,B:0},cam:'full',f:3,fill:[0,1,2],row:2,go:same(0)},
+ {m:'<b>A = 1, B = 1</b>: দুই পাশেই <b>0</b>। চারটা সারিতেই সমান!',v:{A:1,B:1},cam:'full',f:3,fill:[0,1,2,3],row:3,go:same(1)},
+ {m:'তাই <b>(A + B)̅ = A̅ · B̅</b>। মনে রাখো: দাগ ভাঙলে <b>চিহ্ন বদলায়</b> (+ হয় ·)।',v:{A:1,B:1},cam:'full',f:4,fill:[0,1,2,3],go:same(1)},
+ {m:'২য় সূত্রও একইভাবে: <b>(A · B)̅ = A̅ + B̅</b>। নিচের ল্যাবে দেখো।',v:{A:0,B:1},cam:'full',f:4,fill:[0,1,2,3],row:1,go:same(1)}
+]});
 }/*ENDTOUR*/
 </script>
 </body>
