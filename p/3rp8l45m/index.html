@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>ভার্চুয়াল রিয়েলিটি · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=5">
+<style>
+#main{position:relative}
+.vr-top{display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center}
+.real{position:relative;border-radius:14px;background:var(--board);border:2px solid var(--line);aspect-ratio:1/1;display:grid;place-items:center;cursor:pointer}
+.real small{position:absolute;top:4px;left:0;right:0;text-align:center;font-size:.7rem;font-weight:800;color:var(--muted)}
+.real svg{width:100%;height:100%}
+.real .tag{position:absolute;bottom:4px;left:0;right:0;text-align:center;font-family:var(--f-mono);font-weight:800;font-size:.78rem;color:var(--accent)}
+.pipe{display:flex;flex-direction:column;gap:5px}
+.pipe button{font:inherit;display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:10px;border:2px solid var(--line);background:var(--panel);color:var(--ink);font-weight:700;font-size:.82rem;cursor:pointer;transition:all .25s;text-align:left}
+.pipe button i{font-style:normal;font-size:1.15rem}
+.pipe button.on{border-color:var(--signal);background:var(--signal-soft);transform:translateX(4px);box-shadow:0 0 0 3px var(--signal)}
+.pipe .ar{text-align:center;color:var(--wire-off);font-weight:900;line-height:.6;font-size:.8rem}
+.hmd{position:relative;border-radius:30px 30px 46px 46px;background:#2E3A52;padding:12px 12px 16px;transition:opacity .5s,transform .5s}
+.hmd.off{opacity:.25;transform:scale(.96)}
+.hmd .lbl{position:absolute;top:-1px;left:50%;transform:translate(-50%,-50%);background:var(--accent);color:#fff;font-size:.7rem;font-weight:800;padding:1px 10px;border-radius:999px;white-space:nowrap}
+.eyes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.eye{position:relative;height:118px;border-radius:40% 40% 46% 46%/34% 34% 50% 50%;overflow:hidden;background:#BFE3FF;touch-action:none;cursor:grab}
+.eye small{position:absolute;bottom:3px;left:0;right:0;text-align:center;font-size:.62rem;font-weight:800;color:#0B2350;opacity:.7;z-index:3}
+.pano{position:absolute;top:0;left:0;height:100%;width:1620px;will-change:transform}
+.pano .sky{position:absolute;inset:0 0 38% 0;background:linear-gradient(#8CCBFF,#D6EEFF)}
+.pano .gnd{position:absolute;inset:62% 0 0 0;background:linear-gradient(#8BD17C,#5DAA55)}
+.pano span{position:absolute;font-size:2rem;transform:translateX(-50%);transition:opacity .4s}
+.pano span.flash{animation:pop .5s ease-out}
+.vhand{position:absolute;z-index:4;font-size:1.6rem;left:50%;top:60%;transform:translate(-50%,-50%);opacity:0;transition:opacity .3s,transform .6s}
+.vhand.on{opacity:1}
+.yaw{display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap}
+.yaw button{font:inherit;font-weight:800;font-size:.85rem;padding:6px 12px;border-radius:999px;border:2px solid var(--accent);background:var(--panel);color:var(--accent);cursor:pointer;min-height:38px}
+.yaw button.on{background:var(--accent);color:#fff}
+.hz{font-family:var(--f-mono);font-weight:800;color:var(--accent);font-size:.85rem;text-align:center;min-height:1.2em}
+.wave{position:absolute;inset:0;pointer-events:none}
+</style>
+</head>
+<body class="kit">
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ১ · ১.১৩ ভার্চুয়াল রিয়েলিটি (Virtual Reality)</span>
+    <h1>চশমার ভিতরের জগৎ</h1>
+    <p class="lead">মাথা ঘোরালে VR চশমার ভিতরের দৃশ্যও কেন ঘোরে? ▶ চাপো আর দেখো সেন্সর, কম্পিউটার আর স্ক্রিন মিলে কীভাবে "সত্যি মনে হওয়া" জগৎ বানায়। নিচের দৃশ্যে আঙুল টেনে নিজেও চারপাশ দেখতে পারো।</p>
+  </header>
+  <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
+  <section class="card" id="main">
+    <div class="vr-top">
+      <div class="real" id="real"><small>বাস্তবে তুমি (উপর থেকে)</small>
+        <svg viewBox="0 0 120 120"><g id="cone" opacity=".25"><path d="M60 64 L30 6 L90 6 Z" fill="var(--signal)"/></g>
+          <g id="head"><circle cx="60" cy="64" r="22" fill="#F4C9A0" stroke="#B07A50" stroke-width="2"/><path d="M50 44 L60 34 L70 44 Z" fill="#B07A50"/>
+            <rect id="hs" x="40" y="40" width="40" height="12" rx="5" fill="#2E3A52"/><rect x="36" y="58" width="6" height="16" rx="3" fill="#2E3A52" id="ear1"/><rect x="78" y="58" width="6" height="16" rx="3" fill="#2E3A52" id="ear2"/></g>
+          <text id="glove" x="98" y="104" font-size="20" opacity="0">🧤</text></svg>
+        <span class="tag" id="deg">০°</span></div>
+      <div class="pipe" id="pipe">
+        <button data-p="s"><i>🎯</i>সেন্সর: মাথা কোন দিকে?</button><div class="ar">▼</div>
+        <button data-p="c"><i>💻</i>কম্পিউটার: নতুন ছবি বানায়</button><div class="ar">▼</div>
+        <button data-p="d"><i>🥽</i>স্ক্রিন: চোখের সামনে দেখায়</button>
+      </div>
+    </div>
+    <div class="hz" id="hz"></div>
+    <div class="hmd off" id="hmd"><span class="lbl">🥽 হেড মাউন্টেড ডিসপ্লে (HMD)</span>
+      <div class="eyes"><div class="eye" id="eL"><div class="pano" id="pL"></div><span class="vhand" id="hL">🖐️</span><small>বাম চোখ</small></div><div class="eye" id="eR"><div class="pano" id="pR"></div><span class="vhand" id="hR">🖐️</span><small>ডান চোখ</small></div></div>
+    </div>
+    <div class="yaw"><button id="lf">◀ বামে</button><button id="gy">📱 ফোন ঘোরাও</button><button id="rt">ডানে ▶</button></div>
+  </section>
+  <section class="card">
+    <h2>VR এর যন্ত্রপাতি (টাচ করো)</h2>
+    <div id="cx0"></div>
+  </section>
+  <section class="card">
+    <h2>বাস্তব বনাম ভার্চুয়াল (টাচ করো)</h2>
+    <div id="cx1"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>ভার্চুয়াল রিয়েলিটি:</b> প্রকৃত অর্থে বাস্তব নয়, কিন্তু বাস্তবের চেতনা জাগায় এমন কম্পিউটার নিয়ন্ত্রিত ত্রিমাত্রিক পরিবেশ। এটি <b>সিমুলেশন</b> (অনুকরণ) ও <b>মডেলিং</b> এর উপর প্রতিষ্ঠিত।</li>
+      <li>দুই চোখে একটু আলাদা ছবি দেখানো হয় (স্টেরিওস্কোপিক), তাই মস্তিষ্ক গভীরতা বুঝে, দৃশ্য ত্রিমাত্রিক লাগে।</li>
+      <li>সেন্সর → কম্পিউটার → স্ক্রিন, এই চক্র সেকেন্ডে অনেকবার ঘোরে। তাই মনে হয় সত্যিই ওই জগতে আছি (টেলিপ্রেজেন্স)।</li>
+      <li>ব্যবহার: সিমুলেটেড সার্জারি, ফ্লাইট সিমুলেটর, গাড়ি চালনা প্রশিক্ষণ, ত্রিমাত্রিক গেম, ভার্চুয়াল ভ্রমণ।</li>
+      <li>নেতিবাচক দিক: দাম বেশি, কল্পনা আর বাস্তব গুলিয়ে ফেলা, চোখ ও কানের ক্ষতি, ডিহিউম্যানাইজেশন।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
+<script src="../../a/im.js?v=5"></script>
+<script>
+const {$,say,bn}=IM;
+const W=1440,EYE=()=>$('eL').clientWidth;
+const SCN={
+ nat:[['☀️',0,14],['🏔️',-25,40],['🌳',20,58],['🏠',50,54],['🐄',80,66],['🌴',110,56],['⛰️',140,42],['🏡',170,58],['🌻',200,70],['🌳',230,58],['🐐',260,66],['🏞️',290,50],['🌲',320,58],['☁️',340,16],['☁️',100,18],['🐦',60,22],['☁️',200,14]],
+ med:[['🛏️',0,60],['🩺',-30,46],['💉',40,48],['🖥️',80,44],['🧑‍⚕️',120,56],['💊',160,62],['🩻',200,40],['🧪',240,60],['🏥',280,44],['🫀',320,56]],
+ fly:[['☁️',0,22],['☁️',40,34],['🌄',80,58],['☁️',120,20],['🛩️',160,38],['🏙️',200,62],['☁️',240,26],['🌅',280,58],['🦅',320,30],['☁️',-20,40]],
+ game:[['👾',0,38],['🏰',40,52],['🐉',80,30],['💎',120,64],['🧟',160,58],['🗡️',200,60],['👻',240,36],['🍄',280,66],['⭐',320,22]]};
+let scn='nat',yaw=0,anim=null,gen=0;
+function drawPano(){const items=SCN[scn];['pL','pR'].forEach(id=>{$(id).innerHTML='<div class="sky"></div><div class="gnd"></div>'+[0,1,2].map(r=>items.map(([e,a,y])=>`<span style="left:${(((a%360)+360)%360)*1.5+r*540}px;top:${y}%">${e}</span>`).join('')).join('');});}
+function setYaw(v){yaw=((v%360)+540)%360-180;$('head').setAttribute('transform',`rotate(${yaw} 60 64)`);$('cone').setAttribute('transform',`rotate(${yaw} 60 64)`);
+  $('deg').textContent=(yaw>0?'ডানে ':yaw<0?'বামে ':'')+bn(Math.abs(Math.round(yaw)))+'°';
+  const ew=EYE(),off=-(((yaw+360)%360)*1.5)-540+ew/2;
+  $('pL').style.transform=`translateX(${off}px)`;
+  $('pR').style.transform=`translateX(${off-7}px)`;}
+function turnTo(target,ms,done){cancelAnimationFrame(anim);const g=gen,from=yaw,d=((target-from+540)%360)-180,t0=performance.now(),dur=IM.reduce()?1:ms/player.speed;
+  const f=t=>{if(g!==gen)return;const p=Math.min(1,(t-t0)/dur),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;setYaw(from+d*e);if(p<1)anim=requestAnimationFrame(f);else done&&done();};anim=requestAnimationFrame(f);}
+function pipe(which){$('pipe').querySelectorAll('button').forEach(b=>b.classList.toggle('on',which.includes(b.dataset.p)));}
+const later=(ms,fn)=>{const g=gen;setTimeout(()=>{if(g===gen)fn();},ms/player.speed);};
+function cycle(target){pipe('s');later(450,()=>pipe('c'));later(900,()=>{pipe('d');turnTo(target,900);});later(1900,()=>pipe(''));}
+const S=[
+ {y:0,hmd:0,m:'বাস্তবে তুমি একটা ঘরে বসে আছো। <b>ভার্চুয়াল রিয়েলিটি</b> মানে কম্পিউটারে বানানো এমন এক ত্রিমাত্রিক জগৎ, যেটা বাস্তব নয় কিন্তু একদম সত্যি মনে হয়।'},
+ {y:0,hmd:1,m:'মাথায় পরলাম <b>হেড মাউন্টেড ডিসপ্লে (HMD)</b>। ভিতরে দুই চোখের জন্য দুইটা আলাদা স্ক্রিন। খেয়াল করো, দুই ছবি একটু সরানো (স্টেরিওস্কোপিক), তাই দৃশ্য ত্রিমাত্রিক লাগে।'},
+ {y:60,hmd:1,cyc:1,m:'মাথা <b>ডানে</b> ঘোরালাম। ① সেন্সর ধরলো মাথা ৬০° ঘুরেছে → ② কম্পিউটার নতুন দিকের ছবি বানালো → ③ স্ক্রিনে দেখালো। তাই চশমার ভিতরের দৃশ্যও ডানে ঘুরলো!'},
+ {y:-90,hmd:1,cyc:1,m:'এবার <b>বামে</b> ঘোরালাম। আবার সেই চক্র: সেন্সর → কম্পিউটার → স্ক্রিন। তুমি যেদিকে তাকাও, কম্পিউটার সেদিকের ছবি দেখায়।'},
+ {y:-90,hmd:1,fps:1,m:'এই চক্র <b>সেকেন্ডে ৬০ থেকে ৯০ বার</b> ঘোরে। এত দ্রুত বলে কোনো দেরি টের পাওয়া যায় না, মনে হয় সত্যিই ওখানে আছি। একে বলে <b>টেলিপ্রেজেন্স</b>।'},
+ {y:0,hmd:1,glove:1,m:'হাতে <b>ডেটা গ্লাভস 🧤</b> পরলে হাতের নড়াচড়াও সেন্সর ধরে। চশমার ভিতরে ভার্চুয়াল হাত 🖐️ দেখা যায়, জিনিস ধরা যায়। বডি স্যুট পরলে পুরো শরীরের নড়াচড়া।'},
+ {y:0,hmd:1,scn:'med',m:'ব্যবহার ১: <b>চিকিৎসা</b>। নতুন ডাক্তাররা সিমুলেটেড রোগীর উপর সার্জারি শেখে, আসল রোগীর ঝুঁকি ছাড়াই।'},
+ {y:0,hmd:1,scn:'fly',m:'ব্যবহার ২: <b>ফ্লাইট সিমুলেটর</b>। পাইলট আর সৈন্যরা মাটিতে বসেই আকাশে ওড়ার প্রশিক্ষণ নেয়।'},
+ {y:0,hmd:1,scn:'game',m:'ব্যবহার ৩: <b>গেম ও বিনোদন</b>। VR জগৎ বাস্তবের মতো হতে পারে, আবার একদম কাল্পনিকও হতে পারে। এখন ◀ ▶ চাপো, দৃশ্যে আঙুল টানো, বা ফোন ঘোরাও!'}];
+function render(k,prev){gen++;const s=S[k],fwd=prev===k-1&&!IM.reduce();cancelAnimationFrame(anim);pipe('');
+  const sc=s.scn||'nat';if(sc!==scn){scn=sc;drawPano();}
+  $('hmd').classList.toggle('off',!s.hmd);$('glove').setAttribute('opacity',s.glove?1:0);
+  ['hL','hR'].forEach(h=>{$(h).classList.toggle('on',!!s.glove);});
+  if(s.glove&&fwd){later(500,()=>['hL','hR'].forEach(h=>$(h).style.transform='translate(-30%,-80%) rotate(-15deg)'));later(1100,()=>['hL','hR'].forEach(h=>$(h).style.transform='translate(-50%,-50%)'));}
+  $('hz').textContent=s.fps?'🔁 সেন্সর → কম্পিউটার → স্ক্রিন : সেকেন্ডে ৬০–৯০ বার':'';
+  if(s.fps&&fwd){let n=0;const spin=()=>{pipe('scd'[n%3]);n++;if(n<9)later(160,spin);else pipe('');};spin();}
+  if(s.cyc&&fwd)cycle(s.y);else if(fwd&&s.y!==Math.round(yaw))turnTo(s.y,800);else setYaw(s.y);
+  say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+var player=IM.player({count:()=>S.length,show:render,interval:3400});
+// manual look-around
+const manual=(d)=>{gen++;$('hmd').classList.remove('off');pipe('s');setTimeout(()=>pipe('c'),120);setTimeout(()=>pipe('d'),240);setTimeout(()=>pipe(''),700);turnTo(yaw+d,500);};
+$('lf').onclick=()=>{player.stop();manual(-45);};$('rt').onclick=()=>{player.stop();manual(45);};
+['eL','eR'].forEach(id=>{const e=$(id);let x0=null,y0=0;
+  e.addEventListener('pointerdown',ev=>{x0=ev.clientX;y0=yaw;e.setPointerCapture(ev.pointerId);player.stop();gen++;$('hmd').classList.remove('off');pipe('s');});
+  e.addEventListener('pointermove',ev=>{if(x0===null)return;setYaw(y0-(ev.clientX-x0)/2);});
+  e.addEventListener('pointerup',()=>{x0=null;pipe('');});});
+let gyOn=false,g0=null;
+function onOri(e){if(e.alpha==null)return;if(g0===null)g0=e.alpha;gen++;$('hmd').classList.remove('off');setYaw(-(e.alpha-g0));}
+$('gy').onclick=async()=>{player.stop();
+  if(gyOn){removeEventListener('deviceorientation',onOri);gyOn=false;$('gy').classList.remove('on');$('gy').textContent='📱 ফোন ঘোরাও';return;}
+  try{if(window.DeviceOrientationEvent&&typeof DeviceOrientationEvent.requestPermission==='function'){const r=await DeviceOrientationEvent.requestPermission();if(r!=='granted')throw 0;}
+    if(!('DeviceOrientationEvent' in window))throw 0;
+    g0=null;addEventListener('deviceorientation',onOri);gyOn=true;$('gy').classList.add('on');$('gy').textContent='⏹ বন্ধ করো';
+    say('📱 ফোনই এখন সেন্সর','ফোনটা হাতে নিয়ে নিজে ডানে-বামে ঘোরো। ফোনের ভিতরের গাইরোস্কোপ সেন্সর ঘোরা ধরছে, আর দৃশ্যও সেই দিকে ঘুরছে। আসল VR চশমাও ঠিক এভাবেই কাজ করে!',true);
+  }catch(e){say('এই ডিভাইসে হচ্ছে না','এই ফোন বা ব্রাউজারে ঘোরার সেন্সর পাওয়া যায়নি। ◀ ▶ বোতাম চাপো বা দৃশ্যের উপর আঙুল টেনে দেখো।',true);}};
+IM.tapx($('pipe'),{s:{t:'🎯 মোশন সেন্সর',d:'মাথা বা হাত কোন দিকে কতটুকু নড়লো তা মাপে (যেমন গাইরোস্কোপ, অ্যাক্সিলারোমিটার)।'},c:{t:'💻 কম্পিউটার',d:'সেন্সরের তথ্য নিয়ে মুহূর্তেই নতুন দিকের ত্রিমাত্রিক ছবি বানায় (সিমুলেশন ও মডেলিং)।'},d:{t:'🥽 স্ক্রিন (HMD)',d:'চোখের ঠিক সামনে দুইটা ছোট স্ক্রিন। দুই চোখে একটু আলাদা ছবি দেখায়, তাই দৃশ্য ত্রিমাত্রিক লাগে।'}});
+$('pipe').querySelectorAll('button').forEach(b=>b.dataset.x=b.dataset.p);
+$('real').onclick=()=>say('বাস্তবে তুমি','উপর থেকে দেখা তোমার মাথা। হলুদ ত্রিভুজটা তুমি যেদিকে তাকিয়ে আছো। মাথা ঘুরলে এটাও ঘোরে।',true);
+IM.compare($('cx0'),['যন্ত্র','কাজ'],[
+ ['🥽 HMD','চোখের সামনে ত্রিমাত্রিক দৃশ্য','হেড মাউন্টেড ডিসপ্লে: হেলমেট বা চশমার ভিতরে দুই চোখের জন্য দুই স্ক্রিন (স্টেরিওস্কোপিক)।'],
+ ['🧤 ডেটা গ্লাভস','হাতের নড়াচড়া ধরে','আঙুল ও হাতের নড়াচড়া সেন্সর দিয়ে কম্পিউটারে পাঠায়। ভার্চুয়াল জিনিস ধরা যায়।'],
+ ['🦺 বডি স্যুট','পুরো শরীরের নড়াচড়া','শরীরের বিভিন্ন জায়গায় সেন্সর থাকে। কিছু স্যুট স্পর্শের অনুভূতিও দেয়।'],
+ ['🎧 হেডফোন','ত্রিমাত্রিক শব্দ','কোন দিক থেকে শব্দ আসছে তা বোঝা যায়, তাই আরও বাস্তব লাগে।'],
+ ['🎯 মোশন সেন্সর','মাথা কোন দিকে তা মাপে','গাইরোস্কোপ, অ্যাক্সিলারোমিটার। এর তথ্য ধরেই দৃশ্য বদলায়।']]);
+IM.compare($('cx1'),['','বাস্তব জগৎ','ভার্চুয়াল জগৎ'],[
+ ['কে বানায়','প্রকৃতি','কম্পিউটার (সিমুলেশন)','ভার্চুয়াল জগৎ পুরোটাই কম্পিউটারে মডেলিং করে বানানো।'],
+ ['ঝুঁকি','ভুল করলে আসল ক্ষতি','ভুল করলেও ক্ষতি নেই','তাই সার্জারি, বিমান চালনার মতো ঝুঁকির কাজ VR এ শেখা হয়।'],
+ ['দেখতে','যেমন আছে তেমন','বাস্তবের মতো বা কাল্পনিক','VR গেমে ড্রাগন থাকতে পারে, যা বাস্তবে নেই।'],
+ ['অনুভূতি','সত্যি','সত্যি মনে হয় (টেলিপ্রেজেন্স)','দ্রুত সেন্সর-কম্পিউটার-স্ক্রিন চক্রের কারণে মস্তিষ্ক এটাকে সত্যি ভাবে।']]);
+IM.mcq($('quiz6'),[
+ {q:'ভার্চুয়াল রিয়েলিটি কোন তত্ত্বের উপর প্রতিষ্ঠিত?',o:['সিমুলেশন','রোবটিকস','ক্রায়োজেনিক','ন্যানো'],a:0,w:'ভার্চুয়াল রিয়েলিটি সিমুলেশন (অনুকরণ) তত্ত্বের উপর প্রতিষ্ঠিত।'},
+ {q:'দুই চোখে একটু আলাদা ছবি দেখানোকে বলে—',o:['টেলিপ্রেজেন্স','স্টেরিওস্কোপিক','বায়োমেট্রিক','হলোগ্রাম'],a:1,w:'স্টেরিওস্কোপিক ছবিতে গভীরতা বোঝা যায়, তাই ত্রিমাত্রিক লাগে।'},
+ {q:'হাতের নড়াচড়া কম্পিউটারে পাঠায় কোনটি?',o:['HMD','হেডফোন','ডেটা গ্লাভস','মনিটর'],a:2,w:'ডেটা গ্লাভসে সেন্সর থাকে।'},
+ {q:'পাইলট প্রশিক্ষণে VR এর ব্যবহার—',o:['টেলিমেডিসিন','ফ্লাইট সিমুলেটর','ই-কমার্স','GPS'],a:1,w:'ফ্লাইট সিমুলেটরে মাটিতে বসেই ওড়া শেখা যায়।'}]);
+drawPano();setYaw(0);addEventListener('resize',()=>setYaw(yaw));
+player.reset();
+</script>
+</body>
+</html>
