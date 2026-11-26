@@ -10,11 +10,11 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
 <link rel="stylesheet" href="../../a/im.css?v=6">
 <style>
-.big{font-size:26px;text-anchor:middle;dominant-baseline:central}
-.mid{font-size:18px;text-anchor:middle;dominant-baseline:central}
-.rd{font-size:10px;font-weight:800;fill:var(--bad);text-anchor:middle}
-.scr{font-size:9px;font-weight:800;fill:var(--accent);text-anchor:middle}
-.road{stroke:#B8C4D9;stroke-width:8;stroke-linecap:round}
+svg.scene .big{font-size:26px;text-anchor:middle;dominant-baseline:central}
+svg.scene .mid{font-size:18px;text-anchor:middle;dominant-baseline:central}
+svg.scene .rd{font-size:10px;font-weight:800;fill:var(--bad);text-anchor:middle}
+svg.scene .scr{font-size:9px;font-weight:800;fill:var(--accent);text-anchor:middle}
+svg.scene .road{stroke:#B8C4D9;stroke-width:8;stroke-linecap:round}
 </style>
 </head>
 <body class="kit">
@@ -47,7 +47,7 @@
       <line class="road" x1="30" y1="200" x2="330" y2="200"/>
       <text class="sm" x="180" y="222" id="km">গ্রাম থেকে শহর: ৩০০ কিলোমিটার</text>
       <text id="bus" class="mid" x="0" y="0" transform="translate(40,196)">🚌</text>
-      <text id="tag" class="lbl" x="180" y="182" fill="var(--signal)"></text>
+      <text id="tag" class="lbl" x="180" y="182" style="fill:var(--signal)"></text>
     </svg>
     </div>
     <div class="parts" id="parts"><button data-k="t" data-x="t">⏱️ সময় বাঁচে</button><button data-k="m" data-x="m">💰 খরচ কমে</button><button data-k="s" data-x="s">👨‍⚕️ বিশেষজ্ঞ পাওয়া যায়</button></div>

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>মোবাইল যোগাযোগ · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=6">
+<style>
+svg.scene .hex{stroke:#fff;stroke-width:2;transition:fill .5s,opacity .4s}
+svg.scene .hex.f0{fill:#D6EAF8}svg.scene .hex.f1{fill:#D5F5E3}svg.scene .hex.f2{fill:#FCF3CF}
+svg.scene .hex.plain{fill:#E8EEF8}
+svg.scene .hex.cur{stroke:var(--signal);stroke-width:4}
+svg.scene .tow{font-size:14px;text-anchor:middle;dominant-baseline:central}
+svg.scene .fl{font-family:var(--f-mono);font-size:9px;font-weight:800;text-anchor:middle;fill:var(--muted)}
+svg.scene .link{stroke:var(--signal);stroke-width:2.5;stroke-dasharray:4 3;animation:dashmv .6s linear infinite}
+svg.scene .ho{font-size:13px;font-weight:800;text-anchor:middle;fill:var(--signal);opacity:0}
+svg.scene .gen rect{fill:var(--panel);stroke:var(--line);stroke-width:2;transition:all .3s}
+svg.scene .gen.on rect{fill:var(--signal-soft);stroke:var(--signal)}
+svg.scene .gen text.g{font-size:16px;font-weight:800;text-anchor:middle;fill:var(--accent)}
+svg.scene .gen text.e{font-size:18px;text-anchor:middle;dominant-baseline:central}
+svg.scene .gen text.d{font-size:8.5px;font-weight:700;text-anchor:middle;fill:var(--ink)}
+</style>
+</head>
+<body class="kit">
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ২ · ২.৫ মোবাইল যোগাযোগ: সেলুলার নেটওয়ার্ক</span>
+    <h1>চলতে চলতে কথা বলা যায় কীভাবে</h1>
+    <p class="lead">বাসে বসে কথা বলতে বলতে তুমি অনেক টাওয়ার পার হয়ে যাও, তবু কল কাটে না। কেন? ▶ চাপো আর দেখো ষড়ভুজ সেল, টাওয়ার আর হ্যান্ডওভারের খেলা। শেষে দেখো 1G থেকে 5G।</p>
+  </header>
+  <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
+  <section class="card" id="main">
+    <div class="sbox">
+    <svg class="scene" id="sv" viewBox="0 0 360 230">
+      <g id="H"><g id="hexes"></g><g id="lk"></g>
+        <text id="ph" class="tow" x="0" y="0" font-size="18" style="display:none">📱</text>
+        <text id="ho" class="ho" x="180" y="214">🔁 হ্যান্ডওভার!</text>
+        <g id="msc" style="display:none"><rect x="140" y="196" width="80" height="26" rx="6" fill="#2E3A52"/><text x="180" y="213" font-size="10" font-weight="800" text-anchor="middle" style="fill:#fff">🖥️ MSC</text></g>
+      </g>
+      <g id="G" style="display:none"></g>
+      <text id="ttl" class="lbl" x="180" y="14" style="fill:var(--accent)"></text>
+    </svg>
+    </div>
+  </section>
+  <section class="card">
+    <h2>মোবাইলের প্রজন্ম (টাচ করো)</h2>
+    <div id="cx0"></div>
+  </section>
+  <section class="card">
+    <h2>GSM বনাম CDMA (টাচ করো)</h2>
+    <div id="cx1"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li>মোবাইল সেবাদাতা পুরো এলাকাকে ছোট ছোট <b>সেলে</b> ভাগ করে, প্রতিটি সেলে একটি <b>বেস স্টেশন (টাওয়ার)</b>। সেল সাধারণত <b>ষড়ভুজাকার</b>।</li>
+      <li>একই ফ্রিকোয়েন্সি আবার ব্যবহার করা যায়, তবে <b>পাশের সেলে নয়</b> (ফ্রিকোয়েন্সি পুনঃব্যবহার)।</li>
+      <li><b>হ্যান্ডওভার (হ্যান্ড-অফ):</b> কথা বলা অবস্থায় এক সেল থেকে আরেক সেলে গেলে কল না কেটে নতুন সেলের বেস স্টেশনে হস্তান্তর।</li>
+      <li>1G অ্যানালগ (AMPS, ১৯৮৩), 2G ডিজিটাল (GSM, SMS), 3G ২ Mbps+ (ভিডিও কল), 4G IP ভিত্তিক (১০০ Mbps – ১ Gbps, LTE)।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
+<script src="../../a/im.js?v=6"></script>
+<script>
+const {$,say,bn}=IM;const Q=IM.seq(),sv=$('sv');
+const R=33,W=Math.sqrt(3)*R,CS=[];
+for(let row=0;row<3;row++)for(let col=0;col<5;col++){const x=44+col*W+(row%2?W/2:0),y=58+row*1.5*R;if(x>340)continue;const q=col-(row-(row&1))/2;CS.push({x,y,f:(((q-row)%3)+3)%3});}
+const hp=(x,y)=>Array.from({length:6},(_,i)=>{const a=Math.PI/180*(60*i-30);return `${(x+R*Math.cos(a)).toFixed(1)},${(y+R*Math.sin(a)).toFixed(1)}`;}).join(' ');
+$('hexes').innerHTML=CS.map((c,i)=>`<polygon class="hex plain" id="h${i}" points="${hp(c.x,c.y)}"/><text class="tow" id="t${i}" x="${c.x}" y="${c.y-4}">📡</text><text class="fl" id="f${i}" x="${c.x}" y="${c.y+14}"></text>`).join('');
+const hex=(mode,cur)=>CS.forEach((c,i)=>{$('h'+i).setAttribute('class','hex '+(mode==='f'?'f'+c.f:'plain')+(i===cur?' cur':''));$('f'+i).textContent=mode==='f'?'F'+bn(c.f+1):'';});
+const near=(x,y)=>{let b=0,d=1e9;CS.forEach((c,i)=>{const e=Math.hypot(c.x-x,c.y-y);if(e<d){d=e;b=i;}});return b;};
+const link=(x,y,i,j)=>{$('lk').innerHTML=`<line class="link" x1="${x}" y1="${y}" x2="${CS[i].x}" y2="${CS[i].y-4}"/>`+(j!=null?`<line class="link" x1="${CS[i].x}" y1="${CS[i].y}" x2="180" y2="200"/>`:'');};
+function phone(x,y){const p=$('ph');p.style.display='';p.setAttribute('transform',`translate(${x},${y})`);}
+const GN=[['1G','📞','অ্যানালগ কথা','AMPS, ১৯৮৩'],['2G','✉️','ডিজিটাল, SMS','GSM, CDMA'],['3G','🎥','ভিডিও কল','২ Mbps+'],['4G','🎬','HD ভিডিও','IP ভিত্তিক, LTE'],['5G','🚀','আরও দ্রুত','নতুন প্রজন্ম']];
+$('G').innerHTML=GN.map(([g,e,d,s],i)=>`<g class="gen" id="g${i}"><rect x="${8+i*70}" y="40" width="64" height="150" rx="10"/><text class="g" x="${40+i*70}" y="66">${g}</text><text class="e" x="${40+i*70}" y="100">${e}</text><text class="d" x="${40+i*70}" y="134">${d}</text><text class="d" x="${40+i*70}" y="150" style="fill:var(--muted)">${s}</text></g>`).join('')+'<line x1="20" y1="208" x2="340" y2="208" stroke="var(--accent)" stroke-width="3"/><text class="sm" x="180" y="224">সময়ের সাথে গতি ও সুবিধা বাড়ছে →</text>';
+const S=[
+ {t:'এলাকাকে সেলে ভাগ করা',m:'মোবাইল সেবাদাতা পুরো এলাকাকে ছোট ছোট ভাগে ভাগ করে, প্রতিটা ভাগকে বলে <b>সেল</b>। সেল সাধারণত <b>ষড়ভুজ (মৌচাকের মতো)</b>। প্রতিটা সেলের মাঝে একটা <b>বেস স্টেশন বা টাওয়ার 📡</b>।',
+  f(){hex('p');CS.forEach((c,i)=>{$('h'+i).style.opacity=0;$('t'+i).style.opacity=0;Q.later(i*110,()=>{$('h'+i).style.opacity=1;$('t'+i).style.opacity=1;});});}},
+ {t:'ফ্রিকোয়েন্সি পুনঃব্যবহার',m:'প্রতিটা সেলকে কিছু <b>ফ্রিকোয়েন্সি</b> দেওয়া হয় (F১, F২, F৩)। একই ফ্রিকোয়েন্সি দূরের সেলে <b>আবার ব্যবহার</b> করা যায়, কিন্তু <b>পাশের সেলে কখনো নয়</b>, নইলে সিগন্যাল গুলিয়ে যায়। দেখো, পাশাপাশি দুটো সেলের রং কখনো এক না।',
+  f(){hex('p');[0,1,2].forEach(f=>Q.later(f*700,()=>CS.forEach((c,i)=>{if(c.f===f){$('h'+i).setAttribute('class','hex f'+f);$('f'+i).textContent='F'+bn(f+1);}})));}},
+ {t:'কল কীভাবে যায়',m:'তুমি কল দিলে ফোন সিগন্যাল পাঠায় <b>নিজের সেলের টাওয়ারে</b>। টাওয়ার পাঠায় <b>মোবাইল সুইচিং সেন্টারে (MSC)</b>, সেখান থেকে বন্ধুর সেলের টাওয়ারে, তারপর বন্ধুর ফোনে।',f(){hex('f');const a=CS[5],b=CS[9];$('msc').style.display='';phone(a.x+12,a.y+14);
+   $('lk').innerHTML=`<text class="tow" x="${b.x+12}" y="${b.y+14}" font-size="18">📱</text>`;
+   const g=()=>{IM.emit(sv,[[a.x+12,a.y+10],[a.x,a.y-4],[180,205]],'',{r:5,dur:900,done(){IM.emit(sv,[[180,205],[b.x,b.y-4],[b.x+12,b.y+10]],'',{r:5,dur:900,cls:'blue'});}});Q.later(700,g);};g();}},
+ {t:'হ্যান্ডওভার: চলন্ত অবস্থায় কল',m:'এবার তুমি বাসে বসে কথা বলছো 🚌। এক সেল ছেড়ে পাশের সেলে ঢুকলেই সংযোগ <b>নতুন টাওয়ারে হস্তান্তর</b> হয়ে যায়, কল কাটে না। একে বলে <b>হ্যান্ডওভার বা হ্যান্ড-অফ</b>। (1G তে এটা ছিল না, কল কেটে যেত!)',
+  f(){hex('f');let cur=-1;const t0=performance.now(),g=Q.g,dur=6000/player.speed;const P=[[20,100],[340,108]];
+   const f=t=>{if(g!==Q.g)return;const p=((t-t0)%dur)/dur,x=P[0][0]+(P[1][0]-P[0][0])*p,y=P[0][1]+(P[1][1]-P[0][1])*p;phone(x,y);const n=near(x,y);
+    if(n!==cur){cur=n;hex('f',n);if(p>.02)$('ho').animate([{opacity:0},{opacity:1},{opacity:0}],{duration:900});}link(x,y,cur);requestAnimationFrame(f);};requestAnimationFrame(f);}},
+ {t:'মোবাইলের প্রজন্ম',gen:1,m:'মোবাইল প্রযুক্তি ধাপে ধাপে উন্নত হয়েছে: <b>1G</b> অ্যানালগ কথা (১৯৮৩, AMPS) → <b>2G</b> ডিজিটাল, SMS → <b>3G</b> ২ Mbps+, ভিডিও কল → <b>4G</b> পুরোপুরি IP ভিত্তিক, ১০০ Mbps–১ Gbps → এখন <b>5G</b>।',
+  f(){GN.forEach((_,i)=>{const g=$('g'+i);g.style.opacity=0;Q.later(i*600,()=>{g.style.opacity=1;GN.forEach((_,j)=>$('g'+j).classList.toggle('on',j===i));g.animate([{transform:'translateY(14px)'},{transform:'none'}],{duration:400});});});}}];
+function render(k){const s=S[k];Q.bump();sv.querySelectorAll('.pk').forEach(e=>e.remove());$('ttl').textContent=s.t;$('H').style.display=s.gen?'none':'';$('G').style.display=s.gen?'':'none';
+  $('lk').innerHTML='';$('ph').style.display='none';$('msc').style.display='none';CS.forEach((c,i)=>{$('h'+i).style.opacity=1;$('t'+i).style.opacity=1;});s.f();say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+var player=IM.player({count:()=>S.length,show:render,interval:5200,swipe:$('sv')});
+IM.compare($('cx0'),['প্রজন্ম','মূল বৈশিষ্ট্য','উদাহরণ'],[
+ ['1G','অ্যানালগ সিগন্যাল, FDMA','AMPS, NMT, TACS','চলার সময় সেল বদলালে কল কেটে যেত।'],
+ ['2G','ডিজিটাল, SMS-MMS, প্রিপেইড চালু','GSM, CDMA, D-AMPS','হ্যান্ডওভারে কল অবিচ্ছিন্ন থাকে।'],
+ ['3G','২ Mbps+, ভিডিও কল, আন্তর্জাতিক রোমিং','UMTS, W-CDMA, EDGE, HSPA','প্যাকেট ও সার্কিট দুই সুইচিং।'],
+ ['4G','IP ভিত্তিক, ১০০ Mbps – ১ Gbps','LTE, WiMAX 2','3G এর চেয়ে প্রায় ৫০ গুণ দ্রুত।']]);
+IM.compare($('cx1'),['','GSM','CDMA'],[
+ ['পূর্ণরূপ','Global System for Mobile Communication','Code Division Multiple Access','CDMA আবিষ্কার করে কোয়ালকম।'],
+ ['কার্ড','সিম (SIM)','RUIM','সিম এক ধরনের IC, নিরাপদে তথ্য রাখে।'],
+ ['পদ্ধতি','FDMA ও TDMA','প্রত্যেককে আলাদা কোড','CDMA তে সবাই একই ফ্রিকোয়েন্সি, আলাদা কোড।'],
+ ['বাংলাদেশে','গ্রামীণফোন, বাংলালিংক, রবি, টেলিটক','সিটিসেল (এখন বন্ধ)','বেশিরভাগ অপারেটর GSM।']]);
+IM.mcq($('quiz6'),[
+ {q:'সেলুলার নেটওয়ার্কে সেল সাধারণত কোন আকৃতির?',o:['বর্গ','ত্রিভুজ','ষড়ভুজ','বৃত্ত'],a:2,w:'ষড়ভুজাকার সেলই প্রচলিত।'},
+ {q:'চলন্ত অবস্থায় কল এক টাওয়ার থেকে আরেক টাওয়ারে হস্তান্তরকে বলে—',o:['রোমিং','হ্যান্ডওভার','ব্রডকাস্ট','মডুলেশন'],a:1,w:'হ্যান্ডওভার বা হ্যান্ড-অফ।'},
+ {q:'কোন প্রজন্ম অ্যানালগ?',o:['1G','2G','3G','4G'],a:0,w:'1G অ্যানালগ রেডিও সিগন্যাল ব্যবহার করত।'},
+ {q:'সম্পূর্ণ IP ভিত্তিক প্রজন্ম কোনটি?',o:['1G','2G','3G','4G'],a:3,w:'4G তে সার্কিট/প্যাকেট সুইচিংয়ের বদলে IP।'}]);
+player.reset();
+</script>
+</body>
+</html>

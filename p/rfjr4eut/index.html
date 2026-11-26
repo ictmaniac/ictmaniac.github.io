@@ -10,16 +10,16 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
 <link rel="stylesheet" href="../../a/im.css?v=6">
 <style>
-.pipe{fill:#EAF1FB;stroke:#9DB3D6;stroke-width:2;transition:opacity .4s}
-.pipe.dim,.plab.dim{opacity:.25}
-.plab{transition:opacity .4s}
-.pn{font-size:11px;font-weight:800;fill:var(--ink)}
-.ps{font-size:9px;font-weight:700;fill:var(--muted)}
-.rate{font-family:var(--f-mono);font-size:10px;font-weight:800;fill:var(--accent);text-anchor:middle}
-.bit{fill:var(--signal)}
-.pbar{fill:var(--accent);transition:none}
-.ptime{font-size:10px;font-weight:800;fill:var(--bad)}
-.clk{font-family:var(--f-mono);font-size:13px;font-weight:800;text-anchor:middle;fill:var(--signal)}
+svg.scene .pipe{fill:#EAF1FB;stroke:#9DB3D6;stroke-width:2;transition:opacity .4s}
+svg.scene .pipe.dim,svg.scene .plab.dim{opacity:.25}
+svg.scene .plab{transition:opacity .4s}
+svg.scene .pn{font-size:11px;font-weight:800;fill:var(--ink)}
+svg.scene .ps{font-size:9px;font-weight:700;fill:var(--muted)}
+svg.scene .rate{font-family:var(--f-mono);font-size:10px;font-weight:800;fill:var(--accent);text-anchor:middle}
+svg.scene .bit{fill:var(--signal)}
+svg.scene .pbar{fill:var(--accent);transition:none}
+svg.scene .ptime{font-size:10px;font-weight:800;fill:var(--bad)}
+svg.scene .clk{font-family:var(--f-mono);font-size:13px;font-weight:800;text-anchor:middle;fill:var(--signal)}
 .calc{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .calc label{display:flex;flex-direction:column;font-weight:700;font-size:.85rem;gap:4px}
 .calc input{font:inherit;font-family:var(--f-mono);font-size:1.05rem;padding:8px 10px;border-radius:10px;border:2px solid var(--line);background:var(--board);color:var(--ink);width:100%;box-sizing:border-box}
@@ -41,7 +41,7 @@
     <svg class="scene" id="sv" viewBox="0 0 360 230">
       <g id="pipes"></g>
       <text id="clk" class="clk" x="195" y="18"></text>
-      <text id="calc" class="lbl" x="195" y="214" fill="var(--accent)"></text>
+      <text id="calc" class="lbl" x="195" y="214" style="fill:var(--accent)"></text>
     </svg>
     </div>
   </section>

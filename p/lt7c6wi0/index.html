@@ -10,17 +10,17 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
 <link rel="stylesheet" href="../../a/im.css?v=6">
 <style>
-.seg{stroke:#fff;stroke-width:1.5}
-.gene{fill:#F39C12}
-.pl{fill:none;stroke:#2E86DE;stroke-width:7;stroke-linecap:round}
-.plo{fill:none;stroke:#F39C12;stroke-width:7;stroke-linecap:round}
-.bac{fill:#D5F5E3;stroke:#27AE60;stroke-width:2.5}
-.mini{fill:#D5F5E3;stroke:#27AE60;stroke-width:1.5;transform-box:fill-box;transform-origin:center;transition:opacity .4s,transform .4s}
-.mini.off{opacity:0;transform:scale(.2)}
-.chain{font-size:9.5px;font-weight:800;text-anchor:middle;fill:var(--muted);transition:fill .3s}
-.chain.on{fill:var(--signal)}
-.cut{stroke:var(--bad);stroke-width:2.5;stroke-dasharray:3 2}
-.shock{font-size:18px;opacity:0}
+svg.scene .seg{stroke:#fff;stroke-width:1.5}
+svg.scene .gene{fill:#F39C12}
+svg.scene .pl{fill:none;stroke:#2E86DE;stroke-width:7;stroke-linecap:round}
+svg.scene .plo{fill:none;stroke:#F39C12;stroke-width:7;stroke-linecap:round}
+svg.scene .bac{fill:#D5F5E3;stroke:#27AE60;stroke-width:2.5}
+svg.scene .mini{fill:#D5F5E3;stroke:#27AE60;stroke-width:1.5;transform-box:fill-box;transform-origin:center;transition:opacity .4s,transform .4s}
+svg.scene .mini.off{opacity:0;transform:scale(.2)}
+svg.scene .chain{font-size:9.5px;font-weight:800;text-anchor:middle;fill:var(--muted);transition:fill .3s}
+svg.scene .chain.on{fill:var(--signal)}
+svg.scene .cut{stroke:var(--bad);stroke-width:2.5;stroke-dasharray:3 2}
+svg.scene .shock{font-size:18px;opacity:0}
 </style>
 </head>
 <body class="kit">
@@ -38,7 +38,7 @@
       <g id="chain"></g>
       <text class="sm" x="110" y="50">মানুষের DNA</text>
       <g id="dna" class="hit" data-x="dna"></g>
-      <g id="gene" class="hit" data-x="gene"><rect class="seg gene" x="92" y="62" width="18" height="16" rx="2"/><rect class="seg gene" x="110" y="62" width="18" height="16" rx="2"/><text class="sm" x="110" y="92" font-weight="800" fill="#D35400">ইনসুলিন জিন</text></g>
+      <g id="gene" class="hit" data-x="gene"><rect class="seg gene" x="92" y="62" width="18" height="16" rx="2"/><rect class="seg gene" x="110" y="62" width="18" height="16" rx="2"/><text class="sm" x="110" y="92" font-weight="800" style="fill:#D35400">ইনসুলিন জিন</text></g>
       <line id="k1" class="cut hide" x1="92" y1="56" x2="92" y2="84"/><line id="k2" class="cut hide" x1="128" y1="56" x2="128" y2="84"/>
       <g id="plg" class="hit" data-x="pl">
         <circle id="plf" class="pl" cx="275" cy="85" r="32"/>
@@ -50,8 +50,8 @@
       <text class="sm" x="285" y="226">ব্যাকটেরিয়া (E. coli)</text>
       <text id="shk" class="shock" x="214" y="140">⚡</text>
       <g id="col"></g>
-      <text id="ins" class="lbl hide" x="110" y="132" fill="#D35400">💉 ইনসুলিন তৈরি হচ্ছে!</text>
-      <text id="tag" class="lbl" x="180" y="122" fill="var(--signal)"></text>
+      <text id="ins" class="lbl hide" x="110" y="132" style="fill:#D35400">💉 ইনসুলিন তৈরি হচ্ছে!</text>
+      <text id="tag" class="lbl" x="180" y="122" style="fill:var(--signal)"></text>
     </svg>
     </div>
     <div class="parts" id="parts"><button data-k="re" data-x="re">✂️ রেস্ট্রিকশন এনজাইম</button><button data-k="lg" data-x="lg">🧴 লাইগেজ এনজাইম</button><button data-k="rd" data-x="rd">🔗 রিকম্বিনেন্ট DNA</button><button data-k="gm" data-x="gm">🌾 GMO</button></div>

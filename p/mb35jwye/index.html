@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>নেটওয়ার্ক ডিভাইস · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=6">
+<style>
+svg.scene .nd{font-size:20px;text-anchor:middle;dominant-baseline:central}
+svg.scene .nl{font-size:9px;font-weight:800;text-anchor:middle;fill:var(--muted)}
+svg.scene .dv rect{fill:#2E3A52;stroke:#fff;stroke-width:2}
+svg.scene .dv text{font-size:11px;font-weight:800;fill:#fff;text-anchor:middle;dominant-baseline:central}
+svg.scene .ln{stroke:#9DB3D6;stroke-width:3}
+svg.scene .ok{fill:#27AE60}svg.scene .no{fill:var(--bad)}
+svg.scene .mk{font-size:14px;text-anchor:middle;dominant-baseline:central;opacity:0}
+svg.scene .wave{fill:none;stroke:var(--signal);stroke-width:2.5}
+svg.scene .cloud{fill:var(--accent);fill-opacity:.07;stroke:var(--accent);stroke-width:2;stroke-dasharray:6 4}
+.tabs.sm2 .tab{font-size:.78rem;min-height:38px;padding:4px}
+</style>
+</head>
+<body class="kit">
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ২ · ২.৬.৩ নেটওয়ার্ক ডিভাইস</span>
+    <h1>হাব, সুইচ, রাউটার: কে কী করে</h1>
+    <p class="lead">হাব সবাইকে পাঠায়, সুইচ শুধু ঠিক জনকে, আর রাউটার পোস্টম্যানের মতো পথ খুঁজে দেয়। ▶ চাপো আর দেখো প্যাকেট কোন যন্ত্রে কীভাবে চলে। উপরের ট্যাবে যেকোনো যন্ত্র বেছে নাও।</p>
+  </header>
+  <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
+  <section class="card" id="main">
+    <div class="tabs sm2" id="tb"><button class="tab" data-k="0">NIC</button><button class="tab" data-k="1">হাব</button><button class="tab" data-k="2">সুইচ</button><button class="tab" data-k="3">রাউটার</button><button class="tab" data-k="4">মডেম</button><button class="tab" data-k="5">রিপিটার</button></div>
+    <div class="sbox">
+    <svg class="scene" id="sv" viewBox="0 0 360 230">
+      <text id="ttl" class="lbl" x="180" y="16" style="fill:var(--accent)"></text>
+      <g id="st"></g>
+      <text id="nt" class="lbl" x="180" y="222"></text>
+    </svg>
+    </div>
+  </section>
+  <section class="card">
+    <h2>হাব বনাম সুইচ বনাম রাউটার (টাচ করো)</h2>
+    <div id="cx0"></div>
+  </section>
+  <section class="card">
+    <h2>অন্যান্য ডিভাইস (টাচ করো)</h2>
+    <div id="cx1"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>NIC (ল্যান কার্ড):</b> কম্পিউটারকে নেটওয়ার্কে যুক্ত করে; প্রতিটিতে ৪৮ বিটের অদ্বিতীয় <b>MAC অ্যাড্রেস</b>।</li>
+      <li><b>হাব:</b> দুইয়ের বেশি পোর্টযুক্ত রিপিটার; প্রাপ্ত সিগন্যাল <b>সবাইকে</b> পাঠায়, ট্রাফিক ও কলিশন বাড়ে। <b>সুইচ:</b> শুধু <b>গন্তব্য</b> কম্পিউটারে পাঠায়।</li>
+      <li><b>রাউটার:</b> ভিন্ন নেটওয়ার্ক যুক্ত করে, পোস্টম্যানের মতো সেরা পথ বেছে প্যাকেট পাঠায়। <b>গেটওয়ে:</b> ভিন্ন প্রটোকলের নেটওয়ার্ক যুক্ত করে।</li>
+      <li><b>মডেম:</b> মডুলেশন (ডিজিটাল → অ্যানালগ) ও ডিমডুলেশন (অ্যানালগ → ডিজিটাল)। <b>রিপিটার:</b> দুর্বল সিগন্যাল শক্তিশালী করে দূরত্ব বাড়ায়।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
+<script src="../../a/im.js?v=6"></script>
+<script>
+const {$,say,bn}=IM;const Q=IM.seq(),sv=$('sv');
+const pc=(x,y,l,id)=>`<g id="${id||''}"><text class="nd" x="${x}" y="${y}">🖥️</text><text class="nl" x="${x}" y="${y+20}">${l}</text><text class="mk" id="m${id}" x="${x+18}" y="${y-14}"></text></g>`;
+const dv=(x,y,t,w)=>`<g class="dv"><rect x="${x-(w||30)}" y="${y-13}" width="${(w||30)*2}" height="26" rx="6"/><text x="${x}" y="${y}">${t}</text></g>`;
+const ln=(a,b)=>`<line class="ln" x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}"/>`;
+const mark=(id,t)=>{const m=$('m'+id);if(!m)return;m.textContent=t;m.animate([{opacity:0},{opacity:1},{opacity:1},{opacity:0}],{duration:1100/player.speed});};
+const P4=[[60,60,'PC-১'],[300,60,'PC-২'],[60,170,'PC-৩'],[300,170,'PC-৪']],HC=[180,115];
+function star(name){$('st').innerHTML=P4.map(p=>ln(HC,p)).join('')+P4.map((p,i)=>pc(p[0],p[1],p[2],'p'+i)).join('')+dv(HC[0],HC[1],name);}
+const send=(a,b,t,o)=>IM.emit(sv,[a,b],t,Object.assign({r:10,fs:9,dur:800},o||{}));
+const S=[
+ {t:'NIC: নেটওয়ার্ক ইন্টারফেস কার্ড',m:'কম্পিউটারকে নেটওয়ার্কে যুক্ত করতে লাগে <b>NIC</b> (ল্যান কার্ড)। এখন বেশিরভাগ মাদারবোর্ডে বিল্ট-ইন থাকে। প্রতিটা কার্ডে <b>৪৮ বিটের অদ্বিতীয় নম্বর</b> থাকে, একে বলে <b>MAC অ্যাড্রেস</b>, যেন প্রতিটা কম্পিউটারের নিজস্ব ঠিকানা।',
+  f(){$('st').innerHTML=`<rect x="70" y="50" width="220" height="120" rx="10" fill="#1E8449" opacity=".9"/><rect x="90" y="70" width="60" height="40" rx="4" fill="#111"/><text x="120" y="92" font-size="9" text-anchor="middle" font-weight="800" style="fill:#fff">চিপ</text>
+   <rect x="250" y="80" width="40" height="44" rx="4" fill="#BDC3C7" stroke="#7F8C8D" stroke-width="2"/><text x="270" y="104" font-size="9" text-anchor="middle" font-weight="800">RJ45</text><rect x="90" y="170" width="160" height="10" fill="#D4AC0D"/>
+   <text class="lbl" x="180" y="146" style="fill:#fff">🔌 নেটওয়ার্ক কার্ড (NIC)</text><text id="mac" class="lbl" x="180" y="204" style="fill:var(--accent);font-family:var(--f-mono)"></text>`;
+   const M='00:1A:2B:3C:4D:5E';let i=0;const g=()=>{i++;$('mac').textContent='MAC: '+M.slice(0,i);if(i<M.length)Q.later(90,g);};Q.later(300,g);const c=()=>{send([290,102],[350,102],'',{r:5,dur:500});Q.later(400,c);};c();}},
+ {t:'হাব (Hub): সবাইকে পাঠায়',m:'PC-১ একটা ফাইল পাঠালো <b>PC-৪</b> কে। <b>হাব</b> বোঝে না কে কোথায়, তাই <b>সবার কাছে</b> কপি পাঠায়! যার জন্য নয়, সে ফেলে দেয় ❌। এতে অপ্রয়োজনীয় <b>ট্রাফিক</b> বাড়ে, ডেটার <b>সংঘর্ষ (কলিশন)</b> হতে পারে।',
+  f(){star('হাব');$('nt').textContent='⚠️ ট্রাফিক বেশি';$('nt').style.fill='var(--bad)';const g=()=>{send(P4[0],HC,'→৪',{done(){[1,2,3].forEach(i=>send(HC,P4[i],'→৪',{cls:i===3?'':'red',done(){mark('p'+i,i===3?'✅':'❌');}}));}});Q.later(2000,g);};g();}},
+ {t:'সুইচ (Switch): শুধু ঠিক জনকে',m:'একই কাজ <b>সুইচ</b> দিয়ে। সুইচ প্রতিটা পোর্টে কার <b>MAC অ্যাড্রেস</b> তা মনে রাখে, তাই ফাইলটা <b>শুধু PC-৪</b> এর কাছেই পাঠায়। ট্রাফিক কম, কলিশনের সম্ভাবনাও কম। তবে হাবের চেয়ে দাম বেশি।',
+  f(){star('সুইচ');$('nt').textContent='✅ শুধু গন্তব্যে, ট্রাফিক কম';$('nt').style.fill='#27AE60';const g=()=>{send(P4[0],HC,'→৪',{done(){send(HC,P4[3],'→৪',{done(){mark('p3','✅');}});}});Q.later(1900,g);};g();}},
+ {t:'রাউটার (Router): পথ খুঁজে দেয়',m:'<b>রাউটার</b> হলো <b>পোস্টম্যান</b>। আলাদা আলাদা নেটওয়ার্ককে যুক্ত করে, আর সব পথের হালনাগাদ খবর রেখে <b>সেরা পথ</b> বেছে প্যাকেট পাঠায়। একটা পথ বন্ধ হলে অন্য পথে পাঠায়। ইন্টারনেট চলে রাউটারের উপর।',
+  f(){const A=[40,110],R1=[120,60],R2=[120,160],R3=[240,60],R4=[240,160],B=[320,110];
+   $('st').innerHTML=`<ellipse class="cloud" cx="40" cy="110" rx="34" ry="54"/><ellipse class="cloud" cx="320" cy="110" rx="34" ry="54"/><text class="nl" x="40" y="176">নেটওয়ার্ক ক</text><text class="nl" x="320" y="176">নেটওয়ার্ক খ</text>`+
+    [[A,R1],[A,R2],[R1,R3],[R2,R4],[R1,R4],[R3,B],[R4,B]].map(([a,b])=>ln(a,b)).join('')+`<line id="cut" class="ln" x1="120" y1="60" x2="240" y2="60" style="stroke:var(--bad);stroke-dasharray:4 3;opacity:0"/>`+
+    pc(A[0],A[1]-6,'','a')+pc(B[0],B[1]-6,'','b')+[R1,R2,R3,R4].map((r,i)=>dv(r[0],r[1],'R'+bn(i+1),18)).join('');
+   const g=(n)=>{if(n%2===0){$('cut').style.opacity=0;$('nt').textContent='সবচেয়ে ছোট পথ: R১ → R৩';$('nt').style.fill='var(--accent)';IM.emit(sv,[A,R1,R3,B],'✉️',{r:10,fs:10,dur:1600});}
+     else{$('cut').style.opacity=1;$('nt').textContent='R১–R৩ পথ বন্ধ! নতুন পথ: R১ → R৪';$('nt').style.fill='var(--bad)';IM.emit(sv,[A,R1,R4,B],'✉️',{r:10,fs:10,dur:1600,cls:'blue'});}Q.later(2300,()=>g(n+1));};g(0);}},
+ {t:'মডেম (Modem)',m:'<b>মডেম = মডুলেটর + ডিমডুলেটর</b>। কম্পিউটারের <b>ডিজিটাল</b> সংকেতকে টেলিফোন লাইনের উপযোগী <b>অ্যানালগ</b> তরঙ্গে বদলায় (মডুলেশন), ওপাশের মডেম আবার <b>ডিজিটাল</b> করে (ডিমডুলেশন)।',
+  f(){let w='M110 110';for(let x=110;x<=250;x+=3)w+=` L${x} ${110-10*Math.sin((x-110)/7)}`;
+   $('st').innerHTML=pc(30,104,'কম্পিউটার')+pc(330,104,'কম্পিউটার')+ln([48,110],[80,110])+ln([280,110],[312,110])+dv(80,110,'মডেম',26)+dv(280,110,'মডেম',26)+`<path class="wave" d="${w}"/><text class="nl" x="180" y="88">☎️ টেলিফোন লাইন: অ্যানালগ তরঙ্গ</text>
+    <text class="nl" x="80" y="140" style="fill:var(--signal)">ডিজিটাল → অ্যানালগ</text><text class="nl" x="80" y="152" style="fill:var(--signal)">(মডুলেশন)</text><text class="nl" x="280" y="140" style="fill:#2E86C1">অ্যানালগ → ডিজিটাল</text><text class="nl" x="280" y="152" style="fill:#2E86C1">(ডিমডুলেশন)</text>`;
+   const g=()=>{send([48,110],[80,110],'01',{dur:400,done(){send([106,110],[254,110],'〰️',{cls:'blue',dur:900,done(){send([280,110],[312,110],'01',{dur:400});}});}});Q.later(900,g);};g();}},
+ {t:'রিপিটার (Repeater)',m:'ক্যাবল অনেক লম্বা হলে সিগন্যাল <b>দুর্বল</b> হয়ে যায় (ছোট, ফ্যাকাশে)। মাঝে <b>রিপিটার</b> বসালে সে দুর্বল সিগন্যাল ধরে আবার <b>শক্তিশালী</b> করে সামনে পাঠায়। ফলে নেটওয়ার্কের দূরত্ব বাড়ে।',
+  f(){$('st').innerHTML=pc(30,104,'প্রেরক')+pc(330,104,'প্রাপক')+ln([48,110],[312,110])+dv(180,110,'রিপিটার',32)+`<text class="nl" x="110" y="96">দুর্বল হচ্ছে…</text><text class="nl" x="255" y="96" style="fill:#27AE60">আবার শক্তিশালী!</text>`;
+   const NS='http://www.w3.org/2000/svg';const g=()=>{const c=document.createElementNS(NS,'circle');c.setAttribute('class','pk');c.setAttribute('fill','var(--signal)');sv.appendChild(c);const t0=performance.now(),G=Q.g,d=2000/player.speed;
+    const f=t=>{if(G!==Q.g||!c.isConnected)return;const p=Math.min(1,(t-t0)/d),x=48+264*p,s=x<148?10-7*(x-48)/100:x<212?3:10;c.setAttribute('cx',x);c.setAttribute('cy',110);c.setAttribute('r',s);c.style.opacity=x<148?1-.7*(x-48)/100:x<212?.3:1;if(p<1)requestAnimationFrame(f);else c.remove();};requestAnimationFrame(f);Q.later(700,g);};g();}}];
+function render(k){const s=S[k];Q.bump();sv.querySelectorAll('.pk').forEach(e=>e.remove());$('ttl').textContent=s.t;$('nt').textContent='';
+  $('tb').querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',+b.dataset.k===k));s.f();say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+var player=IM.player({count:()=>S.length,show:render,interval:5000,swipe:$('sv')});
+$('tb').querySelectorAll('.tab').forEach(b=>b.onclick=()=>player.go(+b.dataset.k));
+IM.compare($('cx0'),['','হাব','সুইচ','রাউটার'],[
+ ['কাকে পাঠায়','সবাইকে','শুধু গন্তব্যকে','সেরা পথে অন্য নেটওয়ার্কে','সুইচ MAC, রাউটার IP অ্যাড্রেস দেখে।'],
+ ['ট্রাফিক ও কলিশন','বেশি','কম','কম','হাবে ডেটা ফিল্টারিং সম্ভব নয়।'],
+ ['দাম','সবচেয়ে কম','মাঝারি','বেশি','রাউটারের কনফিগারেশনও জটিল।'],
+ ['কাজের জায়গা','একই LAN','একই LAN','ভিন্ন নেটওয়ার্কের মাঝে','বাসার ওয়াই-ফাই রাউটার আসলে রাউটার + সুইচ + অ্যাক্সেস পয়েন্ট।']]);
+IM.compare($('cx1'),['ডিভাইস','কাজ'],[
+ ['📟 মডেম','ডিজিটাল ↔ অ্যানালগ','টেলিফোন লাইন দিয়ে ইন্টারনেট।'],
+ ['🔁 রিপিটার','দুর্বল সিগন্যাল শক্তিশালী করে','নেটওয়ার্কের দূরত্ব বাড়ায়, কিন্তু কলিশন বাড়তে পারে।'],
+ ['🌉 ব্রিজ','একাধিক LAN সেগমেন্ট যুক্ত করে','ডেটালিংক লেয়ারে কাজ করে, হাব/সুইচের মতো।'],
+ ['🚪 গেটওয়ে','ভিন্ন প্রটোকলের নেটওয়ার্ক যুক্ত করে','এক প্রটোকলকে আরেক প্রটোকলে অনুবাদ করে, তবে ধীর।'],
+ ['🔌 NIC','কম্পিউটারকে নেটওয়ার্কে যুক্ত করে','৪৮ বিটের MAC অ্যাড্রেস থাকে।']]);
+IM.mcq($('quiz6'),[
+ {q:'কোন ডিভাইস প্রাপ্ত ডেটা সব পোর্টে পাঠায়?',o:['সুইচ','হাব','রাউটার','গেটওয়ে'],a:1,w:'হাব সবাইকে পাঠায়।'},
+ {q:'রাউটারকে কার সাথে তুলনা করা হয়?',o:['ডাক্তার','পোস্টম্যান','শিক্ষক','পুলিশ'],a:1,w:'পোস্টম্যানের মতো সব পথ চিনে সঠিক ঠিকানায় পাঠায়।'},
+ {q:'ভিন্ন প্রটোকলের নেটওয়ার্ক যুক্ত করে—',o:['হাব','রিপিটার','গেটওয়ে','NIC'],a:2,w:'গেটওয়ে প্রটোকল অনুবাদ করে।'},
+ {q:'MAC অ্যাড্রেস কত বিটের?',o:['৩২','৪৮','৬৪','১২৮'],a:1,w:'প্রতিটি NIC তে ৪৮ বিটের অদ্বিতীয় নম্বর।'}]);
+player.reset();
+</script>
+</body>
+</html>

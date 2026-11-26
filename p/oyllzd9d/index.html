@@ -10,16 +10,16 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
 <link rel="stylesheet" href="../../a/im.css?v=6">
 <style>
-.cell{transform-box:fill-box;transform-origin:center;fill:#9B59B6;stroke:#6C3483;stroke-width:1;transition:fill .6s,opacity .6s}
-.cell.fz{fill:#D6F0FF;stroke:#5DADE2}
-.cell.dead{fill:#A4ADBF;stroke:#7B8499;opacity:.55}
-.vein{stroke:#E74C3C;stroke-width:5;fill:none;stroke-dasharray:8 6;animation:dashmv 1s linear infinite;transition:stroke .5s}
-.vein.stop{stroke:#A4ADBF;animation:none}
-.ice{fill:#DFF3FF;stroke:#7FC8F8;stroke-width:2;opacity:.85}
-.tmp{font-family:var(--f-mono);font-size:14px;font-weight:800;text-anchor:middle;fill:var(--accent)}
-.gas{font-size:10px;font-weight:800;opacity:.35;transition:opacity .3s}
-.gas.on{opacity:1}
-.scan{stroke:var(--accent);stroke-width:3;opacity:.8}
+svg.scene .cell{transform-box:fill-box;transform-origin:center;fill:#9B59B6;stroke:#6C3483;stroke-width:1;transition:fill .6s,opacity .6s}
+svg.scene .cell.fz{fill:#D6F0FF;stroke:#5DADE2}
+svg.scene .cell.dead{fill:#A4ADBF;stroke:#7B8499;opacity:.55}
+svg.scene .vein{stroke:#E74C3C;stroke-width:5;fill:none;stroke-dasharray:8 6;animation:dashmv 1s linear infinite;transition:stroke .5s}
+svg.scene .vein.stop{stroke:#A4ADBF;animation:none}
+svg.scene .ice{fill:#DFF3FF;stroke:#7FC8F8;stroke-width:2;opacity:.85}
+svg.scene .tmp{font-family:var(--f-mono);font-size:14px;font-weight:800;text-anchor:middle;fill:var(--accent)}
+svg.scene .gas{font-size:10px;font-weight:800;opacity:.35;transition:opacity .3s}
+svg.scene .gas.on{opacity:1}
+svg.scene .scan{stroke:var(--accent);stroke-width:3;opacity:.8}
 </style>
 </head>
 <body class="kit">
@@ -36,23 +36,23 @@
     <svg class="scene" id="sv" viewBox="0 0 360 230">
       <rect x="8" y="70" width="262" height="152" rx="8" fill="#F9D9D0" class="hit" data-x="tis"/>
       <rect x="8" y="70" width="262" height="14" rx="6" fill="#E8B796" class="hit" data-x="skin"/>
-      <text class="sm" x="40" y="80" fill="#7A4A2A">ত্বক</text><text class="sm" x="44" y="214">সুস্থ টিস্যু</text>
+      <text class="sm" x="40" y="80" style="fill:#7A4A2A">ত্বক</text><text class="sm" x="44" y="214">সুস্থ টিস্যু</text>
       <path id="vein" class="vein hit" data-x="vein" d="M8 176 Q70 160 140 176 T270 176"/>
       <ellipse cx="140" cy="160" rx="38" ry="28" fill="#D7BDE2" stroke="#8E44AD" stroke-width="2" id="tum" class="hit" data-x="tum" style="transition:opacity .8s"/>
       <g id="cells"></g>
       <circle id="ice" class="ice" cx="140" cy="160" r="0"/>
-      <g id="tgt" class="hide"><circle cx="140" cy="160" r="46" fill="none" stroke="var(--signal)" stroke-width="2" stroke-dasharray="5 4"/><text class="sm" x="140" y="114" fill="var(--signal)">টিউমার এখানে</text></g>
+      <g id="tgt" class="hide"><circle cx="140" cy="160" r="46" fill="none" stroke="var(--signal)" stroke-width="2" stroke-dasharray="5 4"/><text class="sm" x="140" y="114" style="fill:var(--signal)">টিউমার এখানে</text></g>
       <line id="scan" class="scan hide" x1="8" y1="90" x2="8" y2="220"/>
       <g id="probe" class="hit" data-x="probe" transform="translate(0,-120)">
         <rect x="128" y="14" width="24" height="22" rx="4" fill="#5B6B88"/><line x1="140" y1="36" x2="140" y2="158" stroke="#7B8499" stroke-width="6" stroke-linecap="round"/>
       </g>
-      <text id="ar" class="gas" x="160" y="22" fill="#2E86DE">🧊 আর্গন গ্যাস</text>
-      <text id="he" class="gas" x="160" y="38" fill="#E67E22">🔥 হিলিয়াম গ্যাস</text>
+      <text id="ar" class="gas" x="160" y="22" style="fill:#2E86DE">🧊 আর্গন গ্যাস</text>
+      <text id="he" class="gas" x="160" y="38" style="fill:#E67E22">🔥 হিলিয়াম গ্যাস</text>
       <g class="hit" data-x="th"><rect x="292" y="50" width="16" height="146" rx="8" fill="#fff" stroke="#8B9AB8" stroke-width="2"/>
       <rect id="lv" x="295" y="60" width="10" height="130" rx="5" fill="#E74C3C"/><circle cx="300" cy="204" r="12" fill="#E74C3C" id="bulb"/></g>
       <text id="tv" class="tmp" x="300" y="38">৩৭°সে</text>
       <text class="sm" x="330" y="64">৪০°</text><text class="sm" x="330" y="128">−৫০°</text><text class="sm" x="330" y="194">−১৭০°</text>
-      <text id="cyc" class="lbl" x="214" y="62" fill="var(--signal)"></text>
+      <text id="cyc" class="lbl" x="214" y="62" style="fill:var(--signal)"></text>
     </svg>
     </div>
     <div class="parts" id="parts"><button data-k="a" data-x="a">✂️ ছোট কাটা</button><button data-k="b" data-x="b">🩸 রক্তপাত কম</button><button data-k="c" data-x="c">⚡ দ্রুত আরোগ্য</button><button data-k="d" data-x="d">💰 খরচ কম</button></div>
