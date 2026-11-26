@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>HTML ফরম্যাটিং · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=2">
+<style>
+.page .cur{background:#FDEBC8;outline:2px solid #E9A23B;border-radius:4px;animation:pop .4s ease-out}
+.page>*{margin:0 0 6px}
+.fp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.fp .field{min-width:0}
+.fp select{font-family:var(--f-mono);font-size:.95rem;min-height:44px;padding:6px}
+.big{font-family:var(--f-mono);font-size:.92rem;background:var(--board);border-radius:10px;padding:10px;word-break:break-word}
+</style>
+</head>
+<body class="kit">
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৪ · ৪.২.৫ ফরম্যাটিং (Formatting)</span>
+    <h1>লেখা সাজানোর ট্যাগ</h1>
+    <p class="lead">▶ চাপলে একটা করে ট্যাগ যোগ হবে, আর ব্রাউজারে তার ফল জ্বলে উঠবে। কোডের যেকোনো লাইনে আঙুল দিলে মানে দেখাবে।</p>
+  </header>
+  <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
+  <section class="card" id="main">
+    <div class="browser"><div class="bar"><b></b><b></b><span>format.html</span></div><div class="page" id="page"></div></div>
+    <pre id="code"></pre>
+  </section>
+  <section class="card">
+    <h2>font ট্যাগ নিয়ে খেলো</h2>
+    <div class="fp">
+      <div class="field"><label for="fc">color</label><select id="fc"><option>red</option><option>blue</option><option>green</option><option>#E9A23B</option></select></div>
+      <div class="field"><label for="fs">size</label><select id="fs"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select></div>
+      <div class="field"><label for="ff">face</label><select id="ff"><option>Arial</option><option>Times New Roman</option><option>Courier New</option></select></div>
+    </div>
+    <div class="big cv" id="fcode" style="padding:10px"></div>
+    <div class="browser"><div class="page" id="fout"></div></div>
+    <p class="hint">size এর মান ১ থেকে ৭। ডিফল্ট ৩। বড় সংখ্যা মানে বড় লেখা। (HTML5 এ font এর বদলে CSS ব্যবহার করা হয়, তবে বোর্ড পরীক্ষায় font আসে।)</p>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>&lt;sup&gt;</b> লেখাকে উপরে তোলে (x²), <b>&lt;sub&gt;</b> নিচে নামায় (H₂O)।</li>
+      <li><b>&lt;br&gt;</b> নতুন লাইন, <b>&lt;hr&gt;</b> আনুভূমিক রেখা। দুটোই এম্পটি ট্যাগ।</li>
+      <li>h1 সবচেয়ে বড়, h6 সবচেয়ে ছোট হেডিং।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false">অটো</button><button class="sp" aria-label="গতি">১x</button><div class="bar"><i></i></div><div class="cnt"></div></div></div>
+<script src="../../a/im.js?v=2"></script>
+<script>
+const {$,say,bn}=IM;
+const L=[
+ ['<h1>হেডিং ১</h1>','<h1>হেডিং ১</h1>','<code>&lt;h1&gt;</code> সবচেয়ে বড় হেডিং।'],
+ ['<h4>হেডিং ৪</h4>','<h4>হেডিং ৪</h4>','<code>&lt;h4&gt;</code> মাঝারি হেডিং। h1 থেকে h6, সংখ্যা যত বড় লেখা তত ছোট।'],
+ ['<p>এটি একটি প্যারাগ্রাফ।<br>নতুন লাইন।</p>','<p>এটি একটি প্যারাগ্রাফ।<br>নতুন লাইন।</p>','<code>&lt;p&gt;</code> প্যারাগ্রাফ। ভিতরের <code>&lt;br&gt;</code> লাইন ভেঙে নতুন লাইনে নিয়ে যায়।'],
+ ['<b>মোটা লেখা</b>','<p><b>মোটা লেখা</b></p>','<code>&lt;b&gt;</code> লেখাকে মোটা (Bold) করে। &lt;strong&gt; ও একই রকম দেখায়।'],
+ ['<i>বাঁকা লেখা</i>','<p><i>বাঁকা লেখা</i></p>','<code>&lt;i&gt;</code> লেখাকে বাঁকা (Italic) করে। &lt;em&gt; ও একই রকম।'],
+ ['<u>নিচে দাগ</u>','<p><u>নিচে দাগ</u></p>','<code>&lt;u&gt;</code> লেখার নিচে দাগ (Underline) দেয়।'],
+ ['x<sup>2</sup> + y<sup>2</sup>','<p>x<sup>2</sup> + y<sup>2</sup></p>','<code>&lt;sup&gt;</code> Superscript: লেখাকে একটু উপরে তোলে। ঘাত লিখতে লাগে।'],
+ ['H<sub>2</sub>O','<p>H<sub>2</sub>O</p>','<code>&lt;sub&gt;</code> Subscript: লেখাকে একটু নিচে নামায়। রাসায়নিক সংকেতে লাগে।'],
+ ['<hr>','<hr>','<code>&lt;hr&gt;</code> পেজ জুড়ে একটা আনুভূমিক রেখা। এম্পটি ট্যাগ, শেষ ট্যাগ নেই।'],
+ ['<font color="blue" size="5">নীল বড় লেখা</font>','<p><font color="blue" size="5">নীল বড় লেখা</font></p>','<code>&lt;font&gt;</code> দিয়ে রং (color), আকার (size) আর ফন্ট (face) বদলানো যায়।']];
+const cv=IM.codeView($('code'),L.map(l=>IM.hHL(l[0])),i=>say('কোডের লাইন',L[i][2],true));
+function render(k){cv.on(k);cv.dimAfter(k);
+  $('page').innerHTML=L.slice(0,k+1).map((l,i)=>i===k?l[1].replace(/^<(\w+)/,'<$1 class="cur"'):l[1]).join('');
+  say(`ধাপ ${bn(k+1)} / ${bn(L.length)}`,L[k][2]);}
+const player=IM.player({count:()=>L.length,show:render,swipe:$('main'),interval:1600});
+function fp(){const c=$('fc').value,s=$('fs').value,f=$('ff').value;const code=`<font color="${c}" size="${s}" face="${f}">ICT Maniac</font>`;
+  $('fcode').innerHTML=IM.hHL(code);$('fout').innerHTML=code;}
+['fc','fs','ff'].forEach(id=>$(id).onchange=fp);fp();
+player.reset();
+</script>
+</body>
+</html>

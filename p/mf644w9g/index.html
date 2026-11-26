@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>প্রোগ্রামের ভাষার স্তর · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=2">
+<style>
+.lad{display:flex;flex-direction:column;align-items:stretch;gap:0}
+.lv{border:2px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--panel);transition:all .35s;opacity:.35}
+.lv.show{opacity:1;border-color:var(--accent)}
+.lv.cur{border-color:var(--signal);background:var(--signal-soft);box-shadow:0 0 0 4px color-mix(in srgb,var(--signal) 25%,transparent)}
+.lv h3{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:1rem}
+.lv h3 small{font-family:var(--f-body);font-weight:600;color:var(--muted);font-size:.78rem}
+.lv pre{margin:4px 0 0;font-family:var(--f-mono);font-size:1rem;font-weight:700;line-height:1.6;white-space:pre;overflow-x:auto}
+.lv pre span{cursor:pointer;border-radius:4px;padding:0 2px}
+.lv pre span.blink{animation:bl .5s ease-out 2}
+@keyframes bl{50%{background:var(--signal)}}
+.arw{display:flex;align-items:center;justify-content:center;gap:8px;height:40px;color:var(--muted);font-weight:700;font-size:.9rem;opacity:.35;transition:opacity .3s}
+.arw.show{opacity:1;color:var(--accent)}
+.arw b{font-size:1.4rem}
+.arw.cur b{animation:dn .7s ease-in-out infinite}
+@keyframes dn{50%{transform:translateY(5px)}}
+.cpu{display:flex;align-items:center;justify-content:center;gap:10px;padding:10px;border-radius:12px;border:2px dashed var(--line);font-family:var(--f-mono);font-weight:800;opacity:.35;transition:all .3s}
+.cpu.show{opacity:1;border-style:solid;border-color:var(--ok);color:var(--ok)}
+.gen{display:flex;flex-direction:column;gap:6px}
+.gen button{font:inherit;text-align:left;display:grid;grid-template-columns:34px 1fr;gap:8px;align-items:center;padding:8px 10px;border-radius:10px;border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.gen button i{font-style:normal;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--panel);font-weight:800}
+.gen button small{display:block;color:var(--muted)}
+.meter{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;font-size:.8rem;color:var(--muted)}
+.meter div{height:10px;border-radius:6px;background:linear-gradient(90deg,var(--ok),var(--signal),var(--bad))}
+</style>
+</head>
+<body class="kit">
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৫ · ৫.১.২ বিভিন্ন স্তরের প্রোগ্রামের ভাষা (৫.১.৩–৫.১.৭)</span>
+    <h1>একই কাজ, তিন ভাষায়</h1>
+    <p class="lead">"A আর B যোগ করে C তে রাখো" কাজটা মানুষের ভাষা থেকে কীভাবে কম্পিউটারের ০ আর ১ এ পৌঁছায় দেখো। ▶ চাপো।</p>
+  </header>
+  <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
+  <section class="card" id="main">
+    <div class="lad">
+      <div class="lv" id="L0"><h3>উচ্চস্তরের ভাষা (C) <small>মানুষের কাছে সহজ</small></h3><pre><span data-x="h">C = A + B;</span></pre></div>
+      <div class="arw" id="A0"><b>⬇</b> কম্পাইলার অনুবাদ করে</div>
+      <div class="lv" id="L1"><h3>অ্যাসেম্বলি ভাষা <small>নেমোনিক কোড</small></h3><pre><span data-x="l">LOAD  A</span>
+<span data-x="ad">ADD   B</span>
+<span data-x="s">STORE C</span></pre></div>
+      <div class="arw" id="A1"><b>⬇</b> অ্যাসেম্বলার অনুবাদ করে</div>
+      <div class="lv" id="L2"><h3>মেশিন ভাষা <small>শুধু ০ আর ১</small></h3><pre><span data-x="m1">0001 1010</span>
+<span data-x="m2">0011 1011</span>
+<span data-x="m3">0010 1100</span></pre></div>
+      <div class="arw" id="A2"><b>⬇</b> সরাসরি বোঝে</div>
+      <div class="cpu" id="cpu">CPU ▸ C = <span id="cv">?</span></div>
+    </div>
+  </section>
+  <section class="card">
+    <h2>৫ প্রজন্মের ভাষা</h2>
+    <p class="hint">প্রতিটিতে আঙুল দাও।</p>
+    <div class="gen" id="gen"></div>
+    <div class="meter"><span>মানুষের কাছে কঠিন</span><div></div><span>সহজ</span></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>নিম্নস্তরের ভাষা:</b> মেশিন ও অ্যাসেম্বলি। মেশিন ভাষা অনুবাদ ছাড়াই চলে, তাই সবচেয়ে দ্রুত। কিন্তু লেখা কঠিন, আর এক কম্পিউটারের প্রোগ্রাম অন্যটিতে চলে না।</li>
+      <li><b>মধ্যম স্তরের ভাষা:</b> C। এতে উচ্চস্তরের সহজতা আর নিম্নস্তরের মতো হার্ডওয়্যার নিয়ন্ত্রণ দুটোই আছে।</li>
+      <li><b>উচ্চস্তরের ভাষা:</b> ইংরেজির কাছাকাছি, লেখা সহজ। কিন্তু চালাতে অনুবাদক (কম্পাইলার/ইন্টারপ্রেটার) লাগে।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false">অটো</button><button class="sp" aria-label="গতি">১x</button><div class="bar"><i></i></div><div class="cnt"></div></div></div>
+<script src="../../a/im.js?v=2"></script>
+<script>
+const {$,say,bn}=IM;
+const S=[
+ {lv:0,m:'প্রোগ্রামার লেখে উচ্চস্তরের ভাষায়: <code>C = A + B;</code> পড়লেই বোঝা যায়। কিন্তু কম্পিউটার এটা সরাসরি বোঝে না।'},
+ {lv:1,ar:0,m:'কম্পাইলার একে ভেঙে ছোট ছোট নির্দেশে পরিণত করলো। এক লাইন হয়ে গেলো তিন লাইন! এগুলো অ্যাসেম্বলি ভাষার নেমোনিক (সংক্ষিপ্ত শব্দ)।'},
+ {lv:2,ar:1,m:'অ্যাসেম্বলার প্রতিটি নেমোনিককে ০ আর ১ এ বদলে দিলো। এটাই মেশিন ভাষা, প্রথম প্রজন্মের ভাষা।'},
+ {lv:3,ar:2,m:'CPU এই বাইনারি নির্দেশ সরাসরি বুঝে কাজ করলো। ধরো A = 2, B = 3, তাহলে C = 5।'},
+ {lv:3,end:1,m:'উপর থেকে নিচে: ভাষা যত নিচে, কম্পিউটারের জন্য তত সহজ আর দ্রুত, মানুষের জন্য তত কঠিন।'}];
+function render(k){const s=S[k];
+  [0,1,2].forEach(i=>{const L=$('L'+i);L.classList.toggle('show',i<=s.lv);L.classList.toggle('cur',i===s.lv&&!s.end);});
+  [0,1,2].forEach(i=>{const A=$('A'+i);A.classList.toggle('show',s.ar!==undefined&&i<=s.ar||s.lv>i);A.classList.toggle('cur',i===s.ar);});
+  $('cpu').classList.toggle('show',s.lv>=3);$('cv').textContent=s.lv>=3?'5':'?';
+  if(s.lv<3&&s.lv>0)$('L'+s.lv).querySelectorAll('span').forEach((e,i)=>{e.classList.remove('blink');setTimeout(()=>e.classList.add('blink'),i*250);});
+  say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+const player=IM.player({count:()=>S.length,show:render,swipe:$('main'),interval:2000});
+IM.tapx($('main'),{h:{t:'উচ্চস্তর',d:'<code>C = A + B;</code> A আর B এর যোগফল C তে রাখো। একটা লাইনেই পুরো কাজ।'},
+ l:{t:'LOAD',d:'<code>LOAD A</code> মেমোরি থেকে A এর মান CPU এর রেজিস্টারে আনো।'},ad:{t:'ADD',d:'<code>ADD B</code> রেজিস্টারের মানের সাথে B যোগ করো।'},s:{t:'STORE',d:'<code>STORE C</code> ফলাফল মেমোরির C তে রাখো।'},
+ m1:{t:'মেশিন কোড',d:'<code>0001</code> = LOAD এর কোড, <code>1010</code> = A এর ঠিকানা। প্রথম অংশ কাজ (opcode), দ্বিতীয় অংশ ঠিকানা (operand)।'},
+ m2:{t:'মেশিন কোড',d:'<code>0011</code> = ADD এর কোড, <code>1011</code> = B এর ঠিকানা।'},m3:{t:'মেশিন কোড',d:'<code>0010</code> = STORE এর কোড, <code>1100</code> = C এর ঠিকানা।'}});
+const G=[['প্রথম','মেশিন ভাষা','০ ও ১ দিয়ে লেখা। অনুবাদক লাগে না, সবচেয়ে দ্রুত চলে। কিন্তু লেখা ও ভুল ধরা খুব কঠিন।'],
+ ['দ্বিতীয়','অ্যাসেম্বলি ভাষা','ADD, SUB, MOV এর মতো নেমোনিক ব্যবহার হয়। অ্যাসেম্বলার দিয়ে মেশিন ভাষায় অনুবাদ করতে হয়।'],
+ ['তৃতীয়','উচ্চস্তরের ভাষা','C, C++, Java, Python, FORTRAN, COBOL। ইংরেজির কাছাকাছি, যেকোনো কম্পিউটারে চলে।'],
+ ['চতুর্থ','4GL (অতি উচ্চস্তর)','SQL, Oracle এর মতো। কী চাই শুধু বললেই হয়, কীভাবে করবে বলতে হয় না।'],
+ ['পঞ্চম','স্বাভাবিক ভাষা','Prolog, Mercury। মানুষের স্বাভাবিক ভাষার মতো, কৃত্রিম বুদ্ধিমত্তায় ব্যবহার হয়।']];
+$('gen').innerHTML=G.map((g,i)=>`<button data-i="${i}"><i>${bn(i+1)}</i><span><b>${g[1]}</b><small>${g[0]} প্রজন্ম</small></span></button>`).join('');
+$('gen').querySelectorAll('button').forEach(b=>b.onclick=()=>{const g=G[+b.dataset.i];say(`${g[0]} প্রজন্ম`,`<b>${g[1]}:</b> ${g[2]}`,true);});
+player.reset();
+</script>
+</body>
+</html>

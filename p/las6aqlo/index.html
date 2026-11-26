@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>C ফাংশন · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=2">
+<style>
+.frames{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fr{border:2.5px solid var(--line);border-radius:14px;padding:8px;display:flex;flex-direction:column;gap:6px;transition:all .35s;min-height:150px;background:var(--panel)}
+.fr h3{font-family:var(--f-mono);font-size:.95rem;text-align:center}
+.fr.act{border-color:var(--signal);background:var(--signal-soft)}
+.fr.wait{opacity:.55}
+.fr.gone{opacity:.15;border-style:dashed}
+.fr .st{font-size:.75rem;text-align:center;color:var(--muted);font-weight:700;min-height:1.2em}
+.vb{display:flex;justify-content:space-between;align-items:center;font-family:var(--f-mono);font-weight:800;padding:4px 10px;border-radius:8px;background:var(--board)}
+.vb b{font-size:1.25rem}
+.vb.ch{background:var(--accent-soft);animation:pop .4s ease-out}
+.fly{position:absolute;z-index:3;font-family:var(--f-mono);font-weight:800;font-size:1.1rem;padding:2px 10px;border-radius:999px;background:var(--signal);color:#1A1200;pointer-events:none;box-shadow:0 6px 12px -6px rgba(0,0,0,.5)}
+.anat{display:flex;flex-wrap:wrap;gap:4px;font-family:var(--f-mono);font-weight:800;font-size:1.05rem}
+.anat span{padding:6px 8px;border-radius:8px;border:2px solid var(--line);cursor:pointer;background:var(--panel)}
+.anat .r{color:var(--bad);border-color:var(--bad)}.anat .n{color:var(--accent);border-color:var(--accent)}.anat .p{color:var(--ok);border-color:var(--ok)}
+</style>
+</head>
+<body class="kit">
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৫ · ৫.২.১৩ ফাংশন (Function)</span>
+    <h1>ফাংশন ডাকলে কী হয়?</h1>
+    <p class="lead">main() যখন sum() কে ডাকে, মান কীভাবে যায় আর ফলাফল কীভাবে ফিরে আসে, ▶ চেপে দেখো।</p>
+  </header>
+  <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
+  <section class="card" id="main">
+    <div class="frames" id="frames">
+      <div class="fr" id="fm"><h3>main()</h3><div class="vb" id="vr"><span>r</span><b id="r">?</b></div><p class="st" id="sm"></p></div>
+      <div class="fr gone" id="fs"><h3>sum(x, y)</h3><div class="vb" id="vx"><span>x</span><b id="x">–</b></div><div class="vb" id="vy"><span>y</span><b id="y">–</b></div><div class="vb" id="vs"><span>s</span><b id="s">–</b></div><p class="st" id="ss"></p></div>
+    </div>
+    <pre id="code"></pre>
+    <div class="console"><small>আউটপুট</small><span id="out"></span></div>
+  </section>
+  <section class="card">
+    <h2>ফাংশন হেডারের অংশ</h2>
+    <div class="anat" id="anat"><span class="r" data-x="r">int</span><span class="n" data-x="n">sum</span><span class="p" data-x="p">(int x, int y)</span></div>
+    <ul class="points">
+      <li><b>লাইব্রেরি ফাংশন:</b> আগে থেকে তৈরি, যেমন printf(), scanf(), sqrt()। হেডার ফাইল যুক্ত করলেই ব্যবহার করা যায়।</li>
+      <li><b>ইউজার ডিফাইনড ফাংশন:</b> প্রোগ্রামার নিজে বানায়, যেমন এখানের sum()।</li>
+      <li><b>সুবিধা:</b> একই কোড বারবার লিখতে হয় না, প্রোগ্রাম ছোট ও সহজে ভুল ধরা যায়।</li>
+      <li>main() নিজেও একটা ফাংশন, আর প্রোগ্রাম সবসময় main() থেকেই শুরু হয়।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false">অটো</button><button class="sp" aria-label="গতি">১x</button><div class="bar"><i></i></div><div class="cnt"></div></div></div>
+<script src="../../a/im.js?v=2"></script>
+<script>
+const {$,say,bn}=IM;
+const SRC=['int sum(int x, int y);','int main()','{','    int r = sum(3, 4);','    printf("%d", r);','    return 0;','}','int sum(int x, int y)','{','    int s = x + y;','    return s;','}'];
+const LX=['ফাংশন প্রোটোটাইপ (ঘোষণা): কম্পাইলারকে আগেই জানিয়ে রাখা যে sum নামে একটা ফাংশন আছে।','main() থেকে প্রোগ্রাম শুরু।','main এর শুরু।','sum কে ডাকা হচ্ছে (function call)। 3 আর 4 হলো আর্গুমেন্ট।','ফলাফল ছাপা।','main শেষ।','main এর শেষ।','ফাংশন সংজ্ঞা (definition) শুরু। x আর y হলো প্যারামিটার।','sum এর শুরু।','কাজ: x + y হিসাব।','return দিয়ে ফলাফল যে ডেকেছে তার কাছে ফেরত পাঠায়।','sum এর শেষ।'];
+const cv=IM.codeView($('code'),SRC.map(IM.cHL),i=>say(`লাইন ${bn(i+1)}`,LX[i],true));
+const S=[
+ {l:0,m:'প্রথমে প্রোটোটাইপ: কম্পাইলারকে জানানো হলো sum নামে একটা ফাংশন আছে, যে দুটো int নেয় আর একটা int ফেরত দেয়।'},
+ {l:1,fm:'act',m:'প্রোগ্রাম সবসময় main() থেকে শুরু হয়। main এর জন্য মেমোরিতে একটা জায়গা (ফ্রেম) তৈরি হলো।'},
+ {l:3,fm:'wait',fs:'act',x:3,y:4,fly:[['3','fm','vx'],['4','fm','vy']],sm:'অপেক্ষা করছে…',m:'<code>sum(3, 4)</code> ডাকা হলো। আর্গুমেন্ট 3 আর 4 কপি হয়ে sum এর প্যারামিটার x আর y তে গেলো। main থেমে অপেক্ষা করছে।'},
+ {l:9,fm:'wait',fs:'act',x:3,y:4,s:7,ch:'vs',sm:'অপেক্ষা করছে…',m:'sum এর ভিতরে কাজ: s = x + y = 3 + 4 = 7'},
+ {l:10,fm:'wait',fs:'act',x:3,y:4,s:7,fly:[['7','vs','vr']],ss:'return 7',sm:'অপেক্ষা করছে…',m:'<code>return s;</code> মান 7 ফেরত গেলো main এর কাছে, বসলো r এ।'},
+ {l:3,fm:'act',fs:'gone',r:7,ch:'vr',m:'sum এর কাজ শেষ, তার ফ্রেম মুছে গেলো (x, y, s আর নেই)। main আবার চলতে শুরু করলো, এখন r = 7।'},
+ {l:4,fm:'act',fs:'gone',r:7,out:'7',m:'printf r এর মান 7 ছাপলো।'}];
+function fly(txt,from,to){if(IM.reduce())return;const box=$('frames').getBoundingClientRect(),a=$(from).getBoundingClientRect(),b=$(to).getBoundingClientRect();
+  const el=document.createElement('span');el.className='fly';el.textContent=txt;$('frames').appendChild(el);
+  const ax=a.left-box.left+a.width/2-16,ay=a.top-box.top+a.height/2-14,bx=b.left-box.left+b.width-40,by=b.top-box.top+b.height/2-14;
+  el.style.left='0';el.style.top='0';
+  el.animate([{transform:`translate(${ax}px,${ay}px) scale(.6)`,opacity:.4},{transform:`translate(${(ax+bx)/2}px,${Math.min(ay,by)-30}px) scale(1.15)`,opacity:1,offset:.5},{transform:`translate(${bx}px,${by}px) scale(1)`,opacity:1}],{duration:900/player.speed,easing:'ease-in-out',fill:'forwards'}).onfinish=()=>setTimeout(()=>el.remove(),250);}
+function render(k,prev){const s=S[k];cv.on(s.l);
+  $('fm').className='fr '+(s.fm||'');$('fs').className='fr '+(s.fs||'gone');
+  $('r').textContent=s.r??'?';$('x').textContent=s.x??'–';$('y').textContent=s.y??'–';$('s').textContent=s.s??'–';
+  ['vr','vx','vy','vs'].forEach(id=>$(id).classList.toggle('ch',s.ch===id));
+  $('sm').textContent=s.sm||'';$('ss').textContent=s.ss||'';$('out').textContent=s.out||'';
+  if(s.fly&&prev!==null)s.fly.forEach((f,i)=>setTimeout(()=>fly(...f),i*200));
+  say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+const player=IM.player({count:()=>S.length,show:render,swipe:$('main'),interval:2100});
+IM.tapx($('anat'),{r:{t:'রিটার্ন টাইপ',d:'<code>int</code> ফাংশন কোন টাইপের মান ফেরত দেবে। কিছু ফেরত না দিলে void।'},n:{t:'ফাংশনের নাম',d:'<code>sum</code> এই নামেই ফাংশনকে ডাকা হয়। চলকের নামের নিয়মই মানতে হয়।'},p:{t:'প্যারামিটার',d:'<code>(int x, int y)</code> ফাংশন কী কী মান নেবে। ডাকার সময় দেওয়া মান (আর্গুমেন্ট) এগুলোতে কপি হয়।'}});
+player.reset();
+</script>
+</body>
+</html>

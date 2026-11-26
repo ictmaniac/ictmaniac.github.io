@@ -219,5 +219,71 @@ const IM = (() => {
     return { reset() { right = total = 0; sc.textContent = 'স্কোর: 0/0'; next(); } };
   }
   const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
-  return { $, parse, ev, show, rows, envOf, toggles, tt, circuit, tabs, quiz01, rnd, FN };
+
+  /* ---------- kit (Ch4+): explain bar, step player, code view, token mover ---------- */
+  const bn = x => String(x).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+  const reduce = () => matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function say(tag, html, tap) {
+    const t = $('extag'), p = $('extx'); if (!t) return;
+    t.textContent = (tap ? '👆 ' : '') + tag; t.className = 'tag' + (tap ? ' tap' : '');
+    p.innerHTML = html; p.classList.remove('fade'); void p.offsetWidth; p.classList.add('fade');
+  }
+  /* player({count:()=>n, show:(k,prev)=>{}, swipe:el, label:'ধাপ', interval:1500}) — drives the bottom dock */
+  function player(o) {
+    const d = document.querySelector('.dock');
+    const pv = d.querySelector('.pv'), nx = d.querySelector('.nx'), au = d.querySelector('.au'), sp = d.querySelector('.sp'), bar = d.querySelector('.bar i'), cnt = d.querySelector('.cnt');
+    let k = 0, timer = null, spd = 1, si = 0; const SP = [1, 1.6, 0.6], SPL = ['১x', 'দ্রুত', 'ধীরে'];
+    const n = () => o.count();
+    function show(prev) { o.show(k, prev); pv.disabled = k === 0; nx.disabled = k >= n() - 1; bar.style.width = (100 * (k + 1) / n()) + '%';
+      cnt.textContent = k >= n() - 1 ? 'শেষ! আবার দেখতে "অটো" চাপো' : (o.hint || 'সোয়াইপ করেও ধাপ বদলানো যায়'); }
+    function stop() { clearInterval(timer); timer = null; au.setAttribute('aria-pressed', 'false'); au.textContent = 'অটো'; o.onPlay && o.onPlay(false); }
+    function next() { if (k < n() - 1) { const p = k; k++; show(p); } else stop(); }
+    function prev() { if (k > 0) { k--; show(null); } }
+    function play() { if (k >= n() - 1) { k = 0; show(null); } au.setAttribute('aria-pressed', 'true'); au.textContent = 'থামো'; o.onPlay && o.onPlay(true);
+      timer = setInterval(() => { next(); if (k >= n() - 1) stop(); }, (o.interval || 1500) / spd); }
+    nx.onclick = () => { stop(); next(); }; pv.onclick = () => { stop(); prev(); };
+    au.onclick = () => timer ? stop() : play();
+    sp.onclick = () => { si = (si + 1) % 3; spd = SP[si]; sp.textContent = SPL[si]; if (timer) { stop(); play(); } };
+    (o.swipe ? [].concat(o.swipe) : []).forEach(el => { let x0 = null, y0 = 0;
+      el.addEventListener('touchstart', e => { const t = e.touches[0]; x0 = t.clientX; y0 = t.clientY; }, { passive: true });
+      el.addEventListener('touchend', e => { if (x0 === null) return; const t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
+        if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) { stop(); dx < 0 ? next() : prev(); } }, { passive: true }); });
+    document.addEventListener('keydown', e => { if (e.target.closest('input,select,textarea')) return; if (e.key === 'ArrowRight') { stop(); next(); } if (e.key === 'ArrowLeft') { stop(); prev(); } });
+    const api = { reset() { stop(); k = 0; show(null); }, go(i) { stop(); k = Math.max(0, Math.min(n() - 1, i)); show(null); }, get k() { return k; }, get speed() { return spd; }, stop };
+    return api;
+  }
+  /* code view: lines = array of html strings; onTap(i, el) */
+  function codeView(pre, lines, onTap) {
+    pre.classList.add('cv');
+    pre.innerHTML = lines.map((t, i) => `<span class="ln" data-l="${i}"><i>${i + 1}</i><span>${t}</span></span>`).join('');
+    const L = [...pre.querySelectorAll('.ln')];
+    L.forEach((e, i) => e.onclick = ev => { if (ev.target.closest('[data-x]')) return; L.forEach(x => x.classList.toggle('hl', x === e)); onTap && onTap(i, e); });
+    return { on(i) { L.forEach((e, j) => { e.classList.toggle('on', Array.isArray(i) ? i.includes(j) : j === i); e.classList.remove('hl'); }); },
+      dimAfter(i) { L.forEach((e, j) => e.classList.toggle('dim', j > i)); }, lines: L };
+  }
+  /* tap-to-explain for any element with data-x="key" inside root, using dict */
+  function tapx(root, dict, tagOf) {
+    root.addEventListener('click', e => { const el = e.target.closest('[data-x]'); if (!el || !root.contains(el)) return; const k = el.dataset.x; if (!dict[k]) return;
+      e.stopPropagation(); say(tagOf ? tagOf(k, el) : (dict[k].t || 'ব্যাখ্যা'), dict[k].d || dict[k], true); });
+  }
+  /* move an svg element (translate) along points [[x,y],...] */
+  let animIds = new WeakMap();
+  function moveAlong(el, pts, dur, done) {
+    cancelAnimationFrame(animIds.get(el));
+    if (reduce() || pts.length < 2) { const p = pts[pts.length - 1]; el.setAttribute('transform', `translate(${p[0]},${p[1]})`); done && done(); return; }
+    const seg = []; let tot = 0; for (let i = 1; i < pts.length; i++) { const l = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); seg.push(l); tot += l; }
+    const t0 = performance.now();
+    const go = now => { let t = Math.min(1, (now - t0) / dur); const e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; let dist = e * tot, i = 0;
+      while (i < seg.length - 1 && dist > seg[i]) { dist -= seg[i]; i++; } const f = seg[i] ? dist / seg[i] : 1, a = pts[i], b = pts[i + 1];
+      el.setAttribute('transform', `translate(${a[0] + (b[0] - a[0]) * f},${a[1] + (b[1] - a[1]) * f})`);
+      if (t < 1) animIds.set(el, requestAnimationFrame(go)); else done && done(); };
+    animIds.set(el, requestAnimationFrame(go));
+  }
+  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  /* C syntax colouring (very small) */
+  const cHL = s => esc(s).replace(/(&quot;|"[^"]*")/g, '<span class="st">$1</span>')
+    .replace(/\b(int|float|double|char|void|return|if|else|switch|case|break|default|for|while|do|printf|scanf|include|main|long)\b/g, '<span class="kw">$1</span>');
+  /* HTML colouring */
+  const hHL = s => esc(s).replace(/([a-z-]+)="([^"]*)"/g, '\u0001$1\u0002="$2"').replace(/(&lt;\/?)([a-zA-Z0-9]+)/g, '$1<span class="tg">$2</span>').replace(/\u0001/g, '<span class="at">').replace(/\u0002/g, '</span>');
+  return { $, parse, ev, show, rows, envOf, toggles, tt, circuit, tabs, quiz01, rnd, FN, bn, reduce, say, player, codeView, tapx, moveAlong, esc, cHL, hHL };
 })();

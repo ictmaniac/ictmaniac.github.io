@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>HTML লিস্ট · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=2">
+<style>
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opts select{font-family:var(--f-mono);min-height:44px;padding:6px 10px;font-size:1rem}
+.page li{padding:2px 4px;border-radius:4px;font-size:1.1rem}
+.page li.cur{background:#FDEBC8;animation:pop .4s ease-out}
+.page li::marker{color:#1550B8;font-weight:700}
+.mk{display:flex;gap:6px;flex-wrap:wrap}
+.mk span{font-family:var(--f-mono);font-weight:800;min-width:44px;text-align:center;padding:6px;border-radius:8px;background:var(--board);color:var(--muted);transition:all .3s}
+.mk span.on{background:var(--signal);color:#1A1200}
+</style>
+</head>
+<body class="kit">
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৪ · ৪.২.৬ লিস্ট বা তালিকা (Lists)</span>
+    <h1>লিস্ট বানাও</h1>
+    <p class="lead">type আর start বদলাও, তারপর ▶ চাপো। প্রতিটি &lt;li&gt; যোগ হলে তালিকায় একটা করে আইটেম আসবে, পাশে কোন নম্বর বা চিহ্ন বসছে তাও দেখাবে।</p>
+  </header>
+  <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
+  <div class="tabs" id="tabs">
+    <button class="tab m" data-k="ol" aria-selected="true">ol (নম্বর)</button>
+    <button class="tab m" data-k="ul" aria-selected="false">ul (চিহ্ন)</button>
+  </div>
+  <section class="card" id="main">
+    <div class="opts">
+      <div class="field"><label for="ty">type</label><select id="ty"></select></div>
+      <div class="field" id="f-st"><label for="st">start</label><select id="st"></select></div>
+    </div>
+    <div class="browser"><div class="bar"><b></b><b></b><span>list.html</span></div><div class="page" id="page"></div></div>
+    <div class="mk" id="mk"></div>
+    <pre id="code"></pre>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>&lt;ol&gt;</b> Ordered List: ক্রমিক নম্বর দেওয়া তালিকা। type হতে পারে 1, A, a, I, i।</li>
+      <li><b>&lt;ul&gt;</b> Unordered List: বুলেট চিহ্নের তালিকা। type হতে পারে disc (●), circle (○), square (■)।</li>
+      <li><b>&lt;li&gt;</b> List Item: তালিকার প্রতিটি আইটেম।</li>
+      <li><b>start</b> শুধু ol এ কাজ করে। start="3" type="A" দিলে শুরু হবে C থেকে।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false">অটো</button><button class="sp" aria-label="গতি">১x</button><div class="bar"><i></i></div><div class="cnt"></div></div></div>
+<script src="../../a/im.js?v=2"></script>
+<script>
+const {$,say,bn}=IM;
+const ITEMS=['বাংলা','ইংরেজি','ICT','গণিত'];
+let K='ol';
+const OT=['1','A','a','I','i'],UT=['disc','circle','square'];
+function roman(n){const r=[[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];let s='';for(const [v,c] of r)while(n>=v){s+=c;n-=v;}return s;}
+function marker(t,n){if(K==='ul')return {disc:'●',circle:'○',square:'■'}[t];
+  return t==='1'?n+'.':t==='A'?String.fromCharCode(64+n)+'.':t==='a'?String.fromCharCode(96+n)+'.':t==='I'?roman(n)+'.':roman(n).toLowerCase()+'.';}
+$('st').innerHTML=[...Array(10)].map((_,i)=>`<option>${i+1}</option>`).join('');
+function opts(){$('ty').innerHTML=(K==='ol'?OT:UT).map(t=>`<option>${t}</option>`).join('');$('f-st').hidden=K==='ul';}
+let cv,lines;
+function build(){const t=$('ty').value,s=+$('st').value;
+  const open=K==='ol'?`<ol type="${t}"${s>1?` start="${s}"`:''}>`:`<ul type="${t}">`;
+  lines=[open,...ITEMS.map(x=>`  <li>${x}</li>`),K==='ol'?'</ol>':'</ul>'];
+  cv=IM.codeView($('code'),lines.map(IM.hHL),i=>say('কোডের লাইন',expl(i),true));
+  $('mk').innerHTML=ITEMS.map((_,i)=>`<span>${marker(t,s+i)}</span>`).join('');
+  player&&player.reset();}
+function expl(i){const t=$('ty').value,s=+$('st').value;
+  if(i===0)return K==='ol'?`<code>&lt;ol&gt;</code> নম্বরযুক্ত তালিকা শুরু। type="${t}" তাই নম্বর হবে ${marker(t,s)} ধরনের${s>1?`, আর start="${s}" তাই ${bn(s)} নম্বর থেকে শুরু`:''}।`:`<code>&lt;ul&gt;</code> বুলেট তালিকা শুরু। type="${t}" তাই চিহ্ন হবে ${marker(t)}।`;
+  if(i===lines.length-1)return 'তালিকা শেষ। শেষ ট্যাগ দিতে ভুলবে না।';
+  return `<code>&lt;li&gt;</code> একটি আইটেম "${ITEMS[i-1]}"। এর আগে বসবে <b>${marker(t,s+i-1)}</b>`;}
+function render(k){const t=$('ty').value,s=+$('st').value;cv.on(k);cv.dimAfter(k);
+  const n=Math.min(Math.max(k,0),ITEMS.length);
+  const tag=K==='ol'?`ol type="${t}" start="${s}"`:`ul type="${t}"`;
+  $('page').innerHTML=k===0?'<span style="color:#999">(তালিকা শুরু হলো, আইটেম আসছে…)</span>':`<${tag} style="margin:0;padding-left:2.4em;list-style-type:${K==='ul'?t:({'1':'decimal',A:'upper-alpha',a:'lower-alpha',I:'upper-roman',i:'lower-roman'})[t]}">`+ITEMS.slice(0,n).map((x,i)=>`<li class="${i===k-1?'cur':''}">${x}</li>`).join('')+`</${K}>`;
+  $('mk').querySelectorAll('span').forEach((e,i)=>e.classList.toggle('on',i===k-1));
+  say(`ধাপ ${bn(k+1)} / ${bn(lines.length)}`,expl(k));}
+let player=null;
+player=IM.player({count:()=>lines.length,show:render,swipe:$('main'),interval:1300});
+IM.tabs($('tabs'),k=>{K=k;opts();build();});
+$('ty').onchange=build;$('st').onchange=build;
+opts();$('ty').value='A';$('st').value='3';build();
+</script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>কম্পাইলার বনাম ইন্টারপ্রেটার · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=2">
+<style>
+.lanes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lane{border:2px solid var(--line);border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.lane h3{font-size:.95rem;text-align:center}
+.lane .cv{font-size:.8rem}
+.lane .cv .ln{grid-template-columns:18px 1fr;padding-right:4px}
+.lane .cv .ln.err{background:var(--bad-soft)}
+.lane .cv .ln.read{background:var(--accent-soft)}
+.lane .cv .ln.on{background:var(--signal-soft)}
+.lane .console{font-size:.85rem;min-height:84px;padding:6px 8px}
+.st{font-size:.8rem;font-weight:700;text-align:center;min-height:2.6em;color:var(--muted)}
+.st.bad{color:var(--bad)}.st.ok{color:var(--ok)}
+.exe{display:none;align-self:center;font-family:var(--f-mono);font-weight:800;font-size:.85rem;padding:4px 10px;border-radius:8px;background:var(--ok);color:var(--panel);animation:pop .4s ease-out}
+.exe.show{display:block}
+.cmp td,.cmp th{font-family:var(--f-body);font-size:.88rem;text-align:left;padding:6px}
+.cmp tr{cursor:pointer}
+</style>
+</head>
+<body class="kit">
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৫ · ৫.১.৮ অনুবাদক সফটওয়্যার</span>
+    <h1>কম্পাইলার বনাম ইন্টারপ্রেটার</h1>
+    <p class="lead">একই প্রোগ্রাম দুজনকে দিলাম। কম্পাইলার আগে পুরোটা পড়ে, ইন্টারপ্রেটার লাইন ধরে ধরে চালায়। ▶ চাপো আর পার্থক্যটা দেখো।</p>
+  </header>
+  <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
+  <div class="tabs" id="tabs">
+    <button class="tab" data-k="err" aria-selected="true">প্রোগ্রামে ভুল আছে</button>
+    <button class="tab" data-k="ok" aria-selected="false">ভুল ঠিক করা</button>
+  </div>
+  <section class="card" id="main">
+    <div class="lanes">
+      <div class="lane"><h3>কম্পাইলার</h3><pre id="c1"></pre><span class="exe" id="exe">program.exe ✓</span><p class="st" id="s1"></p><div class="console"><small>আউটপুট</small><span id="o1"></span></div></div>
+      <div class="lane"><h3>ইন্টারপ্রেটার</h3><pre id="c2"></pre><p class="st" id="s2"></p><div class="console"><small>আউটপুট</small><span id="o2"></span></div></div>
+    </div>
+  </section>
+  <section class="card">
+    <h2>পার্থক্য</h2>
+    <p class="hint">যেকোনো সারিতে আঙুল দাও।</p>
+    <div class="scroll-x"><table class="cmp" id="cmp"></table></div>
+    <p class="hint"><b>অ্যাসেম্বলার</b> আরেক ধরনের অনুবাদক: অ্যাসেম্বলি ভাষাকে মেশিন ভাষায় রূপান্তর করে।</p>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false">অটো</button><button class="sp" aria-label="গতি">১x</button><div class="bar"><i></i></div><div class="cnt"></div></div></div>
+<script src="../../a/im.js?v=2"></script>
+<script>
+const {$,say,bn}=IM;
+let K='err';
+const P=()=>['a = 5','b = 3','print a + b',K==='err'?'prnt a - b':'print a - b','print a * b'];
+const OUT=['','','8','2','15'];
+function steps(){const S=[];const L=P();
+  for(let i=0;i<5;i++){const e=K==='err'&&i===3;
+    S.push({r:i,run:K==='err'?(i<=3?i:null):i,err:K==='err'&&i>=3,
+      m:`কম্পাইলার লাইন ${bn(i+1)} <b>শুধু পড়ছে</b>, এখনো চালাচ্ছে না। `+(K==='err'?(i<3?`ইন্টারপ্রেটার লাইন ${bn(i+1)} পড়েই <b>চালিয়ে দিলো</b>।`:i===3?'ইন্টারপ্রেটার লাইন ৪ এ ভুল (prnt) পেয়ে <b>সাথে সাথে থেমে গেলো</b>! কম্পাইলার ভুলটা লিখে রেখে পড়া চালিয়ে যাচ্ছে।':'ইন্টারপ্রেটার আগেই থেমে গেছে, বাকি লাইন আর চলবে না।'):`ইন্টারপ্রেটার লাইন ${bn(i+1)} চালালো।`)});}
+  if(K==='err')S.push({r:5,run:null,err:true,done:1,m:'কম্পাইলার পুরো প্রোগ্রাম পড়ে শেষে <b>সব ভুলের তালিকা</b> একসাথে দিলো। ভুল থাকায় কোনো প্রোগ্রাম চলেনি, একটা আউটপুটও আসেনি।'});
+  else{S.push({r:5,run:4,done:1,exe:1,m:'কোনো ভুল নেই। কম্পাইলার পুরো প্রোগ্রামকে মেশিন ভাষায় অনুবাদ করে <b>program.exe</b> ফাইল বানালো।'});
+    S.push({r:5,run:4,done:1,exe:1,ran:1,m:'এবার .exe চালালে সব আউটপুট একসাথে চলে এলো, খুব দ্রুত। পরের বার আর অনুবাদ লাগবে না। ইন্টারপ্রেটারকে কিন্তু প্রতিবার আবার লাইন ধরে চালাতে হবে।'});}
+  return S;}
+let S=steps(),c1,c2;
+function build(){S=steps();const L=P().map(IM.cHL);c1=IM.codeView($('c1'),L,i=>say(`লাইন ${bn(i+1)}`,lx(i),true));c2=IM.codeView($('c2'),L,i=>say(`লাইন ${bn(i+1)}`,lx(i),true));}
+function lx(i){return i===3&&K==='err'?'<code>prnt</code> বানান ভুল (print হওয়ার কথা)। এটা সিনট্যাক্স এরর।':'এই লাইনে কোনো ভুল নেই।';}
+function render(k){const s=S[k];
+  c1.lines.forEach((e,i)=>{e.className='ln'+(i<s.r?' read':'')+(i===s.r?' on':'')+(K==='err'&&i===3&&s.r>=3?' err':'');});
+  c2.lines.forEach((e,i)=>{const stopped=K==='err'&&i>3;e.className='ln'+(s.run!==null&&i<s.run?' read':'')+(i===s.run?' on':'')+(K==='err'&&i===3&&s.run===3?' err':'')+(K==='err'&&s.run===null&&i===3&&k>3?' err':'')+(stopped?' dim':'');});
+  // interpreter output
+  const upto=K==='err'?Math.min(k,2):Math.min(k,4);$('o2').textContent=OUT.slice(0,upto+1).filter(Boolean).join('\n')+(K==='err'&&k>=3?'\nError: line 4':'');
+  $('s2').className='st'+(K==='err'&&k>=3?' bad':'');$('s2').textContent=K==='err'?(k>=3?'লাইন ৪ এ থেমে গেছে ✗':`লাইন ${bn(k+1)} চলছে`):(k<5?`লাইন ${bn(k+1)} চলছে`:'প্রতিবার আবার লাইন ধরে চালাবে');
+  $('exe').classList.toggle('show',!!s.exe);
+  $('o1').textContent=s.ran?'8\n2\n15':(s.done&&K==='err'?'Error: line 4: prnt\n১টি ভুল':'');
+  $('s1').className='st'+(s.done?(K==='err'?' bad':' ok'):'');$('s1').textContent=s.done?(K==='err'?'ভুলের তালিকা দিলো ✗':'সব অনুবাদ শেষ ✓'):`পড়ছে… লাইন ${bn(s.r+1)}`;
+  say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+const player=IM.player({count:()=>S.length,show:render,swipe:$('main'),interval:1900});
+const T=[['বিষয়','কম্পাইলার','ইন্টারপ্রেটার'],['অনুবাদ','পুরো প্রোগ্রাম একসাথে','এক লাইন করে'],['ভুল দেখানো','সব ভুল একসাথে, শেষে','প্রথম ভুলেই থেমে যায়'],['গতি','দ্রুত চলে','ধীরে চলে'],['অবজেক্ট/exe ফাইল','তৈরি করে','তৈরি করে না'],['মেমোরি','বেশি লাগে','কম লাগে'],['উদাহরণ','C, C++','Python, BASIC']];
+$('cmp').innerHTML='<thead><tr>'+T[0].map(x=>`<th>${x}</th>`).join('')+'</tr></thead><tbody>'+T.slice(1).map((r,i)=>`<tr data-i="${i+1}">${r.map((x,j)=>j?`<td>${x}</td>`:`<td><b>${x}</b></td>`).join('')}</tr>`).join('')+'</tbody>';
+$('cmp').querySelectorAll('tbody tr').forEach(r=>r.onclick=()=>{const t=T[+r.dataset.i];say(t[0],`কম্পাইলার: <b>${t[1]}</b>। ইন্টারপ্রেটার: <b>${t[2]}</b>।`,true);});
+IM.tabs($('tabs'),k=>{K=k;build();player.reset();});
+build();player.reset();
+</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>HTML এর কাঠামো · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=2">
+<style>
+.split{display:grid;grid-template-columns:1fr;gap:12px}
+.bx{border:2px dashed var(--line);border-radius:10px;padding:6px 8px 8px;display:flex;flex-direction:column;gap:6px;font-family:var(--f-mono);font-size:.8rem;font-weight:700;color:var(--muted);transition:all .3s}
+.bx>span{line-height:1.2}
+.bx.show{border-style:solid;border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent-soft) 45%,transparent)}
+.bx.cur{border-color:var(--signal);background:var(--signal-soft);color:#8A5A00}
+.bx:not(.show){opacity:.25}
+.row2{display:grid;grid-template-columns:1fr 1.4fr;gap:6px}
+.btab{display:flex;align-items:center;gap:6px;font-family:var(--f-body);font-size:.85rem}
+.btab i{font-style:normal;background:var(--panel);border:1px solid var(--line);border-bottom:none;border-radius:8px 8px 0 0;padding:2px 10px;min-width:90px;transition:background .3s}
+.btab i.cur{background:var(--signal-soft)}
+.anat{display:flex;flex-wrap:wrap;gap:3px;font-family:var(--f-mono);font-size:1.02rem;font-weight:700;align-items:center}
+.anat span{padding:6px 6px;border-radius:8px;cursor:pointer;border:2px solid var(--line);background:var(--panel)}
+.anat .o{color:var(--accent);border-color:var(--accent)}.anat .a{color:var(--bad);border-color:var(--bad)}.anat .c{color:var(--ink)}.anat .e{color:var(--accent);border-color:var(--accent)}
+textarea{font:inherit;font-family:var(--f-mono);font-size:.9rem;line-height:1.6;width:100%;min-height:200px;padding:12px;border-radius:12px;border:2px solid var(--line);background:var(--board);color:var(--ink);resize:vertical}
+</style>
+</head>
+<body class="kit">
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৪ · ৪.২ এইচটিএমএল এর মৌলিক বিষয় (৪.২.১–৪.২.৩)</span>
+    <h1>HTML পেজের কাঠামো</h1>
+    <p class="lead">▶ চাপলে কোড এক লাইন করে লেখা হবে, পাশে বাক্সের ভিতর বাক্স তৈরি হবে আর ব্রাউজারে পেজটা ফুটে উঠবে। যেকোনো লাইনে আঙুল দাও।</p>
+  </header>
+  <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
+  <section class="card" id="main">
+    <div class="browser"><div class="bar btab"><i id="btitle">নতুন ট্যাব</i></div><div class="page" id="page"></div></div>
+    <pre id="code"></pre>
+    <div id="boxes"></div>
+  </section>
+  <section class="card">
+    <h2>একটি ট্যাগের অংশ (৪.২.৩)</h2>
+    <p class="hint">প্রতিটি অংশে আঙুল দাও।</p>
+    <div class="anat" id="anat">
+      <span class="o" data-x="o">&lt;p</span><span class="a" data-x="a">align="center"</span><span class="o" data-x="o2">&gt;</span><span class="c" data-x="c">ICT Maniac</span><span class="e" data-x="e">&lt;/p&gt;</span>
+    </div>
+    <ul class="points">
+      <li><b>কন্টেইনার ট্যাগ:</b> শুরু ও শেষ দুটোই আছে। যেমন &lt;p&gt;…&lt;/p&gt;, &lt;b&gt;…&lt;/b&gt;</li>
+      <li><b>এম্পটি ট্যাগ:</b> শুধু শুরু ট্যাগ, শেষ নেই। যেমন &lt;br&gt;, &lt;hr&gt;, &lt;img&gt;</li>
+      <li>HTML কেস-সেনসিটিভ নয়: &lt;P&gt; আর &lt;p&gt; একই।</li>
+    </ul>
+  </section>
+  <section class="card">
+    <h2>নিজে লিখে দেখো</h2>
+    <textarea id="ed" spellcheck="false" aria-label="HTML কোড"></textarea>
+    <div class="browser"><div class="bar btab"><i id="etitle"></i></div><div class="page" id="out"></div></div>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false">অটো</button><button class="sp" aria-label="গতি">১x</button><div class="bar"><i></i></div><div class="cnt"></div></div></div>
+<script src="../../a/im.js?v=2"></script>
+<script>
+const {$,say,bn}=IM;
+const SRC=['<!DOCTYPE html>','<html>','<head>','  <title>আমার পেজ</title>','</head>','<body>','  <h1>স্বাগতম</h1>','  <p>এটি আমার প্রথম ওয়েব পেজ।</p>','</body>','</html>'];
+const LX=['<code>&lt;!DOCTYPE html&gt;</code> ব্রাউজারকে বলে: এটা HTML5 ডকুমেন্ট। এটা কোনো ট্যাগ না, একটা ঘোষণা।',
+ '<code>&lt;html&gt;</code> পুরো পেজের সবচেয়ে বড় বাক্স। বাকি সব ট্যাগ এর ভিতরে থাকে।',
+ '<code>&lt;head&gt;</code> পেজের তথ্য রাখে (টাইটেল ইত্যাদি)। এর লেখা পেজের ভিতরে দেখা যায় না।',
+ '<code>&lt;title&gt;</code> এর লেখা ব্রাউজারের ট্যাবে দেখা যায়।',
+ '<code>&lt;/head&gt;</code> head অংশ শেষ।',
+ '<code>&lt;body&gt;</code> এর ভিতরের সবকিছু পেজে দেখা যায়: লেখা, ছবি, টেবিল।',
+ '<code>&lt;h1&gt;</code> সবচেয়ে বড় হেডিং। h1 থেকে h6 পর্যন্ত ৬টি হেডিং আছে।',
+ '<code>&lt;p&gt;</code> প্যারাগ্রাফ। নতুন অনুচ্ছেদ শুরু করে।',
+ '<code>&lt;/body&gt;</code> body অংশ শেষ।',
+ '<code>&lt;/html&gt;</code> পুরো ডকুমেন্ট শেষ।'];
+const cv=IM.codeView($('code'),SRC.map(IM.hHL),(i)=>say(`লাইন ${bn(i+1)}`,LX[i],true));
+// box ids shown from step
+const B=[['html',1],['head',2],['title',3],['body',5],['h1',6],['p',7]];
+$('boxes').innerHTML=`<div class="bx" id="b-html"><span>&lt;html&gt;</span><div class="row2">
+  <div class="bx" id="b-head"><span>&lt;head&gt;</span><div class="bx" id="b-title"><span>&lt;title&gt;</span></div></div>
+  <div class="bx" id="b-body"><span>&lt;body&gt;</span><div class="bx" id="b-h1"><span>&lt;h1&gt;</span></div><div class="bx" id="b-p"><span>&lt;p&gt;</span></div></div></div></div>`;
+function render(k){
+  cv.on(k);cv.dimAfter(k);
+  B.forEach(([id,s])=>{$('b-'+id).classList.toggle('show',k>=s);$('b-'+id).classList.toggle('cur',k===s);});
+  const t=$('btitle');t.textContent=k>=3?'আমার পেজ':'নতুন ট্যাব';t.classList.toggle('cur',k===3);
+  $('page').innerHTML=(k>=6?'<h1 style="margin:0 0 6px;font-size:1.6rem">স্বাগতম</h1>':'')+(k>=7?'<p style="margin:0">এটি আমার প্রথম ওয়েব পেজ।</p>':'')||'<span style="color:#999">(এখনো কিছু দেখা যাচ্ছে না)</span>';
+  say(`লাইন ${bn(k+1)} / ${bn(SRC.length)}`,LX[k]+(k===9?' পুরো পেজ তৈরি!':''));}
+const player=IM.player({count:()=>SRC.length,show:render,swipe:$('main'),interval:1500});
+IM.tapx($('anat'),{o:{t:'শুরু ট্যাগ',d:'<code>&lt;p</code> শুরু ট্যাগ (opening tag)। &lt; চিহ্ন দিয়ে শুরু।'},a:{t:'অ্যাট্রিবিউট',d:'<code>align="center"</code> অ্যাট্রিবিউট। ট্যাগ সম্পর্কে বাড়তি তথ্য দেয়। নাম="মান" আকারে শুরু ট্যাগের ভিতরে লেখা হয়।'},
+ o2:{t:'শুরু ট্যাগ শেষ',d:'&gt; চিহ্ন দিয়ে শুরু ট্যাগ বন্ধ হয়।'},c:{t:'কনটেন্ট',d:'দুই ট্যাগের মাঝের লেখাটাই পেজে দেখা যায়।'},e:{t:'শেষ ট্যাগ',d:'<code>&lt;/p&gt;</code> শেষ ট্যাগ (closing tag)। শুরু ট্যাগের মতোই, শুধু আগে / চিহ্ন থাকে।'}});
+const ED=SRC.join('\n');
+function run(){const v=$('ed').value;const m=v.match(/<title>([\s\S]*?)<\/title>/i);$('etitle').textContent=m?m[1]:'(টাইটেল নেই)';
+  const b=v.match(/<body[^>]*>([\s\S]*?)(<\/body>|$)/i);$('out').innerHTML=(b?b[1]:v).replace(/<\s*\/?\s*(script|iframe|style|link|meta|object|embed|title|head)[^>]*>/gi,'').replace(/\son\w+\s*=/gi,' x=');}
+$('ed').value=ED;$('ed').oninput=run;run();
+player.reset();
+</script>
+</body>
+</html>
