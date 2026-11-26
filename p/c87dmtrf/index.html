@@ -109,6 +109,10 @@ svg.ov polygon{fill:var(--signal);opacity:0;animation:fadein .2s .8s forwards}
     <div class="cmp" id="cmp"></div>
   </section>
   <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
     <h2>মনে রাখো</h2>
     <ul class="points">
       <li><b>সর্টিং:</b> ডেটাকে ঊর্ধ্বক্রমে (A→Z, ছোট→বড়) বা অধঃক্রমে (Z→A, বড়→ছোট) সাজানো। মূল টেবিলের রেকর্ডের ক্রমিক নম্বর বদলে যায়।</li>
@@ -231,6 +235,7 @@ $('cmp').querySelectorAll('.c').forEach(c=>c.onclick=()=>{const i=+c.dataset.i;$
 IM.tabs($('tabs'),k=>{K=k;build();player.reset();});
 $('fld').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{F=c.dataset.f;$('fld').querySelectorAll('.chip').forEach(x=>x.classList.toggle('sel',x===c));build();player.reset();});
 build();player.reset();
+IM.mcq($('quiz6'),[{"q": "কোনটিতে মূল টেবিলের রেকর্ডের ক্রম বদলে যায়?", "o": ["ইনডেক্সিং", "সর্টিং", "দুটোই", "কোনোটিই না"], "a": 1, "w": "সর্টিংয়ে আসল সারিগুলো সরে যায়।"}, {"q": "কোনটিতে বেশি মেমোরি লাগে (পাঠ্যবই)?", "o": ["সর্টিং", "ইনডেক্সিং", "সমান", "বলা যায় না"], "a": 1, "w": "আলাদা ইনডেক্স ফাইল তৈরি হয় বলে।"}, {"q": "নতুন রেকর্ড যোগ হলে নিজে থেকে হালনাগাদ হয়—", "o": ["ইনডেক্স", "সর্ট করা টেবিল", "দুটোই", "কোনোটিই না"], "a": 0, "w": "ইনডেক্স স্বয়ংক্রিয়ভাবে আপডেট হয়, সর্ট আবার করতে হয়।"}]);
 </script>
 </body>
 </html>

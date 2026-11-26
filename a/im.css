@@ -238,3 +238,18 @@ svg.ov .draw{stroke-dasharray:900;stroke-dashoffset:900;animation:draw .9s ease-
 .dtbl .hd{background:var(--accent);color:#fff;font-family:var(--f-body);font-size:.82rem}
 .dtbl .rw{border-top:1.5px solid var(--line);transition:background .3s,opacity .4s,transform .5s}
 .dtbl .hd>span,.dtbl .rw>span{padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.cmpx{display:grid;border:2px solid var(--line);border-radius:12px;overflow:hidden;font-size:.84rem}
+.cmpx>div{padding:8px 7px;border-top:1.5px solid var(--line);line-height:1.35}
+.cmpx .h{background:var(--accent);color:#fff;font-weight:800;border-top:0}
+.cmpx .c{cursor:pointer;animation:pop .4s ease-out both;transition:background .25s}
+.cmpx .q{font-weight:800;color:var(--accent);background:var(--accent-soft)}
+.cmpx .c.on{background:var(--signal-soft)}
+.cmpx .c.q.on{background:var(--signal);color:#1A1200}
+.mcq{display:flex;flex-direction:column;gap:12px}
+.mq p{font-weight:700;margin-bottom:6px}
+.mo{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mo button{font:inherit;font-size:.9rem;text-align:left;padding:8px 10px;border-radius:10px;border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;min-height:44px}
+.mo button.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 16%,var(--panel));font-weight:800}
+.mo button.no{border-color:var(--bad);background:var(--bad-soft);animation:shake .45s}
+.mscore{font-weight:800;color:var(--accent);text-align:center}

@@ -65,6 +65,14 @@
     <span class="mag" id="mag">👉</span>
   </section>
   <section class="card">
+    <h2>কাছাকাছি টাইপের পার্থক্য (টাচ করো)</h2>
+    <div id="cx0"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
     <h2>মনে রাখো</h2>
     <ul class="points">
       <li><b>Text</b> সর্বোচ্চ ২৫৫ বর্ণ, এর সংখ্যায় হিসাব হয় না। <b>Memo</b> বড় লেখা (প্রায় ৬৫,৫৩৫ বর্ণ)।</li>
@@ -148,6 +156,8 @@ function render(k,prev){gen++;$('mag').classList.remove('on');const fwd=prev===k
 var player=IM.player({count:()=>S.length,show:render,swipe:$('main'),interval:3400});
 IM.tabs($('tabs'),k=>{K=k;S=ST[k];document.body.classList.toggle('mode-sz',k==='sz');player.reset();});
 player.reset();
+IM.compare($('cx0'),["", "কী রাখে", "হিসাব?", "উদাহরণ"],[["Text", "২৫৫ বর্ণ পর্যন্ত", "না", "Name, Phone", "অক্ষর, সংখ্যা, চিহ্ন সব রাখা যায়, কিন্তু যোগ-বিয়োগ হয় না। ছোট লেখার জন্য।"], ["Memo", "বড় লেখা (~৬৫,৫৩৫ বর্ণ)", "না", "Remarks", "Text এ ২৫৫ এর বেশি বর্ণ ধরে না, তাই লম্বা বর্ণনার জন্য Memo।"], ["Number", "সংখ্যা", "হ্যাঁ", "Roll, Marks", "যোগ, বিয়োগ, গড়, তুলনা, ছোট-বড় সাজানো যায়।"], ["Currency", "টাকা", "হ্যাঁ", "Fee, Salary", "Number এর মতোই, কিন্তু টাকার জন্য, দশমিকের পর ৪ ঘর পর্যন্ত নির্ভুল।"], ["AutoNumber", "নিজে বসা নম্বর", "—", "Serial", "হাতে লিখতে হয় না। নতুন রেকর্ড এলেই ১, ২, ৩… বসে যায়।"], ["Yes/No", "দুইটার একটা", "না", "Paid", "হ্যাঁ/না, সত্য/মিথ্যা, On/Off।"], ["OLE Object", "ছবি, শব্দ, ভিডিও", "না", "Photo", "লেখা নয় এমন জিনিস (ছবি, সই, এক্সেল শিট)।"]]);
+IM.mcq($('quiz6'),[{"q": "শিক্ষার্থীর ছবি রাখার ডেটা টাইপ—", "o": ["Memo", "Text", "OLE Object", "Hyperlink"], "a": 2, "w": "ছবি, শব্দ, ভিডিও রাখতে OLE Object।"}, {"q": "বড় বর্ণনামূলক লেখার জন্য—", "o": ["Currency", "Number", "Memo", "Yes/No"], "a": 2, "w": "Text এ ২৫৫ বর্ণ পর্যন্ত, তার বেশি হলে Memo।"}, {"q": "\"ফি দিয়েছে কি না\" ফিল্ডের ডেটা টাইপ—", "o": ["Memo", "Hyperlink", "OLE Object", "Yes/No"], "a": 3, "w": "উত্তর শুধু হ্যাঁ বা না, তাই Yes/No।"}, {"q": "মোবাইল নম্বরের উপযুক্ত ডেটা টাইপ—", "o": ["Number", "Text", "Currency", "AutoNumber"], "a": 1, "w": "শুরুর 0 রাখতে হয় আর হিসাব হয় না, তাই Text।"}]);
 </script>
 </body>
 </html>

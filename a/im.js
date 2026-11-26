@@ -304,5 +304,19 @@ const IM = (() => {
       { transform: `translate(${(ax + bx) / 2}px,${Math.min(ay, by) - lift}px) scale(1.2)`, offset: .55 }, { transform: `translate(${bx}px,${by}px) scale(1)` }],
       { duration: o.dur || 1000, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => { f.remove(); o.done && o.done(); };
     return f; }
-  return { $, parse, ev, show, rows, envOf, toggles, tt, circuit, tabs, quiz01, rnd, FN, bn, reduce, say, player, codeView, tapx, moveAlong, esc, cHL, hHL, rel, fly };
+
+  /* ---------- compare table + quick quiz (Ch6+) ---------- */
+  function compare(box, head, rows) { const n = head.length;
+    box.classList.add('cmpx'); box.style.gridTemplateColumns = `minmax(70px,.8fr) repeat(${n - 1},1fr)`;
+    box.innerHTML = head.map(h => `<div class="h">${h}</div>`).join('') + rows.map((r, i) => r.slice(0, n).map((c, j) => `<div class="c${j ? '' : ' q'}" data-i="${i}" style="animation-delay:${i * 0.08}s">${c}</div>`).join('')).join('');
+    box.querySelectorAll('.c').forEach(c => c.onclick = () => { const i = +c.dataset.i; box.querySelectorAll('.c').forEach(x => x.classList.toggle('on', +x.dataset.i === i)); say(rows[i][0].replace(/<[^>]+>/g, ''), rows[i][n], true); }); }
+  function mcq(box, items) { box.classList.add('mcq');
+    box.innerHTML = items.map((it, i) => `<div class="mq" data-i="${i}"><p><b>${bn(i + 1)}.</b> ${it.q}</p><div class="mo">${it.o.map((o, j) => `<button data-j="${j}">${'কখগঘ'[j]}) ${o}</button>`).join('')}</div></div>`).join('') + '<p class="mscore" aria-live="polite"></p>';
+    let right = 0, done = 0;
+    box.querySelectorAll('.mq').forEach(q => { const it = items[+q.dataset.i];
+      q.querySelectorAll('button').forEach(b => b.onclick = () => { if (q.dataset.done) return; const j = +b.dataset.j, ok = j === it.a; q.dataset.done = 1; done++; if (ok) right++;
+        b.classList.add(ok ? 'ok' : 'no'); if (!ok) q.querySelector(`[data-j="${it.a}"]`).classList.add('ok');
+        say(ok ? 'সঠিক ✓' : 'ভুল ✗', (ok ? '' : `সঠিক উত্তর: <b>${it.o[it.a]}</b>। `) + it.w, true);
+        if (done === items.length) box.querySelector('.mscore').textContent = `তোমার স্কোর: ${bn(right)} / ${bn(items.length)} ${right === items.length ? '🎉' : ''}`; }); }); }
+  return { $, parse, ev, show, rows, envOf, toggles, tt, circuit, tabs, quiz01, rnd, FN, bn, reduce, say, player, codeView, tapx, moveAlong, esc, cHL, hHL, rel, fly, compare, mcq };
 })();

@@ -54,6 +54,18 @@
     <span class="mag" id="mag">🔍</span>
   </section>
   <section class="card">
+    <h2>কোন অংশ কী বদলায় (টাচ করো)</h2>
+    <div id="cx0"></div>
+  </section>
+  <section class="card">
+    <h2>SQL কমান্ডের ভাগ (টাচ করো)</h2>
+    <div id="cx1"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
     <h2>মনে রাখো</h2>
     <ul class="points">
       <li><b>গঠন:</b> SELECT ফিল্ড FROM টেবিল WHERE শর্ত ORDER BY ফিল্ড ASC/DESC;</li>
@@ -136,6 +148,9 @@ chips.forEach(b=>b.onclick=()=>{qi=+b.dataset.i;q=Q[qi];chips.forEach(c=>c.class
 chips[0].classList.add('sel');
 $('st').addEventListener('click',e=>{const r=e.target.closest('.rw');if(!r)return;const d=D[+r.id.slice(1)];say(`রেকর্ড: ${d[1]}`,`Roll ${d[0]}, ${d[1]}, ${d[2]}, GPA ${g2(d[3])}, ${d[4]}। কোয়েরির শর্ত মিললে এই রেকর্ড ফলাফলে আসবে।`,true);});
 build();player.reset();
+IM.compare($('cx0'),["", "কাজ", "কী বদলায়"],[["SELECT", "কোন কলাম দেখাবে", "কলাম কমে", "SELECT Name, GPA দিলে শুধু এই দুই কলাম আসে। * দিলে সব।"], ["WHERE", "শর্ত দিয়ে সারি বাছে", "সারি কমে", "শর্ত সত্য এমন রেকর্ডগুলোই থাকে, বাকিগুলো বাদ।"], ["ORDER BY", "সাজায়", "সারির ক্রম", "ASC ছোট থেকে বড় (ডিফল্ট), DESC বড় থেকে ছোট।"], ["UPDATE", "মান বদলায়", "টেবিল স্থায়ীভাবে", "SELECT শুধু দেখায়, কিন্তু UPDATE আসল টেবিলের ডেটা বদলে দেয়।"], ["DELETE", "রেকর্ড মোছে", "টেবিল স্থায়ীভাবে", "WHERE না দিলে সব রেকর্ড মুছে যাবে!"]]);
+IM.compare($('cx1'),["ভাগ", "কাজ", "কমান্ড"],[["DDL", "টেবিলের গঠন তৈরি ও বদল", "CREATE, ALTER, DROP", "Data Definition Language: টেবিল বানানো, কলাম যোগ, টেবিল মোছা।"], ["DML", "ডেটা নিয়ে কাজ", "INSERT, UPDATE, DELETE, SELECT", "Data Manipulation Language: রেকর্ড যোগ, বদল, মোছা, খোঁজা।"], ["DCL", "অনুমতি দেওয়া-নেওয়া", "GRANT, REVOKE", "Data Control Language: কে কী করতে পারবে তা ঠিক করা।"]]);
+IM.mcq($('quiz6'),[{"q": "সব ফিল্ড দেখাতে SELECT এর পরে কী লেখো?", "o": ["ALL", "*", "%", "#"], "a": 1, "w": "* মানে সব ফিল্ড।"}, {"q": "বড় থেকে ছোট সাজাতে—", "o": ["ASC", "DESC", "UP", "DOWN"], "a": 1, "w": "DESC = অধঃক্রম (বড় থেকে ছোট)।"}, {"q": "LIKE 'S%' মানে—", "o": ["S দিয়ে শেষ", "S আছে কোথাও", "S দিয়ে শুরু", "শুধু S"], "a": 2, "w": "% মানে যেকোনো সংখ্যক অক্ষর, তাই S এর পরে যা খুশি।"}, {"q": "CREATE কোন ভাগের কমান্ড?", "o": ["DML", "DCL", "DDL", "কোনোটিই না"], "a": 2, "w": "গঠন তৈরি করে, তাই DDL।"}]);
 </script>
 </body>
 </html>
