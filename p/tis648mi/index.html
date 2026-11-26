@@ -60,19 +60,20 @@ table.lb{width:100%;border-collapse:collapse;font-size:.95rem}
 
   <div class="demo">⚠️ <b>এটা শুধু ডেমো।</b> এখানে কোনো নম্বর কোথাও জমা হয় না। তালিকার নাম ও নম্বর বানানো। আসল ৩০টি টেস্ট আগের মতোই আছে।</div>
 
-  <div class="steps" aria-hidden="true"><span id="s1" class="on">১. কোড ও নাম</span><span id="s2">২. টেস্ট</span><span id="s3">৩. লিডারবোর্ড</span></div>
+  <div class="steps" aria-hidden="true"><span id="s1" class="on">১. নাম ও মোবাইল</span><span id="s2">২. টেস্ট</span><span id="s3">৩. লিডারবোর্ড</span></div>
 
   <!-- 1: code + nickname -->
   <section class="card fade" id="v1">
     <h2>টেস্ট শুরুর আগে</h2>
-    <p>বই কেনার সাথে প্রতিটি শিক্ষার্থী একটা <b>বই কোড</b> পাবে। কোড আর একটা ডাকনাম দিলেই টেস্ট শুরু।</p>
-    <label>বই কোড <small>বইয়ের প্রথম পাতায় লেখা থাকবে (ডেমোর জন্য: ICTM-1234)</small>
-      <input id="code" value="ICTM-1234" autocomplete="off" autocapitalize="characters" inputmode="text"></label>
-    <label>ডাকনাম <small>লিডারবোর্ডে এই নামটা দেখাবে</small>
+    <p>টেস্ট সবার জন্য খোলা। বই কিনুক বা না কিনুক, যে কেউ দিতে পারবে। শুধু নাম আর মোবাইল নম্বর দিলেই টেস্ট শুরু।</p>
+    <label>নাম <small>লিডারবোর্ডে এই নামটা দেখাবে</small>
       <input id="nick" placeholder="যেমন: রাফি" maxlength="16" autocomplete="off"></label>
+    <label>মোবাইল নম্বর <small>লিডারবোর্ডে পুরো নম্বর কেউ দেখবে না, শুধু শেষের ৩টা সংখ্যা</small>
+      <input id="code" placeholder="01XXXXXXXXX" maxlength="14" autocomplete="tel" inputmode="numeric" type="tel"></label>
     <div class="err" id="err" role="alert"></div>
     <button class="btn primary" id="go" type="button">টেস্ট শুরু করো →</button>
     <p class="mini">একবার দিলে ফোন মনে রাখবে। পরের টেস্টে আবার লিখতে হবে না।</p>
+    <p class="mini">একই নম্বর দিয়ে বারবার টেস্ট দেওয়া যাবে। লিডারবোর্ডে শুধু তার সবচেয়ে ভালো নম্বরটা একবারই থাকবে।</p>
   </section>
 
   <!-- 2: tiny test -->
@@ -104,7 +105,7 @@ table.lb{width:100%;border-collapse:collapse;font-size:.95rem}
     <div class="filter" role="group"><button type="button" id="tA" aria-pressed="true">এই টেস্ট</button><button type="button" id="tB" aria-pressed="false">সব টেস্ট মিলিয়ে</button></div>
     <p class="mini" id="lbNote"></p>
     <table class="lb"><thead><tr><th>ক্রম</th><th>নাম</th><th style="text-align:right">নম্বর</th><th style="text-align:right">সময়</th></tr></thead><tbody id="lb"></tbody></table>
-    <p class="mini">নামের পাশে কোডের শেষ ৩টা সংখ্যা থাকে, যাতে একই নামের দুজনকে আলাদা চেনা যায়। পুরো কোড কেউ দেখতে পায় না। নম্বর সমান হলে যে কম সময়ে শেষ করেছে সে উপরে।</p>
+    <p class="mini">নামের পাশে মোবাইল নম্বরের শুধু শেষ ৩টা সংখ্যা থাকে, যাতে একই নামের দুজনকে আলাদা চেনা যায়। পুরো নম্বর কেউ দেখতে পায় না। একজন একবারই থাকে (তার সেরা নম্বর)। নম্বর সমান হলে যে কম সময়ে শেষ করেছে সে উপরে।</p>
     <button class="btn" id="again" type="button">↻ আবার চেষ্টা করো</button>
   </section>
 
@@ -123,15 +124,15 @@ var Q=[
 var NAMES=["তাসনিম","রাফি","নাফিসা","আরিয়ান","সামিয়া","ফাহিম","মেহজাবিন","সাকিব","ইশরাত","তানভীর","জান্নাত","রিয়াদ","নুসরাত","আবির","সুমাইয়া","শাহরিয়ার","মিম","রাহাত","তাহমিদ","অর্পা","সাদিয়া","ইমন"];
 var me={},picks=[],t0=0,secs=0,score=0,tab="A";
 function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
-var sc=store("lbdemo_code"),sn=store("lbdemo_nick");if(sc)$("code").value=sc;if(sn)$("nick").value=sn;
+var sc=store("lbdemo_phone"),sn=store("lbdemo_nick");if(sc)$("code").value=sc;if(sn)$("nick").value=sn;
 function step(n){for(var i=1;i<=3;i++){var s=$("s"+i);s.className=i<n?"ok":i===n?"on":""}window.scrollTo({top:0,behavior:"smooth"})}
 $("go").onclick=function(){
-  var c=$("code").value.trim().toUpperCase().replace(/\s/g,""),n=$("nick").value.trim(),e="";
+  var c=$("code").value.replace(/[০-৯]/g,function(d){return "০১২৩৪৫৬৭৮৯".indexOf(d)}).replace(/[\s-]/g,"").replace(/^\+?88/,""),n=$("nick").value.trim(),e="";
   $("code").classList.remove("bad");$("nick").classList.remove("bad");
-  if(!/^ICTM-\d{4}$/.test(c)){e="কোডটা ঠিক নেই। এরকম হবে: ICTM-1234";$("code").classList.add("bad")}
-  else if(n.length<2){e="একটা ডাকনাম লেখো (কমপক্ষে ২ অক্ষর)।";$("nick").classList.add("bad")}
+  if(n.length<2){e="তোমার নাম লেখো (কমপক্ষে ২ অক্ষর)।";$("nick").classList.add("bad")}
+  else if(!/^01[3-9]\d{8}$/.test(c)){e="মোবাইল নম্বরটা ঠিক নেই। ১১ সংখ্যার হবে, যেমন 01712345678";$("code").classList.add("bad")}
   $("err").textContent=e;if(e)return;
-  store("lbdemo_code",c);store("lbdemo_nick",n);
+  store("lbdemo_phone",c);store("lbdemo_nick",n);
   me={code:c,nick:n,tail:c.slice(-3)};
   $("av").textContent=n.charAt(0);$("whoT").textContent=n+" · …"+bn(me.tail);
   var h="";Q.forEach(function(q,i){h+='<div class="q"><p class="qt" style="font-weight:700;margin:0 0 8px">'+bn(i+1)+". "+q[0]+'</p><div class="opts">';
