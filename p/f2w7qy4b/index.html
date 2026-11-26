@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#F2F7FF">
+<title>ফ্রি পরীক্ষা · অধ্যায় ৫ · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/mt.css?v=4">
+</head>
+<body>
+<div class="bar" id="bar" hidden><div class="in">
+  <span class="timer" id="timer" aria-live="off">⏱</span>
+  <div class="done"><span id="done"></span><div class="prog"><i id="prog"></i></div></div>
+  <button type="button" id="snd" class="btn" style="flex:none;min-height:40px;padding:4px 10px;border-width:1px">🔊</button>
+</div></div>
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৫ · প্রোগ্রামিং ভাষা</span>
+    <h1>ফ্রি পরীক্ষা · অধ্যায় ৫</h1>
+  </header>
+
+  <section class="card" id="intro">
+    <p>পুরো অধ্যায় ৫ (প্রোগ্রামিং ভাষা) থেকে ২৫টি বাছাই করা প্রশ্ন, ২৫ মিনিট। সবার জন্য ফ্রি। জমা দিলে নম্বর, সঠিক উত্তর আর প্রতিটি ভুলের ব্যাখ্যা দেখবে।</p>
+    <div class="chips"><span class="chip">📝 ২৫টি প্রশ্ন</span><span class="chip y">⏱ ২৫ মিনিট</span><span class="chip g">পূর্ণমান ২৫</span></div>
+    <ul class="rules">
+      <li>প্রতিটি প্রশ্নের মান ১। ভুল উত্তরে নম্বর কাটা যাবে না।</li>
+      <li>সঠিক উত্তরে চাপ দাও। মত বদলালে অন্য উত্তরে চাপ দিলেই হবে।</li>
+      <li>সময় শেষ হলে পরীক্ষা নিজে থেকেই জমা হয়ে যাবে।</li>
+      <li>জমা দেওয়ার পর নম্বর, সঠিক উত্তর আর প্রতিটি ভুলের ব্যাখ্যা দেখবে।</li>
+    </ul>
+    <p class="best" id="best" hidden></p>
+    <div id="lbform"></div>
+    <div class="btns"><button type="button" class="btn primary" id="start">▶ পরীক্ষা শুরু করো</button></div>
+  </section>
+
+  <section class="card res" id="result" hidden>
+    <div class="ring" id="ring"><div><strong id="score"></strong><span id="outof"></span></div></div>
+    <p class="cheer" id="cheer"></p>
+    <div class="stats"><div class="a"><strong id="sa"></strong>সঠিক</div><div class="b"><strong id="sb"></strong>ভুল</div><div class="c"><strong id="sc"></strong>উত্তর দাওনি</div></div>
+    <p class="eyebrow" id="took"></p>
+  </section>
+  <section class="card lbres" id="lbres" hidden></section>
+  <div class="filter" id="filter" hidden role="group" aria-label="কোন প্রশ্ন দেখবে">
+    <button type="button" data-f="miss" aria-pressed="true">ভুল ও বাদ পড়া</button><button type="button" data-f="all" aria-pressed="false">সব প্রশ্ন</button>
+  </div>
+  <p class="card" id="nomiss" hidden>🎉 একটাও ভুল নেই! সব প্রশ্ন দেখতে উপরে "সব প্রশ্ন" চাপো।</p>
+
+  <div id="qs" hidden style="display:flex;flex-direction:column;gap:14px"></div>
+
+  <div class="btns" id="after" hidden>
+    <button type="button" class="btn primary" id="again">↻ আবার পরীক্ষা দাও</button><a class="btn" style="text-align:center;text-decoration:none;display:grid;place-items:center" href="../f6r1tn8s/">পরের ফ্রি পরীক্ষা ▶</a>
+  </div>
+  <footer><a href="../fz8hq3ub/" style="color:inherit">📚 সব টেস্ট</a> · <a href="../j7fmpkps/?s=free" style="color:inherit">🏆 লিডারবোর্ড</a> · © ICT Maniac</footer>
+</div>
+<div class="dock" id="dock" hidden><div class="in">
+  <div id="confirm" hidden><p class="msg" id="cmsg"></p><div class="btns" style="margin-top:6px"><button type="button" class="btn" id="no">ফিরে যাও</button><button type="button" class="btn green" id="yes">হ্যাঁ, জমা দাও</button></div></div>
+  <button type="button" class="btn green" id="submit">✓ জমা দাও</button>
+</div></div>
+<script>window.MT={"code":"f2w7qy4b","series":"free","minutes":25,"qs":[{"s":"অনুবাদক ছাড়াই কম্পিউটার কোন ভাষা বুঝতে পারে?","o":["উচ্চস্তরের ভাষা","অ্যাসেম্বলি ভাষা","মেশিন ভাষা","চতুর্থ প্রজন্মের ভাষা"],"a":2,"e":"কম্পিউটার সরাসরি শুধু মেশিন ভাষা বোঝে, তাই এর জন্য কোনো অনুবাদক লাগে না।","tp":"প্রোগ্রামের ভাষা ও প্রজন্ম"},{"s":"OOP এর বৈশিষ্ট্য—","o":["i ও ii","i ও iii","ii ও iii","i, ii ও iii"],"a":3,"e":"অবজেক্ট ওরিয়েন্টেড প্রোগ্রামিংয়ের মূল বৈশিষ্ট্য পলিমরফিজম, ইনহেরিটেন্স ও এনক্যাপসুলেশন। তিনটিই সঠিক।","tp":"প্রোগ্রাম ডিজাইন: ধাপ, অ্যালগরিদম, ফ্লোচার্ট, মডেল","st":["পলিমরফিজম","ইনহেরিটেন্স","এনক্যাপসুলেশন"],"t":"নিচের কোনটি সঠিক?"},{"s":"মাউস ক্লিক বা কী চাপার মতো ঘটনায় কোড চালু হয় কোন প্রোগ্রামিংয়ে?","o":["স্ট্রাকচার্ড","প্রসিডিউরাল","ইভেন্ট-ড্রিভেন","মেশিন লেভেল"],"a":2,"e":"ইভেন্ট-ড্রিভেন প্রোগ্রামিংয়ে মাউস ক্লিক বা কী চাপার মতো ঘটনা (ইভেন্ট) ঘটলে নির্দিষ্ট কোড চালু হয়।","tp":"প্রোগ্রাম ডিজাইন: ধাপ, অ্যালগরিদম, ফ্লোচার্ট, মডেল"},{"s":"\\n এস্কেপ সিকোয়েন্সের কাজ—","o":["ট্যাব","বিপ শব্দ","ব্যাকস্পেস","নতুন লাইন"],"a":3,"e":"\\n এস্কেপ সিকোয়েন্স কার্সরকে নতুন লাইনে নিয়ে যায়। \\t দেয় ট্যাব।","tp":"সি পরিচিতি, ডেটা টাইপ ও চলক"},{"s":"C তে ভাগশেষ নির্ণয়ের অপারেটর—","o":["/","#","\\","%"],"a":3,"e":"C তে % (modulus) অপারেটর ভাগশেষ দেয়, যেমন 7 % 3 = 1।","tp":"অপারেটর ও এক্সপ্রেশন"},{"s":"17 % 5 * 2 এর মান—","o":["২","৪","৬","৭"],"a":1,"e":"% ও * এর অগ্রাধিকার সমান, তাই বাম থেকে ডানে: 17 % 5 = 2, তারপর 2 * 2 = 4।","tp":"অপারেটর ও এক্সপ্রেশন"},{"s":"শর্ত সত্য হলে এক ব্লক এবং মিথ্যা হলে অন্য ব্লক নির্বাহে কোনটি ব্যবহৃত হয়?","o":["if","for","if…else","goto"],"a":2,"e":"if…else এ শর্ত সত্য হলে if এর ব্লক, মিথ্যা হলে else এর ব্লক চলে।","tp":"শর্তযুক্ত স্টেটমেন্ট"},{"s":"switch স্টেটমেন্টে কোনো case না মিললে কোনটি নির্বাহ হয়?","o":["break","continue","else","default"],"a":3,"e":"switch এ কোনো case না মিললে default অংশ নির্বাহ হয়।","tp":"শর্তযুক্ত স্টেটমেন্ট"},{"s":"if (mark >= 40) এ যদি mark = 40 হয়—","o":["শর্ত মিথ্যা","সিনট্যাক্স ভুল","শর্ত সত্য","রান টাইম ভুল"],"a":2,"e":">= মানে বড় অথবা সমান। mark = 40 হলে 40 >= 40 সত্য।","tp":"শর্তযুক্ত স্টেটমেন্ট"},{"s":"কোন লুপ অন্তত একবার নির্বাহ হয়?","o":["for","while","কোনোটিই নয়","do…while"],"a":3,"e":"do…while এ আগে বডি চলে, পরে শর্ত পরীক্ষা হয়। তাই শর্ত মিথ্যা হলেও অন্তত একবার চলে।","tp":"লুপ"},{"s":"int Mark[3][5]; অ্যারেতে মোট উপাদান কয়টি?","o":["৮","১","২","৩"],"a":1,"e":"Mark[3][5] মানে ৩টি সারি ও ৫টি কলাম, মোট ৩ × ৫ = ১৫টি উপাদান।","tp":"অ্যারে"},{"s":"অ্যারে সম্পর্কে সঠিক—","o":["i ও ii","i ও iii","ii ও iii","i, ii ও iii"],"a":0,"e":"অ্যারের উপাদান মেমোরিতে পরপর থাকে এবং এটি ডিরাইভড ডেটা টাইপ। কিন্তু একটি অ্যারেতে শুধু একই টাইপের ডেটা রাখা যায়, তাই iii ভুল।","tp":"অ্যারে","st":["উপাদানগুলো মেমোরিতে পরপর থাকে","এটি একটি ডিরাইভড ডেটা টাইপ","একটি অ্যারেতে ভিন্ন ভিন্ন টাইপের ডেটা রাখা যায়"],"t":"নিচের কোনটি সঠিক?"},{"s":"কোনো মান ফেরত না দিলে ফাংশনের রিটার্ন টাইপ হয়—","o":["int","float","char","void"],"a":3,"e":"যে ফাংশন কোনো মান ফেরত দেয় না, তার রিটার্ন টাইপ void।","tp":"ফাংশন"},{"s":"C ভাষায় দ্বিমাত্রিক অ্যারে ঘোষণার সঠিক রূপ কোনটি?","o":["int mark[5, 6];","int mark(5, 6);","int mark[5][6];","int mark{5}{6};"],"a":2,"e":"C তে দ্বিমাত্রিক অ্যারে দুটি আলাদা বন্ধনীতে লেখা হয়: int mark[5][6];","tp":"ফাংশন","b":1},{"s":"প্রোগ্রাম হলো—","o":["কম্পিউটারের যন্ত্রাংশ","একটি ইনপুট ডিভাইস","ধারাবাহিকভাবে সাজানো নির্দেশমালা","একটি অপারেটিং সিস্টেম"],"a":2,"e":"কোনো কাজ করার জন্য কম্পিউটারকে ধারাবাহিকভাবে সাজানো নির্দেশের সমষ্টিকে প্রোগ্রাম বলে।","tp":"প্রোগ্রামিং ভাষা, অনুবাদক ও প্রোগ্রাম ডিজাইন"},{"s":"মেশিন ভাষার অসুবিধা—","o":["i ও ii","i ও iii","ii ও iii","i, ii ও iii"],"a":0,"e":"মেশিন ভাষায় 0-1 দিয়ে প্রোগ্রাম লেখা কঠিন এবং এটি মেশিন-নির্ভর। কিন্তু কম্পিউটার এটি সরাসরি বোঝে, অনুবাদক লাগে না। তাই iii ভুল।","tp":"প্রোগ্রামিং ভাষা, অনুবাদক ও প্রোগ্রাম ডিজাইন","st":["প্রোগ্রাম লেখা কঠিন","মেশিন-নির্ভর","অনুবাদক প্রয়োজন"],"t":"নিচের কোনটি সঠিক?"},{"s":"ADD, SUB, LDA কোন ভাষার কোড?","o":["মেশিন","Python","C","অ্যাসেম্বলি"],"a":3,"e":"ADD, SUB, LDA হলো নেমোনিক কোড, যা অ্যাসেম্বলি ভাষায় ব্যবহার হয়।","tp":"প্রোগ্রামিং ভাষা, অনুবাদক ও প্রোগ্রাম ডিজাইন"},{"s":"নিচের কোনটি অবৈধ চলকের নাম?","o":["total_marks","2ndRoll","_sum","Roll2"],"a":1,"e":"চলকের নাম অংক দিয়ে শুরু হতে পারে না, তাই 2ndRoll অবৈধ। _sum বা Roll2 বৈধ।","tp":"সি পরিচিতি, ডেটা টাইপ, অপারেটর ও শর্ত"},{"s":"float r = 7 / 2; printf(\"%.1f\", r); এর আউটপুট—","o":["৩.৫","৩.০","৪.০","৩"],"a":1,"e":"7 / 2 দুটোই int, তাই ফল 3 (দশমিক বাদ)। পরে float r এ রাখলে 3.0 হয়, %.1f এ প্রিন্ট হয় 3.0।","tp":"সি পরিচিতি, ডেটা টাইপ, অপারেটর ও শর্ত"},{"s":"int i, s = 0; for (i = 1; i <= 5; i++) s += i * i; এর পর s এর মান—","o":["১","২","৫","৩"],"a":2,"e":"s = 1² + 2² + 3² + 4² + 5² = 1 + 4 + 9 + 16 + 25 = 55।","tp":"লুপ, অ্যারে ও ফাংশন"},{"s":"পঞ্চম প্রজন্মের ভাষাকে বলে—","o":["মেশিন ভাষা","স্বাভাবিক বা ন্যাচারাল ভাষা","অ্যাসেম্বলি ভাষা","উচ্চস্তরের ভাষা"],"a":1,"e":"পঞ্চম প্রজন্মের ভাষাকে স্বাভাবিক বা ন্যাচারাল ভাষা বলে, যা মানুষের ভাষার কাছাকাছি।","tp":"প্রোগ্রামিং ভাষা, অনুবাদক ও প্রোগ্রাম ডিজাইন"},{"s":"বাণিজ্যিক কাজে ব্যবহৃত বিশেষ উদ্দেশ্যের ভাষা—","o":["COBOL","FORTRAN","LISP","GPSS"],"a":0,"e":"COBOL (Common Business Oriented Language) বাণিজ্যিক কাজের জন্য তৈরি। FORTRAN বৈজ্ঞানিক কাজে।","tp":"প্রোগ্রামিং ভাষা, অনুবাদক ও প্রোগ্রাম ডিজাইন"},{"s":"A > B এর জায়গায় A < B লিখলে কোন ভুল হবে?","o":["সিনট্যাক্স","কম্পাইল","রান টাইম","লজিক্যাল"],"a":3,"e":"> এর জায়গায় < লিখলে প্রোগ্রাম চলবে কিন্তু যুক্তি উল্টে যাবে, ফল ভুল আসবে। এটি লজিক্যাল ভুল।","tp":"প্রোগ্রামিং ভাষা, অনুবাদক ও প্রোগ্রাম ডিজাইন"},{"s":"int n = 0, i; for (i = 0; i < 10; i += 2) n++; এর পর n এর মান—","o":["৪","৫","১","৬"],"a":1,"e":"i = 0, 2, 4, 6, 8 এই ৫ বার লুপ চলে, প্রতিবার n এক বাড়ে। তাই n = 5।","tp":"লুপ, অ্যারে ও ফাংশন"},{"s":"int s = 0, j; for (j = 10; j >= 1; j -= 2) s += j; এর পর s এর মান—","o":["২","৩","৫","২"],"a":1,"e":"j = 10, 8, 6, 4, 2। যোগফল 10 + 8 + 6 + 4 + 2 = 30।","tp":"লুপ, অ্যারে ও ফাংশন"}]};</script>
+<script src="../../a/lb-config.js?v=4"></script>
+<script src="../../a/mt.js?v=4"></script>
+<script src="../../a/lb.js?v=4"></script>
+</body>
+</html>

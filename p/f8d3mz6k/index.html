@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#F2F7FF">
+<title>ফ্রি পরীক্ষা · অধ্যায় ৪ · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/mt.css?v=4">
+</head>
+<body>
+<div class="bar" id="bar" hidden><div class="in">
+  <span class="timer" id="timer" aria-live="off">⏱</span>
+  <div class="done"><span id="done"></span><div class="prog"><i id="prog"></i></div></div>
+  <button type="button" id="snd" class="btn" style="flex:none;min-height:40px;padding:4px 10px;border-width:1px">🔊</button>
+</div></div>
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৪ · ওয়েব ডিজাইন পরিচিতি এবং HTML</span>
+    <h1>ফ্রি পরীক্ষা · অধ্যায় ৪</h1>
+  </header>
+
+  <section class="card" id="intro">
+    <p>পুরো অধ্যায় ৪ (ওয়েব ডিজাইন পরিচিতি এবং HTML) থেকে ২৫টি বাছাই করা প্রশ্ন, ২৫ মিনিট। সবার জন্য ফ্রি। জমা দিলে নম্বর, সঠিক উত্তর আর প্রতিটি ভুলের ব্যাখ্যা দেখবে।</p>
+    <div class="chips"><span class="chip">📝 ২৫টি প্রশ্ন</span><span class="chip y">⏱ ২৫ মিনিট</span><span class="chip g">পূর্ণমান ২৫</span></div>
+    <ul class="rules">
+      <li>প্রতিটি প্রশ্নের মান ১। ভুল উত্তরে নম্বর কাটা যাবে না।</li>
+      <li>সঠিক উত্তরে চাপ দাও। মত বদলালে অন্য উত্তরে চাপ দিলেই হবে।</li>
+      <li>সময় শেষ হলে পরীক্ষা নিজে থেকেই জমা হয়ে যাবে।</li>
+      <li>জমা দেওয়ার পর নম্বর, সঠিক উত্তর আর প্রতিটি ভুলের ব্যাখ্যা দেখবে।</li>
+    </ul>
+    <p class="best" id="best" hidden></p>
+    <div id="lbform"></div>
+    <div class="btns"><button type="button" class="btn primary" id="start">▶ পরীক্ষা শুরু করো</button></div>
+  </section>
+
+  <section class="card res" id="result" hidden>
+    <div class="ring" id="ring"><div><strong id="score"></strong><span id="outof"></span></div></div>
+    <p class="cheer" id="cheer"></p>
+    <div class="stats"><div class="a"><strong id="sa"></strong>সঠিক</div><div class="b"><strong id="sb"></strong>ভুল</div><div class="c"><strong id="sc"></strong>উত্তর দাওনি</div></div>
+    <p class="eyebrow" id="took"></p>
+  </section>
+  <section class="card lbres" id="lbres" hidden></section>
+  <div class="filter" id="filter" hidden role="group" aria-label="কোন প্রশ্ন দেখবে">
+    <button type="button" data-f="miss" aria-pressed="true">ভুল ও বাদ পড়া</button><button type="button" data-f="all" aria-pressed="false">সব প্রশ্ন</button>
+  </div>
+  <p class="card" id="nomiss" hidden>🎉 একটাও ভুল নেই! সব প্রশ্ন দেখতে উপরে "সব প্রশ্ন" চাপো।</p>
+
+  <div id="qs" hidden style="display:flex;flex-direction:column;gap:14px"></div>
+
+  <div class="btns" id="after" hidden>
+    <button type="button" class="btn primary" id="again">↻ আবার পরীক্ষা দাও</button><a class="btn" style="text-align:center;text-decoration:none;display:grid;place-items:center" href="../f2w7qy4b/">পরের ফ্রি পরীক্ষা ▶</a>
+  </div>
+  <footer><a href="../fz8hq3ub/" style="color:inherit">📚 সব টেস্ট</a> · <a href="../j7fmpkps/?s=free" style="color:inherit">🏆 লিডারবোর্ড</a> · © ICT Maniac</footer>
+</div>
+<div class="dock" id="dock" hidden><div class="in">
+  <div id="confirm" hidden><p class="msg" id="cmsg"></p><div class="btns" style="margin-top:6px"><button type="button" class="btn" id="no">ফিরে যাও</button><button type="button" class="btn green" id="yes">হ্যাঁ, জমা দাও</button></div></div>
+  <button type="button" class="btn green" id="submit">✓ জমা দাও</button>
+</div></div>
+<script>window.MT={"code":"f8d3mz6k","series":"free","minutes":25,"qs":[{"s":"ইন্টারনেট ব্যবহারকারীদের দেখার জন্য সার্ভারে রাখা HTML ডকুমেন্টকে কী বলে?","o":["ওয়েব ব্রাউজার","সার্চ ইঞ্জিন","ওয়েব সার্ভার","ওয়েব পেজ"],"a":3,"e":"HTML দিয়ে তৈরি যে ডকুমেন্ট সার্ভারে রাখা থাকে এবং ব্রাউজারে খুলে দেখা যায়, তাকে ওয়েব পেজ বলে।","tp":"ওয়েব পেজ, ওয়েবসাইট ও ওয়েব ব্রাউজার"},{"s":"এক বা একাধিক সম্পর্কিত ওয়েব পেজের সমষ্টিকে কী বলে?","o":["ব্রাউজার","হোম পেজ","ওয়েবসাইট","ডোমেইন"],"a":2,"e":"একই ডোমেইনের অধীনে পরস্পর সম্পর্কিত কয়েকটি ওয়েব পেজের সমষ্টিকে ওয়েবসাইট বলে।","tp":"ওয়েব পেজ, ওয়েবসাইট ও ওয়েব ব্রাউজার"},{"s":"ক্লায়েন্ট ও ওয়েব সার্ভারের মধ্যে যোগাযোগে ব্যবহৃত প্রোটোকল—","o":["i ও ii","i ও iii","ii ও iii","i, ii ও iii"],"a":0,"e":"ব্রাউজার ও সার্ভারের যোগাযোগে HTTP এবং ইন্টারনেটে ডেটা আদান-প্রদানে TCP/IP প্রোটোকল ব্যবহার হয়। HTML প্রোটোকল নয়, মার্কআপ ভাষা। তাই iii ভুল।","tp":"ওয়েব পেজ, ওয়েবসাইট ও ওয়েব ব্রাউজার","st":["HTTP","TCP/IP","HTML"],"t":"নিচের কোনটি সঠিক?"},{"s":"ডাইনামিক ওয়েবসাইট তৈরিতে HTML এর সাথে প্রয়োজন—","o":["i ও ii","i ও iii","ii ও iii","i, ii ও iii"],"a":0,"e":"ডাইনামিক সাইটে তথ্য বদলাতে PHP/ASP এর মতো সার্ভার-সাইড ভাষা ও ডেটাবেজ লাগে। শুধু নোটপ্যাড দিয়ে তা সম্ভব নয়, তাই iii ভুল।","tp":"ওয়েবসাইটের কাঠামো ও প্রকারভেদ","st":["PHP বা ASP","ডেটাবেজ","শুধু নোটপ্যাড"],"t":"নিচের কোনটি সঠিক?"},{"s":"HTML ফাইলের এক্সটেনশন—","o":["i ও ii","i ও iii","ii ও iii","i, ii ও iii"],"a":0,"e":"HTML ফাইল .html বা .htm এক্সটেনশনে সংরক্ষণ করতে হয়। .txt হলে ব্রাউজার একে ওয়েব পেজ হিসেবে দেখাবে না, তাই iii ভুল।","tp":"HTML পরিচিতি, ট্যাগ ও ডকুমেন্টের কাঠামো","st":[".html",".htm",".txt"],"t":"নিচের কোনটি সঠিক?"},{"s":"লিংকটি নতুন ট্যাবে খুলতে কোন অ্যাট্রিবিউট ব্যবহৃত হয়?","o":["href=\"_blank\"","src=\"_new\"","target=\"_blank\"","open=\"new\""],"a":2,"e":"target=\"_blank\" দিলে লিংক নতুন ট্যাব বা উইন্ডোতে খোলে।","tp":"হাইপারলিংক"},{"s":"ই-মেইল লিংক তৈরির সঠিক কোড কোনটি?","o":["<a href=\"email:info@abc.com\">Mail<\/a>","<a href=\"mailto:info@abc.com\">Mail<\/a>","<a mail=\"info@abc.com\">Mail<\/a>","<mailto>info@abc.com<\/mailto>"],"a":1,"e":"ই-মেইল লিংকের জন্য href এ mailto: লিখতে হয়, যেমন href=\"mailto:info@abc.com\"।","tp":"হাইপারলিংক"},{"s":"cat.jpg ছবিটির সাইজ ১০২৪ × ৭৬৮ পিক্সেল করতে কী লিখতে হবে?","o":["w=\"1024\" h=\"768\"","width=\"1024\" height=\"768\"","pixw=\"1024\" pixh=\"768\"","size=\"1024x768\""],"a":1,"e":"<img> এর প্রস্থ width এবং উচ্চতা height অ্যাট্রিবিউটে দিতে হয়: width=\"1024\" height=\"768\"।","tp":"ছবি সংযোজন"},{"s":"<img> ট্যাগ সম্পর্কে সঠিক—","o":["i ও ii","i ও iii","ii ও iii","i, ii ও iii"],"a":0,"e":"<img> এম্পটি ট্যাগ এবং এতে src দেওয়া আবশ্যিক। এম্পটি ট্যাগ বলে <\/img> শেষ ট্যাগ লিখতে হয় না, তাই iii ভুল।","tp":"ছবি সংযোজন","st":["এটি একটি এম্পটি ট্যাগ","src অ্যাট্রিবিউট আবশ্যিক","এর শেষ ট্যাগ <\/img> লিখতে হয়"],"t":"নিচের কোনটি সঠিক?"},{"s":"টেবিলের শিরোনাম সেল (বোল্ড ও মাঝখানে) তৈরির ট্যাগ—","o":["<td>","<th>","<tr>","<caption>"],"a":1,"e":"<th> (table header) দিয়ে শিরোনাম সেল তৈরি হয়, এর লেখা ডিফল্টভাবে বোল্ড ও মাঝখানে থাকে।","tp":"টেবিল: rowspan ও colspan"},{"s":"টেবিল তৈরিতে ব্যবহৃত ট্যাগ—","o":["i ও ii","i ও iii","ii ও iii","i, ii ও iii"],"a":0,"e":"টেবিল তৈরিতে <table>, <tr>, <td>, <th> লাগে। <li> হলো লিস্টের ট্যাগ, তাই iii ভুল।","tp":"টেবিল: rowspan ও colspan","st":["<table>","<tr>","<li>"],"t":"নিচের কোনটি সঠিক?"},{"s":"ওয়েবসাইট চালুর প্রথম ধাপ কোনটি?","o":["হোস্টিং","আপলোড","সার্চ ইঞ্জিনে যুক্ত করা","ডোমেইন নেইম রেজিস্ট্রেশন"],"a":3,"e":"ওয়েবসাইট চালু করতে প্রথমে ডোমেইন নেইম রেজিস্ট্রেশন, তারপর হোস্টিং, তারপর ফাইল আপলোড।","tp":"ওয়েবসাইট পাবলিশিং ও হোস্টিং"},{"s":"ওয়েবসাইট তৈরির সময় বিবেচ্য বিষয়—","o":["i ও ii","i ও iii","ii ও iii","i, ii ও iii"],"a":3,"e":"ওয়েবসাইট তৈরির সময় কোন প্রযুক্তি লাগবে, কীভাবে আপডেট হবে এবং সার্চ ইঞ্জিনে কত সহজে আসবে, সবই বিবেচনা করতে হয়। তিনটিই সঠিক।","tp":"ওয়েবসাইট পাবলিশিং ও হোস্টিং","st":["টেকনোলজি স্পেসিফিকেশন","ওয়েবসাইট আপডেটকরণ","সার্চ ইঞ্জিনের দ্রুত প্রসেসিং ক্ষমতা"],"t":"নিচের কোনটি সঠিক?"},{"s":"ব্রাউজারে \"Khulna\" এর আগে কোন চিহ্ন দেখাবে?","o":["3.","iii.","C.","●"],"a":2,"e":"<ol type=\"A\"> দিলে আইটেমের আগে A, B, C বসে। Khulna তৃতীয় আইটেম, তাই এর আগে C.।","tp":"ওয়েবসাইট পাবলিশিং ও হোস্টিং","c":"তানিম তার পেজে নিচের কোড লিখল: ¦ <ol type=\"A\"> ¦ <li>Dhaka<\/li> ¦ <li>Rajshahi<\/li> ¦ <li>Khulna<\/li> ¦ <\/ol> ¦ <img src=\"map.jpg\" alt=\"Map\">"},{"s":"map.jpg ফাইলটি পাওয়া না গেলে ব্রাউজারে কী দেখাবে?","o":["কিছুই দেখাবে না","একটি ত্রুটি বার্তা","map.jpg লেখাটি","Map লেখাটি"],"a":3,"e":"ছবি না পাওয়া গেলে alt অ্যাট্রিবিউটের লেখা দেখায়। এখানে alt=\"Map\", তাই Map লেখাটি দেখাবে।","tp":"ওয়েবসাইট পাবলিশিং ও হোস্টিং","c":"তানিম তার পেজে নিচের কোড লিখল: ¦ <ol type=\"A\"> ¦ <li>Dhaka<\/li> ¦ <li>Rajshahi<\/li> ¦ <li>Khulna<\/li> ¦ <\/ol> ¦ <img src=\"map.jpg\" alt=\"Map\">"},{"s":"HTML কোড <p>H<sup>2<\/sup>O<\/p> এর আউটপুট কোনটি?","o":["H⦃2⦄O","H⦅2⦆O","HO⦅2⦆","H2O"],"a":1,"e":"<sup> লেখাকে উপরে তোলে, তাই 2 টি H এর উপরে বসে H²O হবে। পানির সঠিক সংকেত H₂O লিখতে <sub> লাগত।","tp":"HTML ট্যাগ, ফরম্যাটিং, লিস্ট ও হাইপারলিংক","b":1},{"s":"টেবিলের দুটি কলাম একত্র (মার্জ) করার সঠিক কোড কোনটি?","o":["<tr colspan=\"2\">","<td colspan=\"2\">","<td rowspan=\"2\">","<th row=\"2\">"],"a":1,"e":"দুটি কলাম একত্র করতে সেলের (<td>) মধ্যে colspan=\"2\" দিতে হয়। <tr> এ colspan কাজ করে না।","tp":"ছবি, টেবিল ও ওয়েবসাইট পাবলিশিং","b":1},{"s":"সার্চ ইঞ্জিন—","o":["i ও ii","i ও iii","ii ও iii","i, ii ও iii"],"a":1,"e":"Google ও Yahoo সার্চ ইঞ্জিন। Mozilla Firefox হলো ওয়েব ব্রাউজার, তাই ii ভুল।","tp":"ওয়েব পেজ, আইপি, ডোমেইন, URL ও ওয়েবসাইটের কাঠামো","st":["Google","Mozilla Firefox","Yahoo"],"t":"নিচের কোনটি সঠিক?","b":1},{"s":"ওয়েব পেজ সাধারণত কোন ভাষায় তৈরি হয়?","o":["C","SQL","HTML","Python"],"a":2,"e":"ওয়েব পেজ তৈরির মূল ভাষা HTML। C ও Python প্রোগ্রামিং ভাষা, SQL ডেটাবেজের ভাষা।","tp":"ওয়েব পেজ, আইপি, ডোমেইন, URL ও ওয়েবসাইটের কাঠামো"},{"s":"টিম বার্নার্স-লি কোন প্রতিষ্ঠানে কাজ করার সময় HTML উদ্ভাবন করেন?","o":["CERN","NASA","MIT","IBM"],"a":0,"e":"টিম বার্নার্স-লি সুইজারল্যান্ডের গবেষণা প্রতিষ্ঠান CERN এ কাজ করার সময় HTML ও WWW উদ্ভাবন করেন।","tp":"ওয়েব পেজ, আইপি, ডোমেইন, URL ও ওয়েবসাইটের কাঠামো"},{"s":"<h1> ও <h6> এর মধ্যে সঠিক—","o":["h1 সবচেয়ে ছোট","h6 সবচেয়ে বড়","উভয় সমান","h1 সবচেয়ে বড়"],"a":3,"e":"<h1> সবচেয়ে বড় হেডিং, <h6> সবচেয়ে ছোট।","tp":"HTML ট্যাগ, ফরম্যাটিং, লিস্ট ও হাইপারলিংক"},{"s":"নিচের কোনটি ওয়েব সার্ভার সফটওয়্যার?","o":["Nginx","Firefox","Opera","Safari"],"a":0,"e":"Nginx একটি ওয়েব সার্ভার সফটওয়্যার। Firefox, Opera, Safari ওয়েব ব্রাউজার।","tp":"ওয়েব পেজ, আইপি, ডোমেইন, URL ও ওয়েবসাইটের কাঠামো"},{"s":"বর্তমানে বিশ্বের ডোমেইন নেইম ও আইপি অ্যাড্রেস ব্যবস্থাপনা করে—","o":["ICANN","W3C","IEEE","ITU"],"a":0,"e":"ICANN পৃথিবীর ডোমেইন নেইম ও আইপি অ্যাড্রেস ব্যবস্থাপনা করে।","tp":"ওয়েব পেজ, আইপি, ডোমেইন, URL ও ওয়েবসাইটের কাঠামো"},{"s":"দেখা (Visited) লিংকের ডিফল্ট রং—","o":["বেগুনি","লাল","নীল","সবুজ"],"a":0,"e":"একবার দেখা (visited) লিংক ডিফল্টভাবে বেগুনি দেখায়, না-দেখা লিংক নীল।","tp":"HTML ট্যাগ, ফরম্যাটিং, লিস্ট ও হাইপারলিংক"},{"s":"টেবিলের ওপরে শিরোনাম দিতে ব্যবহৃত ট্যাগ—","o":["<title>","<head>","<th>","<caption>"],"a":3,"e":"<caption> ট্যাগ টেবিলের ঠিক উপরে শিরোনাম দেখায়। <title> ব্রাউজারের টাইটেল বারের জন্য।","tp":"ছবি, টেবিল ও ওয়েবসাইট পাবলিশিং"}]};</script>
+<script src="../../a/lb-config.js?v=4"></script>
+<script src="../../a/mt.js?v=4"></script>
+<script src="../../a/lb.js?v=4"></script>
+</body>
+</html>

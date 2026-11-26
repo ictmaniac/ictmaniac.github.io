@@ -72,6 +72,26 @@ section.s{padding:30px 0}
 .ex{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;text-decoration:none;color:var(--ink);margin-top:10px}
 .ex b{display:block;color:var(--green)}.ex span{font-size:.88rem;color:var(--muted)}.ex i{margin-left:auto;font-style:normal;color:var(--green);font-size:1.2rem}
 .soon{background:#fff;border:2px dashed #BFE6CF;border-radius:16px;padding:16px;margin-top:12px;color:var(--muted);font-weight:600;text-align:center}
+/* animation cards */
+.ac{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;transition:transform .15s,box-shadow .15s}
+.ac:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(37,99,235,.12)}
+.ac .ch{font-size:.8rem;font-weight:700;color:var(--blue);background:var(--blue-soft);border-radius:99px;padding:2px 10px;align-self:flex-start}
+.ac b{font-family:var(--fd);font-size:1.15rem;margin-top:4px}.ac span:not(.ch){color:var(--muted);font-size:.92rem}.ac i{font-style:normal;font-weight:700;color:var(--green);margin-top:auto;padding-top:6px}
+/* videos */
+.vd figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.vd video{width:100%;aspect-ratio:16/9;display:block;background:#0B1730}
+.vd figcaption{padding:10px 14px;color:var(--muted);font-size:.92rem}.vd b{color:var(--ink)}
+/* book pages */
+.pages{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 12px;-webkit-overflow-scrolling:touch}
+.pages button{flex:none;width:min(46vw,190px);scroll-snap-align:start;border:0;background:none;padding:0;cursor:zoom-in;font:inherit;color:var(--muted);font-size:.85rem;font-weight:600;text-align:center}
+.pages img{width:100%;aspect-ratio:595/842;object-fit:cover;display:block;border-radius:10px;border:1px solid var(--line);box-shadow:0 6px 18px rgba(19,35,63,.10);background:#fff;margin-bottom:6px}
+.lbx{position:fixed;inset:0;z-index:20;background:rgba(10,20,40,.88);display:flex;align-items:center;justify-content:center;padding:16px}
+.lbx img{max-width:100%;max-height:100%;border-radius:8px;background:#fff}
+.lbx button{position:absolute;border:0;background:rgba(255,255,255,.92);color:var(--ink);width:44px;height:44px;border-radius:50%;font-size:1.4rem;cursor:pointer}
+.lbx .x{top:12px;right:12px}.lbx .l{left:10px;top:50%}.lbx .r{right:10px;top:50%}
+.fh{font-size:1rem;color:var(--green);margin:16px 0 0}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0 10px}
+.ex.lbr{background:var(--yellow-soft);border-color:#F5DC85}.ex.lbr b{color:#8A6500}
 /* steps */
 .steps{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));counter-reset:k}
 .steps div{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 16px 16px 60px;position:relative;counter-increment:k;color:var(--muted)}
@@ -85,17 +105,17 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:.9rem;text-align:center;
 <body>
 <nav><div class="w">
   <a class="brand" href="./"><i>IM</i>ICT Maniac</a>
-  <div class="links"><a href="#book" class="opt">বই</a><a href="#free">ফ্রি পরীক্ষা</a><a href="#contact">যোগাযোগ</a></div>
+  <div class="links"><a href="#anim" class="opt">অ্যানিমেশন</a><a href="#demo" class="opt">বই</a><a href="#free">ফ্রি পরীক্ষা</a><a href="#contact" class="opt">যোগাযোগ</a></div>
 </div></nav>
 
 <header class="hero"><div class="w">
   <div>
-    <span class="tag">HSC ICT · নতুন সিলেবাস</span>
-    <h1>ICT মুখস্থ না, <em>চোখে দেখে</em> বোঝো</h1>
-    <p class="lead">ICT Maniac বইয়ের প্রতিটি কঠিন টপিকের পাশে আছে অ্যানিমেশন। লজিক গেট, নেটওয়ার্ক, প্রোগ্রামিং সব চলতে দেখে শেখো, তারপর অনলাইন মডেল টেস্ট দিয়ে নিজেকে যাচাই করো।</p>
+    <span class="tag">HSC ICT · স্মার্ট বুক ২০২৭</span>
+    <h1>ICT শেখার নতুন উপায়: <em>দেখে বোঝো</em>, তারপর যাচাই করো</h1>
+    <p class="lead">ICT Maniac স্মার্ট বুক HSC তথ্য ও যোগাযোগ প্রযুক্তির সম্পূর্ণ সিলেবাসকে সহজ ভাষায় সাজিয়েছে। প্রতিটি গুরুত্বপূর্ণ টপিকের সাথে রয়েছে ইন্টারেক্টিভ অ্যানিমেশন, আর প্রতিটি অংশ শেষে অনলাইন মডেল টেস্ট, ব্যাখ্যাসহ ফলাফল ও লিডারবোর্ড।</p>
     <div class="cta">
       <a class="btn g" href="#free">📝 ফ্রি পরীক্ষা দাও</a>
-      <a class="btn" href="#book">📘 বইয়ে কী আছে</a>
+      <a class="btn" href="#anim">🎬 অ্যানিমেশন দেখো</a>
     </div>
   </div>
   <div class="art" aria-hidden="true">
@@ -109,48 +129,85 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:.9rem;text-align:center;
       <text x="182" y="117" fill="#2563EB" font-size="22" font-weight="800" text-anchor="middle" font-family="sans-serif">AND</text>
       <circle class="bulb" cx="312" cy="110" r="24" fill="#FFE27A" stroke="#F2B705" stroke-width="4"/>
       <text x="312" y="117" fill="#8A6500" font-size="18" font-weight="800" text-anchor="middle" font-family="sans-serif">1</text>
-      <text x="180" y="205" fill="#5B6B86" font-size="13" text-anchor="middle" font-family="sans-serif">দুটো ইনপুটই 1 হলে বাতি জ্বলে</text>
+      <text x="180" y="205" fill="#5B6B86" font-size="13" text-anchor="middle" font-family="sans-serif">AND গেট: দুটি ইনপুটই 1 হলে আউটপুট 1</text>
     </svg>
   </div>
 </div></header>
 
-<section class="s" id="book"><div class="w">
-  <h2>📘 ICT Maniac বইয়ে কী আছে</h2>
-  <p class="sub">বইয়ের পাশাপাশি অনলাইনে যা পাবে, বই কিনলেই সব খুলে যাবে।</p>
+<section class="s" id="book" style="padding-top:10px"><div class="w">
+  <h2>একটি বই, চারটি সুবিধা</h2>
+  <p class="sub">ছাপা বইয়ের সাথে যুক্ত অনলাইন শিক্ষাসামগ্রী। বইয়ের লিংকে চাপ দিলেই ফোনে খুলে যায়, কোনো অ্যাপ লাগে না।</p>
   <div class="grid">
-    <div class="f c1"><span class="ic">🎬</span><h3>প্রতিটি টপিকের অ্যানিমেশন</h3><p>বইয়ের টপিকের পাশে বোতাম চাপলেই ফোনে অ্যানিমেশন। ধাপে ধাপে, নিজের গতিতে।</p></div>
-    <div class="f c2"><span class="ic">📝</span><h3>অনলাইন মডেল টেস্ট</h3><p>অধ্যায়ভিত্তিক আর পূর্ণ সিলেবাস টেস্ট। সময় ধরে পরীক্ষা, সাথে সাথে নম্বর।</p></div>
-    <div class="f c3"><span class="ic">💡</span><h3>প্রতিটি ভুলের ব্যাখ্যা</h3><p>কোন উত্তর কেন ঠিক, কেন ভুল, সহজ বাংলায় বুঝিয়ে দেওয়া।</p></div>
-    <div class="f c4"><span class="ic">🏆</span><h3>লিডারবোর্ড</h3><p>বইয়ের পাঠকদের মধ্যে তুমি কত নম্বরে, দেখে নাও।</p></div>
+    <div class="f c1"><span class="ic">🎬</span><h3>প্রতিটি টপিকের অ্যানিমেশন</h3><p>৬৩টি টপিকের ধাপে ধাপে অ্যানিমেশন। কঠিন ধারণা চোখের সামনে কাজ করতে দেখে বোঝা যায়।</p></div>
+    <div class="f c2"><span class="ic">📝</span><h3>অনলাইন মডেল টেস্ট</h3><p>২০টি অংশভিত্তিক ও ১০টি পূর্ণ সিলেবাস টেস্ট, বোর্ড পরীক্ষার মানে। সময় ধরে পরীক্ষা, সাথে সাথে ফলাফল।</p></div>
+    <div class="f c3"><span class="ic">💡</span><h3>প্রতিটি ভুলের ব্যাখ্যা</h3><p>প্রতিটি প্রশ্নের সঠিক উত্তরের কারণ সহজ বাংলায় ব্যাখ্যা করা, যাতে একই ভুল আর না হয়।</p></div>
+    <div class="f c4"><span class="ic">🏆</span><h3>লিডারবোর্ড</h3><p>সারা দেশের পাঠকদের মধ্যে নিজের অবস্থান জানো, প্রতিটি টেস্টে আর সব টেস্ট মিলিয়ে।</p></div>
   </div>
-  <div class="stats"><div><span class="num">৬৩</span><br>অ্যানিমেশন</div><div><span class="num">৩০</span><br>মডেল টেস্ট</div><div><span class="num">৬</span><br>অধ্যায়</div></div>
+  <div class="stats"><div><span class="num">৬৩</span><br>অ্যানিমেশন</div><div><span class="num">৩০</span><br>মডেল টেস্ট</div><div><span class="num">৭৫০+</span><br>ব্যাখ্যাসহ প্রশ্ন</div></div>
 </div></section>
+
+<section class="s" id="anim"><div class="w">
+  <h2>🎬 অ্যানিমেশনের নমুনা</h2>
+  <p class="sub">প্রতিটি অধ্যায় থেকে একটি করে নমুনা, সবার জন্য খোলা। বইয়ের বাকি অ্যানিমেশনগুলো বইয়ের লিংক থেকে খোলে।</p>
+  <div class="grid an">
+    <a class="ac" href="p/72smqlhw/"><span class="ch">অধ্যায় ১ · 3D</span><b>বিশ্বগ্রাম</b><span>ঘুরিয়ে দেখো কীভাবে পুরো পৃথিবী এক গ্রামে যুক্ত</span><i>▶ দেখো</i></a>
+    <a class="ac" href="p/8g1t74ck/"><span class="ch">অধ্যায় ২ · 3D</span><b>মাইক্রোওয়েভ ও স্যাটেলাইট</b><span>সিগন্যাল কীভাবে স্যাটেলাইট হয়ে পৌঁছায়</span><i>▶ দেখো</i></a>
+    <a class="ac" href="p/bmaf3tcy/"><span class="ch">অধ্যায় ৩</span><b>মৌলিক লজিক গেট</b><span>সুইচ চেপে AND, OR, NOT নিজে পরীক্ষা করো</span><i>▶ দেখো</i></a>
+    <a class="ac" href="p/chc68qo6/"><span class="ch">অধ্যায় ৪</span><b>HTML টেবিল</b><span>rowspan ও colspan ঘর জোড়া লাগে চোখের সামনে</span><i>▶ দেখো</i></a>
+    <a class="ac" href="p/d4odkk9i/"><span class="ch">অধ্যায় ৫</span><b>লুপ</b><span>প্রোগ্রামের প্রতিটি ঘূর্ণন ধাপে ধাপে</span><i>▶ দেখো</i></a>
+    <a class="ac" href="p/c87dmtrf/"><span class="ch">অধ্যায় ৬</span><b>সর্টিং ও ইনডেক্সিং</b><span>ডেটাবেজ কীভাবে দ্রুত খুঁজে পায়</span><i>▶ দেখো</i></a>
+  </div>
+</div></section>
+
+<section class="s" id="video"><div class="w">
+  <h2>▶ ভিডিও ক্লাস</h2>
+  <p class="sub">ছোট ভিডিওতে একটি করে টপিক, বাস্তব উদাহরণ দিয়ে।</p>
+  <div class="grid vd">
+    <figure><video controls preload="none" playsinline poster="v/or-gate.jpg" src="v/or-gate.mp4"></video><figcaption><b>OR গেট</b> · লেখকের কণ্ঠে</figcaption></figure>
+    <figure><video controls preload="none" playsinline poster="v/and-gate.jpg" src="v/and-gate.mp4"></video><figcaption><b>AND গেট</b></figcaption></figure>
+    <figure><video controls preload="none" playsinline poster="v/half-adder.jpg" src="v/half-adder.mp4"></video><figcaption><b>হাফ অ্যাডার</b></figcaption></figure>
+  </div>
+</div></section>
+
+<section class="s" id="demo"><div class="w">
+  <h2>📖 বইয়ের ভিতরে এক নজর</h2>
+  <p class="sub">কয়েকটি নমুনা পাতা। ছবিতে চাপ দিলে বড় করে দেখা যাবে।</p>
+  <div class="pages" id="pages">
+    <button type="button" data-i="0"><img src="img/book/p1.jpg" alt="বইয়ের প্রচ্ছদ" loading="lazy"><span>প্রচ্ছদ</span></button>
+    <button type="button" data-i="1"><img src="img/book/p4.jpg" alt="বইয়ের বিশেষত্ব" loading="lazy"><span>বইয়ের বিশেষত্ব</span></button>
+    <button type="button" data-i="2"><img src="img/book/p5.jpg" alt="বইটি যেভাবে পড়বে" loading="lazy"><span>বইটি যেভাবে পড়বে</span></button>
+    <button type="button" data-i="3"><img src="img/book/p185.jpg" alt="লজিক গেটের পাতা" loading="lazy"><span>লজিক গেট</span></button>
+    <button type="button" data-i="4"><img src="img/book/p187.jpg" alt="সার্বজনীন গেটের পাতা" loading="lazy"><span>সার্বজনীন গেট</span></button>
+    <button type="button" data-i="5"><img src="img/book/p192.jpg" alt="মডেল টেস্ট বোতামসহ পাতা" loading="lazy"><span>এনকোডার ও মডেল টেস্ট</span></button>
+  </div>
+</div></section>
+<div class="lbx" id="lbx" hidden><button type="button" class="x" id="lbxx" aria-label="বন্ধ করো">✕</button><button type="button" class="nv l" id="lbp" aria-label="আগের পাতা">‹</button><img id="lbi" alt=""><button type="button" class="nv r" id="lbn" aria-label="পরের পাতা">›</button></div>
 
 <section class="s" id="free"><div class="w">
   <div class="free">
     <h2>📝 সবার জন্য ফ্রি পরীক্ষা</h2>
-    <p class="sub" style="margin:0">বই না থাকলেও দিতে পারবে। নাম আর মোবাইল নম্বর দিয়ে পরীক্ষা দাও, সবার সাথে লিডারবোর্ডে নাম তোলো।</p>
-    <div id="fl"><div class="soon">⏳ ফ্রি পরীক্ষা খুব শীঘ্রই আসছে। চোখ রাখো!</div></div>
+    <p class="sub" style="margin:0">বই না থাকলেও অংশ নিতে পারবে। ৬টি অধ্যায়ভিত্তিক ও ৪টি পূর্ণ সিলেবাস পরীক্ষা, প্রতিটিতে ২৫টি প্রশ্ন, ২৫ মিনিট। নাম ও মোবাইল নম্বর দিয়ে পরীক্ষা দাও, ফলাফল আর ব্যাখ্যা দেখো, লিডারবোর্ডে নিজের অবস্থান জানো।</p>
+    <div id="fl"><div class="soon">লোড হচ্ছে…</div></div>
   </div>
 </div></section>
 
 <section class="s"><div class="w">
-  <h2>বই কিনেছ? এভাবে শুরু করো</h2>
-  <p class="sub">কোনো অ্যাপ লাগবে না, ফোনের ব্রাউজারেই চলবে।</p>
+  <h2>বই কিনেছ? তিন ধাপে শুরু করো</h2>
+  <p class="sub">কোনো অ্যাপ বা অ্যাকাউন্ট লাগবে না, ফোনের ব্রাউজারেই সব চলে।</p>
   <div class="steps">
-    <div><b>বইয়ের টপিক খোলো</b>প্রতিটি টপিকের নামের পাশে নীল "অ্যানিমেশন" বোতাম আছে।</div>
-    <div><b>বোতাম চাপো</b>ফোনে অ্যানিমেশন খুলবে। চালাও, থামাও, ধীরে দেখো।</div>
-    <div><b>পরীক্ষা দাও</b>প্রতিটি অংশ শেষে "মডেল টেস্ট" বোতাম। নম্বর আর ব্যাখ্যা সাথে সাথে।</div>
+    <div><b>টপিক পড়ো</b>প্রতিটি গুরুত্বপূর্ণ টপিকের শিরোনামের পাশে নীল "অ্যানিমেশন" বোতাম আছে।</div>
+    <div><b>অ্যানিমেশন দেখো</b>বোতামে চাপ দিলে ফোনে অ্যানিমেশন খোলে। নিজের গতিতে চালাও, থামাও, আবার দেখো।</div>
+    <div><b>নিজেকে যাচাই করো</b>প্রতিটি অংশ শেষে "মডেল টেস্ট" বোতাম। জমা দিলেই নম্বর, ব্যাখ্যা আর লিডারবোর্ডে অবস্থান।</div>
   </div>
 </div></section>
 
 <section class="s" id="contact"><div class="w">
   <h2>যোগাযোগ</h2>
-  <p class="sub" id="ctext">বই কিনতে বা কিছু জানতে আমাদের সাথে যোগাযোগ করো।</p>
+  <p class="sub" id="ctext">বই সংগ্রহ বা যেকোনো তথ্যের জন্য যোগাযোগ করুন।</p>
   <div class="social" id="soc"></div>
 </div></section>
 
-<footer><div class="w">© ICT Maniac · HSC ICT</div></footer>
+<footer><div class="w"><b>ICT Maniac</b> · HSC তথ্য ও যোগাযোগ প্রযুক্তি স্মার্ট বুক<br>© ২০২৬ ICT Maniac। সর্বস্বত্ব সংরক্ষিত।</div></footer>
 
 <script>
 /* ===== mira: এখানে লিংক বসালে বোতাম নিজে থেকে দেখাবে (খালি রাখলে লুকানো থাকবে) ===== */
@@ -168,17 +225,32 @@ var LINKS = {
   if (LINKS.youtube) h += '<a class="btn yt" href="' + esc(LINKS.youtube) + '" target="_blank" rel="noopener">▶ YouTube</a>';
   if (LINKS.facebook) h += '<a class="btn fb" href="' + esc(LINKS.facebook) + '" target="_blank" rel="noopener">f Facebook</a>';
   if (LINKS.phone) h += '<a class="btn g" href="https://wa.me/88' + esc(LINKS.phone.replace(/\D/g, '').replace(/^88/, '')) + '" target="_blank" rel="noopener">💬 WhatsApp</a>';
-  if (h) s.innerHTML = h; else document.getElementById('ctext').textContent = 'আমাদের ইউটিউব চ্যানেল আর ফেসবুক পেজ খুব শীঘ্রই আসছে।';
+  if (h) s.innerHTML = h; else document.getElementById('ctext').textContent = 'ঠিকানা, ইউটিউব চ্যানেল ও ফেসবুক পেজের তথ্য শীঘ্রই যুক্ত হবে।';
 
   /* free exams: any test series named "free" in a/lb-tests.json appears here by itself */
   fetch('a/lb-tests.json?t=' + Math.floor(Date.now() / 600000)).then(function (r) { return r.json(); }).then(function (reg) {
     var f = reg.series && reg.series.free;
-    if (!f || !f.tests.length) return;
+    if (!f || !f.tests.length) { document.getElementById('fl').innerHTML = '<div class="soon">⏳ ফ্রি পরীক্ষা শীঘ্রই আসছে।</div>'; return; }
     var BN = '০১২৩৪৫৬৭৮৯', bn = function (n) { return String(n).replace(/\d/g, function (d) { return BN[d]; }); };
-    document.getElementById('fl').innerHTML = f.tests.map(function (t) {
-      return '<a class="ex" href="p/' + t.code + '/"><div><b>' + esc(t.title) + '</b><span>' + bn(t.key.length) + 'টি প্রশ্ন · ' + bn(t.min) + ' মিনিট</span></div><i>▶</i></a>';
-    }).join('') + '<a class="ex" href="p/' + reg.lb + '/?s=free"><div><b>🏆 ফ্রি পরীক্ষার লিডারবোর্ড</b><span>সবার মধ্যে সেরা ২০ জন</span></div><i>▶</i></a>';
-  }).catch(function () {});
+    var card = function (t) { return '<a class="ex" href="p/' + t.code + '/"><div><b>' + esc(t.title.replace('ফ্রি পরীক্ষা · ', '')) + '</b><span>' + bn(t.key.length) + 'টি প্রশ্ন · ' + bn(t.min) + ' মিনিট</span></div><i>▶</i></a>'; };
+    var ch = f.tests.filter(function (t) { return t.title.indexOf('অধ্যায়') >= 0; }), full = f.tests.filter(function (t) { return t.title.indexOf('অধ্যায়') < 0; });
+    document.getElementById('fl').innerHTML = '<a class="ex lbr" href="p/' + reg.lb + '/?s=free"><div><b>🏆 ফ্রি পরীক্ষার লিডারবোর্ড</b><span>সবার মধ্যে সেরা ২০ জন, প্রতিটি পরীক্ষায় আর সব মিলিয়ে</span></div><i>▶</i></a>' +
+      (ch.length ? '<h3 class="fh">অধ্যায়ভিত্তিক</h3><div class="fg">' + ch.map(card).join('') + '</div>' : '') +
+      (full.length ? '<h3 class="fh">পূর্ণ সিলেবাস</h3><div class="fg">' + full.map(card).join('') + '</div>' : '');
+  }).catch(function () { document.getElementById('fl').innerHTML = '<div class="soon"><a href="p/fz8hq3ub/">সব ফ্রি পরীক্ষা দেখো ›</a></div>'; });
+
+  /* book page viewer */
+  var imgs = [].map.call(document.querySelectorAll('#pages img'), function (i) { return i.src; }), cur = 0, bx = document.getElementById('lbx');
+  function open(i) { cur = (i + imgs.length) % imgs.length; document.getElementById('lbi').src = imgs[cur]; bx.hidden = false; document.body.style.overflow = 'hidden'; }
+  function close() { bx.hidden = true; document.body.style.overflow = ''; }
+  [].forEach.call(document.querySelectorAll('#pages button'), function (b) { b.onclick = function () { open(+b.dataset.i); }; });
+  document.getElementById('lbxx').onclick = close;
+  document.getElementById('lbp').onclick = function () { open(cur - 1); };
+  document.getElementById('lbn').onclick = function () { open(cur + 1); };
+  bx.onclick = function (e) { if (e.target === bx) close(); };
+  document.addEventListener('keydown', function (e) { if (bx.hidden) return; if (e.key === 'Escape') close(); if (e.key === 'ArrowLeft') open(cur - 1); if (e.key === 'ArrowRight') open(cur + 1); });
+  /* stop other videos when one plays */
+  [].forEach.call(document.querySelectorAll('video'), function (v) { v.addEventListener('play', function () { [].forEach.call(document.querySelectorAll('video'), function (o) { if (o !== v) o.pause(); }); }); });
 })();
 </script>
 </body>
