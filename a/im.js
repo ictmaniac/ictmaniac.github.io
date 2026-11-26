@@ -231,19 +231,27 @@ const IM = (() => {
   /* player({count:()=>n, show:(k,prev)=>{}, swipe:el, label:'ধাপ', interval:1500}) — drives the bottom dock */
   function player(o) {
     const d = document.querySelector('.dock');
-    const pv = d.querySelector('.pv'), nx = d.querySelector('.nx'), au = d.querySelector('.au'), sp = d.querySelector('.sp'), bar = d.querySelector('.bar i'), cnt = d.querySelector('.cnt');
-    const nxT = nx.textContent; let k = 0, timer = null, spd = 1, si = 0; const SP = [1, 1.6, 0.6], SPL = ['১x', 'দ্রুত', 'ধীরে'];
-    const n = () => o.count();
+    const pv = d.querySelector('.pv'), nx = d.querySelector('.nx'), au = d.querySelector('.au'), bar = d.querySelector('.bar i'), cnt = d.querySelector('.cnt');
+    const sbs = [...d.querySelectorAll('.spd button')], aul = au.querySelector('span') || au, tm = au.querySelector('.tm');
+    const nxT = nx.textContent; let k = 0, timer = null, spd = 1;
+    try { const v = parseFloat(localStorage.getItem('im-speed')); if (v > 0) spd = v; } catch (e) {}
+    const n = () => o.count(), gap = () => (o.interval || 1500) / spd;
+    function markSpd() { sbs.forEach(b => b.classList.toggle('sel', Math.abs(+b.dataset.s - spd) < .01)); document.documentElement.style.setProperty('--spd', spd); }
     function show(prev) { o.show(k, prev); pv.disabled = k === 0; const end = k >= n() - 1; nx.disabled = false; nx.classList.toggle('again', end); nx.textContent = end ? '🔄 আবার শুরু করো' : nxT; bar.style.width = (100 * (k + 1) / n()) + '%';
-      cnt.textContent = k >= n() - 1 ? 'শেষ! আবার দেখতে "আবার শুরু করো" চাপো' : (o.hint || 'সোয়াইপ করেও ধাপ বদলানো যায়'); }
-    function stop() { clearInterval(timer); timer = null; au.setAttribute('aria-pressed', 'false'); au.textContent = 'অটো'; o.onPlay && o.onPlay(false); }
-    function next() { if (k < n() - 1) { const p = k; k++; show(p); } else stop(); }
+      cnt.textContent = end ? 'শেষ! আবার দেখতে "আবার শুরু করো" চাপো' : timer ? 'অটো চলছে… থামাতে "থামো" চাপো' : (o.hint || 'সোয়াইপ করেও ধাপ বদলানো যায়'); }
+    function countdown() { if (!tm) return; tm.style.animation = 'none'; void tm.offsetWidth; tm.style.animation = `tmfill ${gap()}ms linear forwards`; }
+    function stop() { clearTimeout(timer); timer = null; au.setAttribute('aria-pressed', 'false'); aul.textContent = '▶ অটো'; if (tm) tm.style.animation = 'none'; o.onPlay && o.onPlay(false); if (k < n() - 1) cnt.textContent = o.hint || 'সোয়াইপ করেও ধাপ বদলানো যায়'; }
+    function next() { if (k < n() - 1) { const p = k; k++; show(p); } }
     function prev() { if (k > 0) { k--; show(null); } }
-    function play() { if (k >= n() - 1) { k = 0; show(null); } au.setAttribute('aria-pressed', 'true'); au.textContent = 'থামো'; o.onPlay && o.onPlay(true);
-      timer = setInterval(() => { next(); if (k >= n() - 1) stop(); }, (o.interval || 1500) / spd); }
+    function loop() { timer = setTimeout(() => { next(); if (k >= n() - 1) stop(); else { countdown(); loop(); } }, gap()); }
+    function play() { au.setAttribute('aria-pressed', 'true'); aul.textContent = '⏸ থামো'; o.onPlay && o.onPlay(true); timer = -1;
+      if (k >= n() - 1) { k = 0; show(null); } else next();
+      if (k >= n() - 1) { stop(); return; } countdown(); loop(); }
     nx.onclick = () => { stop(); if (k >= n() - 1) { k = 0; show(null); } else next(); }; pv.onclick = () => { stop(); prev(); };
     au.onclick = () => timer ? stop() : play();
-    sp.onclick = () => { si = (si + 1) % 3; spd = SP[si]; sp.textContent = SPL[si]; if (timer) { stop(); play(); } };
+    sbs.forEach(b => b.onclick = () => { spd = +b.dataset.s; markSpd(); try { localStorage.setItem('im-speed', spd); } catch (e) {}
+      if (timer) { clearTimeout(timer); countdown(); loop(); } });
+    markSpd();
     (o.swipe ? [].concat(o.swipe) : []).forEach(el => { let x0 = null, y0 = 0;
       el.addEventListener('touchstart', e => { const t = e.touches[0]; x0 = t.clientX; y0 = t.clientY; }, { passive: true });
       el.addEventListener('touchend', e => { if (x0 === null) return; const t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;

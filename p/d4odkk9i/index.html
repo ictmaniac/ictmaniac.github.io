@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=4">
+<link rel="stylesheet" href="../../a/im.css?v=5">
 <style>
-body{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
+body{padding-bottom:calc(158px + env(safe-area-inset-bottom,0px))}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--board)}
 .explain{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:#E8F1FF;color:var(--ink);border:2px solid #A9C8FA;border-top:0;border-radius:0 0 14px 14px;padding:10px 14px 12px;margin-inline:-4px;box-shadow:0 6px 16px -10px rgba(0,0,0,.5);min-height:4.6em}
 .explain .tag{display:inline-block;font-size:.78rem;font-weight:700;padding:1px 8px;border-radius:999px;background:var(--accent);color:#fff;margin-bottom:3px}
@@ -74,19 +74,6 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .cmp div{border-radius:12px;background:var(--board);padding:10px;text-align:center}
 .cmp b{display:block;font-family:var(--f-mono);font-size:1.5rem;color:var(--accent)}
-/* bottom dock */
-.dock{position:fixed;left:0;right:0;bottom:0;z-index:8;background:var(--panel);border-top:1px solid var(--line);box-shadow:0 -8px 20px -14px rgba(0,0,0,.45);
-  padding:8px max(16px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
-.dock .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:58px 1fr 58px 64px;gap:8px;align-items:center}
-.dock button{font:inherit;font-weight:800;padding:0;border-radius:14px;border:2px solid var(--accent);background:var(--panel);color:var(--accent);min-height:56px;cursor:pointer;font-size:1.25rem;touch-action:manipulation}
-.dock #nx{background:var(--accent);color:var(--panel);font-size:1.1rem}
-.dock #nx.again{background:var(--signal);border-color:var(--signal);color:#1A1200}
-.dock #au[aria-pressed="true"]{background:var(--signal);border-color:var(--signal);color:#1A1200}
-.dock #sp,.dock #au{font-size:.95rem}
-.dock button:disabled{opacity:.4}
-.dock .cnt{grid-column:1/-1;text-align:center;font-size:.78rem;color:var(--muted);margin-top:-2px}
-.dock .bar{grid-column:1/-1;height:4px;border-radius:4px;background:var(--board);overflow:hidden}
-.dock .bar i{display:block;height:100%;background:var(--signal);width:0;transition:width .3s}
 </style>
 </head>
 <body>
@@ -136,16 +123,16 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
   </section>
 
   <div class="dock"><div class="in">
-    <button id="pv" aria-label="আগের ধাপ">◀</button>
-    <button id="nx">পরের ধাপ ▶</button>
-    <button id="au" aria-pressed="false">অটো</button>
-    <button id="sp" aria-label="গতি">১x</button>
+    <button id="pv" class="pv" aria-label="আগের ধাপ">◀</button>
+    <button id="nx" class="nx">পরের ধাপ ▶</button>
+    <button id="au" class="au" aria-pressed="false"><span id="aul">▶ অটো</span><i class="tm" id="tm"></i></button>
+    <div class="spd" id="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div>
     <div class="bar"><i id="bar"></i></div>
     <div class="cnt" id="cnt"></div>
   </div></div>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=4"></script>
+<script src="../../a/im.js?v=5"></script>
 <script>
 const {$}=IM;
 const bn=x=>String(x).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
@@ -271,16 +258,21 @@ function reset(){stop();const p=P[T];steps=p.steps(S,N);k=0;pos=null;
   render(null);cmp();}
 function next(){if(k<steps.length-1){const a=steps[k].at;k++;render(a);}else stop();}
 function prev(){if(k>0){k--;render(null);}}
-function stop(){clearInterval(timer);timer=null;$('au').setAttribute('aria-pressed','false');$('au').textContent='অটো';$('main').classList.remove('playing');}
-function play(){if(k>=steps.length-1){k=0;pos=null;render(null);}
-  $('au').setAttribute('aria-pressed','true');$('au').textContent='থামো';$('main').classList.add('playing');
-  timer=setInterval(()=>{next();if(k>=steps.length-1)stop();},1500/spd);}
+function stop(){clearTimeout(timer);timer=null;$('au').setAttribute('aria-pressed','false');$('aul').textContent='▶ অটো';$('tm').style.animation='none';$('main').classList.remove('playing');}
+function cdown(){const t=$('tm');t.style.animation='none';void t.offsetWidth;t.style.animation=`tmfill ${1500/spd}ms linear forwards`;}
+function loop(){timer=setTimeout(()=>{next();if(k>=steps.length-1)stop();else{cdown();loop();}},1500/spd);}
+function play(){$('au').setAttribute('aria-pressed','true');$('aul').textContent='⏸ থামো';$('main').classList.add('playing');timer=-1;
+  if(k>=steps.length-1){k=0;pos=null;render(null);}else next();
+  if(k>=steps.length-1){stop();return;}cdown();loop();}
 function cmp(){const s=T==='for'?1:S,w=Math.max(0,N-s+1),d=Math.max(1,N-s+1);
   $('cmp').innerHTML=`<div>while<b>${bn(w)} বার</b><small>i = ${s}, n = ${N}</small></div><div>do…while<b>${bn(d)} বার</b><small>i = ${s}, n = ${N}</small></div>`;}
 $('nx').onclick=()=>{stop();if(k>=steps.length-1){k=0;pos=null;render(null);}else next();};$('pv').onclick=()=>{stop();prev();};
 $('au').onclick=()=>timer?stop():play();
-const SP=[1,1.5,0.6],SPL=['১x','দ্রুত','ধীরে'];let si=0;
-$('sp').onclick=()=>{si=(si+1)%3;spd=SP[si];$('sp').textContent=SPL[si];if(timer){stop();play();}};
+const SB=[...$('spd').querySelectorAll('button')];
+function markSpd(){SB.forEach(b=>b.classList.toggle('sel',Math.abs(+b.dataset.s-spd)<.01));}
+try{const v=parseFloat(localStorage.getItem('im-speed'));if(v>0)spd=v;}catch(e){}
+markSpd();
+SB.forEach(b=>b.onclick=()=>{spd=+b.dataset.s;markSpd();try{localStorage.setItem('im-speed',spd);}catch(e){}if(timer){clearTimeout(timer);cdown();loop();}});
 $('s').onchange=e=>{S=+e.target.value;reset();};
 $('n').onchange=e=>{N=+e.target.value;reset();};
 $('try10').onclick=()=>{S=10;N=5;$('s').value=10;$('n').value=5;if(T==='for'){T='while';document.querySelectorAll('#tabs .tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.k===T));}reset();$('main').scrollIntoView({behavior:reduce?'auto':'smooth'});};
