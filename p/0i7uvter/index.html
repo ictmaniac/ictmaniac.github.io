@@ -77,6 +77,10 @@
     <p class="proved" id="xres"></p>
     <div class="scroll-x"><table id="xtt"></table></div>
   </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq3"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <script src="../../a/im.js?v=7"></script>
@@ -126,6 +130,7 @@ function check(){
 }
 $('x1').oninput=check; $('x2').oninput=check;
 pick(17); check();
+IM.mcq(document.getElementById('mcq3'),[{"q": "A + 0 = ?", "o": ["0", "1", "A", "A'"], "a": 2, "w": "0 এর সাথে OR করলে মান বদলায় না।"}, {"q": "A · 0 = ?", "o": ["0", "1", "A", "A'"], "a": 0, "w": "AND এ একটা 0 থাকলেই ফল 0।"}, {"q": "A + A' = ?", "o": ["0", "1", "A", "A'"], "a": 1, "w": "একটা অবশ্যই 1, তাই OR = 1।"}, {"q": "A + AB = ?", "o": ["AB", "B", "A", "A+B"], "a": 2, "w": "শোষণ (Absorption) সূত্র।"}]);
 </script>
 </body>
 </html>

@@ -397,6 +397,7 @@ const IM = (() => {
       q.querySelectorAll('button').forEach(b => b.onclick = () => { if (q.dataset.done) return; const j = +b.dataset.j, ok = j === it.a; q.dataset.done = 1; done++; if (ok) right++;
         sfx(ok ? 'ok' : 'no'); b.classList.add(ok ? 'ok' : 'no'); if (!ok) q.querySelector(`[data-j="${it.a}"]`).classList.add('ok');
         say(ok ? 'সঠিক ✓' : 'ভুল ✗', (ok ? '' : `সঠিক উত্তর: <b>${it.o[it.a]}</b>। `) + it.w, true);
+        if (!$('extx')) q.insertAdjacentHTML('beforeend', `<p class="mw ${ok ? 'ok' : 'no'}">${ok ? '✓ ঠিক! ' : '✗ '}${it.w}</p>`);
         if (done === items.length) { if (right === items.length) setTimeout(() => sfx('done'), 700); } if (done === items.length) box.querySelector('.mscore').textContent = `তোমার স্কোর: ${bn(right)} / ${bn(items.length)} ${right === items.length ? '🎉' : ''}`; }); }); }
 
   /* ---------- scene helpers (Ch1/2) ---------- */

@@ -290,3 +290,6 @@ svg.scene .edge.dash{stroke-dasharray:6 5;animation:dashmv 1s linear infinite}
 @keyframes dashmv{to{stroke-dashoffset:-22}}
 svg.scene .edge.bad{stroke:var(--bad);stroke-width:4}
 svg.scene .node.bad rect,svg.scene .node.bad circle{fill:var(--bad-soft);stroke:var(--bad)}
+
+.mcq .mw{margin:6px 0 0;font-size:.9rem;font-weight:600;padding:6px 10px;border-radius:10px;background:#F3F8FF;animation:fadeup .3s ease-out}
+.mcq .mw.ok{color:#1E7A43;background:#E8F7EE}.mcq .mw.no{color:#B23A3A;background:#FDEEEE}

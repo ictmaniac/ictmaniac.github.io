@@ -60,6 +60,10 @@
       <li>যেকোনো সংখ্যক চলকেও খাটে: (A+B+C)' = A'·B'·C' এবং (ABC)' = A'+B'+C'।</li>
     </ul>
   </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq3"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <script src="../../a/im.js?v=7"></script>
@@ -109,6 +113,7 @@ function upd(){ $('next').disabled=$('all').disabled=k>=list.length; }
 $('next').onclick=()=>{ if(k<list.length){$('steps').children[k].classList.add('show');k++;upd();} };
 $('all').onclick=()=>{ while(k<list.length){$('steps').children[k].classList.add('show');k++;} upd(); };
 mk(); load(2);
+IM.mcq(document.getElementById('mcq3'),[{"q": "(AB)' = ?", "o": ["A'B'", "A'+B'", "A+B", "AB"], "a": 1, "w": "AND এর NOT = NOT গুলোর OR।"}, {"q": "(A+B)' = ?", "o": ["A'+B'", "A'B'", "AB", "A+B"], "a": 1, "w": "OR এর NOT = NOT গুলোর AND।"}, {"q": "ডি-মরগানে কী বদলায়?", "o": ["AND ↔ OR আর প্রতিটির NOT", "শুধু চলক", "শুধু ক্রম", "কিছুই না"], "a": 0, "w": "ভাঙো লাইন, বদলাও চিহ্ন।"}, {"q": "NAND গেট আর কোনটা সমান (ডি-মরগান অনুযায়ী)?", "o": ["ইনপুট উল্টানো OR", "ইনপুট উল্টানো AND", "XOR", "NOR"], "a": 0, "w": "(AB)' = A' + B'।"}]);
 </script>
 </body>
 </html>

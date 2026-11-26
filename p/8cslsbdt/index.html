@@ -63,6 +63,10 @@
     <p class="err" id="err"></p>
     <p class="proved answer" id="res" style="font-family:var(--f-body);font-size:1.05rem"></p>
   </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq3"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <script src="../../a/im.js?v=7"></script>
@@ -104,6 +108,7 @@ function check(){
 }
 $('o').oninput=check; $('u').oninput=check;
 load(3); check();
+IM.mcq(document.getElementById('mcq3'),[{"q": "AB + AB' সরল করলে—", "o": ["A", "B", "AB", "1"], "a": 0, "w": "A(B + B') = A·1 = A।"}, {"q": "A(A + B) সরল করলে—", "o": ["A+B", "AB", "A", "B"], "a": 2, "w": "শোষণ সূত্র।"}, {"q": "(A + B)' = ?", "o": ["A'+B'", "A'B'", "AB", "A+B"], "a": 1, "w": "ডি-মরগান: OR এর NOT = NOT গুলোর AND।"}, {"q": "A + A'B সরল করলে—", "o": ["A", "B", "A+B", "AB"], "a": 2, "w": "A + A'B = A + B।"}]);
 </script>
 </body>
 </html>
