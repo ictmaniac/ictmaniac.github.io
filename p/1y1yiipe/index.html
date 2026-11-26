@@ -10,9 +10,9 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
 <link rel="stylesheet" href="../../a/im.css?v=2">
 <style>
-.ex{font-family:var(--f-mono);font-weight:800;font-size:1.5rem;text-align:center;padding:16px 8px;border-radius:12px;background:var(--board);word-break:break-word;line-height:1.6;min-height:84px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:2px}
-.ex .h{background:var(--signal);color:#1A1200;border-radius:6px;padding:0 4px;animation:pop .4s ease-out}
-.ex .r{background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:0 4px;animation:pop .4s ease-out}
+.xpr{font-family:var(--f-mono);font-weight:800;font-size:1.5rem;text-align:center;padding:16px 8px;border-radius:12px;background:var(--board);word-break:break-word;line-height:1.6;min-height:84px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:2px}
+.xpr .h{background:var(--signal);color:#1A1200;border-radius:6px;padding:0 4px;animation:pop .4s ease-out}
+.xpr .r{background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:0 4px;animation:pop .4s ease-out}
 .given{font-family:var(--f-mono);text-align:center;color:var(--muted);font-weight:700}
 .boxes{display:flex;gap:10px;justify-content:center}
 .boxes div{width:90px;border:2px solid var(--line);border-radius:12px;padding:6px;text-align:center;font-family:var(--f-mono)}
@@ -37,7 +37,7 @@
   <div class="chips" id="exs"></div>
   <section class="card" id="main">
     <p class="given" id="given"></p>
-    <div class="ex" id="ex"></div>
+    <div class="xpr" id="xpr"></div>
     <div class="boxes" id="boxes" hidden><div id="bx"><small>x</small><b id="vx"></b></div><div id="by"><small>y</small><b id="vy"></b></div></div>
   </section>
   <section class="card">
@@ -72,7 +72,7 @@ const EX=[
   ['y = ++'+H('x')+';','…তারপর নতুন মান y তে দাও। এখন x = 7, y = 7।',{x:7,y:7,ch:'y'}],
   [R('x++ : আগে ব্যবহার, পরে বৃদ্ধি'),'মনে রাখার কৌশল: ++ যেদিকে, কাজ সেদিকে। আগে ++ মানে আগে বৃদ্ধি।',{x:7,y:7}]]}];
 let E=EX[0];
-function render(k){const s=E.S[k];$('ex').innerHTML=s[0];$('given').textContent=E.g;
+function render(k){const s=E.S[k];$('xpr').innerHTML=s[0];$('given').textContent=E.g;
   $('boxes').hidden=!E.box;if(E.box){const v=s[2];$('vx').textContent=v.x;$('vy').textContent=v.y;$('bx').classList.toggle('ch',v.ch==='x');$('by').classList.toggle('ch',v.ch==='y');}
   say(`ধাপ ${bn(k+1)} / ${bn(E.S.length)}`,s[1]);}
 const player=IM.player({count:()=>E.S.length,show:render,swipe:$('main'),interval:1800});

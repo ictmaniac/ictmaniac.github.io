@@ -1,4 +1,6 @@
-# ictmaniac.github.io| Topic | Code |
+# ictmaniac.github.io
+
+| Topic | Code |
 |---|---|
 | 4.1 ওয়েব ডিজাইনের ধারণা (URL→DNS→সার্ভার) | ylsyitae |
 | 4.1.1 ওয়েবসাইটের কাঠামো | qrwvupve |

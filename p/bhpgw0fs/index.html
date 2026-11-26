@@ -81,7 +81,7 @@ function build(){const t=T[K];$('vl').textContent=t.lab;const r=$('v');r.min=t.m
   S=t.steps(V);}
 function render(k){const s=S[k];cv.on(s.l);
   cv.lines.forEach((e,i)=>{e.classList.toggle('go',s.go===i);e.classList.toggle('skip',!!(s.skip&&s.skip.includes(i)));const old=e.querySelector('.bd');if(old)old.remove();});
-  (s.b||[]).forEach(([i,ok])=>cv.lines[i].lastElementChild.insertAdjacentHTML('beforeend',`<span class="bd ${ok?'t':'f'}">${ok?'সত্য':'মিথ্যা'}</span>`));
+  (s.b||[]).forEach(([i,ok])=>cv.lines[i].lastElementChild.insertAdjacentHTML('beforeend',`<span class="bd ${ok?'t':'f'}">${ok?'✓':'✗'}</span>`));
   // road of conditions
   if(K==='lad'){const b=s.b||[];$('road').innerHTML=[...G.map((g,i)=>{const x=b.find(y=>y[0]===i);return `<span class="${x?(x[1]?'t':'f'):''}">≥${g[0]}</span>`;}),`<span class="${s.go===G.length?'t':''}">F</span>`].join('<i>→</i>');}
   else if(K==='sw'){$('road').innerHTML=[...DAY.map((d,i)=>`<span class="${s.road&&V===i+1?'t':''}">case ${i+1}</span>`),`<span class="${s.road&&V>3?'t':''}">default</span>`].join('<i>·</i>');}
