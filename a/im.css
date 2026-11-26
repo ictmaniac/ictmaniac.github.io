@@ -407,3 +407,4 @@ svg.scene .node.bad rect,svg.scene .node.bad circle{fill:var(--bad-soft);stroke:
 .fmap .st{overflow-wrap:normal;word-break:keep-all}
 @media (max-width:420px){.fmap:has(.st:nth-of-type(5)) .st:not(.cur){font-size:0;flex:1 1 0}.fmap:has(.st:nth-of-type(5)) .st:not(.cur) b{font-size:.95rem}.fmap:has(.st:nth-of-type(5)) .st.cur{flex:3 1 auto;white-space:nowrap;padding:5px 6px}
  .explain .ladder{gap:3px}.explain .ladder button{flex:1 1 0;min-width:12px;font-size:.6rem;height:20px;letter-spacing:-.4px}.explain .ladder.dots button{height:8px}}
+.ytb{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:8px 14px;border-radius:99px;background:#E5533D;color:#fff;font-weight:700;text-decoration:none;font-size:.95rem}.ytb:active{transform:scale(.97)}

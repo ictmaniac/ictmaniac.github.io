@@ -15,7 +15,7 @@ import sys, os, re, glob
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC, OUT = os.path.join(ROOT, 'src'), os.path.join(ROOT, 'p')
-V = '13'  # bump after changing a/im.css or a/im.js so phones load the new kit
+V = '14'  # bump after changing a/im.css or a/im.js so phones load the new kit
 
 FONTS = '''<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -83,8 +83,12 @@ def main():
 
 
 def readme():
-    # README.md is rebuilt every time, so the link list always matches the pages
+    # README.md and links.csv are rebuilt every time, so the lists always match the pages.
+    # links.csv keeps any YouTube link typed into it.
+    import csv, json
     BN = '০১২৩৪৫৬৭৮৯'
+    bn = lambda x: str(x).translate(str.maketrans('0123456789', BN))
+    URL = 'https://ictmaniac.github.io/p/{}/'
     def key(x):  # sort by topic number like 2.1.10 after 2.1.9
         nums = re.findall(r'\d+', x[1].translate(str.maketrans(BN, '0123456789')).split(' ')[0])
         return [int(k) for k in nums] or [999]
@@ -99,15 +103,52 @@ def readme():
             topic = re.sub(r'<[^>]+>', '', re.search(r'class="eyebrow"[^>]*>(.*?)<', t, re.S).group(1)).replace('অধ্যায় ৩ · ', '')
             h1 = re.sub(r'<[^>]+>', '', re.search(r'<h1[^>]*>(.*?)</h1>', t, re.S).group(1))
         rows.setdefault(ch, []).append((code, topic.strip(), h1.strip()))
+    # model tests (built by tools/build_tests.py)
+    tests, hub = {}, None
+    for f in sorted(glob.glob(os.path.join(SRC, 'tests', '*.json'))):
+        code = os.path.basename(f)[:-5]
+        try: d = json.load(open(f, encoding='utf-8'))
+        except Exception: continue
+        if code.startswith('_') or 'title' not in d: continue
+        m = re.match(r'অধ্যায় ([১-৬])', d['title'])
+        ch = 'ch' + str(BN.index(m.group(1))) if m else 'full'
+        num = [int(k) for k in re.findall(r'\d+', d['title'].translate(str.maketrans(BN, '0123456789')))][-1:] or [0]
+        tests.setdefault(ch, []).append((num, code, d['title'], d.get('eyebrow', '')))
+    try:
+        hub = re.search(r"HUB = '(\w+)'", open(os.path.join(ROOT, 'tools', 'build_tests.py'), encoding='utf-8').read()).group(1)
+    except Exception: pass
+    # master link list
+    LP = os.path.join(ROOT, 'links.csv'); yt = {}
+    if os.path.exists(LP):
+        for r in csv.reader(open(LP, encoding='utf-8-sig')):
+            if len(r) > 1 and re.fullmatch(r'[a-z0-9]{8}', r[0]): yt[r[0]] = r[1].strip()
+    lines = [['কোড', 'ইউটিউব লিংক', 'অধ্যায়', 'ধরন', 'টপিক', 'পেজের নাম', 'পেজের লিংক']]
     out = [open(os.path.join(ROOT, 'tools', 'README.head.md'), encoding='utf-8').read().rstrip(), '']
+    if hub: out += [f'**সব মডেল টেস্ট এক জায়গায় (হাব):** {URL.format(hub)}', '']
     total = 0
     for ch in sorted(rows, key=lambda c: int(c[2:])):
-        out += [f'## অধ্যায় {BN[int(ch[2:])]}  (`src/{ch}/`)', '', '| টপিক | পেজের নাম | কোড | লিংক |', '|---|---|---|---|']
+        n = bn(int(ch[2:]))
+        out += [f'## অধ্যায় {n}', '', f'### অ্যানিমেশন (`src/{ch}/`)', '', '| টপিক | পেজের নাম | লিংক | ভিডিও |', '|---|---|---|---|']
         for code, topic, h1 in sorted(rows[ch], key=key):
-            out.append(f'| {topic} | {h1} | `{code}` | https://ictmaniac.github.io/p/{code}/ |'); total += 1
+            v = yt.get(code, '')
+            out.append(f'| {topic} | {h1} | [`{code}`]({URL.format(code)}) | {"[▶ ইউটিউব](" + v + ")" if v else "–"} |'); total += 1
+            lines.append([code, v, n, 'অ্যানিমেশন', topic, h1, URL.format(code)])
+        if tests.get(ch):
+            out += ['', '### মডেল টেস্ট (`src/tests/`)', '', '| টেস্ট | কোন অংশ | লিংক |', '|---|---|---|']
+            for _, code, title, eb in sorted(tests[ch]):
+                out.append(f'| {title} | {eb} | [`{code}`]({URL.format(code)}) |')
+                lines.append([code, yt.get(code, ''), n, 'মডেল টেস্ট', eb, title, URL.format(code)])
         out.append('')
-    out.append(f'মোট পেজ: {str(total).translate(str.maketrans("0123456789", BN))}টি')
+    if tests.get('full'):
+        out += ['## পূর্ণ সিলেবাস মডেল টেস্ট', '', '| টেস্ট | লিংক |', '|---|---|']
+        for _, code, title, eb in sorted(tests['full']):
+            out.append(f'| {title} | [`{code}`]({URL.format(code)}) |')
+            lines.append([code, yt.get(code, ''), 'পুরো বই', 'মডেল টেস্ট', eb, title, URL.format(code)])
+        out.append('')
+    nt = sum(len(v) for v in tests.values())
+    out.append(f'মোট: অ্যানিমেশন {bn(total)}টি, মডেল টেস্ট {bn(nt)}টি')
     open(os.path.join(ROOT, 'README.md'), 'w', encoding='utf-8').write('\n'.join(out) + '\n')
+    with open(LP, 'w', encoding='utf-8', newline='') as fh: csv.writer(fh, lineterminator='\n').writerows(lines)
 
 
 if __name__ == '__main__':

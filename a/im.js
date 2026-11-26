@@ -384,6 +384,12 @@ const IM = (() => {
         else { pts = document.createElement('section'); pts.className = 'card'; pts.innerHTML = '<h2>মনে রাখো</h2>'; pts.appendChild(ul); } } }
     const foot = [...par.children].find(x => x.tagName === 'FOOTER'); par.insertBefore(qs, foot || null); if (pts) par.insertBefore(pts, foot || null); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', tidy); else setTimeout(tidy, 0);
+  /* video button: reads links.csv (first two columns: code, YouTube link), so a link added on GitHub shows up without a rebuild */
+  function ytButton() { const m = location.pathname.match(/\/p\/([a-z0-9]{8})\//); const lead = document.querySelector('header .lead'); if (!m || !lead || document.querySelector('.ytb')) return;
+    fetch('../../links.csv', { cache: 'no-cache' }).then(r => r.ok ? r.text() : '').then(t => {
+      for (const ln of t.split(/\r?\n/)) { const [c, u] = ln.split(','); if (c === m[1] && /^https:\/\/(www\.)?(youtube\.com|youtu\.be)\//.test((u || '').trim())) {
+        const a = document.createElement('a'); a.className = 'ytb'; a.href = u.trim(); a.target = '_blank'; a.rel = 'noopener'; a.textContent = '▶ ইউটিউবে ভিডিও দেখো'; lead.after(a); break; } } }).catch(() => {}); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ytButton); else setTimeout(ytButton, 0);
 
   /* ---------- guided tour: gives lab pages the same explain bar + step dock as every other page ----------
      steps = [{m:'html', do(){...set the lab...}, el:'#selector to scroll to'}] (each step sets its own state) */
