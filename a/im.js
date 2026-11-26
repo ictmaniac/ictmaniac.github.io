@@ -246,7 +246,7 @@ const IM = (() => {
     const P = {
       step: () => { tick(2500, .1); mallet(1568, .14, .18); },
       back: () => { tick(2000, .08); mallet(1175, .12, .16); },
-      pop: () => { glide(320, 880, .07, .16); mallet(1175, .09, .15, .03); },
+      pop: i => { glide(320, 880, .07, .13); mallet([1047, 1175, 1319, 1568, 1760][(i || 0) % 5], .09, .15, .03); },
       whoosh: () => air(.5, 350, 2400, .45, -.6, .6),
       zin: () => { air(.42, 300, 3200, .28, 0, 0, 1.4); glide(260, 780, .42, .06); },
       zout: () => { air(.42, 3200, 300, .28, 0, 0, 1.4); glide(780, 260, .42, .06); },
@@ -258,8 +258,8 @@ const IM = (() => {
       type: () => { for (let i = 0; i < 5; i++) tick(1800 + Math.random() * 1500, .14, i * .07); }
     };
     const GAP = { whoosh: 450, pop: 160, hl: 220, step: 60, tap: 80 };
-    function play(k) { if (!on || !P[k]) return; const now = performance.now(); if (now - (last[k] || 0) < (GAP[k] || 120)) return; last[k] = now;
-      try { if (!A()) return; if (ac.state !== 'running') return; P[k](); } catch (e) {} }
+    function play(k, i) { if (!on || !P[k]) return; const now = performance.now(); if (now - (last[k] || 0) < (GAP[k] || 120)) return; last[k] = now;
+      try { if (!A()) return; if (ac.state !== 'running') return; P[k](i); } catch (e) {} }
     function unlock() { if (on) try { A(); } catch (e) {} }
     ['pointerdown', 'keydown', 'touchstart'].forEach(ev => addEventListener(ev, unlock, { capture: true, passive: true }));
     function btn() { const b = document.createElement('button'); b.className = 'sndb'; b.type = 'button';
@@ -273,7 +273,7 @@ const IM = (() => {
       play(t.matches('[data-x],.c') ? 'hl' : 'tap'); }, true);
     return { play, get on() { return on; } };
   })();
-  const sfx = k => SND.play(k); let stepT = 0; const fresh = ms => performance.now() - stepT < ms;
+  const sfx = (k, i) => SND.play(k, i); let stepT = 0; const fresh = ms => performance.now() - stepT < ms;
 
   /* ---------- kit (Ch4+): explain bar, step player, code view, token mover ---------- */
   const bn = x => String(x).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);

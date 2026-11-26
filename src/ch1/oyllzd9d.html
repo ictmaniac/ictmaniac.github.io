@@ -195,6 +195,6 @@ const ST=[
  {f:5,go(){base({probeIn:true,cell:2.9});W.fly('all');W.tags(['probe']);W.later(300,()=>{W.set(tP,POUT,1,0);IM.sfx('whoosh');});
    W.later(1500,()=>{W.tags([]);parts3(['a','b','c','d']);IM.sfx('done');});}}];
 const S3=ST.map((s,i)=>Object.assign({m:MSG[i]},s));
-IM3.steps(W,S3,{flow:'#fm',interval:5600});
+W.shadows(5);IM3.steps(W,S3,{flow:'#fm',interval:5600});
 }
 </script>

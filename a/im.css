@@ -403,3 +403,7 @@ svg.scene .node.bad rect,svg.scene .node.bad circle{fill:var(--bad-soft);stroke:
 .rw2.t{gap:3px;flex-wrap:nowrap}
 .ln2{height:3px;background:var(--ink);border-radius:2px;margin:2px auto}
 .ov{text-decoration:overline}
+/* narrow phones: no mid-word breaks in the flow map, step ladder always fits */
+.fmap .st{overflow-wrap:normal;word-break:keep-all}
+@media (max-width:420px){.fmap:has(.st:nth-of-type(5)) .st:not(.cur){font-size:0;flex:1 1 0}.fmap:has(.st:nth-of-type(5)) .st:not(.cur) b{font-size:.95rem}.fmap:has(.st:nth-of-type(5)) .st.cur{flex:3 1 auto;white-space:nowrap;padding:5px 6px}
+ .explain .ladder{gap:3px}.explain .ladder button{flex:1 1 0;min-width:12px;font-size:.6rem;height:20px;letter-spacing:-.4px}.explain .ladder.dots button{height:8px}}

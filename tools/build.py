@@ -15,7 +15,7 @@ import sys, os, re, glob
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC, OUT = os.path.join(ROOT, 'src'), os.path.join(ROOT, 'p')
-V = '12'  # bump after changing a/im.css or a/im.js so phones load the new kit
+V = '13'  # bump after changing a/im.css or a/im.js so phones load the new kit
 
 FONTS = '''<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

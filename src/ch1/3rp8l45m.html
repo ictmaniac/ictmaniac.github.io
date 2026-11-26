@@ -251,7 +251,7 @@ const ST=[
  {f:5,go(){show('fly');W.set(tH,V(0,.03,-.2),1,1);yawGoal=0;tG.forEach(t=>W.set(t,null,1,0));eyeView();W.tags([]);W.note('✈️ মাটিতে বসেই আকাশে ওড়া');}},
  {f:5,go(){show('game');W.set(tH,V(0,.03,-.2),1,1);yawGoal=0;eyeView();W.tags(['vr']);W.note('🎮 কাল্পনিক জগৎ · আঙুল টেনে চারদিকে দেখো');W.later(1200,()=>{yawGoal=Math.PI*2/3;});W.later(3200,()=>{yawGoal=-Math.PI/2;});}}];
 const S3=ST.map((s,i)=>Object.assign({m:MSG3[i]},s));
-const P3=IM3.steps(W,S3,{flow:'#fm',interval:5200});
+W.shadows(6);const P3=IM3.steps(W,S3,{flow:'#fm',interval:5200});
 gloves.forEach(g=>W.pick(g,{t:'🧤 ডেটা গ্লাভস',d:'হাতের নড়াচড়া সেন্সর দিয়ে কম্পিউটারে পাঠায়। চশমার ভিতরে ভার্চুয়াল হাত নড়ে।'}));
 /* phone as the motion sensor */
 let gyOn=false,g0=null;function onOri(e){if(e.alpha==null)return;if(g0===null)g0=e.alpha;let d=(e.alpha-g0)*Math.PI/180;yawGoal=d;turnRate=10;pipe3('s');}

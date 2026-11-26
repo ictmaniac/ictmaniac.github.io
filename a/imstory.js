@@ -21,16 +21,16 @@
       stage.querySelectorAll('[data-id]').forEach(e => { first[e.dataset.id] = e.getBoundingClientRect(); txt[e.dataset.id] = e.textContent; });
       stage.innerHTML = fr.h;
       if (!animate || RM()) return;
-      let n = 0, moved = 0; const sp = spd();
+      let n = 0, moved = 0, chg = 0; const sp = spd();
       stage.querySelectorAll('[data-id]').forEach(e => {
         const id = e.dataset.id, a = first[id];
         if (a) { const b = e.getBoundingClientRect(), dx = a.left - b.left, dy = a.top - b.top;
           if (Math.abs(dx) + Math.abs(dy) > 2) { moved++; e.animate([{ transform: `translate(${dx}px,${dy}px)` }, { transform: 'none' }], { duration: 650 / sp, easing: 'cubic-bezier(.2,.8,.2,1)' }); }
-          if (txt[id] !== e.textContent) e.animate([{ background: '#F5B800', color: '#1A1200' }, { background: 'transparent' }], { duration: 900 / sp, delay: 300 / sp }); }
+          if (txt[id] !== e.textContent && ++chg) e.animate([{ background: '#F5B800', color: '#1A1200' }, { background: 'transparent' }], { duration: 900 / sp, delay: 300 / sp }); }
         else { const d = (e.dataset.d !== undefined ? +e.dataset.d : n) * 260 / sp; n++;
           e.animate([{ opacity: 0, transform: 'translateY(10px) scale(.85)' }, { opacity: 1, transform: 'none' }], { duration: 420 / sp, delay: d, easing: 'cubic-bezier(.2,.9,.3,1.3)', fill: 'backwards' });
-          if (n <= 6) setTimeout(() => IM.sfx('pop'), d + 60); } });
-      if (moved) IM.sfx('whoosh'); }
+          if (n <= 4) { const j = n - 1; setTimeout(() => IM.sfx('pop', j), d + 60); } } });
+      if (moved) IM.sfx('whoosh'); if (chg) setTimeout(() => IM.sfx('hl'), 320 / sp); }
     const P = IM.tour(frames.map((fr, i) => ({ m: fr.m, el: o.focus || box, do() { render(fr, shown); shown = true; flow(fm, fr.f || 0); fr.go && fr.go(stage); } })), { interval: o.interval || 4200 });
     return P; }
 

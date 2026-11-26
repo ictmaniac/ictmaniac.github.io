@@ -26,6 +26,12 @@ window.IM3 = (() => {
     scene.add(new T.HemisphereLight(0xffffff, 0xcfe0ff, .95));
     const sun = new T.DirectionalLight(0xffffff, .7); sun.position.set(5, 10, 8); scene.add(sun);
     const W = { T, scene, cam, R, V, C, mat, spd, RM, box, poses: {} };
+    /* soft ground shadows: W.shadows(range) after the scene is built (skips glowing / see-through parts) */
+    W.sun = sun;
+    W.shadows = (rng, at) => { R.shadowMap.enabled = true; R.shadowMap.type = T.PCFSoftShadowMap; sun.castShadow = true; const sc = sun.shadow.camera;
+      sc.left = sc.bottom = -rng; sc.right = sc.top = rng; sc.near = .5; sc.far = rng * 6; sun.shadow.mapSize.set(1024, 1024); sun.shadow.bias = -.0006; sun.shadow.normalBias = .02;
+      if (at) { sun.target.position.copy(at); scene.add(sun.target); sun.position.copy(at).add(V(rng * .5, rng * 1.6, rng * .8)); } else sun.position.set(rng * .5, rng * 1.6, rng * .8);
+      scene.traverse(m => { if (m.isMesh && m.material && m.material.isMeshStandardMaterial && !(m.material.transparent && m.material.opacity < .9)) { m.castShadow = true; m.receiveShadow = true; } }); };
 
     /* tracked objects */
     const objs = [];
@@ -151,11 +157,21 @@ window.IM3 = (() => {
   /* Earth: light-blue sea, green land (180x90 land map, Natural Earth via world-atlas, public domain) */
   const LAND = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH/////4AAAAAAAAAAAAAAAAAAAAAAAf//////+AA/YP/gY/AAAAAAAAAAAAD3///////AAf+AEQCB/wAAAAAAAAAAD////////8AA/gAA+AL/4APKAAAAAAAf///gn///wAAQAAfwP//gB/wAAAAAAB////gH//8AAAAAHg/////j+AAAwP/g/////4P//wYAH8Afn///////4xDD////////w//+AAD/////////////8P///////9/x/8PgAP/////////////w/////////+H/B/AB//////////////CN////////wPwDwg//////////////8BP/////8H/AeAACT//////////////AA//f///wf+AYAAPP/////////////QAMfAf///5/8AAAA8P//////////4HwAAPoAf/////8AAAPw///////////wf4A/gAB//////4AAA/v///////////B4LDgAAD//////gAAD////////////8HAMAAAAD//////AAAB////////////4wAAAAAAH/////8AAAH////H///////OAAAAAAAf////+AAAAH///8///////vwAAAAAAB/////YAAAH//+3h//////98AAAAAAAH////wAAAAf6///D//////HAAAAAAAAP///4AAA4B/r//8f/////4YAAAAAAAA////gAAAQH/+//w//////7gAAAAAAAB///+AAAAAP/Rz///////n+AAAAAAAAH///wQAAAR//OH//////+fwAAAAAAAAH//8AAAAAH//////////8wAAAAAAAAAv/9wAAAAP///////////yAAAAAAAAAA/8DwAAAA///////////+YEAAAAAAAAB/wHgAAAA///////////+AAAAAAGAAAD/B/AAAAH//////H///+gAAAAAAeAAAD8/+AAAAf/////8P///jAAAAAAAYAAAn/n/gAAB//////gP8/8MAIAAAAAAAAAP/EvAABn/////+A/B/hwAgAAAAAAAAAH+AEAAGf/////gD4H+HgCAAAAAAAAAAD4cYAAB/////7AHgv4eAIAAAAAAAAAADj/AAAH/////wA8CXh8AABAAAAAAAAAH/+AAAH/////AC4JsNwQAAAAAAAAAAAH/8AAAf////4ABgnA/EBEMAAAAAAAAAH/+AAAfv///gAiB8vsAAEgAAMAAAAAA//4AAAAP//8ACAH/88AAAgAAQAAAACH//wAAAB///gAAAPv/gAACAAAAAAAAMf//wAAAD//8AAAAf//8YBkAIAAAAAAB///4AAAP//gAAAB////4AADgIAAAAAH///4AAAf/8BAAABz+P/wAAgAAAAAAAf///gCAA//wAAgAD8vf9wBCYABgAAAA///+AAAD//AAAAAB/897gEAACCAAAAD///wAAAP//AAAAAgee33wAWAAAAAAAH///AAAA///wAAAAAH7ABCCIAEAAAAAf//4AAQH//vAAAAAA/uAGAIADcAAAAAf//gABAf//8AAAAAH/8AYwtAAUAAAAA//+AAAB//jiAAAAB//4QjCgIAgAAAAD//wAAAD/8eYAAAA///gOQAAAAAAAAAP//AAAAH/xwAAAAD///AQAAAAAQAAAA//gAAAAf/HAAAAAP//+AAAAAAAAEAAD/8AAAAB/4AAAAAA///4AAAAAAAAAAAP/wAAAAH/gAAAAAB///gAAAAAAAAAAA/+AAAAAP8AAAAAAH//+AAAAAAAAAAAj/wAAAAA/gAAAAAAf7/4AAAAAAAAAAAf/AAAAAB4AAAAAABwH/ADAgAAAAAAAB/wAAAAAAAAAAAAAAAP8APCAAAAAAAAH/AAAAAAAAAAAAAAAAPgA8AAAAAAAAA/gAAAAAAAAAAAAAAAAeAHgQAAAAAAAD+AAAAAAAAAAAAAAAAA4A8BAAAAAAAAPwAAAAAAAAAAAAAAAAAAHAAAAAAAAAA/AAAAAAAAIEAAAAAAAAAcAAAAAAAAAD8AAAAAAAAAADAAAAAAAAAAAAAAAAAAPHAAAAAAAAAAAAAAAAAAMAAAAAAAAAA+YAQAAAAAAAAIAAAAAAAIAAAAAAAAAB+ADgAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAPgAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8AAAAAAAADAAAjGAAAAAAAAAAAAAAAfAAAAAAAAD/+D/////wGAAAAAAAAAAP8AAAAABgP//7///////gAAAAAAADwB/wAAAf//////////////8AAAAAP4f///gAAX///////////////wAAAP//////8AAP///////////////4AAA///////+AMP////////////////4AAf//////+9j5/////////////////AAA////////+//////////////////wAD/////////////////////////////A//////////////////////////////D/////////////////////////////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
   function earth(r) { const W0 = 180, H0 = 90, bits = atob(LAND), c = document.createElement('canvas'); c.width = W0; c.height = H0; const x = c.getContext('2d'), im = x.createImageData(W0, H0);
-    for (let i = 0; i < W0 * H0; i++) { const col = i % W0, on = (bits.charCodeAt(((i / W0) | 0) * 23 + (col >> 3)) >> (7 - (col & 7))) & 1, p = i * 4; im.data[p] = on ? 124 : 207; im.data[p + 1] = on ? 203 : 227; im.data[p + 2] = on ? 152 : 255; im.data[p + 3] = 255; }
-    x.putImageData(im, 0, 0); const big = document.createElement('canvas'); big.width = 1024; big.height = 512; const bx = big.getContext('2d'); bx.imageSmoothingEnabled = true; bx.drawImage(c, 0, 0, 1024, 512);
+    for (let i = 0; i < W0 * H0; i++) { const col = i % W0, on = (bits.charCodeAt(((i / W0) | 0) * 23 + (col >> 3)) >> (7 - (col & 7))) & 1, p = i * 4; im.data[p] = im.data[p + 1] = im.data[p + 2] = 255; im.data[p + 3] = on ? 255 : 0; }
+    x.putImageData(im, 0, 0); const BW = 1024, BH = 512, mk = (w, h) => { const k = document.createElement('canvas'); k.width = w; k.height = h; return k; };
+    /* land mask (smoothed), land colours by latitude, sea gradient, darker coast rim */
+    const mask = mk(BW, BH), mx = mask.getContext('2d'); mx.imageSmoothingEnabled = true; mx.drawImage(c, 0, 0, BW, BH);
+    const land = mk(BW, BH), lx = land.getContext('2d'), lg = lx.createLinearGradient(0, 0, 0, BH);
+    [[0, '#F7FAFF'], [.12, '#EEF5F0'], [.2, '#A9D6A4'], [.32, '#7CC88C'], [.42, '#C9D98F'], [.5, '#4FB56E'], [.58, '#62BC7A'], [.7, '#B8D78E'], [.82, '#9CCF9A'], [.9, '#EEF5F0'], [1, '#F7FAFF']].forEach(([o, k]) => lg.addColorStop(o, k));
+    lx.fillStyle = lg; lx.fillRect(0, 0, BW, BH); lx.globalCompositeOperation = 'destination-in'; lx.drawImage(mask, 0, 0);
+    const big = mk(BW, BH), bx = big.getContext('2d'), sg = bx.createLinearGradient(0, 0, 0, BH);
+    [[0, '#D6E8FF'], [.25, '#8DBDF5'], [.5, '#5E9DEB'], [.75, '#8DBDF5'], [1, '#D6E8FF']].forEach(([o, k]) => sg.addColorStop(o, k));
+    bx.fillStyle = sg; bx.fillRect(0, 0, BW, BH);
+    bx.save(); bx.shadowColor = 'rgba(255,255,255,.9)'; bx.shadowBlur = 10; bx.globalAlpha = .55; bx.drawImage(mask, 0, 0); bx.restore();
+    bx.save(); bx.filter = 'brightness(.62)'; bx.drawImage(land, 0, 1); bx.restore(); bx.drawImage(land, 0, -1);
     const tex = new T.CanvasTexture(big); const g = new T.Group();
-    g.add(new T.Mesh(new T.SphereGeometry(r, 64, 48), new T.MeshStandardMaterial({ map: tex, roughness: .8 })));
-    const atm = new T.Mesh(new T.SphereGeometry(r * 1.06, 48, 32), new T.MeshBasicMaterial({ color: 0xBFD8FF, transparent: true, opacity: .25, side: T.BackSide, depthWrite: false })); atm.userData.own = 1; g.add(atm);
+    g.add(new T.Mesh(new T.SphereGeometry(r, 64, 48), new T.MeshStandardMaterial({ map: tex, roughness: .62, metalness: .04 })));
+    const atm = new T.Mesh(new T.SphereGeometry(r * 1.05, 48, 32), new T.MeshBasicMaterial({ color: 0x9CC4FF, transparent: true, opacity: .22, side: T.BackSide, depthWrite: false })); atm.userData.own = 1; g.add(atm);
     return g; }
   /* lat/lon -> point on the sphere (matches the texture above) */
   function ll(lat, lon, r) { const th = (90 - lat) * Math.PI / 180, ph = (lon + 180) * Math.PI / 180; return V(-r * Math.cos(ph) * Math.sin(th), r * Math.cos(th), r * Math.sin(ph) * Math.sin(th)); }
