@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>HTML টেবিল ল্যাব · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=1">
+<style>
+.pv{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pv table{border-collapse:collapse;width:100%;min-width:260px;font-family:var(--f-body)}
+.pv td,.pv th{border:2px solid var(--ink);padding:10px 6px;font-family:var(--f-mono);font-weight:700;font-size:1rem;text-align:center;background:var(--panel);border-bottom-width:2px}
+.pv th{background:var(--accent-soft);color:var(--ink)}
+#grid td{cursor:pointer;transition:background .25s}
+#grid td.sel{background:var(--signal-soft);outline:3px solid var(--signal);outline-offset:-4px}
+#grid td.pop{animation:pop .4s ease-out}
+#grid td small{display:block;font-size:.72rem;color:var(--accent);font-weight:700}
+.code{margin:0;padding:12px;border-radius:12px;background:var(--board);font-family:var(--f-mono);font-size:.9rem;line-height:1.7;overflow-x:auto;white-space:pre;font-feature-settings:"calt" 0,"liga" 0}
+.code .ln{display:block;border-radius:6px;padding:0 6px;transition:background .25s}
+.code .ln.hi{background:var(--signal-soft)}
+.code .tg{color:var(--accent);font-weight:700}
+.code .at{color:var(--bad);font-weight:700}
+.code .cm{color:var(--muted)}
+.sizer{display:flex;gap:10px;flex-wrap:wrap}
+.sizer .field{flex:1 1 130px}
+.step{display:flex;align-items:center;gap:8px}
+.step button{font:inherit;font-weight:800;font-size:1.3rem;width:48px;height:48px;border-radius:10px;border:2px solid var(--accent);background:var(--panel);color:var(--accent);cursor:pointer;flex:none}
+.step b{font-family:var(--f-mono);font-size:1.3rem;min-width:28px;text-align:center}
+textarea{font:inherit;font-family:var(--f-mono);font-size:.92rem;line-height:1.6;width:100%;min-height:220px;padding:12px;border-radius:12px;border:2px solid var(--line);background:var(--board);color:var(--ink);resize:vertical;font-feature-settings:"calt" 0,"liga" 0}
+textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.goal{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:480px){.goal{grid-template-columns:1fr}}
+.goal .pv td{padding:8px 4px;font-size:.85rem}
+.status{font-weight:700;min-height:1.5em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৪ · ৪.২.৯ টেবিল (Table)</span>
+    <h1>টেবিল: rowspan ও colspan</h1>
+    <p class="lead">ঘরে ট্যাপ করো, তারপর ডানে বা নিচে মেলাও। টেবিল আর তার HTML কোড দুটোই সাথে সাথে বদলাবে।</p>
+  </header>
+  <section class="card">
+    <h2>টেবিল বানাও</h2>
+    <div class="sizer">
+      <div class="field"><label>সারি (tr)</label><div class="step"><button id="r-">−</button><b id="rv">3</b><button id="r+">+</button></div></div>
+      <div class="field"><label>কলাম (td)</label><div class="step"><button id="c-">−</button><b id="cv">3</b><button id="c+">+</button></div></div>
+    </div>
+    <div class="pv"><table id="grid"></table></div>
+    <p class="hint" id="selhint">একটা ঘরে ট্যাপ করো।</p>
+    <div class="btns">
+      <button class="btn primary" id="mr">ডানের ঘর মেলাও (colspan)</button>
+      <button class="btn primary" id="md">নিচের ঘর মেলাও (rowspan)</button>
+    </div>
+    <div class="btns">
+      <button class="btn" id="sp">আলাদা করো</button>
+      <button class="btn" id="rs">নতুন করে শুরু</button>
+    </div>
+    <p class="err" id="err" aria-live="polite"></p>
+    <h3>এই টেবিলের HTML কোড</h3>
+    <pre class="code" id="code"></pre>
+    <p class="hint">হলুদ লাইনটি তোমার বাছাই করা ঘরের কোড। প্রতিটি &lt;tr&gt; এর পাশে লেখা আছে ওই সারিতে কয়টি td লিখতে হয়েছে।</p>
+  </section>
+
+  <section class="card">
+    <h2>চ্যালেঞ্জ: পাশের টেবিলটা বানাও</h2>
+    <div class="tabs" id="ctabs">
+      <button class="tab" data-k="0" aria-selected="true">১</button>
+      <button class="tab" data-k="1" aria-selected="false">২</button>
+      <button class="tab" data-k="2" aria-selected="false">৩</button>
+    </div>
+    <div class="goal">
+      <div><p class="hint">লক্ষ্য</p><div class="pv" id="target"></div></div>
+      <div><p class="hint">কী লাগবে</p><p id="clue"></p></div>
+    </div>
+    <button class="btn primary" id="chk">উপরের টেবিলের সাথে মিলিয়ে দেখো</button>
+    <p class="status" id="cres" aria-live="polite"></p>
+  </section>
+
+  <section class="card">
+    <h2>নিজে কোড লিখে দেখো</h2>
+    <div class="chips" id="presets">
+      <button class="chip" data-p="0">colspan</button>
+      <button class="chip" data-p="1">rowspan</button>
+      <button class="chip" data-p="2">ক্লাস রুটিন</button>
+      <button class="chip" data-p="b">উপরের টেবিল</button>
+    </div>
+    <textarea id="ed" spellcheck="false" aria-label="HTML কোড"></textarea>
+    <p class="hint">ফলাফল (লিখতে লিখতেই বদলাবে)</p>
+    <div class="pv" id="out"></div>
+  </section>
+
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>&lt;table&gt;</b> পুরো টেবিল, <b>&lt;tr&gt;</b> একটি সারি, <b>&lt;td&gt;</b> একটি ঘর, <b>&lt;th&gt;</b> হেডার ঘর (মোটা ও মাঝে)।</li>
+      <li><b>colspan="2"</b> মানে ঘরটি ডানদিকে ২ কলাম জায়গা নেবে। ওই সারিতে একটি td কম লিখতে হয়।</li>
+      <li><b>rowspan="2"</b> মানে ঘরটি নিচে ২ সারি জায়গা নেবে। নিচের সারিতে একটি td কম লিখতে হয়।</li>
+      <li><b>border="1"</b> দিলে ঘরের দাগ দেখা যায়। বোর্ড প্রশ্নে টেবিল কোড লিখতে border দিতে ভুলো না।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<script src="../../a/im.js?v=1"></script>
+<script>
+const {$}=IM;
+let R=3,C=3,cells={},sel=null,last=null;
+const key=(r,c)=>r+','+c, name=(r,c)=>String.fromCharCode(65+r)+(c+1);
+function fresh(){cells={};for(let r=0;r<R;r++)for(let c=0;c<C;c++)cells[key(r,c)]={rs:1,cs:1};}
+function cover(){const m={};for(const k in cells){const [r,c]=k.split(',').map(Number),x=cells[k];for(let i=0;i<x.rs;i++)for(let j=0;j<x.cs;j++)m[key(r+i,c+j)]=k;}return m;}
+function single(r,c){const x=cells[key(r,c)];return x&&x.rs===1&&x.cs===1;}
+function err(t){$('err').textContent=t||'';}
+function mergeRight(){ if(!sel)return err('আগে একটা ঘরে ট্যাপ করো।');
+  const [r,c]=sel.split(',').map(Number),x=cells[sel],nc=c+x.cs;
+  if(nc>=C)return err('ডানে আর কোনো ঘর নেই।');
+  for(let i=0;i<x.rs;i++)if(!single(r+i,nc))return err('ডানের ঘরটি আগে থেকেই মেলানো। আগে সেটা আলাদা করো।');
+  for(let i=0;i<x.rs;i++)delete cells[key(r+i,nc)]; x.cs++; last=sel; err(); draw();}
+function mergeDown(){ if(!sel)return err('আগে একটা ঘরে ট্যাপ করো।');
+  const [r,c]=sel.split(',').map(Number),x=cells[sel],nr=r+x.rs;
+  if(nr>=R)return err('নিচে আর কোনো ঘর নেই।');
+  for(let j=0;j<x.cs;j++)if(!single(nr,c+j))return err('নিচের ঘরটি আগে থেকেই মেলানো। আগে সেটা আলাদা করো।');
+  for(let j=0;j<x.cs;j++)delete cells[key(nr,c+j)]; x.rs++; last=sel; err(); draw();}
+function split(){ if(!sel)return err('আগে একটা ঘরে ট্যাপ করো।');
+  const [r,c]=sel.split(',').map(Number),x=cells[sel];
+  for(let i=0;i<x.rs;i++)for(let j=0;j<x.cs;j++)cells[key(r+i,c+j)]={rs:1,cs:1}; err(); draw();}
+function resize(dr,dc){const nR=Math.min(6,Math.max(1,R+dr)),nC=Math.min(6,Math.max(1,C+dc));if(nR===R&&nC===C)return;R=nR;C=nC;fresh();sel=null;err();draw();}
+function rowsOf(){const out=[];for(let r=0;r<R;r++){const row=[];for(let c=0;c<C;c++){const x=cells[key(r,c)];if(x)row.push({r,c,...x});}out.push(row);}return out;}
+function html(rows,plain){
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const tg=s=>plain?s:`<span class="tg">${esc(s)}</span>`;
+  const at=(n,v)=>plain?` ${n}="${v}"`:` <span class="at">${n}="${v}"</span>`;
+  const L=[];
+  L.push({t:tg('<table border="1">')});
+  rows.forEach((row,ri)=>{
+    L.push({t:'  '+tg('<tr>')+(plain?'':`  <span class="cm">&lt;!-- ${row.length}টি td --&gt;</span>`)});
+    row.forEach(x=>L.push({k:key(x.r,x.c),t:'    '+(plain?'<td':'<span class="tg">&lt;td</span>')+(x.cs>1?at('colspan',x.cs):'')+(x.rs>1?at('rowspan',x.rs):'')+(plain?'>':'<span class="tg">&gt;</span>')+name(x.r,x.c)+tg('</td>')}));
+    L.push({t:'  '+tg('</tr>')});
+  });
+  L.push({t:tg('</table>')});
+  return L;
+}
+function draw(){
+  $('rv').textContent=R;$('cv').textContent=C;
+  const rows=rowsOf();
+  $('grid').innerHTML=rows.map(row=>'<tr>'+row.map(x=>{const k=key(x.r,x.c);
+    const tag=(x.cs>1?`colspan=${x.cs} `:'')+(x.rs>1?`rowspan=${x.rs}`:'');
+    return `<td data-k="${k}" ${x.cs>1?`colspan="${x.cs}"`:''} ${x.rs>1?`rowspan="${x.rs}"`:''} class="${k===sel?'sel':''} ${k===last?'pop':''}">${name(x.r,x.c)}${tag?`<small>${tag.trim()}</small>`:''}</td>`;}).join('')+'</tr>').join('');
+  $('grid').querySelectorAll('td').forEach(td=>td.onclick=()=>{sel=td.dataset.k;last=null;err();draw();});
+  $('code').innerHTML=html(rows).map(l=>`<span class="ln ${l.k&&l.k===sel?'hi':''}">${l.t}</span>`).join('');
+  if(sel&&cells[sel]){const [r,c]=sel.split(',').map(Number),x=cells[sel];
+    $('selhint').innerHTML=`বাছাই করা ঘর: <b class="mono">${name(r,c)}</b>`+(x.cs>1||x.rs>1?` · ${x.cs>1?`${x.cs} কলাম জুড়ে `:''}${x.rs>1?`${x.rs} সারি জুড়ে`:''}`:'');}
+  else $('selhint').textContent='একটা ঘরে ট্যাপ করো।';
+  last=null;
+}
+$('mr').onclick=mergeRight;$('md').onclick=mergeDown;$('sp').onclick=split;
+$('rs').onclick=()=>{fresh();sel=null;err();draw();};
+$('r-').onclick=()=>resize(-1,0);$('r+').onclick=()=>resize(1,0);$('c-').onclick=()=>resize(0,-1);$('c+').onclick=()=>resize(0,1);
+// start in a worked state: header across the top, one tall cell on the left
+fresh();cells['0,0'].cs=3;delete cells['0,1'];delete cells['0,2'];cells['1,0'].rs=2;delete cells['2,0'];sel='1,0';draw();
+
+// challenges
+const CH=[
+  {R:2,C:3,m:{'0,0':[1,3]},clue:'২টি সারি, ৩টি কলাম। উপরের সারির প্রথম ঘর <b>colspan="3"</b>।'},
+  {R:3,C:2,m:{'0,0':[3,1]},clue:'৩টি সারি, ২টি কলাম। বাম দিকের প্রথম ঘর <b>rowspan="3"</b>।'},
+  {R:3,C:3,m:{'0,0':[2,2],'2,1':[1,2]},clue:'৩×৩ টেবিল। উপরের বাম ঘর ২ কলাম ও ২ সারি জুড়ে, আর নিচের সারির শেষ দুই ঘর মেলানো।'}];
+let ci=0;
+function build(ch){const c={};for(let r=0;r<ch.R;r++)for(let k=0;k<ch.C;k++)c[key(r,k)]={rs:1,cs:1};
+  for(const k in ch.m){const [r,cc]=k.split(',').map(Number),[rs,cs]=ch.m[k];for(let i=0;i<rs;i++)for(let j=0;j<cs;j++)delete c[key(r+i,cc+j)];c[k]={rs,cs};}return c;}
+function showCh(){const ch=CH[ci],c=build(ch);let h='<table>';
+  for(let r=0;r<ch.R;r++){h+='<tr>';for(let k=0;k<ch.C;k++){const x=c[key(r,k)];if(x)h+=`<td ${x.cs>1?`colspan="${x.cs}"`:''} ${x.rs>1?`rowspan="${x.rs}"`:''}>${name(r,k)}</td>`;}h+='</tr>';}
+  $('target').innerHTML=h+'</table>';$('clue').innerHTML=ch.clue;$('cres').textContent='';}
+IM.tabs($('ctabs'),k=>{ci=+k;showCh();});showCh();
+$('chk').onclick=()=>{const ch=CH[ci],want=build(ch);
+  const same=R===ch.R&&C===ch.C&&Object.keys(want).length===Object.keys(cells).length&&Object.keys(want).every(k=>cells[k]&&cells[k].rs===want[k].rs&&cells[k].cs===want[k].cs);
+  $('cres').className='status '+(same?'ok-txt':'bad-txt');
+  $('cres').textContent=same?'দারুণ! একদম মিলে গেছে।':(R!==ch.R||C!==ch.C?`আগে সারি ${ch.R} আর কলাম ${ch.C} করো।`:'এখনো মেলেনি। কোন ঘরে colspan বা rowspan লাগবে দেখো।');};
+
+// live editor
+const P=[
+`<table border="1">
+  <tr>
+    <th colspan="2">নাম</th>
+  </tr>
+  <tr>
+    <td>প্রথম</td>
+    <td>শেষ</td>
+  </tr>
+</table>`,
+`<table border="1">
+  <tr>
+    <td rowspan="2">ICT</td>
+    <td>তত্ত্বীয়</td>
+  </tr>
+  <tr>
+    <td>ব্যবহারিক</td>
+  </tr>
+</table>`,
+`<table border="1">
+  <tr>
+    <th colspan="4">ক্লাস রুটিন</th>
+  </tr>
+  <tr>
+    <th>বার</th> <th>১০টা</th> <th>১১টা</th> <th>১২টা</th>
+  </tr>
+  <tr>
+    <td>শনি</td> <td>বাংলা</td> <td>ICT</td>
+    <td rowspan="2">বিরতি</td>
+  </tr>
+  <tr>
+    <td>রবি</td> <td colspan="2">ICT ব্যবহারিক</td>
+  </tr>
+</table>`];
+function run(){$('out').innerHTML=$('ed').value.replace(/<\s*\/?\s*(script|iframe|style|link|meta|object|embed)[^>]*>/gi,'').replace(/\son\w+\s*=/gi,' x=');}
+$('ed').value=P[2];run();$('ed').oninput=run;
+$('presets').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{$('ed').value=b.dataset.p==='b'?html(rowsOf(),true).map(l=>l.t).join('\n'):P[+b.dataset.p];run();});
+</script>
+</body>
+</html>
