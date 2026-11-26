@@ -79,6 +79,10 @@ def main():
         open(os.path.join(OUT, code, 'index.html'), 'w', encoding='utf-8').write(page(open(f, encoding='utf-8').read()))
         n += 1
     print(f'built {n} page(s)')
+    # hub pages (complete html in src/hub/<code>.html, copied as is)
+    for f in glob.glob(os.path.join(SRC, 'hub', '*.html')):
+        code = os.path.basename(f)[:-5]; os.makedirs(os.path.join(OUT, code), exist_ok=True)
+        open(os.path.join(OUT, code, 'index.html'), 'w', encoding='utf-8').write(open(f, encoding='utf-8').read())
     readme()
 
 

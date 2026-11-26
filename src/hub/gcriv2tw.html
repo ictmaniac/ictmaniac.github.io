@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#F2F7FF">
+<title>সব এক জায়গায় · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../../a/mt.css?v=3">
+<style>
+.big3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.big3 a{display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;border-radius:16px;padding:12px 4px;font-weight:700;font-size:.92rem;color:var(--ink);border:1.5px solid var(--line);background:#fff;text-align:center}
+.big3 a i{font-style:normal;font-size:1.6rem}.big3 a:active{transform:scale(.97)}
+.big3 .b1{background:#EAF2FF;border-color:#A9C8FA}.big3 .b2{background:#FFF6D6;border-color:#F5CF4A}.big3 .b3{background:#E2F6EA;border-color:#8FD6AE}
+.srch{width:100%;box-sizing:border-box;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;font:inherit;font-size:1rem;background:#fff;color:var(--ink)}
+details.ch{border:1px solid var(--line);border-radius:16px;background:#fff;margin-top:10px;overflow:hidden}
+details.ch summary{list-style:none;cursor:pointer;padding:12px 14px;font-weight:700;display:flex;justify-content:space-between;gap:8px;align-items:center}
+details.ch summary::-webkit-details-marker{display:none}
+details.ch summary small{color:var(--muted);font-weight:500;font-size:.8rem;white-space:nowrap}
+details.ch[open] summary{background:#F2F7FF;border-bottom:1px solid var(--line)}
+.ch .in{padding:4px 10px 12px}
+.ch h3{font-size:.85rem;color:var(--muted);margin:12px 4px 2px}
+.it{display:flex;align-items:center;gap:8px;border-radius:12px;margin-top:4px;border:1px solid transparent;padding-right:8px}
+.it:active,.it:hover{background:#F2F7FF;border-color:var(--line)}
+.it .m{flex:1;min-width:0;display:flex;flex-direction:column;text-decoration:none;color:var(--ink);padding:8px 10px}
+.it b{font-weight:600;font-size:.95rem;overflow-wrap:break-word}.it .m span{font-size:.8rem;color:var(--muted)}
+.yb{font-size:.75rem;font-weight:700;color:#fff;background:#E5533D;border-radius:99px;padding:3px 9px;text-decoration:none;white-space:nowrap}
+.go{color:var(--blue);font-size:1.05rem}
+.soon{color:var(--muted);font-size:.9rem}
+.share{display:flex;gap:8px;margin-top:10px}.share button{flex:1;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:9px;font:inherit;font-weight:700;color:var(--blue);cursor:pointer}
+.empty{color:var(--muted);font-size:.9rem;padding:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">HSC ICT · সব এক জায়গায়</span>
+    <h1>অ্যানিমেশন, ভিডিও, মডেল টেস্ট</h1>
+  </header>
+  <div class="big3">
+    <a class="b1" href="#ch"><i>🎬</i>অ্যানিমেশন</a>
+    <a class="b2" href="../67gsxrfm/"><i>📝</i>মডেল টেস্ট</a>
+    <a class="b3" href="../j7fmpkps/?s=book"><i>🏆</i>লিডারবোর্ড</a>
+  </div>
+  <input class="srch" id="q" type="search" placeholder="🔍 টপিক খোঁজো (যেমন: গেট, HTML, লুপ)" aria-label="টপিক খোঁজো">
+  <section class="card" id="vid" style="margin-top:12px"><h2>▶ ইউটিউব ভিডিও</h2><div id="vl"><p class="soon">ভিডিও শিগগিরই আসছে। এলে এখানে আর অ্যানিমেশনের পাশে লাল বোতামে দেখাবে।</p></div></section>
+  <div id="ch"><p class="empty">লোড হচ্ছে…</p></div>
+  <section class="card" style="margin-top:12px"><h2>শেয়ার করো</h2><p class="soon" style="margin:0">এই একটা লিংক দিলেই সব পাওয়া যাবে।</p>
+    <div class="share"><button id="cp" type="button">📋 লিংক কপি</button><button id="sh" type="button">📤 শেয়ার</button></div></section>
+  <footer>© ICT Maniac · HSC ICT</footer>
+</div>
+<script>
+(()=>{
+const CH={'১':'তথ্য ও যোগাযোগ প্রযুক্তি: বিশ্ব ও বাংলাদেশ প্রেক্ষিত','২':'কমিউনিকেশন সিস্টেমস ও নেটওয়ার্কিং','৩':'সংখ্যা পদ্ধতি ও ডিজিটাল ডিভাইস','৪':'ওয়েব ডিজাইন পরিচিতি এবং HTML','৫':'প্রোগ্রামিং ভাষা','৬':'ডেটাবেজ ম্যানেজমেন্ট সিস্টেম'};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function csv(t){const out=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];
+  if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++;}else q=false;}else f+=c;}
+  else if(c==='"')q=true;else if(c===','){row.push(f);f='';}else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;row.push(f);out.push(row);row=[];f='';}else f+=c;}
+  if(f||row.length){row.push(f);out.push(row);}return out;}
+const okYT=u=>/^https:\/\/(www\.)?(youtube\.com|youtu\.be)\//.test(u||'');
+const item=r=>{const [code,yt,,kind,topic,name]=r;const v=okYT(yt.trim())?`<a class="yb" href="${esc(yt.trim())}" target="_blank" rel="noopener">▶ ভিডিও</a>`:'';
+  return `<div class="it" data-s="${esc((topic+' '+name).toLowerCase())}"><a class="m" href="../${esc(code)}/"><b>${esc(kind==='মডেল টেস্ট'?name:topic)}</b><span>${esc(kind==='মডেল টেস্ট'?topic:name)}</span></a>${v}<a class="go" href="../${esc(code)}/" aria-hidden="true" tabindex="-1" style="text-decoration:none">›</a></div>`;};
+const bn=x=>String(x).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
+fetch('../../links.csv',{cache:'no-cache'}).then(r=>r.text()).then(t=>{
+  const rows=csv(t).filter(r=>/^[a-z0-9]{8}$/.test(r[0]||'')&&r.length>=7);
+  let h='';
+  for(const n of ['১','২','৩','৪','৫','৬']){const an=rows.filter(r=>r[2]===n&&r[3]==='অ্যানিমেশন'),ts=rows.filter(r=>r[2]===n&&r[3]==='মডেল টেস্ট');if(!an.length&&!ts.length)continue;
+    h+=`<details class="ch"><summary><span>অধ্যায় ${n} · ${CH[n]||''}</span><small>🎬${bn(an.length)} · 📝${bn(ts.length)}</small></summary><div class="in">`+
+      (an.length?`<h3>🎬 অ্যানিমেশন</h3>${an.map(item).join('')}`:'')+(ts.length?`<h3>📝 মডেল টেস্ট</h3>${ts.map(item).join('')}`:'')+`</div></details>`;}
+  const full=rows.filter(r=>r[2]==='পুরো বই');
+  if(full.length)h+=`<details class="ch"><summary><span>📚 পূর্ণ সিলেবাস মডেল টেস্ট</span><small>📝${bn(full.length)}</small></summary><div class="in">${full.map(item).join('')}</div></details>`;
+  document.getElementById('ch').innerHTML=h||'<p class="empty">তালিকা পাওয়া যায়নি।</p>';
+  const vids=rows.filter(r=>okYT((r[1]||'').trim()));
+  if(vids.length)document.getElementById('vl').innerHTML=vids.map(r=>`<div class="it"><a class="m" href="${esc(r[1].trim())}" target="_blank" rel="noopener"><b>${esc(r[4])}</b><span>${esc(r[5])}</span></a><a class="yb" href="${esc(r[1].trim())}" target="_blank" rel="noopener">▶ ইউটিউব</a></div>`).join('');
+}).catch(()=>{document.getElementById('ch').innerHTML='<p class="empty">ইন্টারনেট চেক করে আবার খোলো।</p>';});
+const q=document.getElementById('q');
+q.addEventListener('input',()=>{const s=q.value.trim().toLowerCase();document.querySelectorAll('details.ch').forEach(d=>{let any=false;d.querySelectorAll('.it').forEach(a=>{const m=!s||a.dataset.s.includes(s);a.hidden=!m;any=any||m;});d.hidden=!any;if(s)d.open=any;});});
+const url=location.href.split('#')[0].split('?')[0];
+document.getElementById('cp').onclick=e=>{(navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(()=>{e.target.textContent='✅ কপি হয়েছে';},()=>{prompt('লিংক কপি করো',url);});};
+document.getElementById('sh').onclick=()=>{if(navigator.share)navigator.share({title:'ICT Maniac',url});else document.getElementById('cp').click();};
+})();
+</script>
+</body>
+</html>
