@@ -78,7 +78,7 @@ select:focus{outline:none;border-color:var(--blue)}
     $('sname').textContent = s.title;
     if (s.hub) $('hub').href = '../' + s.hub + '/';
     var keys = Object.keys(reg.series);
-    $('series').hidden = keys.length < 2;
+    $('series').hidden = true; // each series is opened by its own link (book board stays for book readers)
     $('series').innerHTML = keys.map(function (k) { return '<option value="' + k + '"' + (k === S ? ' selected' : '') + '>' + esc(reg.series[k].title) + '</option>'; }).join('');
     $('test').innerHTML = s.tests.map(function (t) { return '<option value="' + t.code + '"' + (t.code === T ? ' selected' : '') + '>' + esc(t.title) + '</option>'; }).join('');
     $('test').hidden = !T;

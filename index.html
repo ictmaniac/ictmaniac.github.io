@@ -1,6 +1,185 @@
 <!doctype html>
-<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow"><title>ICT Maniac</title>
-<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#E9EFEC;color:#16262B;font-family:"Hind Siliguri",system-ui,sans-serif;padding:16px;text-align:center}
-@media (prefers-color-scheme:dark){body{background:#0E1719;color:#E3ECEA}}h1{color:#0E6B66;margin:0 0 8px}</style></head>
-<body><div><h1>ICT Maniac</h1><p>বইয়ের লিংক থেকে পাতাগুলো খোলো।</p></div></body></html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F2F7FF">
+<title>ICT Maniac · HSC ICT অ্যানিমেশনে শেখো</title>
+<meta name="description" content="ICT Maniac: HSC ICT বই, প্রতিটি টপিকের অ্যানিমেশন, অনলাইন মডেল টেস্ট আর লিডারবোর্ড। সবার জন্য ফ্রি পরীক্ষা।">
+<meta property="og:title" content="ICT Maniac · HSC ICT অ্যানিমেশনে শেখো">
+<meta property="og:description" content="HSC ICT বই + অ্যানিমেশন + অনলাইন মডেল টেস্ট। সবার জন্য ফ্রি পরীক্ষা।">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#F2F7FF;--panel:#fff;--ink:#13233F;--muted:#5B6B86;--line:#D3DFF2;--blue:#2563EB;--blue-soft:#E4EDFF;--green:#15803D;--green-soft:#DDF5E5;--yellow:#F2B705;--yellow-soft:#FFF5CF;
+  --fd:"Baloo Da 2","Hind Siliguri",sans-serif;--fb:"Hind Siliguri",system-ui,sans-serif;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--fb);font-size:17px;line-height:1.6}
+a{color:var(--blue)}
+.w{max-width:960px;margin:0 auto;padding:0 16px}
+h1,h2,h3{font-family:var(--fd);line-height:1.2;margin:0;text-wrap:balance}
+p{margin:0}
+[hidden]{display:none!important}
+/* nav */
+nav{position:sticky;top:0;z-index:5;background:rgba(242,247,255,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .w{display:flex;align-items:center;gap:12px;height:58px}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--fd);font-weight:800;color:var(--blue);font-size:1.15rem;text-decoration:none}
+.brand i{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:9px;background:var(--blue);color:#fff;font-style:normal;font-size:.95rem}
+nav .links{margin-left:auto;display:flex;gap:4px}
+nav .links a{text-decoration:none;color:var(--muted);font-weight:600;font-size:.95rem;padding:6px 10px;border-radius:10px}
+nav .links a:hover{background:var(--blue-soft);color:var(--blue)}
+@media (max-width:560px){nav .links a.opt{display:none}}
+/* hero */
+.hero{padding:40px 0 28px}
+.hero .w{display:grid;gap:28px;align-items:center}
+@media (min-width:780px){.hero .w{grid-template-columns:1.1fr .9fr}}
+.tag{display:inline-block;background:var(--yellow-soft);color:#8A6500;font-weight:700;border-radius:99px;padding:4px 12px;font-size:.9rem}
+.hero h1{font-size:clamp(2rem,6vw,3.1rem);font-weight:800;margin:12px 0 10px}
+.hero h1 em{font-style:normal;color:var(--blue)}
+.hero p.lead{color:var(--muted);font-size:1.08rem;max-width:34em}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;border-radius:14px;padding:12px 20px;min-height:52px;text-decoration:none;border:2px solid var(--blue);color:var(--blue);background:#fff;font-size:1rem;cursor:pointer;font-family:inherit}
+.btn.p{background:var(--blue);color:#fff}
+.btn.g{background:var(--green);border-color:var(--green);color:#fff}
+.btn:active{transform:scale(.98)}
+/* hero art */
+.art{background:#fff;border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:0 12px 40px rgba(37,99,235,.10)}
+.art svg{width:100%;height:auto;display:block}
+.wire{stroke:#C9D7EE;stroke-width:5;fill:none;stroke-linecap:round}
+.wire.on{stroke:var(--green);stroke-dasharray:14 10;animation:flow 1.2s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-24}}
+.bulb{animation:glow 2.4s ease-in-out infinite}
+@keyframes glow{0%,100%{fill:#FFE27A}50%{fill:#F2B705}}
+.sw{animation:tap 2.4s ease-in-out infinite;transform-origin:center;transform-box:fill-box}
+@keyframes tap{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+/* sections */
+section.s{padding:30px 0}
+.s h2{font-size:1.6rem;font-weight:800;margin-bottom:6px}
+.s .sub{color:var(--muted);margin-bottom:18px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.f{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.f .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:1.5rem}
+.f h3{font-size:1.1rem}
+.f p{color:var(--muted);font-size:.95rem}
+.c1 .ic{background:var(--blue-soft)}.c2 .ic{background:var(--yellow-soft)}.c3 .ic{background:var(--green-soft)}.c4 .ic{background:#FDE8E4}
+.num{font-family:var(--fd);font-weight:800;font-size:1.9rem;color:var(--blue);line-height:1}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px;text-align:center}
+.stats div{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 4px;font-weight:600;color:var(--muted);font-size:.9rem}
+/* free exams */
+.free{background:linear-gradient(135deg,#E2F6EA,#F2F7FF);border:1px solid #BFE6CF;border-radius:24px;padding:22px}
+.ex{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;text-decoration:none;color:var(--ink);margin-top:10px}
+.ex b{display:block;color:var(--green)}.ex span{font-size:.88rem;color:var(--muted)}.ex i{margin-left:auto;font-style:normal;color:var(--green);font-size:1.2rem}
+.soon{background:#fff;border:2px dashed #BFE6CF;border-radius:16px;padding:16px;margin-top:12px;color:var(--muted);font-weight:600;text-align:center}
+/* steps */
+.steps{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));counter-reset:k}
+.steps div{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 16px 16px 60px;position:relative;counter-increment:k;color:var(--muted)}
+.steps div b{color:var(--ink);display:block}
+.steps div::before{content:counter(k);position:absolute;left:16px;top:16px;width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-family:var(--fd);font-weight:800}
+.social{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.yt{border-color:#E5533D;color:#E5533D}.fb{border-color:#1877F2;color:#1877F2}
+footer{padding:28px 0 40px;color:var(--muted);font-size:.9rem;text-align:center;border-top:1px solid var(--line);margin-top:20px}
+</style>
+</head>
+<body>
+<nav><div class="w">
+  <a class="brand" href="./"><i>IM</i>ICT Maniac</a>
+  <div class="links"><a href="#book" class="opt">বই</a><a href="#free">ফ্রি পরীক্ষা</a><a href="#contact">যোগাযোগ</a></div>
+</div></nav>
+
+<header class="hero"><div class="w">
+  <div>
+    <span class="tag">HSC ICT · নতুন সিলেবাস</span>
+    <h1>ICT মুখস্থ না, <em>চোখে দেখে</em> বোঝো</h1>
+    <p class="lead">ICT Maniac বইয়ের প্রতিটি কঠিন টপিকের পাশে আছে অ্যানিমেশন। লজিক গেট, নেটওয়ার্ক, প্রোগ্রামিং সব চলতে দেখে শেখো, তারপর অনলাইন মডেল টেস্ট দিয়ে নিজেকে যাচাই করো।</p>
+    <div class="cta">
+      <a class="btn g" href="#free">📝 ফ্রি পরীক্ষা দাও</a>
+      <a class="btn" href="#book">📘 বইয়ে কী আছে</a>
+    </div>
+  </div>
+  <div class="art" aria-hidden="true">
+    <svg viewBox="0 0 360 220">
+      <rect x="0" y="0" width="360" height="220" rx="16" fill="#F7FAFF"/>
+      <path class="wire on" d="M60 70 H150"/><path class="wire on" d="M60 150 H150"/>
+      <path class="wire on" d="M215 110 H290"/>
+      <g class="sw"><rect x="22" y="52" width="40" height="36" rx="10" fill="#2563EB"/><text x="42" y="76" fill="#fff" font-size="16" font-weight="700" text-anchor="middle" font-family="sans-serif">1</text></g>
+      <g class="sw"><rect x="22" y="132" width="40" height="36" rx="10" fill="#2563EB"/><text x="42" y="156" fill="#fff" font-size="16" font-weight="700" text-anchor="middle" font-family="sans-serif">1</text></g>
+      <path d="M150 50 H180 A60 60 0 0 1 180 170 H150 Z" fill="#E4EDFF" stroke="#2563EB" stroke-width="4"/>
+      <text x="182" y="117" fill="#2563EB" font-size="22" font-weight="800" text-anchor="middle" font-family="sans-serif">AND</text>
+      <circle class="bulb" cx="312" cy="110" r="24" fill="#FFE27A" stroke="#F2B705" stroke-width="4"/>
+      <text x="312" y="117" fill="#8A6500" font-size="18" font-weight="800" text-anchor="middle" font-family="sans-serif">1</text>
+      <text x="180" y="205" fill="#5B6B86" font-size="13" text-anchor="middle" font-family="sans-serif">দুটো ইনপুটই 1 হলে বাতি জ্বলে</text>
+    </svg>
+  </div>
+</div></header>
+
+<section class="s" id="book"><div class="w">
+  <h2>📘 ICT Maniac বইয়ে কী আছে</h2>
+  <p class="sub">বইয়ের পাশাপাশি অনলাইনে যা পাবে, বই কিনলেই সব খুলে যাবে।</p>
+  <div class="grid">
+    <div class="f c1"><span class="ic">🎬</span><h3>প্রতিটি টপিকের অ্যানিমেশন</h3><p>বইয়ের টপিকের পাশে বোতাম চাপলেই ফোনে অ্যানিমেশন। ধাপে ধাপে, নিজের গতিতে।</p></div>
+    <div class="f c2"><span class="ic">📝</span><h3>অনলাইন মডেল টেস্ট</h3><p>অধ্যায়ভিত্তিক আর পূর্ণ সিলেবাস টেস্ট। সময় ধরে পরীক্ষা, সাথে সাথে নম্বর।</p></div>
+    <div class="f c3"><span class="ic">💡</span><h3>প্রতিটি ভুলের ব্যাখ্যা</h3><p>কোন উত্তর কেন ঠিক, কেন ভুল, সহজ বাংলায় বুঝিয়ে দেওয়া।</p></div>
+    <div class="f c4"><span class="ic">🏆</span><h3>লিডারবোর্ড</h3><p>বইয়ের পাঠকদের মধ্যে তুমি কত নম্বরে, দেখে নাও।</p></div>
+  </div>
+  <div class="stats"><div><span class="num">৬৩</span><br>অ্যানিমেশন</div><div><span class="num">৩০</span><br>মডেল টেস্ট</div><div><span class="num">৬</span><br>অধ্যায়</div></div>
+</div></section>
+
+<section class="s" id="free"><div class="w">
+  <div class="free">
+    <h2>📝 সবার জন্য ফ্রি পরীক্ষা</h2>
+    <p class="sub" style="margin:0">বই না থাকলেও দিতে পারবে। নাম আর মোবাইল নম্বর দিয়ে পরীক্ষা দাও, সবার সাথে লিডারবোর্ডে নাম তোলো।</p>
+    <div id="fl"><div class="soon">⏳ ফ্রি পরীক্ষা খুব শীঘ্রই আসছে। চোখ রাখো!</div></div>
+  </div>
+</div></section>
+
+<section class="s"><div class="w">
+  <h2>বই কিনেছ? এভাবে শুরু করো</h2>
+  <p class="sub">কোনো অ্যাপ লাগবে না, ফোনের ব্রাউজারেই চলবে।</p>
+  <div class="steps">
+    <div><b>বইয়ের টপিক খোলো</b>প্রতিটি টপিকের নামের পাশে নীল "অ্যানিমেশন" বোতাম আছে।</div>
+    <div><b>বোতাম চাপো</b>ফোনে অ্যানিমেশন খুলবে। চালাও, থামাও, ধীরে দেখো।</div>
+    <div><b>পরীক্ষা দাও</b>প্রতিটি অংশ শেষে "মডেল টেস্ট" বোতাম। নম্বর আর ব্যাখ্যা সাথে সাথে।</div>
+  </div>
+</div></section>
+
+<section class="s" id="contact"><div class="w">
+  <h2>যোগাযোগ</h2>
+  <p class="sub" id="ctext">বই কিনতে বা কিছু জানতে আমাদের সাথে যোগাযোগ করো।</p>
+  <div class="social" id="soc"></div>
+</div></section>
+
+<footer><div class="w">© ICT Maniac · HSC ICT</div></footer>
+
+<script>
+/* ===== mira: এখানে লিংক বসালে বোতাম নিজে থেকে দেখাবে (খালি রাখলে লুকানো থাকবে) ===== */
+var LINKS = {
+  youtube: '',   // যেমন 'https://youtube.com/@ictmaniac'
+  facebook: '',  // যেমন 'https://facebook.com/ictmaniac'
+  buy: '',       // বই কেনার লিংক বা ফেসবুক পেজ
+  phone: ''      // যেমন '01XXXXXXXXX' (WhatsApp)
+};
+/* ===================================================================================== */
+(function () {
+  var s = document.getElementById('soc'), h = '';
+  function esc(x) { return String(x).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  if (LINKS.buy) h += '<a class="btn p" href="' + esc(LINKS.buy) + '" target="_blank" rel="noopener">📘 বই কিনতে চাই</a>';
+  if (LINKS.youtube) h += '<a class="btn yt" href="' + esc(LINKS.youtube) + '" target="_blank" rel="noopener">▶ YouTube</a>';
+  if (LINKS.facebook) h += '<a class="btn fb" href="' + esc(LINKS.facebook) + '" target="_blank" rel="noopener">f Facebook</a>';
+  if (LINKS.phone) h += '<a class="btn g" href="https://wa.me/88' + esc(LINKS.phone.replace(/\D/g, '').replace(/^88/, '')) + '" target="_blank" rel="noopener">💬 WhatsApp</a>';
+  if (h) s.innerHTML = h; else document.getElementById('ctext').textContent = 'আমাদের ইউটিউব চ্যানেল আর ফেসবুক পেজ খুব শীঘ্রই আসছে।';
+
+  /* free exams: any test series named "free" in a/lb-tests.json appears here by itself */
+  fetch('a/lb-tests.json?t=' + Math.floor(Date.now() / 600000)).then(function (r) { return r.json(); }).then(function (reg) {
+    var f = reg.series && reg.series.free;
+    if (!f || !f.tests.length) return;
+    var BN = '০১২৩৪৫৬৭৮৯', bn = function (n) { return String(n).replace(/\d/g, function (d) { return BN[d]; }); };
+    document.getElementById('fl').innerHTML = f.tests.map(function (t) {
+      return '<a class="ex" href="p/' + t.code + '/"><div><b>' + esc(t.title) + '</b><span>' + bn(t.key.length) + 'টি প্রশ্ন · ' + bn(t.min) + ' মিনিট</span></div><i>▶</i></a>';
+    }).join('') + '<a class="ex" href="p/' + reg.lb + '/?s=free"><div><b>🏆 ফ্রি পরীক্ষার লিডারবোর্ড</b><span>সবার মধ্যে সেরা ২০ জন</span></div><i>▶</i></a>';
+  }).catch(function () {});
+})();
+</script>
+</body>
+</html>
