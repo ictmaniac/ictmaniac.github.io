@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=2">
+<link rel="stylesheet" href="../../a/im.css?v=3">
 <style>
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--board)}
 .explain{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:var(--accent);color:var(--panel);border-radius:0 0 14px 14px;padding:10px 14px 12px;margin-inline:-4px;box-shadow:0 6px 16px -10px rgba(0,0,0,.5);min-height:5.2em}
@@ -64,6 +64,7 @@ textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .pctl{display:grid;grid-template-columns:58px 1fr 58px;gap:8px}
 .pctl button{font:inherit;font-weight:800;padding:0;border-radius:14px;border:2px solid var(--accent);background:var(--panel);color:var(--accent);min-height:56px;cursor:pointer;font-size:1.2rem;touch-action:manipulation}
 .pctl #p-nx{background:var(--accent);color:var(--panel);font-size:1.05rem}
+.pctl #p-nx.again{background:var(--signal);border-color:var(--signal);color:#1A1200}
 .pctl #p-au{font-size:.95rem}
 .pctl #p-au[aria-pressed="true"]{background:var(--signal);border-color:var(--signal);color:#1A1200}
 .pctl button:disabled{opacity:.4}
@@ -154,7 +155,7 @@ textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=2"></script>
+<script src="../../a/im.js?v=3"></script>
 <script>
 const {$}=IM;
 const bn=x=>String(x).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
@@ -254,7 +255,7 @@ function renderP(){
     tr:`<code>&lt;tr&gt;</code> মানে নতুন সারি। ${bn(cur.ri+1)} নম্বর সারি শুরু। এই সারিতে ${bn(cur.n||0)}টি td আছে।`,
     td:cur.k?cellMeaning(cur.k):'','/tr':`<code>&lt;/tr&gt;</code> ${bn((cur.ri||0)+1)} নম্বর সারি শেষ।`,'/table':'<code>&lt;/table&gt;</code> টেবিল সম্পূর্ণ! উপরের টেবিলের সাথে মিলিয়ে দেখো।'}[cur.kind];
   if(ptouched)say(`লাইন ${bn(pk+1)} / ${bn(L.length)}`,msg);
-  $('p-pv').disabled=pk===0;$('p-nx').disabled=pk===L.length-1;$('pbar').style.width=(100*(pk+1)/L.length)+'%';
+  $('p-pv').disabled=pk===0;{const e=pk===L.length-1,b=$('p-nx');b.disabled=false;b.classList.toggle('again',e);b.textContent=e?'🔄 আবার শুরু করো':'পরের লাইন ▶';}$('pbar').style.width=(100*(pk+1)/L.length)+'%';
   const ln=$('pcode').querySelectorAll('.ln')[pk];if(ln&&ptouched){const pc=$('pcode');pc.scrollTop=Math.max(0,ln.offsetTop-pc.clientHeight/2);}
 }
 let ptouched=false;
@@ -262,7 +263,7 @@ function pnext(){ptouched=true;if(pk<PL.length-1){pk++;renderP();}else stopP();}
 function pprev(){ptouched=true;if(pk>0){pk--;renderP();}}
 function stopP(){clearInterval(ptimer);ptimer=null;$('p-au').setAttribute('aria-pressed','false');$('p-au').textContent='অটো';}
 function playP(){ptouched=true;if(pk>=PL.length-1){pk=0;renderP();}$('p-au').setAttribute('aria-pressed','true');$('p-au').textContent='থামো';ptimer=setInterval(()=>{pnext();if(pk>=PL.length-1)stopP();},1300);}
-$('p-nx').onclick=()=>{stopP();pnext();};$('p-pv').onclick=()=>{stopP();pprev();};$('p-au').onclick=()=>ptimer?stopP():playP();
+$('p-nx').onclick=()=>{stopP();if(pk>=PL.length-1){ptouched=true;pk=0;renderP();}else pnext();};$('p-pv').onclick=()=>{stopP();pprev();};$('p-au').onclick=()=>ptimer?stopP():playP();
 let tx0=null,ty0=0;
 $('player').addEventListener('touchstart',e=>{const t=e.touches[0];tx0=t.clientX;ty0=t.clientY;},{passive:true});
 $('player').addEventListener('touchend',e=>{if(tx0===null)return;const t=e.changedTouches[0],dx=t.clientX-tx0,dy=t.clientY-ty0;tx0=null;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.5){stopP();dx<0?pnext():pprev();}},{passive:true});

@@ -232,16 +232,16 @@ const IM = (() => {
   function player(o) {
     const d = document.querySelector('.dock');
     const pv = d.querySelector('.pv'), nx = d.querySelector('.nx'), au = d.querySelector('.au'), sp = d.querySelector('.sp'), bar = d.querySelector('.bar i'), cnt = d.querySelector('.cnt');
-    let k = 0, timer = null, spd = 1, si = 0; const SP = [1, 1.6, 0.6], SPL = ['১x', 'দ্রুত', 'ধীরে'];
+    const nxT = nx.textContent; let k = 0, timer = null, spd = 1, si = 0; const SP = [1, 1.6, 0.6], SPL = ['১x', 'দ্রুত', 'ধীরে'];
     const n = () => o.count();
-    function show(prev) { o.show(k, prev); pv.disabled = k === 0; nx.disabled = k >= n() - 1; bar.style.width = (100 * (k + 1) / n()) + '%';
-      cnt.textContent = k >= n() - 1 ? 'শেষ! আবার দেখতে "অটো" চাপো' : (o.hint || 'সোয়াইপ করেও ধাপ বদলানো যায়'); }
+    function show(prev) { o.show(k, prev); pv.disabled = k === 0; const end = k >= n() - 1; nx.disabled = false; nx.classList.toggle('again', end); nx.textContent = end ? '🔄 আবার শুরু করো' : nxT; bar.style.width = (100 * (k + 1) / n()) + '%';
+      cnt.textContent = k >= n() - 1 ? 'শেষ! আবার দেখতে "আবার শুরু করো" চাপো' : (o.hint || 'সোয়াইপ করেও ধাপ বদলানো যায়'); }
     function stop() { clearInterval(timer); timer = null; au.setAttribute('aria-pressed', 'false'); au.textContent = 'অটো'; o.onPlay && o.onPlay(false); }
     function next() { if (k < n() - 1) { const p = k; k++; show(p); } else stop(); }
     function prev() { if (k > 0) { k--; show(null); } }
     function play() { if (k >= n() - 1) { k = 0; show(null); } au.setAttribute('aria-pressed', 'true'); au.textContent = 'থামো'; o.onPlay && o.onPlay(true);
       timer = setInterval(() => { next(); if (k >= n() - 1) stop(); }, (o.interval || 1500) / spd); }
-    nx.onclick = () => { stop(); next(); }; pv.onclick = () => { stop(); prev(); };
+    nx.onclick = () => { stop(); if (k >= n() - 1) { k = 0; show(null); } else next(); }; pv.onclick = () => { stop(); prev(); };
     au.onclick = () => timer ? stop() : play();
     sp.onclick = () => { si = (si + 1) % 3; spd = SP[si]; sp.textContent = SPL[si]; if (timer) { stop(); play(); } };
     (o.swipe ? [].concat(o.swipe) : []).forEach(el => { let x0 = null, y0 = 0;

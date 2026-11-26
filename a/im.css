@@ -1,6 +1,6 @@
 /* ICT Maniac shared style (Chapter 3 labs) */
 :root{
-  --board:#F3F6FC;--panel:#FFFFFF;--ink:#14213D;--muted:#5A6785;--line:#D5DEEE;
+  --board:#F3F6FC;--panel:#FFFFFF;--ink:#14213D;--muted:#5A6785;--line:#BFCDE6;
   --wire-off:#A9B6CF;--signal:#E9A23B;--signal-soft:#FDEBC8;--accent:#1550B8;--accent-soft:#E2EBFB;
   --ok:#1F8A4C;--bad:#C2412D;--bad-soft:#F8DCD6;--g1:#E2EBFB;--g2:#FDEBC8;
   --f-display:"Baloo Da 2","Hind Siliguri","Noto Sans Bengali",sans-serif;
@@ -174,8 +174,9 @@ body.kit::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-i
 .dock .au,.dock .sp{font-size:.95rem}
 .dock .au[aria-pressed="true"]{background:var(--signal);border-color:var(--signal);color:#1A1200}
 .dock button:disabled{opacity:.4}
+.dock .nx.again{background:var(--signal);border-color:var(--signal);color:#1A1200;animation:pop .4s ease-out}
 .dock .cnt{grid-column:1/-1;text-align:center;font-size:.78rem;color:var(--muted);margin-top:-2px}
-.dock .bar{grid-column:1/-1;height:4px;border-radius:4px;background:var(--board);overflow:hidden}
+.dock .bar{grid-column:1/-1;height:6px;border-radius:4px;background:var(--line);overflow:hidden}
 .dock .bar i{display:block;height:100%;background:var(--signal);width:0;transition:width .3s}
 .cv{margin:0;padding:8px 0;border-radius:12px;background:var(--board);font-family:var(--f-mono);font-size:.92rem;line-height:1.8;overflow-x:auto;font-feature-settings:"calt" 0,"liga" 0}
 .cv .ln{display:grid;grid-template-columns:26px 1fr;white-space:pre;padding-right:10px;transition:background .25s;cursor:pointer}
