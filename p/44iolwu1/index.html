@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=6">
+<link rel="stylesheet" href="../../a/im.css?v=7">
 <style>
 .split{display:grid;grid-template-columns:1fr;gap:12px}
 .bx{border:2px dashed var(--line);border-radius:10px;padding:6px 8px 8px;display:flex;flex-direction:column;gap:6px;font-family:var(--f-mono);font-size:.8rem;font-weight:700;color:var(--muted);transition:all .3s}
@@ -57,10 +57,14 @@ textarea{font:inherit;font-family:var(--f-mono);font-size:.9rem;line-height:1.6;
     <textarea id="ed" spellcheck="false" aria-label="HTML কোড"></textarea>
     <div class="browser"><div class="bar btab"><i id="etitle"></i></div><div class="page" id="out"></div></div>
   </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
-<script src="../../a/im.js?v=6"></script>
+<script src="../../a/im.js?v=7"></script>
 <script>
 const {$,say,bn}=IM;
 const SRC=['<!DOCTYPE html>','<html>','<head>','  <title>আমার পেজ</title>','</head>','<body>','  <h1>স্বাগতম</h1>','  <p>এটি আমার প্রথম ওয়েব পেজ।</p>','</body>','</html>'];
@@ -94,6 +98,7 @@ function run(){const v=$('ed').value;const m=v.match(/<title>([\s\S]*?)<\/title>
   const b=v.match(/<body[^>]*>([\s\S]*?)(<\/body>|$)/i);$('out').innerHTML=(b?b[1]:v).replace(/<\s*\/?\s*(script|iframe|style|link|meta|object|embed|title|head)[^>]*>/gi,'').replace(/\son\w+\s*=/gi,' x=');}
 $('ed').value=ED;$('ed').oninput=run;run();
 player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "নিচের কোনটি এম্পটি ট্যাগ?", "o": ["&lt;p&gt;", "&lt;b&gt;", "&lt;br&gt;", "&lt;html&gt;"], "a": 2, "w": "&lt;br&gt; এর শেষ ট্যাগ নেই।"}, {"q": "পেজের শিরোনাম (ব্রাউজারের ট্যাবে) কোন ট্যাগে লেখা হয়?", "o": ["&lt;head&gt;", "&lt;title&gt;", "&lt;h1&gt;", "&lt;body&gt;"], "a": 1, "w": "&lt;title&gt; থাকে &lt;head&gt; এর ভিতরে।"}, {"q": "পেজে যা দেখা যায় তা থাকে কোন ট্যাগের ভিতরে?", "o": ["&lt;head&gt;", "&lt;title&gt;", "&lt;body&gt;", "&lt;meta&gt;"], "a": 2, "w": "দৃশ্যমান সব কিছু &lt;body&gt; তে।"}, {"q": "&lt;P&gt; আর &lt;p&gt; সম্পর্কে সঠিক—", "o": ["আলাদা ট্যাগ", "একই ট্যাগ", "&lt;P&gt; ভুল", "&lt;p&gt; ভুল"], "a": 1, "w": "HTML কেস-সেনসিটিভ নয়।"}]);
 </script>
 </body>
 </html>

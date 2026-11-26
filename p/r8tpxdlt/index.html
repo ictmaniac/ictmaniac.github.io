@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=6">
+<link rel="stylesheet" href="../../a/im.css?v=7">
 <style>
 .fc .shape{fill:var(--panel);stroke:var(--accent);stroke-width:2.5;transition:fill .3s,stroke .3s}
 .fc .on .shape{fill:var(--signal-soft);stroke:var(--signal)}
@@ -54,10 +54,14 @@
     <h2>প্রোগ্রাম তৈরির ধাপ</h2>
     <div class="pd" id="pd"></div>
   </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
-<script src="../../a/im.js?v=6"></script>
+<script src="../../a/im.js?v=7"></script>
 <script>
 const {$,say,bn}=IM;
 const SH={
@@ -110,6 +114,7 @@ const PD=[['সমস্যা নির্দিষ্টকরণ','কী স
 $('pd').innerHTML=PD.map((p,i)=>`<button data-i="${i}"><b>${bn(i+1)}</b>${p[0]}</button>`).join('');
 $('pd').querySelectorAll('button').forEach(b=>b.onclick=()=>{const p=PD[+b.dataset.i];say(`ধাপ ${bn(+b.dataset.i+1)}`,`<b>${p[0]}:</b> ${p[1]}`,true);});
 player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "ফ্লোচার্টে সিদ্ধান্ত (হ্যাঁ/না) বোঝাতে কোন প্রতীক?", "o": ["আয়তক্ষেত্র", "রম্বস (ডায়মন্ড)", "ডিম্বাকার", "সামান্তরিক"], "a": 1, "w": "রম্বস থেকে দুই দিকে পথ যায়।"}, {"q": "শুরু ও শেষ বোঝাতে—", "o": ["ডিম্বাকার", "আয়তক্ষেত্র", "রম্বস", "বৃত্ত"], "a": 0, "w": "Start/End ডিম্বাকার।"}, {"q": "ইনপুট/আউটপুট বোঝাতে—", "o": ["আয়তক্ষেত্র", "সামান্তরিক", "রম্বস", "তীর"], "a": 1, "w": "Read/Print সামান্তরিকে।"}, {"q": "অ্যালগরিদম হলো—", "o": ["প্রোগ্রামের ছবি", "সমস্যা সমাধানের ধাপে ধাপে বর্ণনা", "একটি ভাষা", "একটি সফটওয়্যার"], "a": 1, "w": "ছবি দিয়ে দেখালে সেটা ফ্লোচার্ট।"}]);
 </script>
 </body>
 </html>

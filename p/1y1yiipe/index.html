@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=6">
+<link rel="stylesheet" href="../../a/im.css?v=7">
 <style>
 .xpr{font-family:var(--f-mono);font-weight:800;font-size:1.5rem;text-align:center;padding:16px 8px;border-radius:12px;background:var(--board);word-break:break-word;line-height:1.6;min-height:84px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:2px}
 .xpr .h{background:var(--signal);color:#1A1200;border-radius:6px;padding:0 4px;animation:pop .4s ease-out}
@@ -45,10 +45,14 @@
     <div class="prec" id="prec"></div>
     <p class="hint">একই স্তরের অপারেটর থাকলে সাধারণত বাম থেকে ডানে হিসাব হয়।</p>
   </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
-<script src="../../a/im.js?v=6"></script>
+<script src="../../a/im.js?v=7"></script>
 <script>
 const {$,say,bn}=IM;
 const H=s=>`<span class="h">${s}</span>`,R=s=>`<span class="r">${s}</span>`;
@@ -85,6 +89,7 @@ const PR=[['()','বন্ধনী','সবার আগে বন্ধনী�
 $('prec').innerHTML=PR.map((p,i)=>`<button data-i="${i}"><i>${bn(i+1)}</i><code>${IM.esc(p[0])}</code><span>${p[1].split(' (')[0]}</span></button>`).join('');
 $('prec').querySelectorAll('button').forEach(b=>b.onclick=()=>{const p=PR[+b.dataset.i];say(`অগ্রাধিকার ${bn(+b.dataset.i+1)}`,`<code>${IM.esc(p[0])}</code> ${p[1]}। ${p[2]}`,true);});
 player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "a = 5 + 3 * 2; এর মান—", "o": ["16", "11", "13", "10"], "a": 1, "w": "আগে গুণ: 3*2=6, তারপর 5+6=11।"}, {"q": "10 % 3 এর মান—", "o": ["3", "1", "0", "3.33"], "a": 1, "w": "% ভাগশেষ দেয়।"}, {"q": "(5 + 3) * 2 এর মান—", "o": ["11", "16", "13", "10"], "a": 1, "w": "বন্ধনী আগে: 8*2=16।"}, {"q": "a &gt; b && b &gt; c তে && কী ধরনের অপারেটর?", "o": ["গাণিতিক", "যৌক্তিক", "সম্পর্কসূচক", "অ্যাসাইনমেন্ট"], "a": 1, "w": "&& মানে AND, যৌক্তিক অপারেটর।"}]);
 </script>
 </body>
 </html>

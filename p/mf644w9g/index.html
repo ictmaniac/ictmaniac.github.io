@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=6">
+<link rel="stylesheet" href="../../a/im.css?v=7">
 <style>
 .lad{display:flex;flex-direction:column;align-items:stretch;gap:0}
 .lv{border:2px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--panel);transition:all .35s;opacity:.35}
@@ -73,10 +73,14 @@
       <li><b>উচ্চস্তরের ভাষা:</b> ইংরেজির কাছাকাছি, লেখা সহজ। কিন্তু চালাতে অনুবাদক (কম্পাইলার/ইন্টারপ্রেটার) লাগে।</li>
     </ul>
   </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
-<script src="../../a/im.js?v=6"></script>
+<script src="../../a/im.js?v=7"></script>
 <script>
 const {$,say,bn}=IM;
 const S=[
@@ -104,6 +108,7 @@ const G=[['প্রথম','মেশিন ভাষা','০ ও ১ দি�
 $('gen').innerHTML=G.map((g,i)=>`<button data-i="${i}"><i>${bn(i+1)}</i><span><b>${g[1]}</b><small>${g[0]} প্রজন্ম</small></span></button>`).join('');
 $('gen').querySelectorAll('button').forEach(b=>b.onclick=()=>{const g=G[+b.dataset.i];say(`${g[0]} প্রজন্ম`,`<b>${g[1]}:</b> ${g[2]}`,true);});
 player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "অনুবাদ ছাড়াই কম্পিউটার সরাসরি বোঝে—", "o": ["C", "অ্যাসেম্বলি", "মেশিন ভাষা", "Python"], "a": 2, "w": "মেশিন ভাষা ০ আর ১ দিয়ে লেখা।"}, {"q": "C কোন স্তরের ভাষা?", "o": ["নিম্নস্তর", "মধ্যম স্তর", "উচ্চস্তর", "চতুর্থ প্রজন্ম"], "a": 1, "w": "উচ্চস্তরের সহজতা আর হার্ডওয়্যার নিয়ন্ত্রণ দুটোই আছে।"}, {"q": "অ্যাসেম্বলি ভাষায় ব্যবহৃত হয়—", "o": ["নেমোনিক কোড (ADD, MOV)", "শুধু ০ ও ১", "ইংরেজি বাক্য", "ছবি"], "a": 0, "w": "অ্যাসেম্বলারের মাধ্যমে মেশিন ভাষায় অনুবাদ হয়।"}, {"q": "উচ্চস্তরের ভাষার সুবিধা—", "o": ["দ্রুততম চলে", "লেখা ও বোঝা সহজ", "অনুবাদ লাগে না", "হার্ডওয়্যার নির্ভর"], "a": 1, "w": "তবে চালাতে অনুবাদক লাগে।"}]);
 </script>
 </body>
 </html>

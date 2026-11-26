@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=6">
+<link rel="stylesheet" href="../../a/im.css?v=7">
 <style>
 .tabsb{display:flex;gap:4px;padding:6px 8px 0;background:var(--board);border-bottom:1px solid var(--line);overflow-x:auto}
 .tabsb i{font-style:normal;font-size:.78rem;padding:4px 10px;border-radius:8px 8px 0 0;background:var(--line);color:var(--muted);white-space:nowrap;max-width:150px;overflow:hidden;text-overflow:ellipsis}
@@ -48,10 +48,14 @@
       <li><b>target="_blank"</b> দিলে লিংক নতুন ট্যাবে খোলে।</li>
     </ul>
   </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
-<script src="../../a/im.js?v=6"></script>
+<script src="../../a/im.js?v=7"></script>
 <script>
 const {$,say,bn}=IM;
 const HOME={url:'ictmaniac.github.io/home.html',title:'হোম',html:null};
@@ -86,6 +90,7 @@ const player=IM.player({count:()=>LK.length*2,show:render,swipe:$('main'),interv
 IM.tapx($('anat'),{a:{t:'<a',d:'<code>&lt;a</code> Anchor ট্যাগ শুরু।'},h:{t:'href',d:'<code>href</code> এ যেখানে যাবে তার ঠিকানা লিখতে হয়। এটা ছাড়া লিংক কাজ করে না।'},
  t:{t:'target',d:'<code>target="_blank"</code> লিংকটা নতুন ট্যাবে খোলে। না দিলে একই ট্যাবে খোলে (_self)।'},g:{t:'>',d:'শুরু ট্যাগ শেষ।'},c:{t:'লিংক টেক্সট',d:'এই লেখাটাই পেজে নীল দাগসহ দেখা যায়, এতে চাপ দিতে হয়।'},e:{t:'</a>',d:'লিংক ট্যাগ শেষ।'}});
 player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "হাইপারলিংক তৈরির ট্যাগ—", "o": ["&lt;link&gt;", "&lt;a&gt;", "&lt;href&gt;", "&lt;url&gt;"], "a": 1, "w": "a মানে Anchor।"}, {"q": "লিংক কোথায় যাবে তা লেখা হয় কোন অ্যাট্রিবিউটে?", "o": ["src", "href", "alt", "target"], "a": 1, "w": "href = Hypertext Reference।"}, {"q": "লিংক নতুন ট্যাবে খুলতে—", "o": ["target=\"_blank\"", "target=\"_new\"", "new=\"tab\"", "open=\"new\""], "a": 0, "w": "_blank মানে নতুন ট্যাব।"}, {"q": "অন্য ওয়েবসাইটে যাওয়া লিংককে বলে—", "o": ["ইন্টারনাল লিংক", "এক্সটার্নাল লিংক", "ইমেইল লিংক", "লোকাল লিংক"], "a": 1, "w": "এক্সটার্নাল লিংকে পুরো URL দিতে হয়।"}]);
 </script>
 </body>
 </html>

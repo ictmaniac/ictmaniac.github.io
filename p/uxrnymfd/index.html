@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=6">
+<link rel="stylesheet" href="../../a/im.css?v=7">
 <style>
 .vars{display:flex;gap:10px}
 .vars div{flex:1;border:2px solid var(--line);border-radius:12px;padding:4px 8px;text-align:center;font-family:var(--f-mono)}
@@ -55,10 +55,14 @@
       <li>printf এ &amp; লাগে না, কারণ সে শুধু মান পড়ে।</li>
     </ul>
   </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
-<script src="../../a/im.js?v=6"></script>
+<script src="../../a/im.js?v=7"></script>
 <script>
 const {$,say,bn}=IM;
 const SRC=['int a, b;','printf("Enter two numbers: ");','scanf("%d %d", &a, &b);','printf("Sum = %d\\n", a + b);','printf("a\\tb\\n%d\\t%d", a, b);'];
@@ -88,6 +92,7 @@ const SP=[['%d','int (পূর্ণসংখ্যা)'],['%f','float (দশ�
 $('spec').innerHTML=SP.map((s,i)=>`<button data-i="${i}">${s[0]}</button>`).join('');
 $('spec').querySelectorAll('button').forEach(b=>b.onclick=()=>{const s=SP[+b.dataset.i];say(s[0],`<code>${s[0]}</code> দিয়ে ${s[1]} টাইপের মান পড়া বা দেখানো হয়।`,true);});
 say('শুরু','নিচের ▶ চাপো।');player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "কিবোর্ড থেকে মান নিতে—", "o": ["printf", "scanf", "getch", "return"], "a": 1, "w": "scanf ইনপুট নেয়।"}, {"q": "scanf এ চলকের আগে & কেন?", "o": ["গুণ করতে", "ঠিকানা বলতে", "শর্ত দিতে", "মন্তব্য করতে"], "a": 1, "w": "মান কোন ঘরে রাখবে তা জানাতে।"}, {"q": "int এর ফরম্যাট স্পেসিফায়ার—", "o": ["%f", "%c", "%d", "%s"], "a": 2, "w": "%d = integer।"}, {"q": "float এর ফরম্যাট স্পেসিফায়ার—", "o": ["%d", "%f", "%c", "%i"], "a": 1, "w": "%f = float।"}]);
 </script>
 </body>
 </html>

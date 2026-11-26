@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=6">
+<link rel="stylesheet" href="../../a/im.css?v=7">
 <style>
 .frames{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .fr{border:2.5px solid var(--line);border-radius:14px;padding:8px;display:flex;flex-direction:column;gap:6px;transition:all .35s;min-height:150px;background:var(--panel)}
@@ -53,10 +53,14 @@
       <li>main() নিজেও একটা ফাংশন, আর প্রোগ্রাম সবসময় main() থেকেই শুরু হয়।</li>
     </ul>
   </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
-<script src="../../a/im.js?v=6"></script>
+<script src="../../a/im.js?v=7"></script>
 <script>
 const {$,say,bn}=IM;
 const SRC=['int sum(int x, int y);','int main()','{','    int r = sum(3, 4);','    printf("%d", r);','    return 0;','}','int sum(int x, int y)','{','    int s = x + y;','    return s;','}'];
@@ -85,6 +89,7 @@ function render(k,prev){const s=S[k];cv.on(s.l);
 const player=IM.player({count:()=>S.length,show:render,swipe:$('main'),interval:2100});
 IM.tapx($('anat'),{r:{t:'রিটার্ন টাইপ',d:'<code>int</code> ফাংশন কোন টাইপের মান ফেরত দেবে। কিছু ফেরত না দিলে void।'},n:{t:'ফাংশনের নাম',d:'<code>sum</code> এই নামেই ফাংশনকে ডাকা হয়। চলকের নামের নিয়মই মানতে হয়।'},p:{t:'প্যারামিটার',d:'<code>(int x, int y)</code> ফাংশন কী কী মান নেবে। ডাকার সময় দেওয়া মান (আর্গুমেন্ট) এগুলোতে কপি হয়।'}});
 player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "printf() কোন ধরনের ফাংশন?", "o": ["ইউজার ডিফাইনড", "লাইব্রেরি", "মেইন", "কোনোটিই না"], "a": 1, "w": "আগে থেকে তৈরি, stdio.h এ থাকে।"}, {"q": "প্রোগ্রাম কোন ফাংশন থেকে শুরু হয়?", "o": ["printf()", "start()", "main()", "sum()"], "a": 2, "w": "সব C প্রোগ্রাম main() থেকে শুরু।"}, {"q": "ফাংশন মান ফেরত পাঠায় কোন কী-ওয়ার্ডে?", "o": ["break", "return", "back", "exit"], "a": 1, "w": "return এর মান ডাকার জায়গায় ফিরে যায়।"}, {"q": "ফাংশনের প্রধান সুবিধা—", "o": ["প্রোগ্রাম বড় হয়", "একই কোড বারবার লিখতে হয় না", "ভুল বাড়ে", "মেমোরি বেশি লাগে"], "a": 1, "w": "একবার লিখে বারবার ডাকা যায়।"}]);
 </script>
 </body>
 </html>

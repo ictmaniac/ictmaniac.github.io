@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=6">
+<link rel="stylesheet" href="../../a/im.css?v=7">
 <style>
 body{padding-bottom:calc(158px + env(safe-area-inset-bottom,0px))}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--board)}
@@ -130,9 +130,13 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
     <div class="bar"><i id="bar"></i></div>
     <div class="cnt" id="cnt"></div>
   </div></div>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=6"></script>
+<script src="../../a/im.js?v=7"></script>
 <script>
 const {$}=IM;
 const bn=x=>String(x).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
@@ -284,6 +288,7 @@ $('main').addEventListener('touchend',e=>{if(tx0===null)return;const t=e.changed
   if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.5){stop();dx<0?next():prev();}},{passive:true});
 document.addEventListener('keydown',e=>{if(e.target.closest('select'))return;if(e.key==='ArrowRight'){stop();next();}if(e.key==='ArrowLeft'){stop();prev();}});
 reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "কমপক্ষে একবার চলবেই কোন লুপ?", "o": ["for", "while", "do…while", "কোনোটিই না"], "a": 2, "w": "আগে কাজ, পরে শর্ত।"}, {"q": "for(i=1;i&lt;=5;i++) লুপ কয়বার চলে?", "o": ["4", "5", "6", "অসীম"], "a": 1, "w": "i = 1,2,3,4,5।"}, {"q": "while লুপ কোন ধরনের?", "o": ["exit controlled", "entry controlled", "অসীম", "শর্তহীন"], "a": 1, "w": "আগে শর্ত দেখে।"}, {"q": "do…while এর শেষে কী লাগে?", "o": ["কোলন", "সেমিকোলন", "কমা", "কিছুই না"], "a": 1, "w": "while(শর্ত); সেমিকোলন লাগে।"}]);
 </script>
 </body>
 </html>

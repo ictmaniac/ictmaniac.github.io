@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=6">
+<link rel="stylesheet" href="../../a/im.css?v=7">
 <style>
 #main{position:relative}
 .qs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
@@ -35,6 +35,17 @@
 .rw .chg{background:var(--signal);color:#1A1200;animation:glow .9s ease-in-out 2}
 .console{min-height:44px}
 #out.bnx{font-family:var(--f-body);font-weight:700}
+.pipe{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:4px 0 10px;font-size:.78rem;font-weight:800}
+.pipe small{color:var(--muted);font-weight:700;margin-right:2px}
+.pipe b{padding:3px 9px;border-radius:999px;background:#F3F8FF;border:1.5px solid #BFD7FB;color:#5B6B82;transition:all .3s}
+.pipe b.done{background:#DFF5E6;border-color:#9ED9B2;color:#1E7A43}
+.pipe b.cur{background:var(--signal);border-color:var(--signal);color:#1A1200;transform:scale(1.1)}
+.pipe i{font-style:normal;color:#9AB}
+.rt{display:grid;margin-top:6px;border-radius:8px;overflow:hidden;font-family:var(--f-mono);font-size:.78rem;font-weight:700}
+.rt span{padding:5px 6px;background:var(--panel);border-bottom:1px solid var(--line)}
+.rt span.h{background:#DFF5E6;color:#1E7A43}
+.rt span.in{animation:rtin .45s ease-out both}
+@keyframes rtin{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:none}}
 </style>
 </head>
 <body class="kit">
@@ -49,8 +60,9 @@
   <div class="qs" id="qs"></div>
   <section class="card" id="main">
     <pre id="code"></pre>
+    <div class="pipe" id="pipe"></div>
     <div class="sqt" id="st"></div>
-    <div class="console"><small>ফলাফল</small><span id="out"></span></div>
+    <div class="console"><small>ফলাফল</small><span id="out"></span><div class="rt" id="rt"></div></div>
     <span class="mag" id="mag">🔍</span>
   </section>
   <section class="card">
@@ -78,13 +90,14 @@
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
-<script src="../../a/im.js?v=6"></script>
+<script src="../../a/im.js?v=7"></script>
 <script>
 const {$,say,bn}=IM;
 const COLS=['Roll','Name','Dept','GPA','City'],W=['40px','62px','1fr','40px','64px'];
 const D=[[101,'Rafi','Science',5.00,'Dhaka'],[102,'Mitu','Commerce',4.50,'Rajshahi'],[103,'Sumaiya','Science',4.75,'Dhaka'],[104,'Tanvir','Humanities',3.80,'Khulna'],[105,'Nadia','Science',4.25,'Sylhet']];
 const g2=v=>typeof v==='number'&&v<10?v.toFixed(2):v;
 const Q=[
+ {n:'সব একসাথে',c:['SELECT Name, GPA','FROM Student','WHERE Dept = \'Science\'','ORDER BY GPA DESC;'],sel:[1,3],m0:'Science বিভাগের ছাত্রদের নাম আর GPA চাই, বেশি GPA আগে। ডেটাবেজ কোডটা উপর থেকে নিচে না, <b>FROM → WHERE → ORDER BY → SELECT</b> ক্রমে চালায়।',w:{col:2,f:r=>r[2]==='Science',t:r=>`${r[2]} = 'Science' ?`},ord:(a,b)=>b[3]-a[3]},
  {n:'SELECT *',c:['SELECT *','FROM Student;'],sel:null,m0:'<b>*</b> মানে সব ফিল্ড। তাই সব কলাম আর সব রেকর্ড দেখাবে।'},
  {n:'কিছু কলাম',c:['SELECT Name, GPA','FROM Student;'],sel:[1,3],m0:'শুধু Name আর GPA কলাম চাই। বাকি কলামগুলো সরে যাবে।'},
  {n:'WHERE',c:['SELECT Roll, Name, City','FROM Student','WHERE City = \'Dhaka\';'],sel:[0,1,4],w:{col:4,f:r=>r[4]==='Dhaka',t:r=>`${r[4]} = 'Dhaka'`}},
@@ -106,20 +119,20 @@ function cols(sel){const t=COLS.map((_,j)=>!sel||sel.includes(j)?W[j]:'0px');t.p
   COLS.forEach((_,j)=>document.querySelectorAll(`#h${j},[id^="c"][id$="${j}"]`).forEach(e=>e.classList.toggle('hide',!!sel&&!sel.includes(j))));}
 function steps(){const S=[],all=[0,1,2,3,4];
   const base={vis:all,ord:all,sel:null};
-  S.push({...base,l:-1,m:'কোয়েরি লেখা হলো। '+(q.m0||'চলো দেখি ডেটাবেজ এটা কীভাবে চালায়।')});
-  S.push({...base,l:q.c.findIndex(x=>/FROM|UPDATE|DELETE/.test(x)),glow:1,m:q.upd?'<b>UPDATE Student</b>: Student টেবিলে পরিবর্তন করবো।':q.del?'<b>DELETE FROM Student</b>: Student টেবিল থেকে মুছবো।':'<b>FROM Student</b>: আগে টেবিলটা খুঁজে নিলো।'});
+  S.push({...base,ph:'Q',l:-1,m:'কোয়েরি লেখা হলো। '+(q.m0||'চলো দেখি ডেটাবেজ এটা কীভাবে চালায়।')});
+  S.push({...base,ph:'FROM',l:q.c.findIndex(x=>/FROM|UPDATE|DELETE/.test(x)),glow:1,m:q.upd?'<b>UPDATE Student</b>: Student টেবিলে পরিবর্তন করবো।':q.del?'<b>DELETE FROM Student</b>: Student টেবিল থেকে মুছবো।':'<b>FROM Student</b>: আগে টেবিলটা খুঁজে নিলো।'});
   let vis=all;
   if(q.w){const wl=q.c.findIndex(x=>/WHERE/.test(x)),wl2=q.c.findIndex(x=>/^\s*AND/.test(x));const pass=all.filter(i=>q.w.f(D[i]));
-    S.push({...base,l:wl2>0?[wl,wl2]:wl,scan:1,pass,m:'🔍 <b>WHERE</b>: প্রতিটি রেকর্ডে শর্ত পরীক্ষা করছি… '+all.map(i=>`${D[i][1]}: ${pass.includes(i)?'✓':'✗'}`).join(', ')});
-    if(q.upd){S.push({...base,l:q.c.findIndex(x=>/SET/.test(x)),upd:pass[0],m:`শর্ত মিলেছে শুধু Nadia (105) এর সাথে। <b>SET GPA = 4.90</b>: তার GPA 4.25 থেকে বদলে 4.90 হলো। বাকিরা যেমন ছিল তেমনই।`,out:'১টি রেকর্ড আপডেট হলো'});return S;}
+    S.push({...base,ph:'WHERE',l:wl2>0?[wl,wl2]:wl,scan:1,pass,m:'🔍 <b>WHERE</b>: প্রতিটি রেকর্ডে শর্ত পরীক্ষা করছি… '+all.map(i=>`${D[i][1]}: ${pass.includes(i)?'✓':'✗'}`).join(', ')});
+    if(q.upd){S.push({...base,ph:'SET',l:q.c.findIndex(x=>/SET/.test(x)),upd:pass[0],m:`শর্ত মিলেছে শুধু Nadia (105) এর সাথে। <b>SET GPA = 4.90</b>: তার GPA 4.25 থেকে বদলে 4.90 হলো। বাকিরা যেমন ছিল তেমনই।`,out:'১টি রেকর্ড আপডেট হলো'});return S;}
     vis=q.del?all.filter(i=>!pass.includes(i)):pass;
-    S.push({...base,l:wl,vis,pass,cut:1,m:q.del?`Tanvir (104) এর রেকর্ড টেবিল থেকে মুছে গেলো 🗑️, বাকিরা উপরে উঠে এলো। এটা স্থায়ী পরিবর্তন!`:`শর্ত মেলেনি এমন ${bn(5-pass.length)}টি রেকর্ড বাদ পড়লো, থাকলো ${bn(pass.length)}টি।`,out:q.del?'১টি রেকর্ড মুছে গেলো':''});
+    S.push({...base,ph:'WHERE',l:wl,vis,pass,cut:1,m:q.del?`Tanvir (104) এর রেকর্ড টেবিল থেকে মুছে গেলো 🗑️, বাকিরা উপরে উঠে এলো। এটা স্থায়ী পরিবর্তন!`:`শর্ত মেলেনি এমন ${bn(5-pass.length)}টি রেকর্ড বাদ পড়লো, থাকলো ${bn(pass.length)}টি।`,out:q.del?'১টি রেকর্ড মুছে গেলো':''});
     if(q.del)return S;}
   let ord=all;
-  if(q.ord){ord=all.slice().sort((a,b)=>q.ord(D[a],D[b]));S.push({...base,vis,ord,l:q.c.findIndex(x=>/ORDER/.test(x)),ordC:3,m:'<b>ORDER BY GPA DESC</b>: GPA অনুযায়ী বড় থেকে ছোট সাজালো। সারিগুলো জায়গা বদলালো।'});}
-  if(q.sel){S.push({...base,vis,ord,sel:q.sel,l:0,m:`<b>SELECT</b> ${q.sel.map(j=>COLS[j]).join(', ')}: শুধু এই কলামগুলো থাকলো, বাকি কলাম সরে গেলো।`});}
+  if(q.ord){ord=all.slice().sort((a,b)=>q.ord(D[a],D[b]));S.push({...base,ph:'ORDER BY',vis,ord,l:q.c.findIndex(x=>/ORDER/.test(x)),ordC:3,m:'<b>ORDER BY GPA DESC</b>: GPA অনুযায়ী বড় থেকে ছোট সাজালো। সারিগুলো জায়গা বদলালো।'});}
+  if(q.sel){S.push({...base,ph:'SELECT',vis,ord,sel:q.sel,l:0,m:`<b>SELECT</b> ${q.sel.map(j=>COLS[j]).join(', ')}: শুধু এই কলামগুলো থাকলো, বাকি কলাম সরে গেলো।`});}
   const res=ord.filter(i=>vis.includes(i));
-  S.push({...base,vis,ord,sel:q.sel,l:-1,fin:1,m:`ফলাফল তৈরি ✓ ${bn(res.length)}টি রেকর্ড এসেছে। নিচের ফলাফল বক্সে দেখো।`,out:res.map(i=>(q.sel||[0,1,2,3,4]).map(j=>g2(D[i][j])).join(', ')).join('\n')});
+  S.push({...base,ph:'R',vis,ord,sel:q.sel,l:-1,fin:1,res,m:`ফলাফল তৈরি ✓ ${bn(res.length)}টি রেকর্ড এসেছে। নিচের ফলাফল টেবিলে একটা একটা করে বসছে।`,out:res.map(i=>(q.sel||[0,1,2,3,4]).map(j=>g2(D[i][j])).join(', ')).join('\n')});
   return S;}
 const later=(ms,fn)=>{const g=gen;setTimeout(()=>{if(g===gen)fn();},ms/player.speed);};
 function magTo(el){const r=IM.rel($('main'),el),m=$('mag');m.classList.add('on');m.style.transform=`translate(${r.x+r.w-30}px,${r.y+r.h/2-14}px)`;}
@@ -140,6 +153,12 @@ function render(k,prev){gen++;const s=S[k],fwd=prev===k-1&&!IM.reduce();$('mag')
   if(s.cut&&!q.del)s.pass.forEach(i=>$('r'+i).classList.add('pass'));
   if(s.upd!==undefined){const c=$('c'+s.upd+'3');$('r'+s.upd).classList.add('pass');
     if(fwd){later(500,()=>{c.textContent='4.90';c.classList.add('chg');});}else{c.textContent='4.90';c.classList.add('chg');}}
+  const PH=['FROM','WHERE','SET','ORDER BY','SELECT'].filter(p=>S.some(x=>x.ph===p)),ci=PH.indexOf(s.ph);
+  $('pipe').innerHTML='<small>চলার ক্রম:</small>'+PH.map((p,i)=>`<b class="${s.ph==='R'||(ci>=0&&i<ci)?'done':i===ci?'cur':''}">${p}</b>`).join('<i>→</i>')+`<i>→</i><b class="${s.ph==='R'?'cur':''}">ফলাফল</b>`;
+  const rt=$('rt');rt.innerHTML='';
+  if(s.fin&&s.res){const cs=q.sel||[0,1,2,3,4];rt.style.gridTemplateColumns=cs.map(j=>W[j]==='1fr'?'1fr':'auto').join(' ');
+    rt.innerHTML=cs.map(j=>`<span class="h">${COLS[j]}</span>`).join('')+s.res.map((i,n)=>cs.map(j=>`<span class="in" style="animation-delay:${fwd?(.35+n*.35)/player.speed:0}s">${g2(D[i][j])}</span>`).join('')).join('');
+    if(fwd)s.res.forEach((_,n)=>later(350+n*350,()=>IM.sfx('pop')));s.out='';}
   $('out').textContent=s.out||'';$('out').classList.toggle('bnx',/[\u0980-\u09FF]/.test(s.out||''));
   if(!(s.scan&&fwd))say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
 var player=IM.player({count:()=>S.length,show:render,swipe:$('st'),interval:3000});

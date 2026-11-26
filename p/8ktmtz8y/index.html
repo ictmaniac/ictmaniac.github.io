@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=6">
+<link rel="stylesheet" href="../../a/im.css?v=7">
 <style>
 .lanes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .lane{border:2px solid var(--line);border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:6px;min-width:0}
@@ -52,10 +52,14 @@
     <div class="scroll-x"><table class="cmp" id="cmp"></table></div>
     <p class="hint"><b>অ্যাসেম্বলার</b> আরেক ধরনের অনুবাদক: অ্যাসেম্বলি ভাষাকে মেশিন ভাষায় রূপান্তর করে।</p>
   </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
-<script src="../../a/im.js?v=6"></script>
+<script src="../../a/im.js?v=7"></script>
 <script>
 const {$,say,bn}=IM;
 let K='err';
@@ -88,6 +92,7 @@ $('cmp').innerHTML='<thead><tr>'+T[0].map(x=>`<th>${x}</th>`).join('')+'</tr></t
 $('cmp').querySelectorAll('tbody tr').forEach(r=>r.onclick=()=>{const t=T[+r.dataset.i];say(t[0],`কম্পাইলার: <b>${t[1]}</b>। ইন্টারপ্রেটার: <b>${t[2]}</b>।`,true);});
 IM.tabs($('tabs'),k=>{K=k;build();player.reset();});
 build();player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "পুরো প্রোগ্রাম একসাথে অনুবাদ করে—", "o": ["ইন্টারপ্রেটার", "কম্পাইলার", "অ্যাসেম্বলার", "লিংকার"], "a": 1, "w": "কম্পাইলার একবারে পুরোটা অনুবাদ করে।"}, {"q": "লাইন বাই লাইন অনুবাদ করে চালায়—", "o": ["কম্পাইলার", "ইন্টারপ্রেটার", "লোডার", "এডিটর"], "a": 1, "w": "ভুল পেলে সেই লাইনেই থেমে যায়।"}, {"q": "অ্যাসেম্বলি ভাষাকে মেশিন ভাষায় রূপান্তর করে—", "o": ["কম্পাইলার", "অ্যাসেম্বলার", "ইন্টারপ্রেটার", "লিংকার"], "a": 1, "w": "নামেই বোঝা যায়।"}, {"q": "কোনটি দ্রুত চলে (অনুবাদের পর)?", "o": ["কম্পাইল করা প্রোগ্রাম", "ইন্টারপ্রেট করা প্রোগ্রাম", "দুটো সমান", "কোনোটিই না"], "a": 0, "w": "কম্পাইলার আগে থেকেই পুরো মেশিন কোড বানিয়ে রাখে।"}]);
 </script>
 </body>
 </html>

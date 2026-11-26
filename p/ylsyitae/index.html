@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=6">
+<link rel="stylesheet" href="../../a/im.css?v=7">
 <style>
 .tokl{font-family:var(--f-mono);font-size:11px;font-weight:700;fill:var(--ink)}
 .tokbg{fill:var(--signal-soft);stroke:var(--signal);stroke-width:1.5}
@@ -55,10 +55,14 @@
       <li><b>স্ট্যাটিক</b> সাইটে সবার জন্য একই পেজ। <b>ডাইনামিক</b> সাইটে সার্ভার প্রতিবার ডেটাবেজ থেকে নতুন পেজ বানায় (যেমন ফেসবুক)।</li>
     </ul>
   </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
-<script src="../../a/im.js?v=6"></script>
+<script src="../../a/im.js?v=7"></script>
 <script>
 const {$,say,bn}=IM;
 const SITES=[{d:'www.example.com',ip:'93.184.216.34',path:'/index.html',title:'Example Domain'},{d:'ictmaniac.github.io',ip:'185.199.108.153',path:'/index.html',title:'ICT Maniac'}];
@@ -109,6 +113,7 @@ const DP={},DI={};IM.tapx($('parts'),DP);IM.tapx($('ip'),DI);
 $('sites').innerHTML=SITES.map((s,i)=>`<button class="chip" data-i="${i}">${s.d}</button>`).join('');
 $('sites').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{site=SITES[+b.dataset.i];scene();parts();player.reset();});
 scene();parts();player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "ডোমেইন নেইমকে আইপি অ্যাড্রেসে রূপান্তর করে—", "o": ["HTTP", "DNS", "FTP", "ISP"], "a": 1, "w": "DNS নামকে নম্বরে (আইপি) বদলায়।"}, {"q": "ওয়েবসাইটের ফাইল জমা থাকে কোথায়?", "o": ["ব্রাউজারে", "ওয়েব সার্ভারে", "রাউটারে", "DNS এ"], "a": 1, "w": "ব্রাউজার সার্ভারের কাছে পেজ চায়।"}, {"q": "সবার জন্য একই পেজ দেখায় যে সাইট—", "o": ["স্ট্যাটিক", "ডাইনামিক", "হাইব্রিড", "নেটওয়ার্ক"], "a": 0, "w": "ডাইনামিক সাইটে ডেটাবেজ থেকে প্রতিবার নতুন পেজ তৈরি হয়।"}, {"q": "URL এর https:// অংশটা কী?", "o": ["ডোমেইন", "প্রোটোকল", "ফাইলের নাম", "পোর্ট"], "a": 1, "w": "কোন নিয়মে ডেটা আসবে সেটা প্রোটোকল।"}]);
 </script>
 </body>
 </html>

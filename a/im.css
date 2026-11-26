@@ -162,7 +162,19 @@ body.kit::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-i
 .explain{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:#E8F1FF;color:var(--ink);border:2px solid #A9C8FA;border-top:0;border-radius:0 0 14px 14px;padding:10px 14px 12px;margin-inline:-4px;box-shadow:0 6px 16px -10px rgba(0,0,0,.45);min-height:4.6em}
 .explain .tag{display:inline-block;font-size:.78rem;font-weight:700;padding:1px 8px;border-radius:999px;background:var(--accent);color:#fff;margin-bottom:3px}
 .explain .tag.tap{background:var(--signal);color:#1A1200}
-.explain p{font-size:1.02rem;font-weight:600;line-height:1.5}
+.explain p{font-size:1.08rem;font-weight:600;line-height:1.6}
+.explain p b{color:#1D4ED8}
+.explain .more{display:none}.explain p.open .more{display:inline}.explain p.open .more-b{display:none}
+.explain .more-b{font:inherit;font-size:.8rem;font-weight:800;color:var(--accent);background:#fff;border:1.5px solid #A9C8FA;border-radius:999px;padding:0 10px;margin-left:6px;cursor:pointer;vertical-align:1px}
+.ladder{display:flex;gap:4px;margin-top:8px;overflow-x:auto;scrollbar-width:none}
+.ladder::-webkit-scrollbar{display:none}
+.ladder button{flex:1 0 22px;min-width:22px;height:22px;border-radius:7px;border:1.5px solid #A9C8FA;background:#fff;color:#5B6B82;font:inherit;font-size:.72rem;font-weight:800;padding:0;cursor:pointer;transition:background .25s,transform .25s}
+.ladder button.past{background:#BFD7FB;border-color:#BFD7FB;color:#1D4ED8}
+.ladder button.cur{background:var(--accent);border-color:var(--accent);color:#fff;transform:scale(1.12)}
+.ladder.dots button{height:8px;min-width:8px;flex-basis:8px;border-radius:4px}
+.sndb{font-size:1.05rem!important;flex:none!important;width:44px;min-height:36px;border-radius:999px;border:2px solid var(--line);background:var(--board);cursor:pointer;padding:0}
+.sndb[aria-pressed="false"]{opacity:.65}
+.sndb.float{position:fixed;right:12px;bottom:14px;z-index:9;width:48px;height:48px;background:#fff;border-color:#A9C8FA;box-shadow:0 4px 14px -6px rgba(0,0,0,.35)}
 .explain p.fade{animation:fadeup .3s ease-out}
 .explain code{font-family:var(--f-mono);background:var(--panel);padding:0 4px;border-radius:4px;font-feature-settings:"calt" 0,"liga" 0}
 .explain .t,.explain .f{background:var(--panel);border-radius:6px;padding:0 6px;font-weight:800}

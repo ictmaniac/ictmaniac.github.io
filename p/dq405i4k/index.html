@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=6">
+<link rel="stylesheet" href="../../a/im.css?v=7">
 <style>
 .page{min-height:120px}
 .page img{display:block;transition:width .4s,height .4s}
@@ -51,10 +51,14 @@
       <li><b>ব্যানার:</b> পেজের উপরে পুরো প্রস্থ জুড়ে ছবি। width="100%" দিয়ে বানানো হয়।</li>
     </ul>
   </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
-<script src="../../a/im.js?v=6"></script>
+<script src="../../a/im.js?v=7"></script>
 <script>
 const {$,say,bn}=IM;
 const SVG=`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 180'><rect width='300' height='180' fill='%23BFDBFE'/><circle cx='240' cy='45' r='24' fill='%23FBBF24'/><path d='M0 150 L80 70 L150 140 L210 90 L300 160 L300 180 L0 180Z' fill='%231550B8'/><path d='M0 165 Q150 140 300 170 L300 180 L0 180Z' fill='%2322A06B'/></svg>`;
@@ -83,6 +87,7 @@ $('w').oninput=()=>{ban=false;man();};$('h').oninput=man;
 $('miss').onclick=()=>{miss=!miss;man();say('alt',miss?'ফাইল না থাকলে ছবির জায়গায় alt এর লেখা দেখায়।':'ফাইল পাওয়া গেলো, ছবি দেখাচ্ছে।',true);};
 $('ban').onclick=()=>{ban=!ban;man();if(ban)say('ব্যানার','width="100%" দিলে ছবি পুরো প্রস্থ জুড়ে থাকে। পেজের মাপ বদলালেও ছবি সাথে সাথে বদলায়।',true);};
 man();player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "ছবি যোগ করার ট্যাগ—", "o": ["&lt;pic&gt;", "&lt;img&gt;", "&lt;image&gt;", "&lt;src&gt;"], "a": 1, "w": "&lt;img&gt; এম্পটি ট্যাগ।"}, {"q": "ছবির ফাইলের নাম দেওয়া হয় কোন অ্যাট্রিবিউটে?", "o": ["href", "alt", "src", "name"], "a": 2, "w": "src = source।"}, {"q": "ছবি না আসলে তার বদলে লেখা দেখায়—", "o": ["title", "alt", "src", "text"], "a": 1, "w": "alt = alternative text।"}, {"q": "পুরো প্রস্থ জুড়ে ব্যানার বানাতে—", "o": ["width=\"100%\"", "height=\"100%\"", "size=\"full\"", "border=\"0\""], "a": 0, "w": "শুধু width দিলে উচ্চতা অনুপাতে ঠিক থাকে।"}]);
 </script>
 </body>
 </html>

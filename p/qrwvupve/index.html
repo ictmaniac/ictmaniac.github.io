@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=6">
+<link rel="stylesheet" href="../../a/im.css?v=7">
 <style>
 .node text{text-anchor:middle;font-weight:700;font-size:13px}
 .info{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -46,10 +46,14 @@
       <li><b>হাইব্রিড/কম্বিনেশন:</b> একাধিক কাঠামোর মিশ্রণ। বেশিরভাগ বড় ওয়েবসাইট এমন।</li>
     </ul>
   </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
-<script src="../../a/im.js?v=6"></script>
+<script src="../../a/im.js?v=7"></script>
 <script>
 const {$,say,bn}=IM;
 const ST={
@@ -97,6 +101,7 @@ $('sc').addEventListener('click',e=>{const g=e.target.closest('[data-x]');if(!g)
   say(NAME(n),`${NAME(n)} থেকে সরাসরি যাওয়া যায়: <b>${nb.join(', ')}</b>। মোট ${bn(nb.length)}টি লিংক।`,true);});
 IM.tabs($('tabs'),k=>{K=k;draw();player.reset();});
 draw();player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "বিশ্ববিদ্যালয়ের ওয়েবসাইট সাধারণত কোন কাঠামোর?", "o": ["লিনিয়ার", "ট্রি/হায়ারার্কিক্যাল", "নেটওয়ার্ক", "কোনোটিই না"], "a": 1, "w": "হোম পেজ থেকে অনুষদ, বিভাগ… গাছের মতো শাখা।"}, {"q": "অনলাইন টিউটোরিয়ালে আগে-পরে যাওয়া কোন কাঠামো?", "o": ["লিনিয়ার", "ট্রি", "নেটওয়ার্ক", "হাইব্রিড"], "a": 0, "w": "একটার পর একটা পেজ।"}, {"q": "প্রায় সব পেজ সব পেজের সাথে যুক্ত—", "o": ["ট্রি", "লিনিয়ার", "নেটওয়ার্ক/ওয়েব-লিংকড", "হাইব্রিড"], "a": 2, "w": "যেমন উইকিপিডিয়া।"}, {"q": "বেশিরভাগ বড় ওয়েবসাইট কোন কাঠামোর?", "o": ["লিনিয়ার", "হাইব্রিড", "ট্রি", "নেটওয়ার্ক"], "a": 1, "w": "কয়েকটা কাঠামো মিশিয়ে বানানো।"}]);
 </script>
 </body>
 </html>

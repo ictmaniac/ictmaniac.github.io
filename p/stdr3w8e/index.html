@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=6">
+<link rel="stylesheet" href="../../a/im.css?v=7">
 <style>
 .pipe{position:relative;display:flex;flex-direction:column;gap:14px;padding-left:8px}
 .stn{position:relative;display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:center;padding:8px 10px;border-radius:12px;border:2px solid var(--line);background:var(--panel);cursor:pointer;transition:all .3s;min-height:58px}
@@ -51,10 +51,14 @@
       <li><b>IDE</b> (Integrated Development Environment): এডিটর, কম্পাইলার, লিংকার, ডিবাগার সব এক জায়গায়। যেমন Code::Blocks, Dev-C++, Turbo C।</li>
     </ul>
   </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
-<script src="../../a/im.js?v=6"></script>
+<script src="../../a/im.js?v=7"></script>
 <script>
 const {$,say,bn}=IM;
 let K='ok';
@@ -85,6 +89,7 @@ IM.tapx($('pipe'),Object.fromEntries(ST.map(s=>[s.id,{t:s.t,d:{ed:'এডিট�
 IM.tabs($('tabs'),k=>{K=k;build();S=steps();player.reset();});
 build();S=steps();player.reset();
 addEventListener('resize',()=>place(S[player.k].at));
+IM.mcq(document.getElementById('mcq45'),[{"q": "প্রোগ্রামারের লেখা প্রোগ্রামের ফাইল—", "o": [".exe", ".obj", ".c", ".lib"], "a": 2, "w": "এটাকে সোর্স প্রোগ্রাম বলে।"}, {"q": "কম্পাইলার সোর্স থেকে তৈরি করে—", "o": [".exe", ".obj (অবজেক্ট)", ".c", ".h"], "a": 1, "w": "পরে লিংকার .exe বানায়।"}, {"q": "লাইব্রেরি ফাংশন জুড়ে চালানোর যোগ্য ফাইল বানায়—", "o": ["এডিটর", "লিংকার", "লোডার", "ডিবাগার"], "a": 1, "w": "লিংকার printf এর কোড জুড়ে দেয়।"}, {"q": "এডিটর, কম্পাইলার, ডিবাগার সব এক জায়গায়—", "o": ["IDE", "OS", "DBMS", "ISP"], "a": 0, "w": "যেমন Code::Blocks।"}]);
 </script>
 </body>
 </html>
