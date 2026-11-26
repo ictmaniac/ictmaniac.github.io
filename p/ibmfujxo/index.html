@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>সাউন্ড ডেমো · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=6">
+<style>
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sb{border:2px solid #BFD7FB;background:#F3F8FF;border-radius:14px;padding:12px 10px;font:inherit;text-align:left;cursor:pointer;color:var(--ink)}
+.sb b{display:block;font-size:17px}.sb small{color:#5B6B82;font-size:13px}
+.sb:active,.sb.on{background:#DCEBFF;border-color:#3B82F6}
+.vol{display:flex;align-items:center;gap:10px;margin:6px 0 14px}
+.vol input{flex:1}
+.mute{border:2px solid #3B82F6;background:#fff;border-radius:12px;padding:6px 12px;font-size:20px;cursor:pointer}
+.stage{position:relative;height:150px;border:2px dashed #BFD7FB;border-radius:14px;background:#fff;overflow:hidden;margin-top:12px}
+.pk{position:absolute;left:14px;top:55px;width:54px;height:40px;border-radius:10px;background:#3B82F6;color:#fff;font-weight:800;display:grid;place-items:center;transition:transform .6s cubic-bezier(.5,0,.3,1)}
+.zm{position:absolute;right:20px;top:40px;width:60px;height:60px;border-radius:50%;background:#F5A623;transition:transform .4s;display:grid;place-items:center;font-size:26px}
+.rows{display:grid;gap:6px;margin-top:12px}
+.rows div{padding:8px 12px;border-radius:10px;background:#F3F8FF;border:2px solid transparent;transition:all .25s}
+.rows div.hl{background:#FFF4DC;border-color:#F5A623;transform:translateX(6px)}
+.qz{display:flex;gap:10px;margin-top:12px}.qz button{flex:1;padding:12px;border-radius:12px;border:2px solid #BFD7FB;background:#fff;font:inherit;font-weight:700;cursor:pointer}
+.qz .ok{background:#DFF5E6;border-color:#27AE60}.qz .no{background:#FDE5E5;border-color:#E25555}
+</style>
+</head>
+<body class="kit">
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">নমুনা · সাউন্ড ইফেক্ট</span>
+    <h1>কোন সাউন্ড কেমন লাগে?</h1>
+    <p class="lead">প্রতিটা বোতাম চেপে শুনে দেখো। এগুলো কোনো ফাইল না, ফোনেই তৈরি হয়, তাই পেজ ভারী হয় না। নিচে ছোট একটা ডেমো আছে।</p>
+  </header>
+  <section class="card">
+    <h2>আওয়াজ কতটুকু?</h2>
+    <div class="vol"><button class="mute" id="mute">🔊</button><input type="range" id="vol" min="0" max="1" step="0.05" value="0.4"></div>
+    <div class="sg" id="sg"></div>
+  </section>
+  <section class="card">
+    <h2>একসাথে কেমন লাগে</h2>
+    <p>"ডেমো চালাও" চাপলে একটা ছোট অ্যানিমেশন সাউন্ডসহ চলবে।</p>
+    <div class="stage"><div class="pk" id="pk">ডেটা</div><div class="zm" id="zm">🔍</div></div>
+    <div class="rows" id="rows"><div>Roll 101 · Rahim</div><div>Roll 102 · Karim</div><div>Roll 103 · Ayesha</div></div>
+    <div class="qz"><button data-r="1">সঠিক উত্তর</button><button data-r="0">ভুল উত্তর</button></div>
+    <div class="qz"><button id="demo" style="background:#3B82F6;color:#fff;border-color:#3B82F6">▶ ডেমো চালাও</button></div>
+  </section>
+</div>
+<script>
+let ac,master,vol=0.4,muted=false;
+function A(){if(!ac){ac=new (window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.connect(ac.destination);}master.gain.value=muted?0:vol;if(ac.state==='suspended')ac.resume();return ac;}
+function tone(f1,f2,dur,type='sine',g=.5,delay=0){const a=A(),t=a.currentTime+delay,o=a.createOscillator(),v=a.createGain();o.type=type;o.frequency.setValueAtTime(f1,t);if(f2!==f1)o.frequency.exponentialRampToValueAtTime(f2,t+dur);v.gain.setValueAtTime(0,t);v.gain.linearRampToValueAtTime(g,t+.01);v.gain.exponentialRampToValueAtTime(.001,t+dur);o.connect(v).connect(master);o.start(t);o.stop(t+dur+.05);}
+function noise(dur,f1,f2,g=.4){const a=A(),t=a.currentTime,n=a.sampleRate*dur,b=a.createBuffer(1,n,a.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1;const s=a.createBufferSource();s.buffer=b;const bp=a.createBiquadFilter();bp.type='bandpass';bp.Q.value=1.2;bp.frequency.setValueAtTime(f1,t);bp.frequency.exponentialRampToValueAtTime(f2,t+dur);const v=a.createGain();v.gain.setValueAtTime(0,t);v.gain.linearRampToValueAtTime(g,t+dur*.4);v.gain.linearRampToValueAtTime(0,t+dur);s.connect(bp).connect(v).connect(master);s.start(t);}
+const SND={
+ step:{n:'ধাপ বদল',d:'প্রতিটা নতুন ধাপে ছোট টিক',f:()=>tone(1400,1400,.05,'sine',.35)},
+ pop:{n:'কিছু আসলো',d:'নতুন জিনিস দেখা দিলে "পপ"',f:()=>tone(420,900,.09,'sine',.45)},
+ whoosh:{n:'সরে যাওয়া',d:'ডেটা/প্যাকেট উড়ে গেলে "শাঁ"',f:()=>noise(.35,500,2500,.5)},
+ zin:{n:'জুম ইন',d:'কাছে গিয়ে দেখলে উঠতি সুর',f:()=>{tone(300,900,.25,'triangle',.35);noise(.25,800,3000,.15)}},
+ zout:{n:'জুম আউট',d:'দূরে সরে গেলে নামতি সুর',f:()=>{tone(900,300,.25,'triangle',.35);noise(.25,3000,800,.15)}},
+ hl:{n:'হাইলাইট',d:'যে জায়গা বদলালো সেটা জ্বললে "ব্লিপ"',f:()=>tone(1000,1000,.07,'square',.12)},
+ ok:{n:'সঠিক উত্তর',d:'কুইজে ঠিক হলে "ডিং ডিং"',f:()=>{tone(880,880,.25,'triangle',.4);tone(1320,1320,.35,'triangle',.4,.1)}},
+ no:{n:'ভুল উত্তর',d:'ভুল হলে নরম "বুপ" (ভয় পাবে না)',f:()=>tone(260,170,.28,'triangle',.4)},
+ done:{n:'শেষ হলো',d:'শেষ ধাপে ছোট সুর',f:()=>[523,659,784,1047].forEach((f,i)=>tone(f,f,.3,'triangle',.3,i*.11))},
+ type:{n:'লেখা আসছে',d:'কোড/টেক্সট টাইপ হলে হালকা ক্লিক',f:()=>{for(let i=0;i<6;i++)tone(2000+Math.random()*600,1800,.02,'square',.06,i*.07)}}
+};
+const sg=document.getElementById('sg');
+for(const k in SND){const b=document.createElement('button');b.className='sb';b.innerHTML=`<b>${SND[k].n}</b><small>${SND[k].d}</small>`;b.onclick=()=>{SND[k].f();b.classList.add('on');setTimeout(()=>b.classList.remove('on'),300)};sg.appendChild(b);}
+const P=s=>SND[s].f();
+document.getElementById('vol').oninput=e=>{vol=+e.target.value;if(master)master.gain.value=muted?0:vol;};
+document.getElementById('mute').onclick=e=>{muted=!muted;e.target.textContent=muted?'🔇':'🔊';if(master)master.gain.value=muted?0:vol;};
+document.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{const r=b.dataset.r==='1';b.classList.add(r?'ok':'no');P(r?'ok':'no');setTimeout(()=>b.classList.remove('ok','no'),700)});
+const pk=document.getElementById('pk'),zm=document.getElementById('zm'),rows=[...document.querySelectorAll('#rows div')];
+const w=ms=>new Promise(r=>setTimeout(r,ms));
+document.getElementById('demo').onclick=async()=>{pk.style.transform='';zm.style.transform='';rows.forEach(r=>r.classList.remove('hl'));
+ P('step');await w(400);P('pop');pk.animate([{transform:'scale(0)'},{transform:'scale(1)'}],{duration:250});await w(500);
+ P('step');await w(300);P('whoosh');pk.style.transform='translateX(150px)';await w(800);
+ P('step');await w(300);P('zin');zm.style.transform='scale(1.6)';await w(700);P('zout');zm.style.transform='scale(1)';await w(600);
+ P('step');for(const r of rows){P('hl');r.classList.add('hl');await w(350);r.classList.remove('hl');}rows[1].classList.add('hl');await w(600);
+ P('done');};
+</script>
+</body>
+</html>
