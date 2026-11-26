@@ -1,6 +1,7 @@
 ---
 ch: ১
 kit: 1
+three: 1
 title: বিশ্বগ্রাম
 eyebrow: ১.১ বিশ্বগ্রামের ধারণা (Global Village)
 h1: পৃথিবী যখন একটা গ্রাম
@@ -13,6 +14,11 @@ svg.scene .vill{font-size:15px;font-weight:800;text-anchor:middle;fill:var(--acc
 svg.scene .clock{font-size:12px;font-weight:800;text-anchor:middle;fill:var(--signal)}
 </style>
   <section class="card" id="main">
+    <div class="v3" id="v3">
+      <div class="fmap" id="fm"><div class="st" data-k="1"><b>①</b>দূরত্ব</div><span class="ar">›</span><div class="st" data-k="2"><b>②</b>সংযোগ</div><span class="ar">›</span><div class="st" data-k="3"><b>③</b>উপাদান</div><span class="ar">›</span><div class="st" data-k="4"><b>④</b>সেবা</div><span class="ar">›</span><div class="st" data-k="5"><b>⑤</b>সুবিধা-অসুবিধা</div></div>
+      <div id="w3"></div>
+    </div>
+    <div id="old2d" hidden>
     <div class="sbox">
     <svg class="scene" id="sv" viewBox="0 0 360 230">
       <g id="gl" class="gz">
@@ -24,6 +30,7 @@ svg.scene .clock{font-size:12px;font-weight:800;text-anchor:middle;fill:var(--si
       <text id="vill" class="vill hide" x="180" y="214">🏡 পুরো পৃথিবী এখন একটা গ্রাম!</text>
       <text id="clk" class="clock hide" x="180" y="20"></text>
     </svg>
+    </div>
     </div>
     <div class="parts" id="parts">
       <button data-k="hw" data-x="hw">💻 হার্ডওয়্যার</button><button data-k="sw" data-x="sw">🧩 সফটওয়্যার</button><button data-k="cn" data-x="cn">🌐 কানেকটিভিটি</button><button data-k="dt" data-x="dt">📊 ডেটা</button><button data-k="hc" data-x="hc">🧑‍🎓 মানুষের সক্ষমতা</button>
@@ -51,7 +58,10 @@ svg.scene .clock{font-size:12px;font-weight:800;text-anchor:middle;fill:var(--si
     </ul>
   </section>
 <script>
-const {$,say,bn}=IM;const Q=IM.seq(),sv=$('sv');
+const {$,say,bn}=IM;
+const X={N:{t:'🇺🇸 নিউইয়র্ক',d:'আমেরিকার শহর। এখানকার ডাক্তার ভিডিও কলে ঢাকার রোগীকে পরামর্শ দিতে পারেন (টেলিমেডিসিন)।'},L:{t:'🇬🇧 লন্ডন',d:'এখানকার বিশ্ববিদ্যালয়ের ক্লাস অনলাইনে ঢাকায় বসেই করা যায় (অনলাইন শিক্ষা)।'},D:{t:'🇧🇩 ঢাকা',d:'আমাদের শহর। এখান থেকেই আমরা পুরো বিশ্বের সাথে যুক্ত, ঘরে বসে ফ্রিল্যান্সিং করে আয়ও করা যায়।'},T:{t:'🇯🇵 টোকিও',d:'জাপান থেকে অনলাইনে পণ্য কেনা যায় (ই-কমার্স)।'},S:{t:'🇦🇺 সিডনি',d:'এখানকার কোম্পানির কাজ ঢাকায় বসে করা যায় (আউটসোর্সিং)।'},A:{t:'🇳🇬 লাগোস',d:'আফ্রিকার শহর। ইন্টারনেটে এখানকার খবর আমরা সাথে সাথে পাই।'},
+ hw:{t:'💻 হার্ডওয়্যার',d:'কম্পিউটার, মোবাইল, স্মার্টফোন, স্যাটেলাইট, রেডিও, টেলিভিশন ইত্যাদি যন্ত্র।'},sw:{t:'🧩 সফটওয়্যার',d:'অপারেটিং সিস্টেম, ব্রাউজার, কমিউনিকেটিং সফটওয়্যার (যেমন ভিডিও কলের অ্যাপ)।'},cn:{t:'🌐 কানেকটিভিটি',d:'ইন্টারনেট ও নেটওয়ার্ক সংযোগ। এটাই বিশ্বগ্রামের মেরুদণ্ড, এটা ছাড়া কিছুই পৌঁছাবে না।'},dt:{t:'📊 ডেটা',d:'যে তথ্য আদান-প্রদান হয়। বিনামূল্যে বা টাকার বিনিময়ে শেয়ার করা হয়।'},hc:{t:'🧑‍🎓 মানুষের সক্ষমতা',d:'প্রযুক্তি ব্যবহারের জ্ঞান ও সচেতনতা। জানা না থাকলে যন্ত্র থাকলেও সুফল পাওয়া যায় না।'}};
+function old2D(){const Q=IM.seq(),sv=$('sv');
 const C={N:[62,88,'নিউইয়র্ক','🧑'],L:[160,58,'লন্ডন','👩'],D:[248,100,'ঢাকা','🧒'],T:[306,74,'টোকিও','👨'],S:[292,166,'সিডনি','👧'],A:[168,128,'লাগোস','👴']};
 const E=[['D','N',70],['D','L',40],['D','T',22],['D','S',22],['D','A',26],['L','N',30],['T','S',-26],['A','N',-30]];
 const NS='http://www.w3.org/2000/svg';
@@ -80,9 +90,8 @@ const S=[
    [['N','D','🦠'],['T','S','🕵️'],['L','N','🦠']].forEach(([a,b,t],i)=>Q.later(i*500,()=>send(a,b,t,{dur:1200,fs:12,cls:'red'})));}}];
 function render(k){clr();IM.mark(sv,".node",[],"on");IM.mark(sv,".node",[],"done");$('gl').style.transform='';$('vill').classList.replace('show','hide');parts('',[]);S[k].f();say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,S[k].m);}
 var player=IM.player({count:()=>S.length,show:render,interval:3800,swipe:$('sv')});
-const X={N:{t:'🇺🇸 নিউইয়র্ক',d:'আমেরিকার শহর। এখানকার ডাক্তার ভিডিও কলে ঢাকার রোগীকে পরামর্শ দিতে পারেন (টেলিমেডিসিন)।'},L:{t:'🇬🇧 লন্ডন',d:'এখানকার বিশ্ববিদ্যালয়ের ক্লাস অনলাইনে ঢাকায় বসেই করা যায় (অনলাইন শিক্ষা)।'},D:{t:'🇧🇩 ঢাকা',d:'আমাদের শহর। এখান থেকেই আমরা পুরো বিশ্বের সাথে যুক্ত, ঘরে বসে ফ্রিল্যান্সিং করে আয়ও করা যায়।'},T:{t:'🇯🇵 টোকিও',d:'জাপান থেকে অনলাইনে পণ্য কেনা যায় (ই-কমার্স)।'},S:{t:'🇦🇺 সিডনি',d:'এখানকার কোম্পানির কাজ ঢাকায় বসে করা যায় (আউটসোর্সিং)।'},A:{t:'🇳🇬 লাগোস',d:'আফ্রিকার শহর। ইন্টারনেটে এখানকার খবর আমরা সাথে সাথে পাই।'},
- hw:{t:'💻 হার্ডওয়্যার',d:'কম্পিউটার, মোবাইল, স্মার্টফোন, স্যাটেলাইট, রেডিও, টেলিভিশন ইত্যাদি যন্ত্র।'},sw:{t:'🧩 সফটওয়্যার',d:'অপারেটিং সিস্টেম, ব্রাউজার, কমিউনিকেটিং সফটওয়্যার (যেমন ভিডিও কলের অ্যাপ)।'},cn:{t:'🌐 কানেকটিভিটি',d:'ইন্টারনেট ও নেটওয়ার্ক সংযোগ। এটাই বিশ্বগ্রামের মেরুদণ্ড, এটা ছাড়া কিছুই পৌঁছাবে না।'},dt:{t:'📊 ডেটা',d:'যে তথ্য আদান-প্রদান হয়। বিনামূল্যে বা টাকার বিনিময়ে শেয়ার করা হয়।'},hc:{t:'🧑‍🎓 মানুষের সক্ষমতা',d:'প্রযুক্তি ব্যবহারের জ্ঞান ও সচেতনতা। জানা না থাকলে যন্ত্র থাকলেও সুফল পাওয়া যায় না।'}};
-IM.tapx(sv,X);IM.tapx($('parts'),X);
+IM.tapx(sv,X);player.reset();}
+IM.tapx($('parts'),X);
 IM.compare($('cx0'),['','সাধারণ গ্রাম','বিশ্বগ্রাম'],[
  ['আয়তন','কয়েক কিলোমিটার','পুরো পৃথিবী','প্রযুক্তির কারণে পুরো পৃথিবীটাই একটা গ্রামের মতো ছোট মনে হয়।'],
  ['যোগাযোগ','মুখোমুখি কথা','ইন্টারনেট, মোবাইল, ভিডিও কল','দূরে থেকেও সামনাসামনি কথার মতো যোগাযোগ।'],
@@ -99,5 +108,67 @@ IM.mcq($('quiz6'),[
  {q:'বিশ্বগ্রামের মেরুদণ্ড কোনটি?',o:['হার্ডওয়্যার','ডেটা','কানেকটিভিটি','সফটওয়্যার'],a:2,w:'কানেকটিভিটি (নেটওয়ার্ক সংযোগ) ছাড়া কোনো তথ্য পৌঁছায় না।'},
  {q:'নিচের কোনটি বিশ্বগ্রামের উপাদান নয়?',o:['মানুষের সক্ষমতা','ডেটা','হার্ডওয়্যার','তরল নাইট্রোজেন'],a:3,w:'তরল নাইট্রোজেন ক্রায়োসার্জারিতে লাগে।'},
  {q:'বিশ্বগ্রামের অসুবিধা কোনটি?',o:['অনলাইন শিক্ষা','টেলিমেডিসিন','সাইবার অপরাধ','ই-কমার্স'],a:2,w:'বাকি তিনটি সুবিধা।'}]);
-player.reset();
+/* ---------- 3D globe (falls back to the 2D scene above on phones without WebGL) ---------- */
+const W=IM3.world($('w3'));
+if(!W){$('v3').hidden=true;$('old2d').hidden=false;old2D();}else{
+const {T,V,C,mat,scene}=W,M=IM3,R=4;
+const parts3=(on,done)=>$('parts').querySelectorAll('button').forEach(b=>{b.classList.toggle('on',b.dataset.k===on);b.classList.toggle('done',(done||[]).includes(b.dataset.k));});
+const tilt=new T.Group(),spin=new T.Group();scene.add(tilt);tilt.add(spin);
+const earth=M.earth(R);spin.add(earth);const tE=W.track(tilt);
+W.pick(earth.children[0],{t:'🌍 পৃথিবী',d:'আঙুল দিয়ে টেনে পৃথিবীটা ঘুরিয়ে দেখো। শহরের পিনে টাচ করলে সেই শহরের কথা জানবে।'});
+const CT={D:[23.8,90.4,'ঢাকা','🧒'],L:[51.5,-.1,'লন্ডন','👩'],N:[40.7,-74,'নিউইয়র্ক','🧑'],T:[35.7,139.7,'টোকিও','👨'],S:[-33.9,151.2,'সিডনি','👧'],A:[6.5,3.4,'লাগোস','👴']};
+const P={};
+Object.entries(CT).forEach(([k,[la,lo,n,e]])=>{const p=M.ll(la,lo,R);P[k]=p;const g=new T.Group();g.position.copy(p);g.lookAt(p.clone().multiplyScalar(2));
+  const pin=new T.Mesh(new T.CylinderGeometry(.035,.035,.45,8),mat(k==='D'?C.green:C.blue));pin.rotation.x=Math.PI/2;pin.position.z=.22;g.add(pin);
+  const head=new T.Mesh(new T.SphereGeometry(k==='D'?.17:.13,16,12),mat(k==='D'?C.yel:C.blue));head.position.z=.47;g.add(head);
+  spin.add(g);W.pick(g,X[k]);
+  W.tag('c'+k,e+' '+n,k==='D'?'y':'',()=>head.getWorldPosition(V()),()=>{const w=head.getWorldPosition(V()),n2=w.clone().normalize();return n2.dot(W.cam.position.clone().sub(w))>0;});});
+/* links between cities */
+const E=[['D','N'],['D','L'],['D','T'],['D','S'],['D','A'],['L','N'],['T','S'],['A','N']];
+const linkM={on:mat(C.blue,{emissive:0x1d3f8a,opacity:.9}),bad:mat(C.red,{emissive:0x5a1408,opacity:.9}),old:mat(C.grey,{opacity:.7})};
+const links={};
+E.forEach(([a,b])=>{const pts=M.arc(P[a],P[b],R);const m=new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(pts),64,.035,6),linkM.on.clone());m.userData.own=0;spin.add(m);links[a+b]={m,pts,t:W.track(m)};});
+const path=(a,b)=>{const l=links[a+b]||links[b+a];const p=l.pts.map(v=>v.clone());return links[a+b]?p:p.reverse();};
+const linkSet=(on,kind,which)=>E.forEach(([a,b])=>{const l=links[a+b],sel=!which||which.includes(a+b);W.set(l.t,null,null,on&&sel?1:0);if(on&&sel)l.m.material.color.setHex(kind==='bad'?C.red:kind==='old'?C.grey:C.blue);});
+/* satellites on a ring */
+const sats=new T.Group();scene.add(sats);[0,2.1,4.2].forEach(a=>{const s=new T.Group();const b=new T.Mesh(new T.BoxGeometry(.25,.25,.25),mat(C.white));s.add(b);
+  [-1,1].forEach(d=>{const p=new T.Mesh(new T.BoxGeometry(.5,.02,.22),mat(C.blue,{metalness:.3}));p.position.x=d*.38;s.add(p);});s.position.set(Math.cos(a)*6.3,Math.sin(a)*1.2,Math.sin(a)*6.3);sats.add(s);});
+sats.rotation.z=.35;const tS=W.track(sats);W.pick(sats,{t:'🛰️ স্যাটেলাইট',d:'মহাকাশের স্যাটেলাইট আর সমুদ্রের নিচের ক্যাবল মিলে পুরো পৃথিবীকে যুক্ত রাখে।'});
+/* globe orientation: face a lat/lon toward the camera */
+let wantSpin=0,wantTilt=.3,autoSpin=0;
+function face(lat,lon){const p=M.ll(lat,lon,1);wantSpin=-Math.atan2(p.x,p.z);wantTilt=lat*Math.PI/180*.8;autoSpin=0;}
+W.tick((dt,now,k)=>{if(autoSpin)wantSpin+=dt*autoSpin*W.spd();let d=wantSpin-spin.rotation.y;d=Math.atan2(Math.sin(d),Math.cos(d));spin.rotation.y+=d*k;tilt.rotation.x+=(wantTilt-tilt.rotation.x)*k;sats.rotation.y+=dt*.25*W.spd();});
+W.poses={near:[V(0,1,14),V(0,.3,0)],mid:[V(0,1.5,17),V(0,0,0)],far:[V(0,2,21),V(0,0,0)],all:[V(0,2,21),V(0,0,0)]};
+W.tag('vill','🏡 পুরো পৃথিবী এখন একটা গ্রাম!','g big',()=>V(0,R*tilt.scale.y+1.2,0));
+const cityTags=['cD','cL','cN','cT','cS','cA'];
+const send=(a,b,o)=>W.send(path(a,b),Object.assign({parent:spin,r:.13},o||{}));
+function base(){linkSet(false);W.set(tE,null,1,1);W.set(tS,null,1,0);parts3('');}
+const S3=[
+ {m:'পৃথিবীর বিভিন্ন দেশে মানুষ থাকে। একসময় তারা ছিল একে অপরের থেকে অনেক <b>দূরে</b>, যোগাযোগ করা ছিল কঠিন। পৃথিবীটা আঙুল দিয়ে ঘুরিয়ে দেখো, শহরের পিনে টাচ করো।',f:1,
+  go(){base();face(25,40);autoSpin=.12;W.fly('far');W.tags(cityTags);}},
+ {m:'আগে ঢাকা থেকে লন্ডনে খবর পাঠাতে <b>চিঠি ✉️</b> লিখতে হতো। জাহাজে চড়ে চিঠি পৌঁছাতে লাগতো <b>কয়েক সপ্তাহ</b>! (দেখো চিঠি কত ধীরে যাচ্ছে)',f:1,
+  go(){base();face(38,45);W.fly('near');W.tags(['cD','cL']);linkSet(true,'old',['DL']);W.note('⏳ চিঠি পৌঁছাতে: কয়েক সপ্তাহ');
+   W.later(600,()=>send('D','L',{emoji:'✉️',dur:6000,color:C.grey}));}},
+ {m:'এখন সব দেশ <b>ইন্টারনেট</b> দিয়ে যুক্ত: সমুদ্রের নিচের ক্যাবল আর স্যাটেলাইট 🛰️। এই সংযোগকে বলে <b>কানেকটিভিটি</b>, এটাই বিশ্বগ্রামের <b>মেরুদণ্ড</b>। দেখো, তথ্য সব দিকে ছুটছে।',f:2,
+  go(){base();face(20,60);autoSpin=.1;W.fly('far');W.tags(cityTags);W.set(tS,null,1,1);parts3('cn');
+   E.forEach(([a,b],i)=>W.later(i*180,()=>linkSet(true,'on',E.slice(0,i+1).map(e=>e[0]+e[1]))));
+   const go=()=>{E.forEach(([a,b],i)=>W.later(i*150,()=>send(a,b,{dur:900,r:.09,sound:i===0})));W.later(1700,go);};W.later(1500,go);}},
+ {m:'ঢাকা থেকে নিউইয়র্কে মেসেজ 💬 গেলো <b>এক সেকেন্ডেরও কম</b> সময়ে, উত্তরও চলে এলো সাথে সাথে! দূরত্ব আর বাধা নয়।',f:2,
+  go(){base();linkSet(true,'on');face(50,10);W.fly('mid');W.tags(['cD','cN']);W.note('⚡ সময়: ১ সেকেন্ডেরও কম');
+   W.later(900,()=>send('D','N',{emoji:'💬',dur:800,done(){W.later(250,()=>send('N','D',{emoji:'👍',dur:800}));}}));}},
+ {m:'বিশ্বগ্রাম গড়তে <b>৫টি উপাদান</b> লাগে: হার্ডওয়্যার, সফটওয়্যার, কানেকটিভিটি, ডেটা আর মানুষের সক্ষমতা। একটা একটা করে ঢাকায় আসছে, নিচের বোতামে টাচ করে পড়ো।',f:3,
+  go(){base();linkSet(true,'on');face(25,70);W.fly('mid');W.tags(['cD']);
+   const ks=['hw','sw','cn','dt','hc'],ic=['💻','🧩','🌐','📊','🧑‍🎓'],fr=['N','L','T','S','A'];
+   ks.forEach((k,i)=>W.later(400+i*800,()=>{parts3(k,ks.slice(0,i));send(fr[i],'D',{emoji:ic[i],dur:900});}));W.later(400+ks.length*800+300,()=>parts3('',ks));}},
+ {m:'এখন ঘরে বসেই বিদেশের <b>শিক্ষা 🎓</b>, <b>চিকিৎসা 🩺</b>, <b>কেনাকাটা 🛒</b>, <b>চাকরি 💼</b> আর <b>খবর 📰</b> পাওয়া যায়। সবাই একে অপরকে সেবা দিচ্ছে।',f:4,
+  go(){base();linkSet(true,'on');face(20,80);W.fly('mid');W.tags(cityTags);
+   [['L','D','🎓'],['N','D','🩺'],['T','D','🛒'],['D','S','💼'],['A','D','📰']].forEach(([a,b,t],i)=>W.later(300+i*600,()=>send(a,b,{emoji:t,dur:1300})));}},
+ {m:'তাই মনে হয় পুরো পৃথিবী <b>ছোট হয়ে</b> একটা গ্রামের মতো হয়ে গেছে, যেখানে সবাই পাশের বাড়ির মানুষের মতো কাছে। এটাই <b>বিশ্বগ্রাম</b>।',f:4,
+  go(){base();linkSet(true,'on');face(25,70);autoSpin=.25;W.fly('mid');W.tags(cityTags);W.later(700,()=>{W.set(tE,null,.6,1);IM.sfx('zout');W.tags(cityTags.concat('vill'));});}},
+ {m:'তবে সাবধান! বিশ্বগ্রামের কিছু <b>অসুবিধাও</b> আছে: সাইবার অপরাধ 🦠, ব্যক্তিগত তথ্য চুরি 🕵️, ইন্টারনেট আসক্তি আর যাদের ইন্টারনেট নেই তারা পিছিয়ে পড়ে।',f:5,
+  go(){base();linkSet(true,'on');linkSet(true,'bad',['DN','TS','LN']);face(30,40);W.fly('far');W.tags(cityTags);W.note('⚠️ সাইবার অপরাধ, তথ্য চুরি');document.querySelector('#w3 .note3').classList.add('r');
+   [['N','D','🦠'],['T','S','🕵️'],['L','N','🦠']].forEach(([a,b,t],i)=>W.later(400+i*600,()=>send(a,b,{emoji:t,dur:1500,color:C.red})));}}];
+W.onReset(()=>{const n=document.querySelector('#w3 .note3');n&&n.classList.remove('r');});
+IM3.steps(W,S3,{flow:'#fm',interval:5200});
+}
 </script>

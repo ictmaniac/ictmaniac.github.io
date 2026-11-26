@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=10">
+<link rel="stylesheet" href="../../a/im.css?v=11">
 <style>
 svg.scene .seg{stroke:#fff;stroke-width:1.5}
 svg.scene .gene{fill:#F39C12}
@@ -33,6 +33,11 @@ svg.scene .shock{font-size:18px;opacity:0}
   </header>
   <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
   <section class="card" id="main">
+    <div class="v3" id="v3">
+      <div class="fmap" id="fm"><div class="st" data-k="1"><b>①</b>জিন খোঁজা</div><span class="ar">›</span><div class="st" data-k="2"><b>②</b>কাটা</div><span class="ar">›</span><div class="st" data-k="3"><b>③</b>জোড়া</div><span class="ar">›</span><div class="st" data-k="4"><b>④</b>ঢোকানো</div><span class="ar">›</span><div class="st" data-k="5"><b>⑤</b>ইনসুলিন</div></div>
+      <div id="w3"></div>
+    </div>
+    <div id="old2d" hidden>
     <div class="sbox">
     <svg class="scene" id="sv" viewBox="0 0 360 230">
       <g id="chain"></g>
@@ -53,6 +58,7 @@ svg.scene .shock{font-size:18px;opacity:0}
       <text id="ins" class="lbl hide" x="110" y="132" style="fill:#D35400">💉 ইনসুলিন তৈরি হচ্ছে!</text>
       <text id="tag" class="lbl" x="180" y="122" style="fill:var(--signal)"></text>
     </svg>
+    </div>
     </div>
     <div class="parts" id="parts"><button data-k="re" data-x="re">✂️ রেস্ট্রিকশন এনজাইম</button><button data-k="lg" data-x="lg">🧴 লাইগেজ এনজাইম</button><button data-k="rd" data-x="rd">🔗 রিকম্বিনেন্ট DNA</button><button data-k="gm" data-x="gm">🌾 GMO</button></div>
   </section>
@@ -80,9 +86,16 @@ svg.scene .shock{font-size:18px;opacity:0}
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
-<script src="../../a/im.js?v=10"></script>
+<script src="../../a/im.js?v=11"></script>
+<script src="../../a/three.min.js"></script>
+<script src="../../a/im3d.js?v=11"></script>
 <script>
-const {$,say,bn}=IM;const Q=IM.seq(),sv=$('sv');
+const {$,say,bn}=IM;
+const X={dna:{t:'🧬 DNA',d:'চেইনের মতো লম্বা অণু। এর ছোট ছোট অংশই জিন।'},gene:{t:'🟧 ইনসুলিন জিন',d:'যে জিন দিয়ে জীবের বৈশিষ্ট্য বদলানো হবে, প্রথমে সেটাকে আলাদা করা হয়।'},pl:{t:'⭕ প্লাজমিড',d:'ব্যাকটেরিয়ার ভিতরের ছোট গোল DNA। এটা বাহক হিসেবে জিনকে ব্যাকটেরিয়ার ভিতরে নিয়ে যায়।'},bac:{t:'🦠 পোষক কোষ (E. coli)',d:'এই ব্যাকটেরিয়া খুব দ্রুত বংশবৃদ্ধি করে, তাই অল্প সময়ে প্রচুর ইনসুলিন পাওয়া যায়।'},
+ re:{t:'✂️ রেস্ট্রিকশন এনজাইম',d:'আণবিক কাঁচি। DNA ও প্লাজমিডকে নির্দিষ্ট জায়গায় কাটে।'},lg:{t:'🧴 লাইগেজ এনজাইম',d:'আণবিক আঠা। কাটা জিনকে প্লাজমিডের সাথে জোড়া লাগায়।'},rd:{t:'🔗 রিকম্বিনেন্ট DNA',d:'দুই উৎসের DNA জোড়া লাগিয়ে তৈরি নতুন DNA। ১৯৭২ সালে পল বার্গ প্রথম তৈরি করেন।'},gm:{t:'🌾 GMO',d:'Genetically Modified Organism: জিন বদলে তৈরি নতুন বৈশিষ্ট্যের জীব। স্বাস্থ্য ও পরিবেশে প্রভাব নিয়ে বিতর্ক আছে।'}};
+IM.tapx($('parts'),X);
+function old2D(){
+const Q=IM.seq(),sv=$('sv');
 const CH=['🔵 কোষ','নিউক্লিয়াস','ক্রোমোজোম','DNA','জিন'];
 $('chain').innerHTML=CH.map((t,i)=>`<text class="chain" id="ch${i}" x="${36+i*72}" y="18">${t}</text>`+(i<4?`<text class="chain" x="${72+i*72}" y="18">→</text>`:'')).join('');
 const COL=['#5DADE2','#48C9B0'];$('dna').innerHTML=Array.from({length:10},(_,i)=>i===4||i===5?'':`<rect class="seg" x="${20+i*18}" y="62" width="18" height="16" rx="2" fill="${COL[i%2]}"/>`).join('');
@@ -110,9 +123,7 @@ const S=[
  {m:'প্রতিটা ব্যাকটেরিয়া এখন ছোট্ট কারখানা: মানুষের <b>ইনসুলিন 💉</b> তৈরি করছে! একইভাবে GM শস্য বা নতুন বৈশিষ্ট্যের জীব (<b>GMO</b>) তৈরি হয়।',s:{gIn:1,cut:1,rec:1,inB:1,col:8,ins:1},p:'gm',f(){const go=()=>{MP.forEach(([x,y],i)=>Q.later(i*120,()=>IM.emit(sv,[[x+16,y+9],[110,128]],'💉',{r:9,fs:10,dur:800})));Q.later(1400,go);};go();}}];
 function render(k){const s=S[k];Q.bump();sv.querySelectorAll('.pk').forEach(e=>e.remove());chain(-1);state(s.s);parts(s.p||'',[]);s.f();say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
 var player=IM.player({count:()=>S.length,show:render,interval:4200,swipe:$('sv')});
-const X={dna:{t:'🧬 DNA',d:'চেইনের মতো লম্বা অণু। এর ছোট ছোট অংশই জিন।'},gene:{t:'🟧 ইনসুলিন জিন',d:'যে জিন দিয়ে জীবের বৈশিষ্ট্য বদলানো হবে, প্রথমে সেটাকে আলাদা করা হয়।'},pl:{t:'⭕ প্লাজমিড',d:'ব্যাকটেরিয়ার ভিতরের ছোট গোল DNA। এটা বাহক হিসেবে জিনকে ব্যাকটেরিয়ার ভিতরে নিয়ে যায়।'},bac:{t:'🦠 পোষক কোষ (E. coli)',d:'এই ব্যাকটেরিয়া খুব দ্রুত বংশবৃদ্ধি করে, তাই অল্প সময়ে প্রচুর ইনসুলিন পাওয়া যায়।'},
- re:{t:'✂️ রেস্ট্রিকশন এনজাইম',d:'আণবিক কাঁচি। DNA ও প্লাজমিডকে নির্দিষ্ট জায়গায় কাটে।'},lg:{t:'🧴 লাইগেজ এনজাইম',d:'আণবিক আঠা। কাটা জিনকে প্লাজমিডের সাথে জোড়া লাগায়।'},rd:{t:'🔗 রিকম্বিনেন্ট DNA',d:'দুই উৎসের DNA জোড়া লাগিয়ে তৈরি নতুন DNA। ১৯৭২ সালে পল বার্গ প্রথম তৈরি করেন।'},gm:{t:'🌾 GMO',d:'Genetically Modified Organism: জিন বদলে তৈরি নতুন বৈশিষ্ট্যের জীব। স্বাস্থ্য ও পরিবেশে প্রভাব নিয়ে বিতর্ক আছে।'}};
-IM.tapx(sv,X);IM.tapx($('parts'),X);
+IM.tapx(sv,X);player.reset();}
 IM.compare($('cx0'),['','সাধারণ ফসল','GM ফসল'],[
  ['রোগ-পোকা','সহজে আক্রান্ত হয়','প্রতিরোধী করা যায়','পোকা মারার জিন বসিয়ে কীটনাশক কম লাগে।'],
  ['ফলন','স্বাভাবিক','বেশি ও দ্রুত','শস্যের বৃদ্ধি ত্বরান্বিত করা যায়।'],
@@ -129,7 +140,90 @@ IM.mcq($('quiz6'),[
  {q:'কাটা জিন জোড়া লাগায় কোনটি?',o:['লাইগেজ এনজাইম','প্লাজমিড','E. coli','হিলিয়াম'],a:0,w:'লাইগেজ হলো আণবিক আঠা।'},
  {q:'প্রথম রিকম্বিনেন্ট DNA তৈরি করেন—',o:['রিচার্ড ফাইনম্যান','পল বার্গ','ম্যাকলুহান','রে অ্যালিংটন'],a:1,w:'১৯৭২ সালে পল বার্গ।'},
  {q:'জীবের বৈশিষ্ট্য বহন করে কোনটি?',o:['কোষপ্রাচীর','জিন','রক্ত','হাড়'],a:1,w:'জিন হলো DNA এর অংশ যা বৈশিষ্ট্য বহন করে।'}]);
-player.reset();
+const S3=[
+ 'প্রাণী বা উদ্ভিদের ক্ষুদ্রতম একক <b>কোষ</b>। কোষের ভিতরে <b>নিউক্লিয়াস</b>, তার ভিতরে <b>ক্রোমোজোম</b> আর চেইনের মতো <b>DNA</b> (পেঁচানো সিঁড়ির মতো)। DNA এর ছোট ছোট অংশ হলো <b>জিন</b>। জিনই বৈশিষ্ট্য বহন করে। ক্যামেরা এখন কোষের ভিতরে ঢুকছে…',
+ 'কাছ থেকে দেখো: DNA এর মাঝের <b>হলুদ অংশটা ইনসুলিন জিন</b>। ডায়াবেটিস রোগীর শরীরে ইনসুলিন কম তৈরি হয়। লক্ষ্য: এই জিন দিয়ে প্রচুর ইনসুলিন বানানো।',
+ '<b>রেস্ট্রিকশন এনজাইম ✂️</b> (আণবিক কাঁচি) দিয়ে DNA এর দুই জায়গায় কাটা হলো (লাল আলো)। হলুদ <b>ইনসুলিন জিন আলাদা হয়ে</b> উপরে উঠে গেলো।',
+ 'নিচে একটা <b>ব্যাকটেরিয়া</b> (সবুজ)। তার ভিতরে থাকে ছোট্ট গোল DNA, নাম <b>প্লাজমিড</b> (নীল আংটি)। প্লাজমিড বের করে <b>সেই একই কাঁচি</b> দিয়ে কাটা হলো, উপরে একটা ফাঁক তৈরি হলো।',
+ 'জিনটা উড়ে গিয়ে প্লাজমিডের <b>ফাঁকে বসলো</b>। <b>লাইগেজ এনজাইম 🧴</b> (আণবিক আঠা) দিয়ে জোড়া লাগানো হলো (হলুদ আলো)। তৈরি হলো <b>রিকম্বিনেন্ট DNA</b>!',
+ 'রিকম্বিনেন্ট DNA কে তাপ বা <b>ইলেকট্রিক শক ⚡</b> দিয়ে পোষক কোষে (<b>E. coli</b> ব্যাকটেরিয়া) ঢোকানো হলো। এখন ব্যাকটেরিয়ার ভিতরে মানুষের ইনসুলিন জিন!',
+ 'ব্যাকটেরিয়া খুব দ্রুত <b>বংশবৃদ্ধি</b> করে: ১ → ২ → ৪ → ৮… প্রতিটা নতুন ব্যাকটেরিয়ার ভিতরেও <b>হলুদ রিং</b> (ইনসুলিন জিন) আছে!',
+ 'প্রতিটা ব্যাকটেরিয়া এখন ছোট্ট কারখানা: মানুষের <b>ইনসুলিন 💉</b> (হলুদ দানা) তৈরি করছে! পুরো ছবিতে দেখো, ধাপগুলো উপর থেকে নিচে সাজানো। একইভাবে GM শস্য বা নতুন বৈশিষ্ট্যের জীব (<b>GMO</b>) তৈরি হয়।'];
+/* ---------- 3D scene (falls back to the 2D scene above on phones without WebGL) ---------- */
+const W=IM3.world($('w3'));
+if(!W){$('v3').hidden=true;$('old2d').hidden=false;old2D();}else{
+const {T,V,C,mat,scene}=W, M=IM3;
+const parts3=(on,done)=>$('parts').querySelectorAll('button').forEach(b=>{b.classList.toggle('on',b.dataset.k===on);b.classList.toggle('done',(done||[]).includes(b.dataset.k));});
+const DNA_Y=5.5;
+const L=M.helix(-5,-1,C.blue,[C.white,C.blueL]),Rr=M.helix(1,5,C.blue,[C.white,C.blueL]),G=M.helix(-1,1,C.yel,[C.yel,C.yelL]);
+const dna=new T.Group();dna.position.set(0,DNA_Y,0);scene.add(dna);
+const geneWrap=new T.Group();geneWrap.add(G);dna.add(L,Rr,geneWrap);
+const tL=W.track(L),tR=W.track(Rr),tG=W.track(geneWrap),tD=W.track(dna);
+W.pick(L,X.dna);W.pick(Rr,X.dna);W.pick(G,X.gene);
+const cell=new T.Group();cell.position.set(0,DNA_Y,0);scene.add(cell);
+cell.add(new T.Mesh(new T.SphereGeometry(3.4,40,30),mat(0xBFD7FF,{opacity:.35,depthWrite:false})));
+cell.add(new T.Mesh(new T.SphereGeometry(1.3,32,24),mat(0x7FA8F5,{opacity:.55,depthWrite:false})));
+const tC=W.track(cell);
+function bacterium(){const g=new T.Group();const b=new T.Mesh(new T.SphereGeometry(1,32,20),mat(C.greenL,{opacity:.45,depthWrite:false}));
+  b.scale.set(1.6,.85,.85);g.add(b);const e=new T.Mesh(new T.SphereGeometry(1.02,24,16),new T.MeshBasicMaterial({color:C.green,wireframe:true,opacity:.12}));e.scale.copy(b.scale);g.add(e);return g;}
+const BAC=V(-3.2,-1.5,0),PLA=V(3.2,-1.5,0);
+const bac=bacterium();bac.scale.setScalar(1.7);bac.position.copy(BAC);scene.add(bac);const tB=W.track(bac);W.pick(bac,X.bac);
+const plasmid=new T.Group();plasmid.position.copy(BAC);scene.add(plasmid);
+const RAD=1.1,TUBE=.16,GAP=.9;let gapNow=0,gapWant=0;
+const ring=new T.Mesh(new T.TorusGeometry(RAD,TUBE,10,60,Math.PI*2),mat(C.blue));plasmid.add(ring);
+const ins=new T.Mesh(new T.TorusGeometry(RAD,TUBE*1.15,10,16,GAP),mat(C.yel,{emissive:0x553f00}));ins.rotation.z=Math.PI/2-GAP/2;plasmid.add(ins);
+const tP=W.track(plasmid),tI=W.track(ins);tI.mats.forEach(m=>m[1]=1);W.pick(plasmid,X.pl);
+const glow=new T.Mesh(new T.TorusGeometry(RAD,.45,8,60),new T.MeshBasicMaterial({color:C.yel,opacity:0,transparent:true,depthWrite:false}));plasmid.add(glow);
+function setGap(g){ring.geometry.dispose();ring.geometry=new T.TorusGeometry(RAD,TUBE,10,60,Math.PI*2-g);ring.rotation.z=Math.PI/2+g/2;}
+const flashM=new T.MeshBasicMaterial({color:C.red,opacity:0,transparent:true,depthWrite:false});
+[-1,1].forEach(x=>{const m=new T.Mesh(new T.RingGeometry(.9,1.25,40),flashM);m.rotation.y=Math.PI/2;m.position.x=x;dna.add(m);});
+const sparks=new T.Group();scene.add(sparks);const sparkM=new T.LineBasicMaterial({color:C.yel,transparent:true,opacity:0});
+for(let i=0;i<7;i++){const pts=[],a=i/7*Math.PI*2;for(let j=0;j<5;j++){const r=3.4-j*.35,b=a+(j%2?.18:-.18);pts.push(V(Math.cos(b)*r*1.3,Math.sin(b)*r*.8,0));}
+  sparks.add(new T.Line(new T.BufferGeometry().setFromPoints(pts),sparkM));}
+sparks.position.copy(BAC);
+const SLOT=[[-4.2,-7],[-1.4,-7],[1.4,-7],[4.2,-7],[-4.2,-9.6],[-1.4,-9.6],[1.4,-9.6],[4.2,-9.6]].map(([x,y])=>V(x,y,0));
+const colony=SLOT.map(p=>{const g=bacterium();g.scale.setScalar(.85);g.add(new T.Mesh(new T.TorusGeometry(.42,.08,8,30),mat(C.yel)));
+  const r2=new T.Mesh(new T.TorusGeometry(.42,.081,8,30,Math.PI*1.4),mat(C.blue));r2.rotation.z=1.2;g.add(r2);g.position.copy(SLOT[0]);scene.add(g);W.pick(g,X.bac);return W.track(g,{home:p});});
+const insulin=[],insG=new T.IcosahedronGeometry(.16,0),insM=mat(C.yel,{emissive:0x6b5200});
+for(let i=0;i<40;i++){const m=new T.Mesh(insG,insM.clone());m.visible=false;scene.add(m);insulin.push({m,t:Math.random()*3,s:SLOT[i%8]});}
+let insOn=false;
+W.tag('cell','মানুষের কোষ','',()=>V(0,DNA_Y+3.4,0));W.tag('nuc','নিউক্লিয়াস','',()=>V(0,DNA_Y+1.3,0));W.tag('dna','DNA','',()=>V(-3.5,DNA_Y+.9,0));
+W.tag('gene','ইনসুলিন জিন','y',()=>geneWrap.getWorldPosition(V()).add(V(0,.9,0)));W.tag('pl','প্লাজমিড','',()=>plasmid.getWorldPosition(V()).add(V(0,RAD*plasmid.scale.y+.3,0)));
+W.tag('bac','ব্যাকটেরিয়া (E. coli)','g',()=>bac.getWorldPosition(V()).add(V(0,1.6,0)));W.tag('rec','রিকম্বিনেন্ট DNA','y',()=>plasmid.getWorldPosition(V()).add(V(0,-RAD*plasmid.scale.y-.2,0)));
+W.tag('col','ব্যাকটেরিয়ার কলোনি','g',()=>V(0,-5.7,0));W.tag('ins','ইনসুলিন 💉','y',()=>V(0,-3.9,0));
+W.poses={cell:[V(3,DNA_Y+2,10),V(0,DNA_Y,0)],dna:[V(2.5,DNA_Y+2.5,9.5),V(0,DNA_Y,0)],gene:[V(1.2,DNA_Y+1.2,4.8),V(0,DNA_Y+.2,0)],
+  cut:[V(1.5,DNA_Y+2.5,7),V(0,DNA_Y+.6,0)],bac:[V(0,0,16),V(0,-1.5,0)],join:[V(2.5,3.5,19),V(1.2,2.6,0)],
+  shock:[V(-1.5,.5,8),V(-3.2,-1.5,0)],colony:[V(0,-6,15),V(0,-8,0)],all:[V(0,-1,30),V(0,-1.5,0)]};
+W.onReset(()=>{insOn=false;flashM.opacity=0;sparkM.opacity=0;glow.material.opacity=0;});
+const set=W.set;
+const dnaWhole=cut=>{set(tL,V(cut?-.7:0,0,0));set(tR,V(cut?.7:0,0,0));};
+const colonyAt=n=>colony.forEach((c,i)=>set(c,i<n?c.home:SLOT[0],i<n?.85:.2,i<n?1:0));
+function base(k){set(tC,null,1,k===0?1:0);set(tD,null,k===0?.2:1,1);dnaWhole(k>=2);set(tG,k>=2?V(0,1.9,0):V(0,0,0),1,1);
+  set(tB,BAC,1.7,k>=3?1:0);set(tP,k>=5?BAC:k>=3?PLA:BAC,k>=5?.75:k>=3?1.4:.75,k>=3?1:0);gapWant=k>=3?GAP:0;set(tI,null,k>=4?1:.01,k>=4?1:0);
+  if(k>=6){set(tB,SLOT[0],.85,1);set(tP,SLOT[0],.38,1);}colonyAt(k>=6?8:0);}
+const ST=[
+ {f:1,go(){base(0);W.fly('cell',true);W.tags(['cell','nuc']);parts3('');W.later(1700,()=>{set(tC,null,1.6,0);set(tD,null,1);W.fly('dna');W.tags(['dna','gene']);});}},
+ {f:1,go(){base(1);W.fly('gene');W.tags(['gene']);parts3('');}},
+ {f:2,go(){base(1);W.fly('cut');W.tags(['gene','dna']);parts3('re');W.later(500,()=>{flashM.opacity=1;IM.sfx('pop');});W.later(1100,()=>{dnaWhole(true);set(tG,V(0,1.9,0));IM.sfx('whoosh');});}},
+ {f:2,go(){base(2);set(tB,BAC,1.7,1);set(tP,BAC,.75,1);W.fly('bac');W.tags(['bac','pl']);parts3('re');W.later(1000,()=>{set(tP,PLA,1.4,1);IM.sfx('whoosh');});W.later(2000,()=>{gapWant=GAP;IM.sfx('pop');});}},
+ {f:3,go(){base(3);W.fly('join');W.tags(['gene','pl']);parts3('lg',['re']);const top=PLA.clone().add(V(0,RAD*1.4,0)).sub(dna.position);
+   W.later(400,()=>{set(tG,top,.45,1);IM.sfx('whoosh');});W.later(1900,()=>{set(tG,top,.45,0);set(tI,null,1,1);glow.material.opacity=.55;IM.sfx('ok');W.tags(['rec']);parts3('rd',['re','lg']);});}},
+ {f:4,go(){base(4);set(tG,null,.45,0);W.fly('shock');W.tags(['bac','rec']);parts3('rd',['re','lg']);W.later(600,()=>{sparkM.opacity=1;IM.sfx('zin');});W.later(1400,()=>set(tP,BAC,.75,1));W.later(2300,()=>{sparkM.opacity=0;});}},
+ {f:4,go(){base(5);set(tG,null,.45,0);W.fly('colony');W.tags(['col']);parts3('',['re','lg','rd']);colonyAt(0);set(tB,SLOT[0],.85,1);set(tP,SLOT[0],.38,1);
+   [[700,2],[1500,4],[2300,8]].forEach(([t,n])=>W.later(t,()=>{colonyAt(n);IM.sfx('pop');}));}},
+ {f:5,go(){base(6);set(tG,null,.45,0);W.fly('all');W.tags(['dna','gene','col','ins']);parts3('gm',['re','lg','rd']);W.later(600,()=>{insOn=true;});}}
+];
+W.tick((dt,now,k)=>{
+  if(Math.abs(gapNow-gapWant)>.004){gapNow+=(gapWant-gapNow)*k;setGap(gapNow);}
+  [L,Rr,G].forEach(h=>h.rotation.x+=dt*.5*W.spd());plasmid.rotation.y=Math.sin(now/1400)*.35;bac.rotation.y=Math.sin(now/1700)*.25;
+  if(flashM.opacity>0)flashM.opacity=Math.max(0,flashM.opacity-dt*.8);
+  if(glow.material.opacity>0)glow.material.opacity=Math.max(0,glow.material.opacity-dt*.35);
+  if(sparkM.opacity>0){sparks.rotation.z+=dt*3;sparks.visible=Math.random()>.25;}
+  insulin.forEach(p=>{p.m.visible=insOn;if(!insOn)return;p.t+=dt*W.spd()*.6;if(p.t>3)p.t=0;const u=p.t/3;
+    p.m.position.set(p.s.x+Math.sin(p.t*3+p.s.y)*.5,p.s.y+.4+u*3.6,Math.cos(p.t*2+p.s.x)*.6);p.m.material.opacity=1-u;p.m.rotation.set(p.t,p.t*1.3,0);});
+});
+IM3.steps(W,S3.map((m,i)=>Object.assign({m},ST[i])),{flow:'#fm',interval:5200});
+}
 </script>
 </body>
 </html>

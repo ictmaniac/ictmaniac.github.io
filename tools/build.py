@@ -7,7 +7,7 @@
 
 src/chN/<code>.html  ->  p/<code>/index.html   (the live link never changes)
 
-A source file starts with front-matter (ch, kit, title, eyebrow, h1, lead), then an
+A source file starts with front-matter (ch, kit, three, title, eyebrow, h1, lead; three: 1 adds the 3D kit), then an
 optional <style>, the page body, and the page <script>. A file without front-matter is a
 complete page and is copied as it is.
 """
@@ -15,7 +15,7 @@ import sys, os, re, glob
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC, OUT = os.path.join(ROOT, 'src'), os.path.join(ROOT, 'p')
-V = '10'  # bump after changing a/im.css or a/im.js so phones load the new kit
+V = '11'  # bump after changing a/im.css or a/im.js so phones load the new kit
 
 FONTS = '''<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,6 +62,7 @@ def page(txt):
             + HEADER.format(ch=meta.get('ch', '৩'), eyebrow=meta['eyebrow'], h1=meta['h1'], lead=meta['lead'])
             + (EXPL if kit else '') + body.rstrip() + '\n' + FOOT
             + (DOCK if kit else '') + f'<script src="../../a/im.js?v={V}"></script>\n'
+            + (f'<script src="../../a/three.min.js"></script>\n<script src="../../a/im3d.js?v={V}"></script>\n' if meta.get('three') == '1' else '')
             + script.strip() + '\n</body>\n</html>\n')
 
 
