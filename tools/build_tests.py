@@ -25,7 +25,7 @@ import sys, os, json, glob, html
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC, OUT = os.path.join(ROOT, 'src', 'tests'), os.path.join(ROOT, 'p')
-V = '3'  # bump after changing a/mt.css, a/mt.js or a/lb.js
+V = '4'  # bump after changing a/mt.css, a/mt.js or a/lb.js
 LB = 'j7fmpkps'  # leaderboard page code (never change)
 LB_SETUP = '7cgxvz62'  # one-time Google Sheet setup guide for mira
 EXAMS = os.path.join(ROOT, 'src', 'exams')

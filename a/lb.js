@@ -14,6 +14,8 @@
     p = String(p || '').replace(/[০-৯]/g, function (d) { return BN.indexOf(d); }).replace(/[\s\-()]/g, '').replace(/^\+?88/, '');
     return /^01[3-9]\d{8}$/.test(p) ? p : '';
   }
+  /* wake the Google script up early so the result is saved quickly at the end */
+  try { setTimeout(function () { fetch(URL + '?ping=1').catch(function () {}); }, 2000); } catch (e) {}
   var series = D.series || 'book', lbHref = '../' + PAGE + '/?s=' + encodeURIComponent(series);
 
   /* 1. form in the intro card */

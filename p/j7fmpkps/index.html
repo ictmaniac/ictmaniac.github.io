@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="../../a/mt.css?v=3">
+<link rel="stylesheet" href="../../a/mt.css?v=4">
 <style>
 select{font:inherit;font-weight:600;width:100%;min-height:48px;border-radius:12px;border:2px solid var(--line);background:#fff;color:var(--ink);padding:8px 10px}
 select:focus{outline:none;border-color:var(--blue)}
@@ -48,7 +48,7 @@ select:focus{outline:none;border-color:var(--blue)}
   <p class="lbnote" style="text-align:center">নামের পাশে মোবাইল নম্বরের শুধু শেষ ৩টা সংখ্যা। প্রত্যেকের সবচেয়ে ভালো নম্বর ধরা হয়। নম্বর সমান হলে কম সময় যার, সে উপরে। প্রতি মিনিটে আপডেট হয়।</p>
   <footer><a id="hub" href="../67gsxrfm/" style="color:inherit">📚 সব টেস্ট</a> · © ICT Maniac</footer>
 </div>
-<script src="../../a/lb-config.js?v=3"></script>
+<script src="../../a/lb-config.js?v=4"></script>
 <script>
 (function () {
   var $ = function (i) { return document.getElementById(i); };
@@ -56,7 +56,18 @@ select:focus{outline:none;border-color:var(--blue)}
   function bn(n) { return String(n).replace(/\d/g, function (d) { return BN[d]; }); }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function clock(s) { var h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = ('0' + s % 60).slice(-2); return bn(h ? h + ':' + ('0' + m).slice(-2) + ':' + x : m + ':' + x); }
-  function store(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+  var mem = {}, seq = 0;
+  function api(qs) { return fetch(URL + '?' + qs).then(function (r) { return r.json(); }); }
+  function topKey(s, t) { return 'im-lb-c|' + s + '|' + t; }
+  /* top list: memory -> phone cache (instant) -> network (fresh) */
+  function getTop(s, t) {
+    var k = topKey(s, t);
+    if (mem[k] && Date.now() - mem[k].at < 60000) return Promise.resolve(mem[k].j);
+    return api('series=' + encodeURIComponent(s) + '&test=' + encodeURIComponent(t)).then(function (j) {
+      mem[k] = { at: Date.now(), j: j }; store(k, JSON.stringify(j)); return j;
+    });
+  }
   var q = new URLSearchParams(location.search), reg = null, S = q.get('s') || 'book', T = q.get('t') || '';
   var URL = window.IM_LB_URL, me = store('im-lb-phone'), myName = store('im-lb-name');
   if (!URL) { $('board').innerHTML = '<p class="lbmsg">লিডারবোর্ড খুব শীঘ্রই চালু হবে। 🙂</p>'; return; }
@@ -76,14 +87,28 @@ select:focus{outline:none;border-color:var(--blue)}
   }
   function load() {
     fill(); setUrl();
-    $('board').innerHTML = '<p class="lbwait"><span class="spin"></span> লোড হচ্ছে…</p>';
-    fetch(URL + '?series=' + encodeURIComponent(S) + '&test=' + encodeURIComponent(T) + (me ? '&me=' + me : ''))
-      .then(function (r) { return r.json(); })
-      .then(draw, function () { $('board').innerHTML = '<p class="lbmsg">📶 লোড হয়নি। ইন্টারনেট দেখে আবার খোলো।</p>'; });
+    var my = ++seq, s = S, t = T, old = null, shown = false;
+    try { old = JSON.parse(store(topKey(s, t)) || 'null'); } catch (e) {}
+    if (mem[topKey(s, t)]) old = mem[topKey(s, t)].j;
+    if (old) { draw(old); shown = true; } else $('board').innerHTML = '<p class="lbwait"><span class="spin"></span> লোড হচ্ছে…</p>';
+    getTop(s, t).then(function (j) { if (my === seq) { draw(j); showMine(my, s, t); } },
+      function () { if (my === seq && !shown) $('board').innerHTML = '<p class="lbmsg">📶 লোড হয়নি। ইন্টারনেট দেখে আবার খোলো।</p>'; });
+    /* fetch the other view in the background so switching is instant */
+    setTimeout(function () { getTop(s, t ? '' : (t || (reg.series[s].tests[0] || {}).code || '')).catch(function () {}); }, 1500);
+  }
+  /* my own rank: separate, slower request; the list never waits for it */
+  function showMine(my, s, t) {
+    if (!me) return;
+    api('series=' + encodeURIComponent(s) + '&test=' + encodeURIComponent(t) + '&me=' + me).then(function (j) {
+      if (my !== seq || !j.me) return;
+      var m = document.querySelector('#board .mine');
+      if (m) m.textContent = 'তুমি এখন ' + bn(j.me.rank) + ' নম্বরে (' + bn(j.me.of) + ' জনের মধ্যে) · নম্বর ' + bn(j.me.s);
+    }).catch(function () {});
   }
   function draw(j) {
     var top = j.top || [], h = '';
     if (!top.length) { $('board').innerHTML = '<p class="lbmsg">এখনো কেউ জমা দেয়নি। প্রথম হও তুমি! 🚀</p>'; return; }
+    h += '<p class="mine"></p>';
     if (j.me) h += '<p class="mine">তুমি এখন ' + bn(j.me.rank) + ' নম্বরে (' + bn(j.me.of) + ' জনের মধ্যে) · নম্বর ' + bn(j.me.s) + '</p>';
     if (top.length >= 3) {
       h += '<div class="top3">' + [1, 0, 2].map(function (i) { var x = top[i];
@@ -102,7 +127,7 @@ select:focus{outline:none;border-color:var(--blue)}
   $('bOne').onclick = function () { T = T || reg.series[S].tests[0].code; load(); };
   $('test').onchange = function () { T = this.value; load(); };
   $('series').onchange = function () { S = this.value; T = ''; load(); };
-  fetch('../../a/lb-tests.json?v=3&t=' + Math.floor(Date.now() / 600000)).then(function (r) { return r.json(); }).then(function (j) { reg = j; load(); },
+  fetch('../../a/lb-tests.json?v=4&t=' + Math.floor(Date.now() / 600000)).then(function (r) { return r.json(); }).then(function (j) { reg = j; load(); },
     function () { $('board').innerHTML = '<p class="lbmsg">📶 লোড হয়নি। ইন্টারনেট দেখে আবার খোলো।</p>'; });
 })();
 </script>
