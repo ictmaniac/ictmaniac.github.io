@@ -33,11 +33,12 @@
     <span class="brand"><i>IM</i>ICT Maniac</span>
     <span class="eyebrow">নমুনা · সাউন্ড ইফেক্ট</span>
     <h1>কোন সাউন্ড কেমন লাগে?</h1>
-    <p class="lead">প্রতিটা বোতাম চেপে শুনে দেখো। এগুলো কোনো ফাইল না, ফোনেই তৈরি হয়, তাই পেজ ভারী হয় না। নিচে ছোট একটা ডেমো আছে।</p>
+    <p class="lead">প্রতিটা বোতাম চেপে শুনে দেখো। ইয়ারফোনে শুনলে সবচেয়ে ভালো বোঝা যায়। দুই ধরনের সাউন্ড আছে, পছন্দেরটা বেছে নাও। নিচে ছোট একটা ডেমো আছে।</p>
   </header>
   <section class="card">
     <h2>আওয়াজ কতটুকু?</h2>
-    <div class="vol"><button class="mute" id="mute">🔊</button><input type="range" id="vol" min="0" max="1" step="0.05" value="0.4"></div>
+    <div class="vol"><button class="mute" id="mute">🔊</button><input type="range" id="vol" min="0" max="1" step="0.05" value="0.5"></div>
+    <p style="margin:0 0 8px">সাউন্ডের ধরন:</p><div class="qz" id="th" style="margin:0 0 14px"><button data-t="mar" class="ok">🪵 নরম কাঠ (মারিম্বা)</button><button data-t="bell">🔔 কাচের ঘণ্টা</button></div>
     <div class="sg" id="sg"></div>
   </section>
   <section class="card">
@@ -50,28 +51,50 @@
   </section>
 </div>
 <script>
-let ac,master,vol=0.4,muted=false;
-function A(){if(!ac){ac=new (window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.connect(ac.destination);}master.gain.value=muted?0:vol;if(ac.state==='suspended')ac.resume();return ac;}
-function tone(f1,f2,dur,type='sine',g=.5,delay=0){const a=A(),t=a.currentTime+delay,o=a.createOscillator(),v=a.createGain();o.type=type;o.frequency.setValueAtTime(f1,t);if(f2!==f1)o.frequency.exponentialRampToValueAtTime(f2,t+dur);v.gain.setValueAtTime(0,t);v.gain.linearRampToValueAtTime(g,t+.01);v.gain.exponentialRampToValueAtTime(.001,t+dur);o.connect(v).connect(master);o.start(t);o.stop(t+dur+.05);}
-function noise(dur,f1,f2,g=.4){const a=A(),t=a.currentTime,n=a.sampleRate*dur,b=a.createBuffer(1,n,a.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1;const s=a.createBufferSource();s.buffer=b;const bp=a.createBiquadFilter();bp.type='bandpass';bp.Q.value=1.2;bp.frequency.setValueAtTime(f1,t);bp.frequency.exponentialRampToValueAtTime(f2,t+dur);const v=a.createGain();v.gain.setValueAtTime(0,t);v.gain.linearRampToValueAtTime(g,t+dur*.4);v.gain.linearRampToValueAtTime(0,t+dur);s.connect(bp).connect(v).connect(master);s.start(t);}
+let ac,master,dry,wet,vol=0.5,muted=false,theme='mar';
+function A(){if(!ac){ac=new (window.AudioContext||window.webkitAudioContext)();
+  const comp=ac.createDynamicsCompressor();comp.threshold.value=-18;comp.ratio.value=3;comp.connect(ac.destination);
+  master=ac.createGain();master.connect(comp);dry=ac.createGain();dry.connect(master);
+  const cv=ac.createConvolver(),len=ac.sampleRate*1.4,ir=ac.createBuffer(2,len,ac.sampleRate);
+  for(let c=0;c<2;c++){const d=ir.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3.2);}
+  cv.buffer=ir;wet=ac.createGain();wet.gain.value=.22;const lp=ac.createBiquadFilter();lp.type='lowpass';lp.frequency.value=4500;cv.connect(lp).connect(wet).connect(master);
+  dry.rev=cv;}
+ master.gain.value=muted?0:vol;if(ac.state==='suspended')ac.resume();return ac;}
+function out(node,pan=0,rev=1){const p=ac.createStereoPanner?ac.createStereoPanner():null;let n=node;if(p){p.pan.value=pan;n.connect(p);n=p;}n.connect(dry);if(rev){const s=ac.createGain();s.gain.value=rev;n.connect(s).connect(dry.rev);}}
+function env(g,t,peak,att,dec){g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(peak,t+att);g.gain.exponentialRampToValueAtTime(0.0001,t+att+dec);}
+// soft mallet / marimba-like note
+function mallet(f,{v=.35,dec=.5,delay=0,pan=0}={}){const a=A(),t=a.currentTime+delay,bus=a.createGain();bus.gain.value=v;const lp=a.createBiquadFilter();lp.type='lowpass';lp.frequency.value=Math.min(9000,f*6);bus.connect(lp);out(lp,pan,.8);
+ [[1,1,dec],[3.99,.18,dec*.25],[10,.05,.03]].forEach(([m,g,d])=>{const o=a.createOscillator(),e=a.createGain();o.type='sine';o.frequency.value=f*m;env(e,t,g,.004,d);o.connect(e).connect(bus);o.start(t);o.stop(t+d+.1);});}
+// glass / bell note
+function bell(f,{v=.25,dec=1.1,delay=0,pan=0}={}){const a=A(),t=a.currentTime+delay,bus=a.createGain();bus.gain.value=v;out(bus,pan,1.2);
+ [[1,1,dec],[2.76,.35,dec*.55],[5.4,.15,dec*.3],[8.93,.06,dec*.15]].forEach(([m,g,d])=>{const o=a.createOscillator(),e=a.createGain();o.type='sine';o.frequency.value=f*m;env(e,t,g,.002,d);o.connect(e).connect(bus);o.start(t);o.stop(t+d+.1);});}
+const note=(f,o)=>theme==='mar'?mallet(f,o):bell(f,o);
+let NB;function nbuf(){if(NB)return NB;const a=A(),n=a.sampleRate*1.5;NB=a.createBuffer(1,n,a.sampleRate);const d=NB.getChannelData(0);let b0=0,b1=0,b2=0;
+ for(let i=0;i<n;i++){const w=Math.random()*2-1;b0=.99765*b0+w*.099;b1=.963*b1+w*.2965;b2=.57*b2+w*1.0526;d[i]=(b0+b1+b2+w*.1848)*.18;}return NB;}
+function air(dur,f1,f2,{v=.5,p1=-.7,p2=.7,q=.9}={}){const a=A(),t=a.currentTime,s=a.createBufferSource();s.buffer=nbuf();const bp=a.createBiquadFilter();bp.type='bandpass';bp.Q.value=q;
+ bp.frequency.setValueAtTime(f1,t);bp.frequency.exponentialRampToValueAtTime(f2,t+dur);const g=a.createGain();g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(v,t+dur*.45);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+ s.connect(bp).connect(g);let n=g;if(a.createStereoPanner){const p=a.createStereoPanner();p.pan.setValueAtTime(p1,t);p.pan.linearRampToValueAtTime(p2,t+dur);g.connect(p);n=p;}n.connect(dry);const r=a.createGain();r.gain.value=.5;n.connect(r).connect(dry.rev);s.start(t);s.stop(t+dur+.05);}
+function glide(f1,f2,dur,v=.12){const a=A(),t=a.currentTime,o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(f1,t);o.frequency.exponentialRampToValueAtTime(f2,t+dur);env(g,t,v,dur*.3,dur*.7);o.connect(g);out(g,0,.8);o.start(t);o.stop(t+dur+.1);}
+function tick(f=3200,v=.25,delay=0){const a=A(),t=a.currentTime+delay,s=a.createBufferSource();s.buffer=nbuf();const bp=a.createBiquadFilter();bp.type='bandpass';bp.frequency.value=f;bp.Q.value=3;const g=a.createGain();env(g,t,v,.001,.025);s.connect(bp).connect(g);out(g,0,.2);s.start(t,Math.random());s.stop(t+.05);}
 const SND={
- step:{n:'ধাপ বদল',d:'প্রতিটা নতুন ধাপে ছোট টিক',f:()=>tone(1400,1400,.05,'sine',.35)},
- pop:{n:'কিছু আসলো',d:'নতুন জিনিস দেখা দিলে "পপ"',f:()=>tone(420,900,.09,'sine',.45)},
- whoosh:{n:'সরে যাওয়া',d:'ডেটা/প্যাকেট উড়ে গেলে "শাঁ"',f:()=>noise(.35,500,2500,.5)},
- zin:{n:'জুম ইন',d:'কাছে গিয়ে দেখলে উঠতি সুর',f:()=>{tone(300,900,.25,'triangle',.35);noise(.25,800,3000,.15)}},
- zout:{n:'জুম আউট',d:'দূরে সরে গেলে নামতি সুর',f:()=>{tone(900,300,.25,'triangle',.35);noise(.25,3000,800,.15)}},
- hl:{n:'হাইলাইট',d:'যে জায়গা বদলালো সেটা জ্বললে "ব্লিপ"',f:()=>tone(1000,1000,.07,'square',.12)},
- ok:{n:'সঠিক উত্তর',d:'কুইজে ঠিক হলে "ডিং ডিং"',f:()=>{tone(880,880,.25,'triangle',.4);tone(1320,1320,.35,'triangle',.4,.1)}},
- no:{n:'ভুল উত্তর',d:'ভুল হলে নরম "বুপ" (ভয় পাবে না)',f:()=>tone(260,170,.28,'triangle',.4)},
- done:{n:'শেষ হলো',d:'শেষ ধাপে ছোট সুর',f:()=>[523,659,784,1047].forEach((f,i)=>tone(f,f,.3,'triangle',.3,i*.11))},
- type:{n:'লেখা আসছে',d:'কোড/টেক্সট টাইপ হলে হালকা ক্লিক',f:()=>{for(let i=0;i<6;i++)tone(2000+Math.random()*600,1800,.02,'square',.06,i*.07)}}
+ step:{n:'ধাপ বদল',d:'নরম কাঠের টোকা',f:()=>{tick(2500,.12);note(1568,{v:.16,dec:.18})}},
+ pop:{n:'কিছু আসলো',d:'বুদবুদের মতো "পপ"',f:()=>{glide(320,880,.07,.22);note(1175,{v:.12,dec:.15,delay:.03})}},
+ whoosh:{n:'সরে যাওয়া',d:'বাঁ থেকে ডানে বাতাসের "শাঁ"',f:()=>air(.55,350,2400,{v:.6})},
+ zin:{n:'জুম ইন',d:'কাছে যাওয়ার উঠতি আওয়াজ',f:()=>{air(.45,300,3200,{v:.35,p1:0,p2:0,q:1.4});glide(260,780,.45,.08)}},
+ zout:{n:'জুম আউট',d:'দূরে সরার নামতি আওয়াজ',f:()=>{air(.45,3200,300,{v:.35,p1:0,p2:0,q:1.4});glide(780,260,.45,.08)}},
+ hl:{n:'হাইলাইট',d:'যে জায়গা বদলালো, ছোট সুর',f:()=>note(1319,{v:.2,dec:.3})},
+ ok:{n:'সঠিক উত্তর',d:'খুশির দুটি সুর',f:()=>{note(1047,{v:.3,dec:.5});note(1319,{v:.3,dec:.6,delay:.09});note(1568,{v:.25,dec:.8,delay:.18})}},
+ no:{n:'ভুল উত্তর',d:'নরম, ভয়ের না',f:()=>{mallet(330,{v:.3,dec:.3});mallet(262,{v:.3,dec:.45,delay:.14})}},
+ done:{n:'শেষ হলো',d:'ছোট আনন্দের সুর',f:()=>{[523,659,784,1047].forEach((f,i)=>note(f,{v:.24,dec:.9,delay:i*.1,pan:-.4+i*.27}));bell(2093,{v:.08,dec:1.4,delay:.42})}},
+ type:{n:'লেখা আসছে',d:'কিবোর্ডের হালকা টকটক',f:()=>{for(let i=0;i<7;i++)tick(1800+Math.random()*1500,.18,i*.075+Math.random()*.02)}}
 };
 const sg=document.getElementById('sg');
 for(const k in SND){const b=document.createElement('button');b.className='sb';b.innerHTML=`<b>${SND[k].n}</b><small>${SND[k].d}</small>`;b.onclick=()=>{SND[k].f();b.classList.add('on');setTimeout(()=>b.classList.remove('on'),300)};sg.appendChild(b);}
 const P=s=>SND[s].f();
+document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{theme=b.dataset.t;document.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('ok',x===b));P('hl');});
 document.getElementById('vol').oninput=e=>{vol=+e.target.value;if(master)master.gain.value=muted?0:vol;};
 document.getElementById('mute').onclick=e=>{muted=!muted;e.target.textContent=muted?'🔇':'🔊';if(master)master.gain.value=muted?0:vol;};
-document.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{const r=b.dataset.r==='1';b.classList.add(r?'ok':'no');P(r?'ok':'no');setTimeout(()=>b.classList.remove('ok','no'),700)});
+document.querySelectorAll('.qz [data-r]').forEach(b=>b.onclick=()=>{const r=b.dataset.r==='1';b.classList.add(r?'ok':'no');P(r?'ok':'no');setTimeout(()=>b.classList.remove('ok','no'),700)});
 const pk=document.getElementById('pk'),zm=document.getElementById('zm'),rows=[...document.querySelectorAll('#rows div')];
 const w=ms=>new Promise(r=>setTimeout(r,ms));
 document.getElementById('demo').onclick=async()=>{pk.style.transform='';zm.style.transform='';rows.forEach(r=>r.classList.remove('hl'));
