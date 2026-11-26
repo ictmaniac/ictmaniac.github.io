@@ -236,7 +236,7 @@ const IM = (() => {
     const nxT = nx.textContent; let k = 0, timer = null, spd = 1;
     try { const v = parseFloat(localStorage.getItem('im-speed')); if (v > 0) spd = v; } catch (e) {}
     const n = () => o.count(), gap = () => (o.interval || 1500) / spd;
-    function markSpd() { sbs.forEach(b => b.classList.toggle('sel', Math.abs(+b.dataset.s - spd) < .01)); document.documentElement.style.setProperty('--spd', spd); }
+    function markSpd() { if (window.IM && IM.setSpd) IM.setSpd(spd); sbs.forEach(b => b.classList.toggle('sel', Math.abs(+b.dataset.s - spd) < .01)); document.documentElement.style.setProperty('--spd', spd); }
     function show(prev) { o.show(k, prev); pv.disabled = k === 0; const end = k >= n() - 1; nx.disabled = false; nx.classList.toggle('again', end); nx.textContent = end ? '🔄 আবার শুরু করো' : nxT; bar.style.width = (100 * (k + 1) / n()) + '%';
       cnt.textContent = end ? 'শেষ! আবার দেখতে "আবার শুরু করো" চাপো' : timer ? 'অটো চলছে… থামাতে "থামো" চাপো' : (o.hint || 'সোয়াইপ করেও ধাপ বদলানো যায়'); }
     function countdown() { if (!tm) return; tm.style.animation = 'none'; void tm.offsetWidth; tm.style.animation = `tmfill ${gap()}ms linear forwards`; }
@@ -318,5 +318,13 @@ const IM = (() => {
         b.classList.add(ok ? 'ok' : 'no'); if (!ok) q.querySelector(`[data-j="${it.a}"]`).classList.add('ok');
         say(ok ? 'সঠিক ✓' : 'ভুল ✗', (ok ? '' : `সঠিক উত্তর: <b>${it.o[it.a]}</b>। `) + it.w, true);
         if (done === items.length) box.querySelector('.mscore').textContent = `তোমার স্কোর: ${bn(right)} / ${bn(items.length)} ${right === items.length ? '🎉' : ''}`; }); }); }
-  return { $, parse, ev, show, rows, envOf, toggles, tt, circuit, tabs, quiz01, rnd, FN, bn, reduce, say, player, codeView, tapx, moveAlong, esc, cHL, hHL, rel, fly, compare, mcq };
+
+  /* ---------- scene helpers (Ch1/2) ---------- */
+  let SPD = 1;
+  function seq() { let g = 0; return { bump() { return ++g; }, later(ms, fn) { const c = g; setTimeout(() => { if (c === g) fn(); }, ms / SPD); }, guard(fn) { const c = g; return (...a) => { if (c === g) fn(...a); }; }, get g() { return g; } }; }
+  function emit(svg, pts, txt, o) { o = o || {}; const NS = 'http://www.w3.org/2000/svg', g = document.createElementNS(NS, 'g'); g.setAttribute('class', 'pk ' + (o.cls || ''));
+    g.innerHTML = o.raw || `<circle r="${o.r || 11}" class="pkc"/><text text-anchor="middle" dominant-baseline="central" font-size="${o.fs || 12}">${txt}</text>`; svg.appendChild(g);
+    moveAlong(g, pts, (o.dur || 1000) / SPD, () => { const live = g.isConnected; if (!o.keep) g.remove(); if (live) o.done && o.done(g); }); return g; }
+  function mark(root, sel, ids, cls) { cls = cls || 'on'; ids = [].concat(ids); root.querySelectorAll(sel).forEach(e => e.classList.toggle(cls, ids.includes(e.dataset.k || e.id))); }
+  return { mark, $, parse, ev, show, rows, envOf, toggles, tt, circuit, tabs, quiz01, rnd, FN, bn, reduce, say, player, codeView, tapx, moveAlong, esc, cHL, hHL, rel, fly, compare, mcq, seq, emit, setSpd(v){ SPD = v; } };
 })();

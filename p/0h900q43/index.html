@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>ডেটা কমিউনিকেশনের উপাদান · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=6">
+<style>
+.bx text.e{font-size:20px;text-anchor:middle;dominant-baseline:central}
+.bx text.n{font-size:10px;font-weight:800;text-anchor:middle;fill:var(--ink)}
+.bx text.s{font-size:8.5px;font-weight:700;text-anchor:middle;fill:var(--muted)}
+.bx{transition:opacity .4s}
+.bx.off{opacity:.15}
+.arr{stroke:var(--wire-off);stroke-width:2.5;marker-end:url(#ah)}
+.strip{font-family:var(--f-mono);font-size:15px;font-weight:800;text-anchor:middle;fill:var(--accent)}
+.wave{fill:none;stroke:var(--signal);stroke-width:3}
+.num{font-size:9px;font-weight:800;fill:#fff;text-anchor:middle;dominant-baseline:central}
+</style>
+</head>
+<body class="kit">
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ২ · ২.১.২ ডেটা কমিউনিকেশনের উপাদান</span>
+    <h1>একটা মেসেজের যাত্রা</h1>
+    <p class="lead">তোমার কম্পিউটার থেকে বন্ধুর কম্পিউটারে "Hi" পৌঁছাতে কোন ৫টা উপাদান লাগে? ▶ চাপো আর দেখো মেসেজ কীভাবে বিট, তারপর তরঙ্গ, তারপর আবার মেসেজ হয়ে যায়। যেকোনো বক্সে টাচ করো।</p>
+  </header>
+  <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
+  <section class="card" id="main">
+    <div class="sbox">
+    <svg class="scene" id="sv" viewBox="0 0 360 230">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="var(--wire-off)"/></marker></defs>
+      <text class="lbl" x="180" y="22">ডেটা কমিউনিকেশনের ব্লক চিত্র</text>
+      <g id="row"></g>
+      <rect x="20" y="150" width="320" height="56" rx="10" fill="#fff" stroke="var(--line)" stroke-width="2"/>
+      <text class="sm" x="180" y="166" id="slbl">এখন ডেটা দেখতে কেমন</text>
+      <text id="str" class="strip" x="180" y="192"></text>
+      <path id="wv" class="wave hide"/>
+    </svg>
+    </div>
+  </section>
+  <section class="card">
+    <h2>৫টি উপাদান এক নজরে (টাচ করো)</h2>
+    <div id="cx0"></div>
+  </section>
+  <section class="card">
+    <h2>মডুলেশন বনাম ডিমডুলেশন (টাচ করো)</h2>
+    <div id="cx1"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>ডেটা কমিউনিকেশন:</b> কম্পিউটার বা অন্য যন্ত্রের মাধ্যমে ডেটা এক স্থান থেকে অন্য স্থানে বা এক ডিভাইস থেকে অন্য ডিভাইসে নির্ভরযোগ্যভাবে পাঠানো।</li>
+      <li>৫ উপাদান: <b>উৎস → প্রেরক → মাধ্যম → প্রাপক → গন্তব্য</b>।</li>
+      <li>উদাহরণ: কম্পিউটার (উৎস), মডেম (প্রেরক), টেলিফোন লাইন (মাধ্যম), মডেম (প্রাপক), সার্ভার বা কম্পিউটার (গন্তব্য)।</li>
+      <li>মডেম: ডিজিটাল → অ্যানালগ (মডুলেশন), অ্যানালগ → ডিজিটাল (ডিমডুলেশন)।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
+<script src="../../a/im.js?v=6"></script>
+<script>
+const {$,say,bn}=IM;const Q=IM.seq(),sv=$('sv');
+const SETS={pc:[['💻','উৎস','কম্পিউটার'],['📟','প্রেরক','মডেম'],['☎️','মাধ্যম','টেলিফোন লাইন'],['📟','প্রাপক','মডেম'],['🖥️','গন্তব্য','সার্ভার / PC']],
+ ph:[['🗣️','উৎস','তুমি'],['📱','প্রেরক','তোমার ফোন'],['📡','মাধ্যম','বাতাস ও টাওয়ার'],['📱','প্রাপক','বন্ধুর ফোন'],['👂','গন্তব্য','বন্ধু']]};
+const XS=[38,109,180,251,322],KEYS=['src','tx','ch','rx','dst'];
+function row(set){$('row').innerHTML=SETS[set].map(([e,n,s],i)=>`<g class="bx node hit" data-k="${KEYS[i]}" data-x="${KEYS[i]}"><rect x="${XS[i]-31}" y="54" width="62" height="72" rx="10"/><circle cx="${XS[i]-22}" cy="62" r="8" fill="var(--accent)"/><text class="num" x="${XS[i]-22}" y="62">${bn(i+1)}</text><text class="e" x="${XS[i]}" y="80">${e}</text><text class="n" x="${XS[i]}" y="103">${n}</text><text class="s" x="${XS[i]}" y="117">${s}</text></g>`).join('')+
+  XS.slice(0,4).map(x=>`<line class="arr" x1="${x+31}" y1="90" x2="${x+40}" y2="90"/>`).join('');}
+const wave=(on)=>{const w=$('wv');if(!on){w.setAttribute('class','wave hide');return;}let d='M40 192';for(let x=40;x<=320;x+=4)d+=` L${x} ${192-9*Math.sin((x-40)/9)}`;w.setAttribute('d',d);w.setAttribute('class','wave show');$('str').textContent='';};
+const strip=(l,t)=>{$('slbl').textContent=l;$('str').textContent=t;wave(false);$('str').animate([{opacity:0},{opacity:1}],{duration:400});};
+const P=(a,b)=>[[XS[a],90],[XS[b],90]];
+const go=(a,b,t,o)=>IM.emit(sv,P(a,b),t,Object.assign({r:12,fs:11,dur:900},o||{}));
+const BITS='01001000 01101001';
+const S=[
+ {m:'ডেটা কমিউনিকেশনে ৫টা উপাদান লাগে: <b>উৎস, প্রেরক, মাধ্যম, প্রাপক, গন্তব্য</b>। একে একে দেখো।',set:'pc',f(){$('row').querySelectorAll('.bx').forEach((b,i)=>{b.classList.add('off');Q.later(i*350,()=>b.classList.remove('off'));});strip('মেসেজ','');}},
+ {m:'① <b>উৎস (Source):</b> যে যন্ত্র থেকে ডেটা পাঠানো হয়। তোমার কম্পিউটারে লেখা হলো মেসেজ <b>"Hi"</b>। কম্পিউটারের ভিতরে এটা আসলে <b>০ আর ১</b> (ডিজিটাল)।',set:'pc',on:['src'],f(){strip('উৎসে ডেটা (ডিজিটাল)','"Hi" = '+BITS);}},
+ {m:'② <b>প্রেরক (Transmitter):</b> উৎস থেকে ডেটা নিয়ে মাধ্যমে পাঠায়। <b>মডেম</b> ডিজিটাল বিটকে <b>অ্যানালগ তরঙ্গে</b> বদলে দিলো, কারণ টেলিফোন লাইনে তরঙ্গ চলে।',set:'pc',on:['tx'],f(){go(0,1,'01',{done(){$('slbl').textContent='প্রেরক বিটকে তরঙ্গ বানালো (মডুলেশন)';wave(true);}});strip('প্রেরকে যাচ্ছে',BITS);}},
+ {m:'③ <b>মাধ্যম (Channel):</b> যার ভিতর দিয়ে ডেটা এক জায়গা থেকে আরেক জায়গায় যায়। তরঙ্গ ছুটছে টেলিফোন লাইন দিয়ে। মাধ্যম হতে পারে তার, ফাইবার, বা বাতাস (বেতার)।',set:'pc',on:['ch'],f(){$('slbl').textContent='মাধ্যমে চলছে অ্যানালগ তরঙ্গ';wave(true);const g=()=>{go(1,3,'〰️',{cls:'blue',dur:1100});Q.later(500,g);};g();}},
+ {m:'④ <b>প্রাপক (Receiver):</b> মাধ্যম থেকে ডেটা গ্রহণ করে। ওপাশের <b>মডেম</b> তরঙ্গকে আবার <b>ডিজিটাল বিটে</b> ফেরত আনলো।',set:'pc',on:['rx'],f(){$('slbl').textContent='প্রাপক তরঙ্গকে বিট বানালো (ডিমডুলেশন)';wave(true);go(2,3,'〰️',{cls:'blue',done(){strip('প্রাপকে ডেটা (ডিজিটাল)',BITS);}});}},
+ {m:'⑤ <b>গন্তব্য (Destination):</b> সর্বশেষ যেখানে ডেটা পৌঁছায়, যেমন সার্ভার বা বন্ধুর কম্পিউটার। স্ক্রিনে ভেসে উঠলো <b>"Hi" ✅</b>',set:'pc',on:['dst'],f(){go(3,4,'01',{done(){strip('গন্তব্যে পৌঁছালো!','"Hi" ✅');IM.mark(sv,'.bx',['dst'],'done');}});}},
+ {m:'পুরো যাত্রা একসাথে: <b>উৎস → প্রেরক → মাধ্যম → প্রাপক → গন্তব্য</b>। ডেটা → বিট → তরঙ্গ → বিট → ডেটা।',set:'pc',f(){const L=['01','〰️','〰️','01'];const g=()=>{[0,1,2,3].forEach(i=>Q.later(i*700,()=>{IM.mark(sv,'.bx',[KEYS[i+1]]);go(i,i+1,L[i],{cls:i===1||i===2?'blue':'',dur:700});}));Q.later(3000,()=>{IM.mark(sv,'.bx',[]);g();});};strip('পুরো পথ','Hi → 01 → 〰️ → 01 → Hi');g();}},
+ {m:'মোবাইলে কথা বললেও একই ৫ উপাদান! <b>তুমি</b> (উৎস) → <b>তোমার ফোন</b> (প্রেরক) → <b>বাতাস ও টাওয়ার</b> (মাধ্যম) → <b>বন্ধুর ফোন</b> (প্রাপক) → <b>বন্ধু</b> (গন্তব্য)।',set:'ph',f(){strip('কথা → সংকেত → কথা','"হ্যালো!" 🗣️ → 📶 → 👂');const g=()=>{[0,1,2,3].forEach(i=>Q.later(i*650,()=>{IM.mark(sv,'.bx',[KEYS[i+1]]);go(i,i+1,i===0||i===3?'💬':'📶',{dur:650,cls:i===1||i===2?'blue':''});}));Q.later(2800,g);};g();}}];
+function render(k){const s=S[k];Q.bump();sv.querySelectorAll('.pk').forEach(e=>e.remove());row(s.set);IM.mark(sv,'.bx',s.on||[]);wave(false);s.f();say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+var player=IM.player({count:()=>S.length,show:render,interval:4000,swipe:$('sv')});
+IM.tapx(sv,{src:{t:'① উৎস (Source)',d:'যে ডিভাইস থেকে ডেটা পাঠানো হয়। যেমন কম্পিউটার, টেলিফোন।'},tx:{t:'② প্রেরক (Transmitter)',d:'উৎস থেকে ডেটা নিয়ে মাধ্যমে পাঠায়। যেমন মডেম, যা ডিজিটাল সংকেতকে অ্যানালগ করে।'},ch:{t:'③ মাধ্যম (Channel)',d:'যার ভিতর দিয়ে ডেটা যায়। যেমন টেলিফোন লাইন, ক্যাবল, ফাইবার, বেতার তরঙ্গ।'},rx:{t:'④ প্রাপক (Receiver)',d:'মাধ্যম থেকে ডেটা গ্রহণ করে। যেমন মডেম, যা অ্যানালগকে আবার ডিজিটাল করে।'},dst:{t:'⑤ গন্তব্য (Destination)',d:'সর্বশেষ যেখানে ডেটা পৌঁছায়। যেমন সার্ভার বা পার্সোনাল কম্পিউটার।'}});
+IM.compare($('cx0'),['উপাদান','কাজ','উদাহরণ'],[
+ ['① উৎস','ডেটা তৈরি ও পাঠানো শুরু','কম্পিউটার, টেলিফোন','যেখান থেকে যাত্রা শুরু।'],
+ ['② প্রেরক','ডেটাকে পাঠানোর উপযোগী করে','মডেম','ডিজিটাল থেকে অ্যানালগে রূপান্তর করে মাধ্যমে পাঠায়।'],
+ ['③ মাধ্যম','ডেটা বহন করে','টেলিফোন লাইন, ক্যাবল, বাতাস','তার বা তারবিহীন দুই রকম হতে পারে।'],
+ ['④ প্রাপক','ডেটা গ্রহণ করে','মডেম','অ্যানালগ থেকে আবার ডিজিটালে আনে।'],
+ ['⑤ গন্তব্য','ডেটা ব্যবহার করে','সার্ভার, PC','যেখানে যাত্রা শেষ।']]);
+IM.compare($('cx1'),['','মডুলেশন','ডিমডুলেশন'],[
+ ['রূপান্তর','ডিজিটাল → অ্যানালগ','অ্যানালগ → ডিজিটাল','উল্টো লিখলে নম্বর কাটা যাবে! মনে রাখো: মডুলেশন = পাঠানোর সময়।'],
+ ['কোথায় হয়','প্রেরক প্রান্তে','প্রাপক প্রান্তে','দুই প্রান্তেই মডেম থাকে।'],
+ ['কেন','টেলিফোন লাইনে তরঙ্গ চলে','কম্পিউটার শুধু ০/১ বোঝে','তাই দুইবার রূপান্তর লাগে।']]);
+IM.mcq($('quiz6'),[
+ {q:'ডেটা কমিউনিকেশনের উপাদান কয়টি?',o:['৩টি','৪টি','৫টি','৬টি'],a:2,w:'উৎস, প্রেরক, মাধ্যম, প্রাপক, গন্তব্য।'},
+ {q:'ডেটা কমিউনিকেশনে মডেম কোন ভূমিকা পালন করে?',o:['উৎস','প্রেরক বা প্রাপক','মাধ্যম','গন্তব্য'],a:1,w:'প্রেরক প্রান্তে প্রেরক, প্রাপক প্রান্তে প্রাপক।'},
+ {q:'টেলিফোন লাইন কোন উপাদান?',o:['মাধ্যম','উৎস','প্রাপক','গন্তব্য'],a:0,w:'যার ভিতর দিয়ে ডেটা যায় সেটি মাধ্যম বা চ্যানেল।'},
+ {q:'ডিজিটাল সংকেতকে অ্যানালগে রূপান্তরকে বলে—',o:['ডিমডুলেশন','মডুলেশন','এনকোডিং','ব্রডকাস্ট'],a:1,w:'মডুলেশন = ডিজিটাল → অ্যানালগ।'}]);
+player.reset();
+</script>
+</body>
+</html>

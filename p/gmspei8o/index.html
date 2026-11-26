@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>রোবটিকস · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=6">
+<style>
+.arm{stroke:#5B7DB8;stroke-width:13;stroke-linecap:round}
+.arm2{stroke:#7E9CD3;stroke-width:10;stroke-linecap:round}
+.claw{stroke:#2E3A52;stroke-width:4;stroke-linecap:round;fill:none}
+.belt{fill:#C9D3E5;stroke:#8B9AB8;stroke-width:2}
+.roll{fill:#8B9AB8}
+.cons{font-family:var(--f-mono);font-size:9.5px;font-weight:700;fill:var(--ink)}
+.cons.on{fill:var(--signal)}
+.rcnt{font-size:12px;font-weight:800;fill:var(--accent);text-anchor:middle}
+.beam{fill:var(--signal);opacity:0;transition:opacity .3s}
+.beam.on{opacity:.28}
+.led{fill:#9AA7BF;transition:fill .3s}
+.led.on{fill:#22C55E;filter:drop-shadow(0 0 4px #22C55E)}
+.batt{fill:#22C55E;transition:width .9s}
+</style>
+</head>
+<body class="kit">
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ১ · ১.১৪.২ রোবটিকস (Robotics)</span>
+    <h1>রোবট কীভাবে কাজ করে</h1>
+    <p class="lead">কারখানার রোবট কীভাবে নিজে নিজে বাক্স চিনে তুলে নির্দিষ্ট জায়গায় রাখে? ▶ চাপো আর দেখো রোবটের প্রতিটি অংশ কোন কাজ করে। রোবটের অংশ বা নিচের বোতামে টাচ করলে ব্যাখ্যা পাবে।</p>
+  </header>
+  <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
+  <section class="card" id="main">
+    <div class="sbox">
+    <svg class="scene" id="sv" viewBox="0 0 360 230">
+      <g class="node hit" data-k="ctl" data-x="ctl"><rect x="8" y="8" width="100" height="56" rx="8"/></g>
+      <text class="lbl" x="58" y="24">🧠 কন্ট্রোলার</text>
+      <text class="cons" id="c0" x="16" y="40">১. বাক্স খোঁজো</text><text class="cons" id="c1" x="16" y="51">২. ধরো ও তোলো</text><text class="cons" id="c2" x="16" y="62">৩. ঝুড়িতে রাখো</text>
+      <g class="hit" data-x="pwr"><rect x="122" y="10" width="40" height="18" rx="3" fill="none" stroke="#2E3A52" stroke-width="2"/><rect x="162" y="15" width="4" height="8" fill="#2E3A52"/><rect id="bt" class="batt" x="125" y="13" width="0" height="12" rx="2"/><text class="sm" x="142" y="40">🔋 পাওয়ার</text></g>
+      <text class="rcnt" id="cnt" x="290" y="24"></text>
+      <path id="beam" class="beam" d="M138 128 L226 168 L226 200 Z"/>
+      <rect x="20" y="170" width="64" height="38" rx="6" fill="#F4E3C3" stroke="#C99A4A" stroke-width="2" class="hit" data-x="bin"/><text class="sm" x="52" y="222">ঝুড়ি</text>
+      <rect x="188" y="196" width="168" height="12" rx="6" class="belt hit" data-x="belt"/>
+      <circle class="roll" cx="196" cy="202" r="4"/><circle class="roll" cx="348" cy="202" r="4"/>
+      <text class="sm" x="290" y="222">কনভেয়র বেল্ট</text>
+      <rect id="bx" x="330" y="178" width="20" height="18" rx="3" fill="#C99A4A" stroke="#8A6424" stroke-width="2"/>
+      <rect x="112" y="150" width="36" height="58" rx="6" fill="#DDE6F5" stroke="#5B7DB8" stroke-width="2" class="hit" data-x="act"/>
+      <circle cx="130" cy="186" r="4" class="led" id="led"/>
+      <line id="a1" class="arm hit" data-x="act"/><line id="a2" class="arm2 hit" data-x="act"/>
+      <circle id="el" r="7" fill="#2E3A52" class="hit" data-x="act"/><circle cx="130" cy="150" r="8" fill="#2E3A52"/>
+      <path id="cl" class="claw hit" data-x="man"/>
+      <text x="138" y="133" class="emo hit" data-x="sen" font-size="16" id="eye">👁️</text>
+    </svg>
+    </div>
+    <div class="parts" id="parts"><button data-k="pwr" data-x="pwr">🔋 পাওয়ার</button><button data-k="sen" data-x="sen">👁️ সেন্সর</button><button data-k="ctl" data-x="ctl">🧠 কন্ট্রোলার</button><button data-k="act" data-x="act">⚙️ অ্যাকচুয়েটর</button><button data-k="man" data-x="man">🤏 ম্যানিপুলেশন</button></div>
+  </section>
+  <section class="card">
+    <h2>রোবট বনাম মানুষ শ্রমিক (টাচ করো)</h2>
+    <div id="cx0"></div>
+  </section>
+  <section class="card">
+    <h2>রোবট কোথায় কাজ করে (টাচ করো)</h2>
+    <div id="cx1"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>রোবট:</b> কম্পিউটার নিয়ন্ত্রিত যে মেশিন মানুষের মতো কাজ করতে পারে। <b>রোবটিকস:</b> রোবটের নকশা, গঠন ও কাজ নিয়ে প্রযুক্তির শাখা।</li>
+      <li>রোবটের উপাদান: <b>পাওয়ার সিস্টেম</b> (রিচার্জেবল ব্যাটারি), <b>অ্যাকচুয়েটর</b> (মোটর, রোবটের পেশি), <b>সেন্সিং</b> (সেন্সর, ক্যামেরা), <b>ম্যানিপুলেশন</b> (বস্তু ধরা ও সরানো)।</li>
+      <li>রোবটের কাজের ধারা আগে থেকে প্রোগ্রাম করে মেমরিতে দেওয়া থাকে। এতে কৃত্রিম বুদ্ধিমত্তা ব্যবহার হয়।</li>
+      <li>রোবট দ্রুত, ক্লান্তিহীন ও নিখুঁত। ব্যবহার: কারখানা, ঝুঁকিপূর্ণ কাজ, সার্জারি, যুদ্ধক্ষেত্র, IC ও মাদারবোর্ড তৈরি।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
+<script src="../../a/im.js?v=6"></script>
+<script>
+const {$,say,bn}=IM;const Q=IM.seq(),sv=$('sv');
+const SX=130,SY=150,L1=66,L2=62,REST=[170,78],PICK=[218,176],BIN=[52,160];
+let tip=REST.slice(),hold=false,grip=false,bx=[330,178],boxes=0;
+function ik(tx,ty){const dx=tx-SX,dy=ty-SY,d=Math.min(L1+L2-1,Math.hypot(dx,dy));let c=(d*d-L1*L1-L2*L2)/(2*L1*L2);c=Math.max(-1,Math.min(1,c));const q2=(dx>0?-1:1)*Math.acos(c);return[Math.atan2(dy,dx)-Math.atan2(L2*Math.sin(q2),L1+L2*Math.cos(q2)),q2];}
+function draw(){const[tx,ty]=tip,[q1]=ik(tx,ty),ex=SX+L1*Math.cos(q1),ey=SY+L1*Math.sin(q1);
+  const s=(id,a,b,c,d)=>{const e=$(id);e.setAttribute('x1',a);e.setAttribute('y1',b);e.setAttribute('x2',c);e.setAttribute('y2',d);};
+  s('a1',SX,SY,ex,ey);s('a2',ex,ey,tx,ty);$('el').setAttribute('cx',ex);$('el').setAttribute('cy',ey);
+  const o=grip?5:10;$('cl').setAttribute('d',`M${tx-o} ${ty+12} L${tx-o} ${ty} L${tx+o} ${ty} L${tx+o} ${ty+12}`);
+  if(hold){bx=[tx-10,ty+3];}$('bx').setAttribute('x',bx[0]);$('bx').setAttribute('y',bx[1]);}
+function tween(get,set,to,ms,done){const g=Q.g,from=get(),t0=performance.now(),dur=IM.reduce()?1:ms/player.speed;
+  const f=t=>{if(g!==Q.g)return;const p=Math.min(1,(t-t0)/dur),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;set(from.map((v,i)=>v+(to[i]-v)*e));draw();if(p<1)requestAnimationFrame(f);else done&&done();};requestAnimationFrame(f);}
+const armTo=(p,ms,d)=>tween(()=>tip,v=>tip=v,p,ms,d),boxTo=(p,ms,d)=>tween(()=>bx,v=>bx=v,p,ms,d);
+const cons=i=>[0,1,2].forEach(j=>$('c'+j).classList.toggle('on',j===i));
+const parts=(on,done)=>$('parts').querySelectorAll('button').forEach(b=>{b.classList.toggle('on',b.dataset.k===on);b.classList.toggle('done',done.includes(b.dataset.k));});
+const pw=on=>{$('bt').setAttribute('width',on?34:0);$('led').classList.toggle('on',on);};
+function cycle(loop){$('bx').style.opacity=1;bx=[340,178];hold=false;grip=false;draw();
+  cons(0);$('beam').classList.remove('on');
+  boxTo([PICK[0]-10,178],900,()=>{$('beam').classList.add('on');Q.later(350,()=>{$('beam').classList.remove('on');cons(1);
+    armTo(PICK,700,()=>{grip=true;hold=true;draw();Q.later(200,()=>armTo([120,70],700,()=>{cons(2);armTo(BIN,700,()=>{grip=false;hold=false;draw();
+      boxTo([BIN[0]-10,184],300,()=>{$('bx').style.opacity=0;boxes++;if(loop)$('cnt').textContent=`📦 সাজানো হলো: ${bn(boxes)}টি`;armTo(REST,600,()=>{if(loop)Q.later(150,()=>cycle(true));});});});}));});});});}
+const S=[
+ {m:'কারখানায় কনভেয়র বেল্টে বাক্স আসছে। এগুলো তুলে ঝুড়িতে রাখবে একটা <b>রোবট</b>, মানে কম্পিউটার নিয়ন্ত্রিত এমন মেশিন যে মানুষের মতো কাজ করতে পারে।',f(){boxTo([PICK[0]-10,178],1400);}},
+ {m:'প্রথমে <b>পাওয়ার সিস্টেম 🔋</b>। রোবট চলে রিচার্জেবল ব্যাটারিতে (সাধারণত লেড-এসিড)। চার্জ হলো, সবুজ বাতি জ্বললো।',p:'pwr',f(){pw(false);Q.later(200,()=>pw(true));armTo([175,90],500,()=>armTo(REST,500));}},
+ {m:'<b>সেন্সর 👁️</b> হলো রোবটের চোখ-কান। ক্যামেরা দিয়ে দেখলো বেল্টে একটা বাক্স এসেছে। স্পর্শ, আলো, দূরত্বও সেন্সর দিয়ে বোঝে।',p:'sen',f(){bx=[PICK[0]-10,178];draw();const b=()=>{$('beam').classList.toggle('on');Q.later(450,b);};b();}},
+ {m:'<b>কন্ট্রোলার 🧠</b> (কম্পিউটার) রোবটের মস্তিষ্ক। আগে থেকে মেমরিতে রাখা প্রোগ্রাম ধাপে ধাপে পড়ে মোটরকে নির্দেশ দেয়।',p:'ctl',f(){bx=[PICK[0]-10,178];draw();[0,1,2].forEach(i=>Q.later(i*600,()=>cons(i)));
+   Q.later(1900,()=>IM.emit(sv,[[60,64],[100,120],[130,160]],'⚡',{r:9,fs:10,dur:700}));}},
+ {m:'<b>অ্যাকচুয়েটর ⚙️</b> হলো কতগুলো বৈদ্যুতিক মোটর, রোবটের হাত-পায়ের <b>পেশি</b>। নির্দেশ পেয়ে মোটর ঘুরলো, হাত বাক্সের দিকে গেলো।',p:'act',f(){bx=[PICK[0]-10,178];draw();cons(1);armTo(PICK,1100);}},
+ {m:'<b>ম্যানিপুলেশন 🤏</b> মানে আশপাশের বস্তু ধরা ও সরানো। রোবট বাক্সটা ধরলো, তুললো আর ঝুড়িতে রেখে দিলো!',p:'man',f(){tip=PICK.slice();bx=[PICK[0]-10,178];draw();cons(1);grip=true;hold=true;draw();
+   Q.later(300,()=>armTo([120,70],800,()=>{cons(2);armTo(BIN,800,()=>{grip=false;hold=false;draw();boxTo([BIN[0]-10,184],300,()=>armTo(REST,700));});}));}},
+ {m:'রোবট এই কাজ <b>দিন-রাত ২৪ ঘণ্টা</b> করতে পারে, ক্লান্ত হয় না, ভুলও করে না। দেখো কত দ্রুত বাক্স সাজাচ্ছে!',f(){boxes=0;$('cnt').textContent='📦 সাজানো হলো: ০টি';cycle(true);}},
+ {m:'রোবট শুধু কারখানায় নয়: <b>সার্জারি</b>, <b>যুদ্ধক্ষেত্রে</b> দূরনিয়ন্ত্রিত যান, <b>বোমা নিষ্ক্রিয়</b>, IC ও মাদারবোর্ডের <b>সূক্ষ্ম কাজ</b>, আর মহাকাশ বা খনির মতো <b>ঝুঁকিপূর্ণ</b> জায়গায় কাজ করে।',f(){parts('',['pwr','sen','ctl','act','man']);cycle(true);}}];
+function render(k){const s=S[k];Q.bump();sv.querySelectorAll('.pk').forEach(e=>e.remove());pw(k>0);cons(-1);$('beam').classList.remove('on');$('cnt').textContent=k===7?$('cnt').textContent:'';
+  tip=REST.slice();hold=false;grip=false;bx=[330,178];$('bx').style.opacity=1;draw();parts(s.p||'',[]);s.f();say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+var player=IM.player({count:()=>S.length,show:render,interval:4200,swipe:$('sv')});
+const X={pwr:{t:'🔋 পাওয়ার সিস্টেম',d:'রোবটকে শক্তি দেয়। সাধারণত রিচার্জেবল লেড-এসিড ব্যাটারি, কাজের আগে চার্জ দিতে হয়।'},sen:{t:'👁️ সেন্সিং (অনুভূতি)',d:'সেন্সর ও ক্যামেরা দিয়ে রোবট দেখে, স্পর্শ বোঝে, দূরত্ব মাপে। মানুষের চোখ-কানের মতো।'},ctl:{t:'🧠 কন্ট্রোলার (কম্পিউটার)',d:'রোবটের মস্তিষ্ক। মেমরিতে রাখা প্রোগ্রাম অনুযায়ী সিদ্ধান্ত নেয়। প্রতিটি কাজের জন্য আলাদা নির্দেশনা দিতে হয়।'},act:{t:'⚙️ অ্যাকচুয়েটর',d:'বৈদ্যুতিক মোটরের ব্যবস্থা যা হাত-পা নাড়ায়। একে রোবটের পেশি বলে।'},man:{t:'🤏 ম্যানিপুলেশন',d:'আশপাশের বস্তু ধরা, তোলা, অবস্থান বদলানো। আঙুল দিয়ে ধরে, পা দিয়ে চলাফেরা করে।'},bin:{t:'ঝুড়ি',d:'বাক্স রাখার জায়গা। রোবট প্রোগ্রাম অনুযায়ী ঠিক এখানেই রাখে।'},belt:{t:'কনভেয়র বেল্ট',d:'চলন্ত বেল্ট যা বাক্স রোবটের কাছে নিয়ে আসে।'}};
+IM.tapx(sv,X);IM.tapx($('parts'),X);
+IM.compare($('cx0'),['','🤖 রোবট','🧑 মানুষ'],[
+ ['কাজের সময়','২৪ ঘণ্টা, ক্লান্তি নেই','নির্দিষ্ট সময়, ক্লান্ত হয়','তাই কারখানায় রোবট দিন-রাত কাজ করে।'],
+ ['নিখুঁততা','একই কাজ একদম একই রকম','ভুল হতে পারে','IC, মাদারবোর্ডের সূক্ষ্ম কাজে রোবট লাগে।'],
+ ['ঝুঁকি','বিপজ্জনক জায়গায় পাঠানো যায়','জীবনের ঝুঁকি','বোমা নিষ্ক্রিয়, খনি, মহাকাশে রোবট পাঠানো হয়।'],
+ ['নতুন সিদ্ধান্ত','প্রোগ্রামের বাইরে পারে না','নিজে ভেবে পারে','প্রতিটি কাজের নির্দেশ আগে থেকে দিতে হয়।'],
+ ['খরচ','প্রথমে অনেক বেশি','মাসিক বেতন','কিন্তু দীর্ঘ সময়ে রোবটে খরচ কমে আসে।']]);
+IM.compare($('cx1'),['ক্ষেত্র','কাজ'],[
+ ['🏭 শিল্প-কারখানা','মালামাল তোলা, সংযোজন, প্যাকিং','গাড়ির কারখানায় রোবট যন্ত্রাংশ লাগায়।'],
+ ['🏥 চিকিৎসা','সার্জারি','রোবটিক সার্জারিতে খুব সূক্ষ্মভাবে কাটা যায়।'],
+ ['🪖 প্রতিরক্ষা','দূরনিয়ন্ত্রিত যুদ্ধযান','ড্রাইভারের বদলে রিমোট কন্ট্রোলড রোবট।'],
+ ['🔬 সূক্ষ্ম কাজ','IC, PCB, মাদারবোর্ড তৈরি','মানুষের হাতে এত নিখুঁত কাজ কঠিন।'],
+ ['⚠️ ঝুঁকিপূর্ণ কাজ','খনি, মহাকাশ, তেজস্ক্রিয় এলাকা','মানুষের জীবন ঝুঁকিতে না ফেলে কাজ।']]);
+IM.mcq($('quiz6'),[
+ {q:'রোবটের পেশি বলা হয় কোনটিকে?',o:['সেন্সর','অ্যাকচুয়েটর','ব্যাটারি','ক্যামেরা'],a:1,w:'অ্যাকচুয়েটর হলো মোটরের ব্যবস্থা যা হাত-পা নাড়ায়।'},
+ {q:'রোবটে সাধারণত কোন ব্যাটারি ব্যবহার হয়?',o:['লেড-এসিড','লিথিয়াম কয়েন','ড্রাই সেল','সোলার'],a:0,w:'রিচার্জেবল লেড-এসিড ব্যাটারি।'},
+ {q:'রোবটের চারপাশের বস্তু ধরা ও সরানোকে বলে—',o:['সেন্সিং','পাওয়ার','ম্যানিপুলেশন','মডেলিং'],a:2,w:'ম্যানিপুলেশন মানে বস্তুর অবস্থান বা বস্তু বদলানো।'},
+ {q:'রোবটে কোন প্রযুক্তির প্রয়োগ হয়?',o:['কৃত্রিম বুদ্ধিমত্তা','ক্রায়োসার্জারি','বায়োইনফরমেটিক্স','জেনেটিক ইঞ্জিনিয়ারিং'],a:0,w:'রোবট কৃত্রিম বুদ্ধিমত্তা দিয়ে সিদ্ধান্ত নেয়।'}]);
+draw();player.reset();
+</script>
+</body>
+</html>

@@ -253,3 +253,28 @@ svg.ov .draw{stroke-dasharray:900;stroke-dashoffset:900;animation:draw .9s ease-
 .mo button.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 16%,var(--panel));font-weight:800}
 .mo button.no{border-color:var(--bad);background:var(--bad-soft);animation:shake .45s}
 .mscore{font-weight:800;color:var(--accent);text-align:center}
+
+svg .pk .pkc{fill:var(--signal);stroke:#fff;stroke-width:2}
+svg .pk text{font-weight:800;fill:#1A1200;font-family:var(--f-mono)}
+svg .pk.blue .pkc{fill:var(--accent)}svg .pk.blue text{fill:#fff}
+svg .pk.red .pkc{fill:var(--bad)}svg .pk.red text{fill:#fff}
+svg.scene .lbl{font-size:12px;font-weight:700;text-anchor:middle;fill:var(--ink)}
+svg.scene .sm{font-size:10px;fill:var(--muted);text-anchor:middle}
+svg.scene .emo{text-anchor:middle;dominant-baseline:central}
+svg.scene .hit{cursor:pointer}
+svg.scene .glow{filter:drop-shadow(0 0 6px var(--signal))}
+svg.scene .pulse{animation:spulse 1s ease-in-out infinite}
+@keyframes spulse{50%{opacity:.45}}
+svg.scene .fade{opacity:.25;transition:opacity .4s}
+svg.scene .show{opacity:1;transition:opacity .4s}
+svg.scene .hide{opacity:0;transition:opacity .4s}
+.parts{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.parts button{font:inherit;font-weight:700;font-size:.82rem;line-height:1.3;padding:5px 10px;border-radius:999px;border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;min-height:36px;transition:all .3s}
+.parts button.on{border-color:var(--signal);background:var(--signal-soft);transform:scale(1.07);box-shadow:0 0 0 3px var(--signal)}
+.parts button.done{border-color:var(--accent);background:var(--accent-soft)}
+.sbox{background:var(--board);border:2px solid var(--line);border-radius:14px;overflow:hidden;position:relative}
+svg.scene .gz{transform-box:fill-box;transform-origin:center;transition:transform .8s ease,opacity .5s}
+svg.scene .edge.dash{stroke-dasharray:6 5;animation:dashmv 1s linear infinite}
+@keyframes dashmv{to{stroke-dashoffset:-22}}
+svg.scene .edge.bad{stroke:var(--bad);stroke-width:4}
+svg.scene .node.bad rect,svg.scene .node.bad circle{fill:var(--bad-soft);stroke:var(--bad)}

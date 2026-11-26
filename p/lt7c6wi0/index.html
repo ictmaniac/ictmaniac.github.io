@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>জেনেটিক ইঞ্জিনিয়ারিং · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=6">
+<style>
+.seg{stroke:#fff;stroke-width:1.5}
+.gene{fill:#F39C12}
+.pl{fill:none;stroke:#2E86DE;stroke-width:7;stroke-linecap:round}
+.plo{fill:none;stroke:#F39C12;stroke-width:7;stroke-linecap:round}
+.bac{fill:#D5F5E3;stroke:#27AE60;stroke-width:2.5}
+.mini{fill:#D5F5E3;stroke:#27AE60;stroke-width:1.5;transform-box:fill-box;transform-origin:center;transition:opacity .4s,transform .4s}
+.mini.off{opacity:0;transform:scale(.2)}
+.chain{font-size:9.5px;font-weight:800;text-anchor:middle;fill:var(--muted);transition:fill .3s}
+.chain.on{fill:var(--signal)}
+.cut{stroke:var(--bad);stroke-width:2.5;stroke-dasharray:3 2}
+.shock{font-size:18px;opacity:0}
+</style>
+</head>
+<body class="kit">
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ১ · ১.১৪.৯ জেনেটিক ইঞ্জিনিয়ারিং (Genetic Engineering)</span>
+    <h1>ব্যাকটেরিয়া দিয়ে ইনসুলিন বানানো</h1>
+    <p class="lead">মানুষের একটা জিন কেটে ব্যাকটেরিয়ার ভিতরে বসালে কী হয়? ▶ চাপো আর দেখো আণবিক কাঁচি আর আঠা দিয়ে কীভাবে রিকম্বিনেন্ট DNA তৈরি হয়, আর ব্যাকটেরিয়া কীভাবে ইনসুলিনের কারখানা হয়ে যায়।</p>
+  </header>
+  <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
+  <section class="card" id="main">
+    <div class="sbox">
+    <svg class="scene" id="sv" viewBox="0 0 360 230">
+      <g id="chain"></g>
+      <text class="sm" x="110" y="50">মানুষের DNA</text>
+      <g id="dna" class="hit" data-x="dna"></g>
+      <g id="gene" class="hit" data-x="gene"><rect class="seg gene" x="92" y="62" width="18" height="16" rx="2"/><rect class="seg gene" x="110" y="62" width="18" height="16" rx="2"/><text class="sm" x="110" y="92" font-weight="800" fill="#D35400">ইনসুলিন জিন</text></g>
+      <line id="k1" class="cut hide" x1="92" y1="56" x2="92" y2="84"/><line id="k2" class="cut hide" x1="128" y1="56" x2="128" y2="84"/>
+      <g id="plg" class="hit" data-x="pl">
+        <circle id="plf" class="pl" cx="275" cy="85" r="32"/>
+        <path id="plo" class="pl hide" d="M291.96 57.87 A32 32 0 1 1 258.04 57.87"/>
+        <path id="pli" class="plo hide" d="M258.04 57.87 A32 32 0 0 1 291.96 57.87"/>
+        <text id="pll" class="sm" x="275" y="89">প্লাজমিড</text>
+      </g>
+      <rect class="bac hit" data-x="bac" x="222" y="138" width="126" height="80" rx="38"/>
+      <text class="sm" x="285" y="226">ব্যাকটেরিয়া (E. coli)</text>
+      <text id="shk" class="shock" x="214" y="140">⚡</text>
+      <g id="col"></g>
+      <text id="ins" class="lbl hide" x="110" y="132" fill="#D35400">💉 ইনসুলিন তৈরি হচ্ছে!</text>
+      <text id="tag" class="lbl" x="180" y="122" fill="var(--signal)"></text>
+    </svg>
+    </div>
+    <div class="parts" id="parts"><button data-k="re" data-x="re">✂️ রেস্ট্রিকশন এনজাইম</button><button data-k="lg" data-x="lg">🧴 লাইগেজ এনজাইম</button><button data-k="rd" data-x="rd">🔗 রিকম্বিনেন্ট DNA</button><button data-k="gm" data-x="gm">🌾 GMO</button></div>
+  </section>
+  <section class="card">
+    <h2>সাধারণ ফসল বনাম GM ফসল (টাচ করো)</h2>
+    <div id="cx0"></div>
+  </section>
+  <section class="card">
+    <h2>কোথায় ব্যবহার হয় (টাচ করো)</h2>
+    <div id="cx1"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>জেনেটিক ইঞ্জিনিয়ারিং:</b> বায়োটেকনোলজির মাধ্যমে কোনো জীবের জিনোমকে নিজের সুবিধামতো সাজিয়ে নেওয়া (জেনেটিক মডিফিকেশন)।</li>
+      <li>কোষ → নিউক্লিয়াস → ক্রোমোজোম → DNA → জিন। জিনই জীবের বৈশিষ্ট্য বহন করে।</li>
+      <li>ধাপ: জিন আলাদা করা → <b>রেস্ট্রিকশন এনজাইম</b> (আণবিক কাঁচি) দিয়ে DNA ও প্লাজমিড কাটা → <b>লাইগেজ</b> দিয়ে জোড়া (রিকম্বিনেন্ট DNA) → পোষক কোষে প্রবেশ → বংশবৃদ্ধি ও উৎপাদন।</li>
+      <li>১৯৭২ সালে পল বার্গ প্রথম রিকম্বিনেন্ট DNA তৈরি করেন। ব্যবহার: ইনসুলিন, হরমোন, ভ্যাকসিন, GM শস্য, অপরাধী শনাক্তকরণ।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
+<script src="../../a/im.js?v=6"></script>
+<script>
+const {$,say,bn}=IM;const Q=IM.seq(),sv=$('sv');
+const CH=['🔵 কোষ','নিউক্লিয়াস','ক্রোমোজোম','DNA','জিন'];
+$('chain').innerHTML=CH.map((t,i)=>`<text class="chain" id="ch${i}" x="${36+i*72}" y="18">${t}</text>`+(i<4?`<text class="chain" x="${72+i*72}" y="18">→</text>`:'')).join('');
+const COL=['#5DADE2','#48C9B0'];$('dna').innerHTML=Array.from({length:10},(_,i)=>i===4||i===5?'':`<rect class="seg" x="${20+i*18}" y="62" width="18" height="16" rx="2" fill="${COL[i%2]}"/>`).join('');
+const MP=[[30,150],[70,150],[110,150],[150,150],[30,180],[70,180],[110,180],[150,180]];
+$('col').innerHTML=MP.map(([x,y])=>`<g class="mini off"><rect x="${x}" y="${y}" width="32" height="18" rx="9"/><circle cx="${x+16}" cy="${y+9}" r="4" fill="none" stroke="#F39C12" stroke-width="2.5"/></g>`).join('');
+$('col').querySelectorAll('g').forEach(g=>g.setAttribute('class','mini off'));
+const vis=(id,on)=>$(id).setAttribute('class',($(id).getAttribute('class')||'').replace(/ ?(hide|show)/g,'')+(on?' show':' hide'));
+const chain=n=>CH.forEach((_,i)=>$('ch'+i).classList.toggle('on',i===n));
+const parts=(on,done)=>$('parts').querySelectorAll('button').forEach(b=>{b.classList.toggle('on',b.dataset.k===on);b.classList.toggle('done',done.includes(b.dataset.k));});
+const col=n=>[...$('col').children].forEach((g,i)=>g.setAttribute('class','mini'+(i<n?'':' off')));
+function state(s){IM.moveAlong($('gene'),[s.gOut?[0,-10]:s.gIn?[165,-17]:[0,0]],0);vis('gene',!s.gIn);
+  vis('k1',!!s.cut);vis('k2',!!s.cut);vis('plf',!s.open&&!s.rec);vis('plo',!!(s.open||s.rec));vis('pli',!!s.rec);
+  IM.moveAlong($('plg'),[s.inB?[10,92]:[0,0]],0);$('pll').style.opacity=s.inB?0:1;col(s.col||0);vis('ins',!!s.ins);$('tag').textContent='';}
+const S=[
+ {m:'প্রাণী বা উদ্ভিদের ক্ষুদ্রতম একক <b>কোষ</b>। কোষের ভিতরে <b>নিউক্লিয়াস</b>, তার ভিতরে <b>ক্রোমোজোম</b>, ক্রোমোজোমে চেইনের মতো <b>DNA</b>, আর DNA এর ছোট ছোট অংশ হলো <b>জিন</b>। জিনই বৈশিষ্ট্য বহন করে।',s:{},f(){CH.forEach((_,i)=>Q.later(i*500,()=>chain(i)));}},
+ {m:'মানুষের DNA তে আছে <b>ইনসুলিন জিন</b> (কমলা)। ডায়াবেটিস রোগীর শরীরে ইনসুলিন কম তৈরি হয়। লক্ষ্য: এই জিন দিয়ে প্রচুর ইনসুলিন বানানো।',s:{},f(){chain(4);$('gene').animate([{opacity:1},{opacity:.3},{opacity:1}],{duration:600,iterations:2});}},
+ {m:'<b>রেস্ট্রিকশন এনজাইম ✂️</b> (আণবিক কাঁচি) দিয়ে DNA এর দুই জায়গায় কাটা হলো। ইনসুলিন জিনটা আলাদা হয়ে গেলো।',s:{},p:'re',f(){IM.emit(sv,[[60,110],[92,70]],'✂️',{r:12,fs:13,dur:700,done(){vis('k1',true);IM.emit(sv,[[92,70],[128,70]],'✂️',{r:12,fs:13,dur:600,done(){vis('k2',true);
+   IM.moveAlong($('gene'),[[0,0],[0,-10]],500/player.speed);}});}});}},
+ {m:'ব্যাকটেরিয়ার ভিতরে থাকে ছোট্ট গোল DNA, নাম <b>প্লাজমিড</b>। সেই একই কাঁচি দিয়ে প্লাজমিডও কাটা হলো, একটা ফাঁক তৈরি হলো।',s:{gOut:1,cut:1},p:'re',f(){IM.emit(sv,[[220,40],[275,53]],'✂️',{r:12,fs:13,dur:800,done(){vis('plf',false);vis('plo',true);}});}},
+ {m:'জিনটা উড়ে গিয়ে প্লাজমিডের ফাঁকে বসলো। <b>লাইগেজ এনজাইম 🧴</b> (আণবিক আঠা) দিয়ে জোড়া লাগানো হলো। তৈরি হলো <b>রিকম্বিনেন্ট DNA</b>!',s:{gOut:1,cut:1,open:1},p:'lg',f(){IM.moveAlong($('gene'),[[0,-10],[80,-60],[165,-17]],1200/player.speed,Q.guard(()=>{vis('gene',false);vis('pli',true);
+   IM.emit(sv,[[330,30],[275,53]],'🧴',{r:12,fs:13,dur:600,done(){parts('rd',['lg']);$('pli').animate([{strokeWidth:12},{strokeWidth:7}],{duration:500});}});}));}},
+ {m:'রিকম্বিনেন্ট DNA কে তাপ বা <b>ইলেকট্রিক শক ⚡</b> দিয়ে পোষক কোষে (<b>E. coli</b> ব্যাকটেরিয়া) ঢোকানো হলো।',s:{gIn:1,cut:1,rec:1},p:'rd',f(){IM.moveAlong($('plg'),[[0,0],[10,92]],1100/player.speed,Q.guard(()=>{$('pll').style.opacity=0;}));
+   $('shk').animate([{opacity:0},{opacity:1},{opacity:0},{opacity:1},{opacity:0}],{duration:900,delay:500});}},
+ {m:'ব্যাকটেরিয়া খুব দ্রুত <b>বংশবৃদ্ধি</b> করে: ১ → ২ → ৪ → ৮… প্রতিটি নতুন ব্যাকটেরিয়ার ভিতরেও ইনসুলিন জিন আছে (কমলা রিং)!',s:{gIn:1,cut:1,rec:1,inB:1},f(){[1,2,4,8].forEach((n,i)=>Q.later(i*600,()=>{col(n);$('tag').textContent='ব্যাকটেরিয়া: '+bn(n)+'টি';}));}},
+ {m:'প্রতিটা ব্যাকটেরিয়া এখন ছোট্ট কারখানা: মানুষের <b>ইনসুলিন 💉</b> তৈরি করছে! একইভাবে GM শস্য বা নতুন বৈশিষ্ট্যের জীব (<b>GMO</b>) তৈরি হয়।',s:{gIn:1,cut:1,rec:1,inB:1,col:8,ins:1},p:'gm',f(){const go=()=>{MP.forEach(([x,y],i)=>Q.later(i*120,()=>IM.emit(sv,[[x+16,y+9],[110,128]],'💉',{r:9,fs:10,dur:800})));Q.later(1400,go);};go();}}];
+function render(k){const s=S[k];Q.bump();sv.querySelectorAll('.pk').forEach(e=>e.remove());chain(-1);state(s.s);parts(s.p||'',[]);s.f();say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+var player=IM.player({count:()=>S.length,show:render,interval:4200,swipe:$('sv')});
+const X={dna:{t:'🧬 DNA',d:'চেইনের মতো লম্বা অণু। এর ছোট ছোট অংশই জিন।'},gene:{t:'🟧 ইনসুলিন জিন',d:'যে জিন দিয়ে জীবের বৈশিষ্ট্য বদলানো হবে, প্রথমে সেটাকে আলাদা করা হয়।'},pl:{t:'⭕ প্লাজমিড',d:'ব্যাকটেরিয়ার ভিতরের ছোট গোল DNA। এটা বাহক হিসেবে জিনকে ব্যাকটেরিয়ার ভিতরে নিয়ে যায়।'},bac:{t:'🦠 পোষক কোষ (E. coli)',d:'এই ব্যাকটেরিয়া খুব দ্রুত বংশবৃদ্ধি করে, তাই অল্প সময়ে প্রচুর ইনসুলিন পাওয়া যায়।'},
+ re:{t:'✂️ রেস্ট্রিকশন এনজাইম',d:'আণবিক কাঁচি। DNA ও প্লাজমিডকে নির্দিষ্ট জায়গায় কাটে।'},lg:{t:'🧴 লাইগেজ এনজাইম',d:'আণবিক আঠা। কাটা জিনকে প্লাজমিডের সাথে জোড়া লাগায়।'},rd:{t:'🔗 রিকম্বিনেন্ট DNA',d:'দুই উৎসের DNA জোড়া লাগিয়ে তৈরি নতুন DNA। ১৯৭২ সালে পল বার্গ প্রথম তৈরি করেন।'},gm:{t:'🌾 GMO',d:'Genetically Modified Organism: জিন বদলে তৈরি নতুন বৈশিষ্ট্যের জীব। স্বাস্থ্য ও পরিবেশে প্রভাব নিয়ে বিতর্ক আছে।'}};
+IM.tapx(sv,X);IM.tapx($('parts'),X);
+IM.compare($('cx0'),['','সাধারণ ফসল','GM ফসল'],[
+ ['রোগ-পোকা','সহজে আক্রান্ত হয়','প্রতিরোধী করা যায়','পোকা মারার জিন বসিয়ে কীটনাশক কম লাগে।'],
+ ['ফলন','স্বাভাবিক','বেশি ও দ্রুত','শস্যের বৃদ্ধি ত্বরান্বিত করা যায়।'],
+ ['পুষ্টি','স্বাভাবিক','বাড়ানো যায়','যেমন ভিটামিন সমৃদ্ধ ধান।'],
+ ['প্রতিকূল পরিবেশ','লবণ বা খরায় নষ্ট','লবণ বা খরা সহিষ্ণু','লবণসহিষ্ণু ধান উপকূলে চাষ করা যায়।'],
+ ['বিতর্ক','নেই','আছে','স্বাস্থ্য, পরিবেশ ও জীববৈচিত্র্যে প্রভাব নিয়ে উদ্বেগ।']]);
+IM.compare($('cx1'),['ক্ষেত্র','উদাহরণ'],[
+ ['💊 চিকিৎসা','ইনসুলিন, গ্রোথ হরমোন, ভ্যাকসিন','ব্যাকটেরিয়া দিয়ে সস্তায় প্রচুর ওষুধ তৈরি।'],
+ ['🌾 কৃষি','GM শস্য','রোগ প্রতিরোধী, বেশি ফলনশীল, নতুন উপাদানযুক্ত শস্য।'],
+ ['🏭 শিল্প','প্রোটিন উৎপাদন','ব্যাকটেরিয়া, ইস্ট থেকে বাণিজ্যিকভাবে।'],
+ ['👮 অপরাধ তদন্ত','DNA পরীক্ষা','অপরাধী শনাক্ত করা যায়।']]);
+IM.mcq($('quiz6'),[
+ {q:'আণবিক কাঁচি বলা হয় কোনটিকে?',o:['লাইগেজ','রেস্ট্রিকশন এনজাইম','প্লাজমিড','ইনসুলিন'],a:1,w:'রেস্ট্রিকশন এনজাইম DNA কাটে।'},
+ {q:'কাটা জিন জোড়া লাগায় কোনটি?',o:['লাইগেজ এনজাইম','প্লাজমিড','E. coli','হিলিয়াম'],a:0,w:'লাইগেজ হলো আণবিক আঠা।'},
+ {q:'প্রথম রিকম্বিনেন্ট DNA তৈরি করেন—',o:['রিচার্ড ফাইনম্যান','পল বার্গ','ম্যাকলুহান','রে অ্যালিংটন'],a:1,w:'১৯৭২ সালে পল বার্গ।'},
+ {q:'জীবের বৈশিষ্ট্য বহন করে কোনটি?',o:['কোষপ্রাচীর','জিন','রক্ত','হাড়'],a:1,w:'জিন হলো DNA এর অংশ যা বৈশিষ্ট্য বহন করে।'}]);
+player.reset();
+</script>
+</body>
+</html>
