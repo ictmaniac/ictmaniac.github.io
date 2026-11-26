@@ -1,7 +1,7 @@
 /* ICT Maniac shared style (Chapter 3 labs) */
 :root{
   --board:#F3F6FC;--panel:#FFFFFF;--ink:#14213D;--muted:#5A6785;--line:#BFCDE6;
-  --wire-off:#A9B6CF;--signal:#E9A23B;--signal-soft:#FDEBC8;--accent:#1550B8;--accent-soft:#E2EBFB;
+  --wire-off:#A9B6CF;--signal:#E9A23B;--signal-soft:#FDEBC8;--accent:#3B82F6;--accent-soft:#E3EEFE;
   --ok:#1F8A4C;--bad:#C2412D;--bad-soft:#F8DCD6;--g1:#E2EBFB;--g2:#FDEBC8;
   --f-display:"Baloo Da 2","Hind Siliguri","Noto Sans Bengali",sans-serif;
   --f-body:"Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif;
@@ -154,15 +154,17 @@ footer{font-size:.85rem;color:var(--muted);text-align:center}
 footer a{color:var(--accent)}
 @media (prefers-reduced-motion:reduce){.flow.on{animation:none}*{transition:none!important;animation:none!important}}
 
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.explain,.console){background:#16284A;border-color:#2B4677}}
+:root[data-theme="dark"] :is(.explain,.console){background:#16284A;border-color:#2B4677}
 /* ===== kit: sticky explain bar, bottom dock, code view (Ch4+) ===== */
 body.kit{padding-bottom:calc(112px + env(safe-area-inset-bottom,0px))}
 body.kit::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--board)}
-.explain{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:var(--accent);color:var(--panel);border-radius:0 0 14px 14px;padding:10px 14px 12px;margin-inline:-4px;box-shadow:0 6px 16px -10px rgba(0,0,0,.45);min-height:4.6em}
-.explain .tag{display:inline-block;font-size:.78rem;font-weight:700;padding:1px 8px;border-radius:999px;background:color-mix(in srgb,var(--panel) 22%,transparent);margin-bottom:3px}
+.explain{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:#E8F1FF;color:var(--ink);border:2px solid #A9C8FA;border-top:0;border-radius:0 0 14px 14px;padding:10px 14px 12px;margin-inline:-4px;box-shadow:0 6px 16px -10px rgba(0,0,0,.45);min-height:4.6em}
+.explain .tag{display:inline-block;font-size:.78rem;font-weight:700;padding:1px 8px;border-radius:999px;background:var(--accent);color:#fff;margin-bottom:3px}
 .explain .tag.tap{background:var(--signal);color:#1A1200}
 .explain p{font-size:1.02rem;font-weight:600;line-height:1.5}
 .explain p.fade{animation:fadeup .3s ease-out}
-.explain code{font-family:var(--f-mono);background:color-mix(in srgb,var(--panel) 18%,transparent);padding:0 4px;border-radius:4px;font-feature-settings:"calt" 0,"liga" 0}
+.explain code{font-family:var(--f-mono);background:var(--panel);padding:0 4px;border-radius:4px;font-feature-settings:"calt" 0,"liga" 0}
 .explain .t,.explain .f{background:var(--panel);border-radius:6px;padding:0 6px;font-weight:800}
 .explain .t{color:var(--ok)}.explain .f{color:var(--bad)}
 @keyframes fadeup{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -192,8 +194,8 @@ body.kit::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-i
 .cv .cm{color:var(--muted)}
 .cv .sg{border-radius:5px;padding:1px 2px;transition:background .25s}
 .cv .sg.on{background:var(--signal);color:#1A1200;font-weight:700}
-.console{font-family:var(--f-mono);background:#0F1830;color:#E4EAF6;border-radius:12px;padding:8px 12px;min-height:52px;white-space:pre-wrap;word-break:break-word;font-size:1rem}
-.console small{display:block;color:#93A1BF;font-size:.75rem;font-family:var(--f-body)}
+.console{font-family:var(--f-mono);background:#F4F8FF;color:var(--ink);border:2px solid #A9C8FA;border-radius:12px;padding:8px 12px;min-height:52px;white-space:pre-wrap;word-break:break-word;font-size:1rem}
+.console small{display:block;color:var(--muted);font-size:.75rem;font-family:var(--f-body)}
 .browser{border:2px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel)}
 .browser .bar{display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--board);border-bottom:1px solid var(--line);font-family:var(--f-mono);font-size:.8rem;color:var(--muted);min-width:0}
 .browser .bar b{width:9px;height:9px;border-radius:50%;background:var(--wire-off);flex:none}
@@ -211,3 +213,21 @@ svg.scene .edge.on{stroke:var(--signal);stroke-width:4}
 svg.scene .tok{fill:var(--signal);stroke:var(--panel);stroke-width:2}
 .pill{display:inline-block;font-family:var(--f-mono);font-weight:700;padding:1px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.9rem}
 @media (prefers-reduced-motion:reduce){.explain p.fade{animation:none}}
+
+/* ===== motion helpers (Ch6+) ===== */
+.flyer{position:absolute;left:0;top:0;z-index:9;pointer-events:none;font-family:var(--f-mono);font-weight:800;font-size:.9rem;padding:4px 9px;border-radius:10px;background:var(--signal);color:#1A1200;box-shadow:0 8px 16px -6px rgba(20,33,61,.55);white-space:nowrap}
+.mag{position:absolute;z-index:8;font-size:1.3rem;pointer-events:none;transition:transform .22s ease-out,opacity .2s;opacity:0;left:0;top:0;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+.mag.on{opacity:1}
+svg.ov{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:7;overflow:visible}
+svg.ov path,svg.ov line{fill:none;stroke:var(--signal);stroke-width:3.5;stroke-linecap:round}
+svg.ov .draw{stroke-dasharray:900;stroke-dashoffset:900;animation:draw .9s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes glow{50%{box-shadow:0 0 0 5px var(--signal-soft),0 0 18px 4px var(--signal)}}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+@keyframes bob{to{transform:translateY(-3px)}}
+.dtbl{border:2px solid var(--accent);border-radius:12px;overflow:hidden;background:var(--panel);font-family:var(--f-mono);font-weight:700;font-size:.9rem}
+.dtbl .cap{background:var(--accent-soft);color:var(--accent);font-family:var(--f-body);font-weight:800;font-size:.85rem;padding:4px 10px}
+.dtbl .hd,.dtbl .rw{display:grid;align-items:center;min-height:34px}
+.dtbl .hd{background:var(--accent);color:#fff;font-family:var(--f-body);font-size:.82rem}
+.dtbl .rw{border-top:1.5px solid var(--line);transition:background .3s,opacity .4s,transform .5s}
+.dtbl .hd>span,.dtbl .rw>span{padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

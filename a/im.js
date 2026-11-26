@@ -285,5 +285,16 @@ const IM = (() => {
     .replace(/\b(int|float|double|char|void|return|if|else|switch|case|break|default|for|while|do|printf|scanf|include|main|long)\b/g, '<span class="kw">$1</span>');
   /* HTML colouring */
   const hHL = s => esc(s).replace(/([a-z-]+)="([^"]*)"/g, '\u0001$1\u0002="$2"').replace(/(&lt;\/?)([a-zA-Z0-9]+)/g, '$1<span class="tg">$2</span>').replace(/\u0001/g, '<span class="at">').replace(/\u0002/g, '</span>');
-  return { $, parse, ev, show, rows, envOf, toggles, tt, circuit, tabs, quiz01, rnd, FN, bn, reduce, say, player, codeView, tapx, moveAlong, esc, cHL, hHL };
+
+  /* ---------- motion helpers (Ch6+) ---------- */
+  function rel(root, el) { const m = root.getBoundingClientRect(), r = el.getBoundingClientRect(); return { x: r.left - m.left, y: r.top - m.top, w: r.width, h: r.height }; }
+  function fly(root, from, to, html, o) { o = o || {}; const f = document.createElement('div'); f.className = 'flyer' + (o.cls ? ' ' + o.cls : ''); f.innerHTML = html; root.appendChild(f);
+    const a = rel(root, from), b = rel(root, to), fw = f.offsetWidth, fh = f.offsetHeight;
+    const ax = a.x + a.w / 2 - fw / 2, ay = a.y + a.h / 2 - fh / 2, bx = b.x + b.w / 2 - fw / 2, by = b.y + b.h / 2 - fh / 2, lift = o.lift === undefined ? 40 : o.lift;
+    if (reduce()) { f.remove(); o.done && o.done(); return; }
+    f.animate([{ transform: `translate(${ax}px,${ay}px) scale(.85)`, opacity: .3 }, { transform: `translate(${ax}px,${ay - 6}px) scale(1.15)`, opacity: 1, offset: .15 },
+      { transform: `translate(${(ax + bx) / 2}px,${Math.min(ay, by) - lift}px) scale(1.2)`, offset: .55 }, { transform: `translate(${bx}px,${by}px) scale(1)` }],
+      { duration: o.dur || 1000, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => { f.remove(); o.done && o.done(); };
+    return f; }
+  return { $, parse, ev, show, rows, envOf, toggles, tt, circuit, tabs, quiz01, rnd, FN, bn, reduce, say, player, codeView, tapx, moveAlong, esc, cHL, hHL, rel, fly };
 })();

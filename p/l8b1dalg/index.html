@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>SQL কোয়েরি · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=4">
+<style>
+#main{position:relative}
+.qs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.qs::-webkit-scrollbar{display:none}
+.qs .chip{flex:none;font-size:.82rem;min-height:34px}
+.qs .chip.sel{background:var(--accent);color:#fff;border-color:var(--accent)}
+.sqt{position:relative;border:2px solid var(--accent);border-radius:12px;overflow:hidden;background:var(--panel);transition:box-shadow .4s,height .5s}
+.sqt.glow{box-shadow:0 0 0 4px var(--signal)}
+.sqt .cap{background:var(--accent-soft);color:var(--accent);font-weight:800;font-size:.82rem;padding:3px 10px;height:26px}
+.gr{display:grid;align-items:center;height:34px;font-family:var(--f-mono);font-weight:700;font-size:.76rem;transition:grid-template-columns .6s ease}
+.gr>span{padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:clip;transition:opacity .4s,background .3s,color .3s}
+.gr>span.hide{opacity:0}
+.gr.h{background:var(--accent);color:#fff;font-family:var(--f-body);font-size:.78rem;position:relative;z-index:4}
+.gr.h>span.cnd{background:var(--signal);color:#1A1200}
+.rw{position:absolute;left:0;right:0;top:60px;border-top:1.5px solid var(--line);background:var(--panel);transition:transform .7s cubic-bezier(.45,0,.25,1),opacity .5s,background .3s,box-shadow .3s;z-index:1}
+.rw.look{background:color-mix(in srgb,var(--accent) 14%,var(--panel));z-index:2}
+.rw.pass{background:color-mix(in srgb,var(--ok) 14%,var(--panel))}
+.rw.fail{background:var(--bad-soft)}
+.rw.fail>span{color:var(--bad);text-decoration:line-through}
+.rw.out{opacity:0}
+.rw .tick{position:absolute;right:4px;top:50%;transform:translateY(-50%);font-weight:900;font-size:1rem;animation:pop .3s ease-out}
+.rw.pass .tick{color:var(--ok)}.rw.fail .tick{color:var(--bad)}
+.rw .cnd{background:var(--signal-soft)}
+.rw .chg{background:var(--signal);color:#1A1200;animation:glow .9s ease-in-out 2}
+.console{min-height:44px}
+#out.bnx{font-family:var(--f-body);font-weight:700}
+</style>
+</head>
+<body class="kit">
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৬ · ৬.৫ কোয়েরি ও SQL</span>
+    <h1>কোয়েরি কীভাবে কাজ করে?</h1>
+    <p class="lead">একটা কোয়েরি বাছো, তারপর ▶ চাপো। কোন সারি বাদ পড়ে, কোন কলাম থাকে, কীভাবে সাজায়, সব নড়াচড়া করে দেখাবে। কোডের লাইনে টাচ করলে মানে আসবে।</p>
+  </header>
+  <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
+  <div class="qs" id="qs"></div>
+  <section class="card" id="main">
+    <pre id="code"></pre>
+    <div class="sqt" id="st"></div>
+    <div class="console"><small>ফলাফল</small><span id="out"></span></div>
+    <span class="mag" id="mag">🔍</span>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>গঠন:</b> SELECT ফিল্ড FROM টেবিল WHERE শর্ত ORDER BY ফিল্ড ASC/DESC;</li>
+      <li><b>*</b> মানে সব ফিল্ড। টেক্সট ও তারিখের মান ' ' এর ভিতরে, সংখ্যা উদ্ধৃতিচিহ্ন ছাড়া।</li>
+      <li><b>AND:</b> দুই শর্তই সত্য হতে হবে। <b>OR:</b> যেকোনো একটা। <b>LIKE 'S%':</b> S দিয়ে শুরু (% = যেকোনো সংখ্যক অক্ষর, _ = একটি অক্ষর)।</li>
+      <li><b>UPDATE</b> ও <b>DELETE</b> এ WHERE না দিলে সব রেকর্ড বদলে বা মুছে যাবে, সাবধান!</li>
+      <li>DDL: CREATE, ALTER, DROP। DML: INSERT, UPDATE, DELETE, SELECT। DCL: GRANT, REVOKE।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false">অটো</button><button class="sp" aria-label="গতি">১x</button><div class="bar"><i></i></div><div class="cnt"></div></div></div>
+<script src="../../a/im.js?v=4"></script>
+<script>
+const {$,say,bn}=IM;
+const COLS=['Roll','Name','Dept','GPA','City'],W=['40px','62px','1fr','40px','64px'];
+const D=[[101,'Rafi','Science',5.00,'Dhaka'],[102,'Mitu','Commerce',4.50,'Rajshahi'],[103,'Sumaiya','Science',4.75,'Dhaka'],[104,'Tanvir','Humanities',3.80,'Khulna'],[105,'Nadia','Science',4.25,'Sylhet']];
+const g2=v=>typeof v==='number'&&v<10?v.toFixed(2):v;
+const Q=[
+ {n:'SELECT *',c:['SELECT *','FROM Student;'],sel:null,m0:'<b>*</b> মানে সব ফিল্ড। তাই সব কলাম আর সব রেকর্ড দেখাবে।'},
+ {n:'কিছু কলাম',c:['SELECT Name, GPA','FROM Student;'],sel:[1,3],m0:'শুধু Name আর GPA কলাম চাই। বাকি কলামগুলো সরে যাবে।'},
+ {n:'WHERE',c:['SELECT Roll, Name, City','FROM Student','WHERE City = \'Dhaka\';'],sel:[0,1,4],w:{col:4,f:r=>r[4]==='Dhaka',t:r=>`${r[4]} = 'Dhaka'`}},
+ {n:'AND',c:['SELECT *','FROM Student','WHERE Dept = \'Science\'','  AND GPA >= 4.50;'],sel:null,w:{col:[2,3],f:r=>r[2]==='Science'&&r[3]>=4.5,t:r=>`${r[2]==='Science'?'Science ✓':r[2]+' ✗'} AND ${g2(r[3])} >= 4.50 ${r[3]>=4.5?'✓':'✗'}`}},
+ {n:'ORDER BY',c:['SELECT Name, GPA','FROM Student','ORDER BY GPA DESC;'],sel:[1,3],ord:(a,b)=>b[3]-a[3]},
+ {n:'BETWEEN',c:['SELECT *','FROM Student','WHERE GPA BETWEEN 4.00 AND 4.80;'],sel:null,w:{col:3,f:r=>r[3]>=4&&r[3]<=4.8,t:r=>`4.00 ≤ ${g2(r[3])} ≤ 4.80 ?`}},
+ {n:'LIKE',c:['SELECT *','FROM Student','WHERE Name LIKE \'S%\';'],sel:null,w:{col:1,f:r=>r[1][0]==='S',t:r=>`${r[1]} কি S দিয়ে শুরু?`}},
+ {n:'UPDATE',c:['UPDATE Student','SET GPA = 4.90','WHERE Roll = 105;'],sel:null,upd:1,w:{col:0,f:r=>r[0]===105,t:r=>`Roll ${r[0]} = 105 ?`}},
+ {n:'DELETE',c:['DELETE FROM Student','WHERE Roll = 104;'],sel:null,del:1,w:{col:0,f:r=>r[0]===104,t:r=>`Roll ${r[0]} = 104 ?`}}];
+const KW=/\b(SELECT|FROM|WHERE|AND|OR|ORDER BY|DESC|ASC|BETWEEN|LIKE|UPDATE|SET|DELETE)\b/g;
+const hl=l=>IM.esc(l).replace(/'[^']*'/g,m=>`<span class="st">${m}</span>`).replace(KW,'<span class="kw">$1</span>');
+const LX={SELECT:'SELECT: কোন কোন ফিল্ড (কলাম) দেখাতে চাই। * মানে সব।',FROM:'FROM: কোন টেবিল থেকে ডেটা নেবো।',WHERE:'WHERE: শর্ত। শুধু যেসব রেকর্ডে শর্ত সত্য, সেগুলোই থাকবে।',AND:'AND: আগের শর্ত আর এই শর্ত, দুটোই সত্য হতে হবে।',ORDER:'ORDER BY: কোন ফিল্ড অনুযায়ী সাজাবো। ASC = ছোট থেকে বড় (ডিফল্ট), DESC = বড় থেকে ছোট।',UPDATE:'UPDATE: টেবিলের ডেটা বদলানোর কমান্ড।',SET:'SET: কোন ফিল্ডে নতুন কী মান বসবে।',DELETE:'DELETE FROM: শর্ত মেলা রেকর্ড মুছে ফেলার কমান্ড।'};
+let qi=0,q=Q[0],S=[],cv,gen=0;
+$('qs').innerHTML=Q.map((x,i)=>`<button class="chip" data-i="${i}">${x.n}</button>`).join('');
+// table
+$('st').innerHTML=`<div class="cap">📋 Student টেবিল</div><div class="gr h" id="hd">${COLS.map((c,j)=>`<span id="h${j}">${c}</span>`).join('')}</div>`+D.map((r,i)=>`<div class="gr rw" id="r${i}">${r.map((v,j)=>`<span id="c${i}${j}">${g2(v)}</span>`).join('')}</div>`).join('');
+const RH=34,TOP=60;
+function cols(sel){const t=COLS.map((_,j)=>!sel||sel.includes(j)?W[j]:'0px');t.push('16px');document.querySelectorAll('#st .gr').forEach(g=>g.style.gridTemplateColumns=t.join(' '));
+  COLS.forEach((_,j)=>document.querySelectorAll(`#h${j},[id^="c"][id$="${j}"]`).forEach(e=>e.classList.toggle('hide',!!sel&&!sel.includes(j))));}
+function steps(){const S=[],all=[0,1,2,3,4];
+  const base={vis:all,ord:all,sel:null};
+  S.push({...base,l:-1,m:'কোয়েরি লেখা হলো। '+(q.m0||'চলো দেখি ডেটাবেজ এটা কীভাবে চালায়।')});
+  S.push({...base,l:q.c.findIndex(x=>/FROM|UPDATE|DELETE/.test(x)),glow:1,m:q.upd?'<b>UPDATE Student</b>: Student টেবিলে পরিবর্তন করবো।':q.del?'<b>DELETE FROM Student</b>: Student টেবিল থেকে মুছবো।':'<b>FROM Student</b>: আগে টেবিলটা খুঁজে নিলো।'});
+  let vis=all;
+  if(q.w){const wl=q.c.findIndex(x=>/WHERE/.test(x)),wl2=q.c.findIndex(x=>/^\s*AND/.test(x));const pass=all.filter(i=>q.w.f(D[i]));
+    S.push({...base,l:wl2>0?[wl,wl2]:wl,scan:1,pass,m:'🔍 <b>WHERE</b>: প্রতিটি রেকর্ডে শর্ত পরীক্ষা করছি… '+all.map(i=>`${D[i][1]}: ${pass.includes(i)?'✓':'✗'}`).join(', ')});
+    if(q.upd){S.push({...base,l:q.c.findIndex(x=>/SET/.test(x)),upd:pass[0],m:`শর্ত মিলেছে শুধু Nadia (105) এর সাথে। <b>SET GPA = 4.90</b>: তার GPA 4.25 থেকে বদলে 4.90 হলো। বাকিরা যেমন ছিল তেমনই।`,out:'১টি রেকর্ড আপডেট হলো'});return S;}
+    vis=q.del?all.filter(i=>!pass.includes(i)):pass;
+    S.push({...base,l:wl,vis,pass,cut:1,m:q.del?`Tanvir (104) এর রেকর্ড টেবিল থেকে মুছে গেলো 🗑️, বাকিরা উপরে উঠে এলো। এটা স্থায়ী পরিবর্তন!`:`শর্ত মেলেনি এমন ${bn(5-pass.length)}টি রেকর্ড বাদ পড়লো, থাকলো ${bn(pass.length)}টি।`,out:q.del?'১টি রেকর্ড মুছে গেলো':''});
+    if(q.del)return S;}
+  let ord=all;
+  if(q.ord){ord=all.slice().sort((a,b)=>q.ord(D[a],D[b]));S.push({...base,vis,ord,l:q.c.findIndex(x=>/ORDER/.test(x)),ordC:3,m:'<b>ORDER BY GPA DESC</b>: GPA অনুযায়ী বড় থেকে ছোট সাজালো। সারিগুলো জায়গা বদলালো।'});}
+  if(q.sel){S.push({...base,vis,ord,sel:q.sel,l:0,m:`<b>SELECT</b> ${q.sel.map(j=>COLS[j]).join(', ')}: শুধু এই কলামগুলো থাকলো, বাকি কলাম সরে গেলো।`});}
+  const res=ord.filter(i=>vis.includes(i));
+  S.push({...base,vis,ord,sel:q.sel,l:-1,fin:1,m:`ফলাফল তৈরি ✓ ${bn(res.length)}টি রেকর্ড এসেছে। নিচের ফলাফল বক্সে দেখো।`,out:res.map(i=>(q.sel||[0,1,2,3,4]).map(j=>g2(D[i][j])).join(', ')).join('\n')});
+  return S;}
+const later=(ms,fn)=>{const g=gen;setTimeout(()=>{if(g===gen)fn();},ms/player.speed);};
+function magTo(el){const r=IM.rel($('main'),el),m=$('mag');m.classList.add('on');m.style.transform=`translate(${r.x+r.w-30}px,${r.y+r.h/2-14}px)`;}
+function build(){cv=IM.codeView($('code'),q.c.map(hl),i=>{const k=Object.keys(LX).find(x=>q.c[i].trim().startsWith(x));say(`লাইন ${bn(i+1)}`,LX[k]||'',true);});S=steps();}
+function place(s,anim){let p=0;s.ord.forEach(i=>{const r=$('r'+i),v=s.vis.includes(i);r.classList.toggle('out',!v);if(v){r.style.transform=`translateY(${p*RH}px)`;p++;}else r.style.transform=`translate(60%,${(p)*RH}px)`;});
+  $('st').style.height=(TOP+2+Math.max(p,1)*RH)+'px';}
+function render(k,prev){gen++;const s=S[k],fwd=prev===k-1&&!IM.reduce();$('mag').classList.remove('on');
+  cv.on(s.l);cols(s.sel);$('st').classList.toggle('glow',!!s.glow);
+  D.forEach((r,i)=>{const e=$('r'+i);e.classList.remove('look','pass','fail');const t=e.querySelector('.tick');if(t)t.remove();
+    r.forEach((v,j)=>{const c=$('c'+i+j);c.classList.remove('cnd','chg');c.textContent=g2(v);});});
+  COLS.forEach((_,j)=>$('h'+j).classList.toggle('cnd',!!(q.w&&s.scan&&[].concat(q.w.col).includes(j))||s.ordC===j));
+  place(s);
+  if(s.scan){const mark=i=>{const e=$('r'+i),ok=s.pass.includes(i);e.classList.remove('look');e.classList.add(ok?'pass':'fail');e.insertAdjacentHTML('beforeend',`<b class="tick">${ok?'✓':'✗'}</b>`);};
+    [].concat(q.w.col).forEach(j=>D.forEach((_,i)=>$('c'+i+j).classList.add('cnd')));
+    if(fwd){let n=0;const tick=()=>{if(n<5){const e=$('r'+n);e.classList.add('look');magTo(e);say(`শর্ত পরীক্ষা: ${D[n][1]}`,q.w.t(D[n])+' '+(s.pass.includes(n)?'<span class="t">সত্য</span>':'<span class="f">মিথ্যা</span>'));later(380,()=>{mark(n);n++;tick();});}
+      else{$('mag').classList.remove('on');say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}};tick();}
+    else D.forEach((_,i)=>mark(i));}
+  if(s.cut&&!q.del)s.pass.forEach(i=>$('r'+i).classList.add('pass'));
+  if(s.upd!==undefined){const c=$('c'+s.upd+'3');$('r'+s.upd).classList.add('pass');
+    if(fwd){later(500,()=>{c.textContent='4.90';c.classList.add('chg');});}else{c.textContent='4.90';c.classList.add('chg');}}
+  $('out').textContent=s.out||'';$('out').classList.toggle('bnx',/[\u0980-\u09FF]/.test(s.out||''));
+  if(!(s.scan&&fwd))say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+var player=IM.player({count:()=>S.length,show:render,swipe:$('st'),interval:3000});
+const chips=[...$('qs').querySelectorAll('.chip')];
+chips.forEach(b=>b.onclick=()=>{qi=+b.dataset.i;q=Q[qi];chips.forEach(c=>c.classList.toggle('sel',c===b));build();player.reset();});
+chips[0].classList.add('sel');
+$('st').addEventListener('click',e=>{const r=e.target.closest('.rw');if(!r)return;const d=D[+r.id.slice(1)];say(`রেকর্ড: ${d[1]}`,`Roll ${d[0]}, ${d[1]}, ${d[2]}, GPA ${g2(d[3])}, ${d[4]}। কোয়েরির শর্ত মিললে এই রেকর্ড ফলাফলে আসবে।`,true);});
+build();player.reset();
+</script>
+</body>
+</html>

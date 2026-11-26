@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>ডেটা থেকে ডেটাবেজ · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=4">
+<style>
+#main{position:relative}
+.lad{display:flex;align-items:center;gap:2px;flex-wrap:nowrap;justify-content:center}
+.lad button{font:inherit;font-weight:800;font-size:.74rem;padding:4px 6px;border-radius:999px;border:2px solid var(--line);background:var(--panel);color:var(--muted);cursor:pointer;transition:all .3s}
+.lad button.on{background:var(--signal);border-color:var(--signal);color:#1A1200;transform:scale(1.08)}
+.lad button.done{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.lad i{font-style:normal;color:var(--wire-off);font-weight:800}
+.pool{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;min-height:40px;padding:8px;border:2px dashed var(--wire-off);border-radius:12px;background:var(--board);transition:opacity .4s}
+.pool b{font-family:var(--f-mono);font-size:.85rem;padding:3px 8px;border-radius:8px;background:var(--panel);border:1.5px solid var(--line);transition:opacity .3s,transform .3s}
+.pool b.used{opacity:.12;transform:scale(.8)}
+.pool:empty,.pool.gone{display:none}
+.db{position:relative;border:3px solid transparent;border-radius:16px;padding:6px;display:flex;flex-direction:column;gap:10px;transition:all .5s}
+.db.on{border-color:var(--signal);background:color-mix(in srgb,var(--signal-soft) 45%,transparent)}
+.db .dbl{display:none;font-weight:800;color:#8A5A00;font-size:.9rem}
+.db.on .dbl{display:block;animation:pop .4s ease-out}
+.stu .hd,.stu .rw{grid-template-columns:58px 1fr 1fr 58px}
+.res .hd,.res .rw{grid-template-columns:58px 1fr}
+.res{width:60%;transition:opacity .5s,transform .5s}
+.res.off{opacity:0;transform:translateY(12px);pointer-events:none}
+.hd.off>span{opacity:0}
+.hd>span{transition:opacity .4s;cursor:pointer}
+.c{cursor:pointer;transition:background .3s}
+.c.col{background:color-mix(in srgb,var(--accent) 14%,var(--panel))}
+.rw.rec{background:var(--signal-soft);box-shadow:inset 0 0 0 3px var(--signal)}
+.dtbl.tb{box-shadow:0 0 0 4px var(--signal)}
+.dtbl .cap{transition:opacity .4s}
+.dtbl .cap.off{opacity:0}
+.c.new{animation:pop .4s ease-out}
+.rkey{color:var(--bad)}
+</style>
+</head>
+<body class="kit">
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৬ · ৬.১ ডেটাবেজের ধারণা</span>
+    <h1>ডেটা থেকে ডেটাবেজ</h1>
+    <p class="lead">ছড়ানো ছিটানো ডেটা কীভাবে ধাপে ধাপে ফিল্ড, রেকর্ড, টেবিল হয়ে ডেটাবেজ হয়, ▶ চাপো আর দেখো। যেকোনো ঘর বা ধাপের নামে টাচ করলে মানে দেখাবে।</p>
+  </header>
+  <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
+  <section class="card" id="main">
+    <div class="lad" id="lad"></div>
+    <div class="pool" id="pool"></div>
+    <div class="db" id="db">
+      <span class="dbl">🛢️ ডেটাবেজ: College (দুটি সম্পর্কযুক্ত টেবিল)</span>
+      <div class="dtbl stu" id="stu"></div>
+      <div class="dtbl res off" id="res"></div>
+    </div>
+    <svg class="ov" id="ov"></svg>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>ফিল্ড:</b> ডেটাবেজের ক্ষুদ্রতম একক। টেবিলের প্রতিটি কলাম একটি ফিল্ড (Roll, Name)। ফিল্ড হলো ডেটাবেজের ভিত্তি।</li>
+      <li><b>রেকর্ড:</b> সম্পর্কযুক্ত কয়েকটি ফিল্ডের সমষ্টি। টেবিলের প্রতিটি সারি একটি রেকর্ড।</li>
+      <li><b>টেবিল (ফাইল):</b> একই ধরনের অনেক রেকর্ডের সমষ্টি।</li>
+      <li><b>ডেটাবেজ:</b> এক বা একাধিক সম্পর্কযুক্ত টেবিলের সমষ্টি। ক্রম: ডেটা → ফিল্ড → রেকর্ড → টেবিল → ডেটাবেজ।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false">অটো</button><button class="sp" aria-label="গতি">১x</button><div class="bar"><i></i></div><div class="cnt"></div></div></div>
+<script src="../../a/im.js?v=4"></script>
+<script>
+const {$,say,bn}=IM;
+const H=['Roll','Name','Dept','GPA'];
+const R=[['101','Rafi','Science','5.00'],['102','Mitu','Commerce','4.50'],['103','Sumaiya','Science','4.75']];
+const RS=[['101','1150'],['102','1040'],['103','1095']];
+const LV=[['ডেটা','ডেটা হলো কাঁচা মান, যেমন 101, Rafi। আলাদাভাবে এর মানে বোঝা যায় না।'],['ফিল্ড','ফিল্ড হলো টেবিলের একটি কলাম, যেমন Roll। এটা ডেটাবেজের ক্ষুদ্রতম একক।'],['রেকর্ড','রেকর্ড হলো টেবিলের একটি সারি। একজনের সব ফিল্ড মিলে একটি রেকর্ড।'],['টেবিল','টেবিল (ফাইল) হলো একই ধরনের অনেক রেকর্ডের সমষ্টি।'],['ডেটাবেজ','ডেটাবেজ হলো এক বা একাধিক সম্পর্কযুক্ত টেবিলের সমষ্টি।']];
+$('lad').innerHTML=LV.map((l,i)=>`<button data-i="${i}">${l[0]}</button>`).join('<i>→</i>');
+$('lad').querySelectorAll('button').forEach(b=>b.onclick=()=>{const l=LV[+b.dataset.i];say(l[0],l[1],true);});
+const pool=[];R.forEach((r,i)=>r.forEach((v,j)=>pool.push([i,j,v])));
+// shuffle deterministically
+const ORDER=[5,0,9,3,11,7,1,10,4,8,2,6];
+$('pool').innerHTML=ORDER.map(k=>{const [i,j,v]=pool[k];return `<b id="p${i}${j}">${v}</b>`;}).join('');
+$('stu').innerHTML=`<div class="cap" id="cap1">📋 Student টেবিল</div><div class="hd off" id="hd1">${H.map((h,j)=>`<span data-h="${j}">${h}</span>`).join('')}</div>`+R.map((r,i)=>`<div class="rw" id="w${i}">${r.map((v,j)=>`<span class="c" id="c${i}${j}" data-i="${i}" data-j="${j}"></span>`).join('')}</div>`).join('');
+$('res').innerHTML=`<div class="cap">📋 Result টেবিল</div><div class="hd"><span>Roll</span><span>Total</span></div>`+RS.map((r,i)=>`<div class="rw"><span class="rkey" id="q${i}">${r[0]}</span><span>${r[1]}</span></div>`).join('');
+const S=[
+ {lv:0,fill:[],m:'উপরে কিছু <b>ডেটা</b> ছড়িয়ে আছে: 101, Rafi, Science… শুধু এগুলো দেখে বোঝা যায় না কোনটা কী। এগুলোকে সাজাতে হবে।'},
+ {lv:1,fill:[[0,0],[1,0],[2,0]],hd:1,col:0,m:'প্রথমে নাম দেওয়া কলাম বানালাম: Roll, Name, Dept, GPA। সব রোল উড়ে গিয়ে <b>Roll</b> কলামে বসলো। একটা কলাম = একটা <b>ফিল্ড</b>।'},
+ {lv:2,fill:[[0,1],[0,2],[0,3]],hd:1,rec:0,m:'এবার Rafi এর নাম, বিভাগ, GPA তার রোলের পাশে বসলো। একজনের সব ফিল্ড মিলে একটা সারি = একটা <b>রেকর্ড</b>।'},
+ {lv:3,fill:[[1,1],[1,2],[1,3],[2,1],[2,2],[2,3]],hd:1,tb:1,m:'বাকি ডেটাও বসে গেলো। একই ধরনের অনেক রেকর্ড মিলে হলো একটা <b>টেবিল</b>: Student টেবিল।'},
+ {lv:4,fill:[],hd:1,res:1,link:1,m:'আরেকটা টেবিল Result যোগ হলো। দুই টেবিলেই Roll আছে, তাই এরা সম্পর্কযুক্ত (তীর)। সম্পর্কযুক্ত টেবিলগুলো মিলে একটা <b>ডেটাবেজ</b>।'},
+ {lv:5,fill:[],hd:1,res:1,link:1,m:'পুরো সিঁড়িটা মনে রাখো: ডেটা → ফিল্ড → রেকর্ড → টেবিল → ডেটাবেজ। উপরের যেকোনো নামে টাচ করে আবার মানে দেখো।'}];
+// cumulative filled cells
+const FILLED=[];{let acc=[];S.forEach(s=>{acc=acc.concat(s.fill);FILLED.push(acc.slice());});}
+let gen=0;
+function link(){const a=$('c00'),b=$('q0'),m=$('main');const A=IM.rel(m,a),B=IM.rel(m,b);
+  const x1=A.x+12,y1=A.y+A.h,x2=B.x+12,y2=B.y;
+  $('ov').innerHTML=`<path class="draw" d="M${x1} ${y1} C ${x1-40} ${y1+30}, ${x2-40} ${y2-30}, ${x2} ${y2}"/><text x="${x1+30}" y="${(y1+y2)/2+4}" font-size="12" font-weight="800" fill="#8A5A00">Roll = Roll</text>`;}
+function render(k,prev){gen++;const g=gen,s=S[k],fwd=prev===k-1&&!IM.reduce();$('ov').innerHTML='';
+  $('lad').querySelectorAll('button').forEach((b,i)=>{b.classList.toggle('on',i===s.lv);b.classList.toggle('done',i<s.lv||s.lv===5);});
+  $('hd1').classList.toggle('off',!s.hd);
+  const F=new Set(FILLED[k].map(x=>x.join(''))),NEW=fwd?new Set(s.fill.map(x=>x.join(''))):new Set();
+  R.forEach((r,i)=>r.forEach((v,j)=>{const id=''+i+j,c=$('c'+id),has=F.has(id);
+    $('p'+id).classList.toggle('used',has);c.classList.remove('new');
+    if(!has){c.textContent='';return;}
+    if(NEW.has(id)){c.textContent='';const order=s.fill.findIndex(x=>x.join('')===id);
+      setTimeout(()=>{if(g!==gen)return;IM.fly($('main'),$('p'+id),c,v,{dur:900/player.speed,done:()=>{if(g!==gen)return;c.textContent=v;c.classList.add('new');}});},order*260/player.speed);}
+    else c.textContent=v;
+    c.classList.toggle('col',s.col===j);}));
+  R.forEach((_,i)=>$('w'+i).classList.toggle('rec',s.rec===i));
+  $('stu').classList.toggle('tb',!!s.tb);
+  $('res').classList.toggle('off',!s.res);$('pool').classList.toggle('gone',s.lv>=4);$('db').classList.toggle('on',!!s.res);
+  if(s.link)setTimeout(()=>{if(g===gen)link();},fwd?550:0);
+  say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+var player=IM.player({count:()=>S.length,show:render,swipe:$('main'),interval:3000});
+$('stu').addEventListener('click',e=>{const h=e.target.closest('[data-h]');if(h){const j=+h.dataset.h;say(`ফিল্ড: ${H[j]}`,`<b>${H[j]}</b> একটা ফিল্ড (কলাম)। এর নিচে সব শিক্ষার্থীর ${H[j]} থাকে।`,true);return;}
+  const c=e.target.closest('.c');if(!c||!c.textContent)return;const i=+c.dataset.i,j=+c.dataset.j;
+  say(`ডেটা: ${R[i][j]}`,`এই ঘরের ডেটা <b>${R[i][j]}</b>। এটা <b>${H[j]}</b> ফিল্ডের মান, আর ${R[i][1]} এর রেকর্ডের অংশ।`,true);});
+$('res').onclick=()=>say('Result টেবিল','আরেকটা টেবিল। এখানেও Roll আছে, তাই Student আর Result টেবিল Roll দিয়ে যুক্ত। একাধিক সম্পর্কযুক্ত টেবিল মিলেই ডেটাবেজ।',true);
+addEventListener('resize',()=>{if(S[player.k].link)link();});
+player.reset();
+</script>
+</body>
+</html>
