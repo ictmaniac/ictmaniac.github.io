@@ -1,0 +1,75 @@
+---
+ch: ৪
+kit: 1
+title: ওয়েবসাইট পাবলিশিং
+eyebrow: ৪.৪ ওয়েবসাইট পাবলিশিং (Publishing Website)
+h1: ওয়েবসাইট অনলাইনে তোলা
+lead: তোমার কম্পিউটারের ওয়েবসাইট কীভাবে সারা পৃথিবীর মানুষ দেখতে পায়? ▶ চাপো। যেকোনো বাক্সে আঙুল দিলে মানে দেখাবে।
+---
+<style>
+.node .t1{font-weight:700;font-size:13px;text-anchor:middle}
+.node .t2{font-size:11px;fill:var(--muted);text-anchor:middle}
+.ftok rect{fill:var(--signal-soft);stroke:var(--signal);stroke-width:1.5}
+.ftok text{font-family:var(--f-mono);font-size:10px;font-weight:700;text-anchor:middle}
+.lbl3{font-size:11px;fill:var(--muted);text-anchor:middle}
+.stp2{display:flex;flex-direction:column;gap:6px}
+.stp2 div{display:grid;grid-template-columns:28px 1fr;gap:8px;align-items:center;padding:6px 8px;border-radius:10px;background:var(--board);color:var(--muted);transition:all .3s}
+.stp2 div i{font-style:normal;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--line);color:var(--panel);font-weight:800;font-size:.85rem}
+.stp2 div.done{color:var(--ink)}.stp2 div.done i{background:var(--accent)}
+.stp2 div.on{background:var(--signal-soft);color:var(--ink);font-weight:700}.stp2 div.on i{background:var(--signal);color:#1A1200}
+</style>
+  <section class="card" id="main">
+    <svg class="scene" id="sc" viewBox="0 0 360 260"></svg>
+    <div class="stp2" id="list"></div>
+  </section>
+  <section class="card">
+    <h2>মজার তথ্য</h2>
+    <p>তুমি এখন যে পেজটা দেখছো, সেটাও এভাবেই পাবলিশ করা। এটা রাখা আছে GitHub Pages নামের একটা ফ্রি হোস্টিংয়ে।</p>
+    <ul class="points">
+      <li><b>ডোমেইন নেইম:</b> ওয়েবসাইটের নাম (যেমন ictmaniac.com)। প্রতি বছর ভাড়া দিতে হয়।</li>
+      <li><b>ওয়েব হোস্টিং:</b> সার্ভারে ফাইল রাখার জায়গা ভাড়া নেওয়া, যাতে সাইট ২৪ ঘণ্টা চালু থাকে।</li>
+      <li><b>FTP</b> (File Transfer Protocol) বা <b>cPanel</b> দিয়ে ফাইল সার্ভারে আপলোড করা হয়।</li>
+    </ul>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
+<script>
+const {$,say,bn}=IM;
+const N={pc:{x:62,y:56,w:104,h:58,a:'তোমার কম্পিউটার',b:'index.html'},reg:{x:292,y:40,w:124,h:52,a:'ডোমেইন রেজিস্ট্রার',b:''},srv:{x:240,y:160,w:132,h:64,a:'হোস্টিং সার্ভার',b:'IP: 203.0.113.5'},vis:{x:66,y:220,w:110,h:52,a:'দর্শকের ফোন',b:''}};
+const X={pc:{t:'তোমার কম্পিউটার',d:'এখানে HTML, CSS, ছবি দিয়ে ওয়েবসাইট বানানো হয়। কিন্তু শুধু তোমার কম্পিউটারে থাকলে অন্য কেউ দেখতে পারে না।'},
+ reg:{t:'ডোমেইন রেজিস্ট্রার',d:'যে প্রতিষ্ঠান ডোমেইন নেইম বিক্রি/নিবন্ধন করে। নাম খালি থাকলেই কেনা যায়।'},
+ srv:{t:'হোস্টিং সার্ভার',d:'২৪ ঘণ্টা চালু থাকা শক্তিশালী কম্পিউটার। এখানে ওয়েবসাইটের ফাইল রাখা হয়।'},
+ vis:{t:'দর্শক',d:'পৃথিবীর যেকোনো জায়গা থেকে যে কেউ ডোমেইন নেইম লিখে সাইটটা দেখতে পারে।'}};
+const S=[
+ {on:'pc',m:'ধাপ ১: আগে কম্পিউটারে ওয়েবসাইট তৈরি করো (index.html, style.css, ছবি)। ব্রাউজারে খুলে ঠিকঠাক কিনা দেখো।',l:'ওয়েবসাইট তৈরি'},
+ {on:'reg',dom:1,m:'ধাপ ২: একটা ডোমেইন নেইম পছন্দ করে রেজিস্ট্রেশন করো, যেমন <code>ictmaniac.com</code>। খালি থাকলেই নেওয়া যায়।',l:'ডোমেইন নেইম রেজিস্ট্রেশন'},
+ {on:'srv',dom:1,m:'ধাপ ৩: ওয়েব হোস্টিং কেনো, মানে সার্ভারে জায়গা ভাড়া নাও। সার্ভারের একটা আইপি অ্যাড্রেস আছে।',l:'ওয়েব হোস্টিং কেনা'},
+ {on:'srv',dom:1,e:['reg-srv'],m:'ধাপ ৪: ডোমেইনকে হোস্টিং এর সাথে যুক্ত করো (DNS/নেইম সার্ভার সেট করা)। এখন নাম দিলেই সার্ভার খুঁজে পাওয়া যাবে।',l:'ডোমেইন ও হোস্টিং যুক্ত করা'},
+ {on:'srv',dom:1,e:['reg-srv','pc-srv'],up:1,m:'ধাপ ৫: FTP বা cPanel দিয়ে সব ফাইল সার্ভারে আপলোড করো।',l:'ফাইল আপলোড (FTP)'},
+ {on:'vis',dom:1,e:['reg-srv','pc-srv','srv-vis'],view:1,m:'ধাপ ৬: এখন যে কেউ <code>ictmaniac.com</code> লিখলেই সার্ভার থেকে পেজ তার ফোনে চলে আসবে। ওয়েবসাইট প্রকাশিত!',l:'পরীক্ষা ও প্রকাশ'},
+ {on:'pc',dom:1,e:['reg-srv','pc-srv','srv-vis'],up:1,m:'ধাপ ৭: পরে কিছু বদলাতে চাইলে কম্পিউটারে বদলে আবার আপলোড করলেই হয় (রক্ষণাবেক্ষণ)।',l:'আপডেট ও রক্ষণাবেক্ষণ'}];
+const C=id=>[N[id].x,N[id].y];
+function scene(){$('sc').innerHTML=`<path class="edge" id="e-pc-srv" d="M${C('pc')} L${C('srv')}"/><path class="edge" id="e-reg-srv" d="M${C('reg')} L${C('srv')}"/><path class="edge" id="e-srv-vis" d="M${C('srv')} L${C('vis')}"/>
+ <text class="lbl3" x="128" y="122">আপলোড (FTP)</text><text class="lbl3" x="318" y="104">DNS</text><text class="lbl3" x="150" y="210">পেজ দেখা</text>
+ ${Object.entries(N).map(([k,n])=>`<g class="node tapme" id="n-${k}" data-x="${k}"><rect x="${n.x-n.w/2}" y="${n.y-n.h/2}" width="${n.w}" height="${n.h}" rx="12"/><text class="t1" x="${n.x}" y="${n.y-3}">${n.a}</text><text class="t2 mono" id="t-${k}" x="${n.x}" y="${n.y+15}">${n.b}</text></g>`).join('')}
+ <g id="toks"></g>`;}
+IM.tapx($('sc'),X);
+$('list').innerHTML=S.map((s,i)=>`<div id="l${i}"><i>${bn(i+1)}</i><span>${s.l}</span></div>`).join('');
+function render(k,prev){const s=S[k];
+  Object.keys(N).forEach(id=>$('n-'+id).classList.toggle('on',id===s.on));
+  ['pc-srv','reg-srv','srv-vis'].forEach(e=>$('e-'+e).classList.toggle('on',!!(s.e&&s.e.includes(e))));
+  $('t-reg').textContent=s.dom?'ictmaniac.com ✓':'';$('t-vis').textContent=s.view?'ictmaniac.com':'';
+  S.forEach((_,i)=>{$('l'+i).className=i<k?'done':i===k?'on':'';});
+  const T=$('toks');T.innerHTML='';
+  const fly=(names,from,to,dy)=>names.forEach((f,i)=>{T.insertAdjacentHTML('beforeend',`<g class="ftok" id="f${i}"><rect x="-30" y="-9" width="60" height="18" rx="6"/><text y="4">${f}</text></g>`);
+    const g=$('f'+i),a=C(from),b=C(to);g.setAttribute('transform',`translate(${a})`);
+    setTimeout(()=>IM.moveAlong(g,[[a[0],a[1]+i*dy],[b[0],b[1]+i*dy]],800/player.speed),prev===null?0:i*250);});
+  if(s.up)fly(['index.html','style.css','photo.jpg'],'pc','srv',20);
+  if(s.view)fly(['index.html'],'srv','vis',0);
+  say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+const player=IM.player({count:()=>S.length,show:render,swipe:$('main'),interval:2000});
+scene();player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "ওয়েবসাইটের নাম (যেমন ictmaniac.com) হলো—", "o": ["হোস্টিং", "ডোমেইন নেইম", "IP", "FTP"], "a": 1, "w": "ডোমেইন প্রতি বছর ভাড়া নিতে হয়।"}, {"q": "সার্ভারে ফাইল রাখার জায়গা ভাড়া নেওয়া—", "o": ["ডোমেইন", "ওয়েব হোস্টিং", "DNS", "ব্রাউজার"], "a": 1, "w": "যাতে সাইট ২৪ ঘণ্টা চালু থাকে।"}, {"q": "ফাইল সার্ভারে আপলোড করার প্রোটোকল—", "o": ["HTTP", "SMTP", "FTP", "POP"], "a": 2, "w": "FTP = File Transfer Protocol।"}, {"q": "ওয়েবসাইট পাবলিশিং এর প্রথম কাজ—", "o": ["ফাইল আপলোড", "ডোমেইন নেইম নির্বাচন", "ব্রাউজারে খোলা", "DNS মুছে ফেলা"], "a": 1, "w": "আগে নাম ঠিক করে নিবন্ধন, তারপর হোস্টিং ও আপলোড।"}]);
+</script>

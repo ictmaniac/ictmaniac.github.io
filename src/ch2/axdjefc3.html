@@ -1,0 +1,107 @@
+---
+ch: ২
+kit: 1
+title: তার মাধ্যম ক্যাবল
+eyebrow: ২.২ ডেটা কমিউনিকেশনের মাধ্যম: ক্যাবল
+h1: তারের ভিতরে কী আছে
+lead: কো-এক্সিয়াল, টুইস্টেড পেয়ার আর ফাইবার অপটিক ক্যাবল কেটে ভিতরটা দেখো, তারপর দেখো সিগন্যাল কীভাবে চলে আর নয়েজ কীভাবে আটকায়। ▶ চাপো, বা উপরের ট্যাব থেকে ক্যাবল বেছে নাও।
+---
+<style>
+svg.scene .lay{transition:opacity .4s}
+svg.scene .ll{font-size:10px;font-weight:800;fill:var(--ink)}
+svg.scene .lead{stroke:var(--muted);stroke-width:1}
+svg.scene .cu{stroke:#D35400;stroke-width:5;fill:none}
+svg.scene .wireA{stroke:#E67E22;stroke-width:4;fill:none}
+svg.scene .wireB{stroke:#F5CBA7;stroke-width:4;fill:none}
+svg.scene .ray{stroke:#F1C40F;stroke-width:2;fill:none;stroke-dasharray:4 3;animation:dashmv .6s linear infinite}
+svg.scene .spd{font-family:var(--f-mono);font-size:10px;font-weight:800;fill:var(--accent)}
+svg.scene .note{font-size:11px;font-weight:800;text-anchor:middle}
+</style>
+  <section class="card" id="main">
+    <div class="tabs" id="tb"><button class="tab" data-k="0">কো-এক্সিয়াল</button><button class="tab" data-k="2">টুইস্টেড পেয়ার</button><button class="tab" data-k="4">ফাইবার অপটিক</button></div>
+    <div class="sbox">
+    <svg class="scene" id="sv" viewBox="0 0 360 230">
+      <text id="ttl" class="lbl" x="180" y="18" style="fill:var(--accent)"></text>
+      <g id="st"></g>
+      <text id="nt" class="note" x="180" y="220"></text>
+    </svg>
+    </div>
+  </section>
+  <section class="card">
+    <h2>তিন ক্যাবলের তুলনা (টাচ করো)</h2>
+    <div id="cx0"></div>
+  </section>
+  <section class="card">
+    <h2>UTP বনাম STP (টাচ করো)</h2>
+    <div id="cx1"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>কো-এক্সিয়াল:</b> ভিতরে পরিবাহী (তামা) → অপরিবাহী → বাইরের পরিবাহী (জালের মতো) → প্লাস্টিক জ্যাকেট। ১ কিমি পর্যন্ত, ২০০ Mbps পর্যন্ত। টিভি ক্যাবলে ব্যবহার।</li>
+      <li><b>টুইস্টেড পেয়ার:</b> দুটি তার পেঁচানো, তাই ক্রসটক ও নয়েজ কমে। সবচেয়ে সস্তা, LAN এ বেশি ব্যবহৃত (Cat-5, Cat-6)। UTP ও STP দুই প্রকার।</li>
+      <li><b>ফাইবার অপটিক:</b> কোর (৮–১০০ মাইক্রন) → ক্ল্যাডিং → জ্যাকেট। কোরের প্রতিসরাঙ্ক ক্ল্যাডিংয়ের চেয়ে বেশি, তাই <b>আলোর পূর্ণ অভ্যন্তরীণ প্রতিফলন</b> হয়।</li>
+      <li>ফাইবার: আলোর গতি, গিগাবিট রেঞ্জ, EMI মুক্ত, নিরাপদ, হালকা। কিন্তু U আকারে বাঁকানো যায় না, ব্যয়বহুল, দক্ষ লোক লাগে। নেটওয়ার্কের ব্যাকবোন।</li>
+    </ul>
+  </section>
+<script>
+const {$,say,bn}=IM;const Q=IM.seq(),sv=$('sv');
+const CX=62,CY=100;
+function cross(L){const O=l=>l[5]||[0,0];
+  return L.map((l,i)=>`<circle class="lay" style="opacity:0" cx="${CX+O(l)[0]}" cy="${CY+O(l)[1]}" r="${l[0]}" fill="${l[1]}" stroke="${l[2]||'none'}" stroke-width="${l[2]?2:0}" ${l[4]||''}/>`).join('')+
+   L.map((l,i)=>`<g class="lay" style="opacity:0"><line class="lead" x1="${CX+O(l)[0]+l[0]*.7}" y1="${CY+O(l)[1]-l[0]*.7}" x2="140" y2="${44+i*22}"/><circle cx="${CX+O(l)[0]+l[0]*.7}" cy="${CY+O(l)[1]-l[0]*.7}" r="2" fill="var(--muted)"/><text class="ll" x="144" y="${48+i*22}">${l[3]}</text></g>`).join('');}
+function reveal(){const C=[...$('st').querySelectorAll('circle.lay')],G=[...$('st').querySelectorAll('g.lay')];
+  C.forEach((c,i)=>Q.later(i*450,()=>{c.style.opacity=1;G[i].style.opacity=1;c.animate([{transform:'scale(.6)'},{transform:'none'}],{duration:350});}));}
+function noise(x,yT,yHit,blocked,cls){IM.emit(sv,[[x,yT],[x,yHit]],'⚡',{r:9,fs:10,dur:500,cls:'red',done(){if(blocked)IM.emit(sv,[[x,yHit],[x-20,yT]],'',{r:4,dur:400,cls:'red'});}});}
+const COAX=[[44,'#2E3A52',0,'প্লাস্টিক জ্যাকেট (আবরণ)'],[36,'#C9A227','#8A6D0B','বাইরের পরিবাহী (তামার জাল)','stroke-dasharray="3 2"'],[28,'#fff','#ccc','অপরিবাহী (ডাই-ইলেকট্রিক)'],[8,'#D35400',0,'ভিতরের পরিবাহী (তামার তার)']];
+const TP=[[44,'#5B7DB8',0,'বাইরের জ্যাকেট'],[12,'#E67E22',0,'জোড়া ১ (কমলা)','',[-14,-14]],[12,'#27AE60',0,'জোড়া ২ (সবুজ)','',[14,-14]],[12,'#3498DB',0,'জোড়া ৩ (নীল)','',[-14,14]],[12,'#8E5A2B',0,'জোড়া ৪ (বাদামি)','',[14,14]]];
+const FB=[[44,'#2E3A52',0,'জ্যাকেট (সুরক্ষা)'],[30,'#D6EAF8','#85C1E9','ক্ল্যাডিং (কম প্রতিসরাঙ্ক)'],[12,'#FEF9E7','#F1C40F','কোর (৮–১০০ মাইক্রন, বেশি প্রতিসরাঙ্ক)']];
+const S=[
+ {tab:'0',t:'কো-এক্সিয়াল ক্যাবল: ভিতরের গঠন',m:'<b>কো-এক্সিয়াল</b> ক্যাবল কাটলে দেখা যায় ৪ স্তর: মাঝে <b>তামার তার</b>, তাকে ঘিরে <b>অপরিবাহী</b>, তারপর <b>তামার জাল</b> (বাইরের পরিবাহী), সবার বাইরে <b>প্লাস্টিক জ্যাকেট</b>। দুই পরিবাহীর অক্ষ একই, তাই নাম কো-এক্সিয়াল।',
+  f(){$('st').innerHTML=cross(COAX);reveal();}},
+ {tab:'0',t:'কো-এক্সিয়াল: সিগন্যাল ও নয়েজ',m:'সিগন্যাল চলে <b>ভিতরের তামার তার</b> দিয়ে। বাইরের জাল ঢালের মতো বাইরের নয়েজ ⚡ আটকে দেয়। তাই টুইস্টেড পেয়ারের চেয়ে <b>বেশি দূরে, বেশি গতিতে</b> (১ কিমি পর্যন্ত, ~২০০ Mbps) ডেটা যায়। টিভি ক্যাবলে এটাই।',
+  f(){$('st').innerHTML=`<rect x="14" y="128" width="332" height="44" rx="22" fill="#2E3A52"/><rect x="18" y="134" width="324" height="32" rx="16" fill="#C9A227"/><rect x="22" y="139" width="316" height="22" rx="11" fill="#fff"/><line class="cu" x1="24" y1="150" x2="336" y2="150"/><text class="sm" x="180" y="190">পাশ থেকে দেখা: মাঝের তামার তারে সিগন্যাল</text><text class="ll" x="20" y="60">বাইরের নয়েজ ⚡ জালে ধাক্কা খেয়ে ফিরে যায়</text>`;
+   const g=()=>{IM.emit(sv,[[24,150],[336,150]],'',{r:5,dur:900});Q.later(220,g);};g();const n=()=>{noise(120+Math.random()*140,60,128,true);Q.later(900,n);};n();$('nt').textContent='🛡️ তামার জাল নয়েজ আটকাচ্ছে';$('nt').style.fill='#27AE60';}},
+ {tab:'2',t:'টুইস্টেড পেয়ার: ভিতরের গঠন',m:'<b>টুইস্টেড পেয়ার</b> ক্যাবলে দুটি তার সুষমভাবে <b>পেঁচানো</b> থাকে। LAN ক্যাবলে এমন <b>৪ জোড়া</b> (৮টা তার) থাকে। প্রতিটা তারের উপর অপরিবাহী আবরণ।',
+  f(){$('st').innerHTML=cross(TP);reveal();}},
+ {tab:'2',t:'টুইস্টেড পেয়ার: কেন পেঁচানো?',m:'পাশাপাশি সোজা তারে একটার সিগন্যাল আরেকটাকে নষ্ট করে, একে বলে <b>ক্রসটক</b>। পেঁচানো থাকলে নয়েজ দুই তারে উল্টোভাবে লেগে <b>কাটাকাটি</b> হয়ে যায়। তবে নয়েজ পুরো যায় না, দূরে গেলে ভুল বাড়ে। এটা <b>সবচেয়ে সস্তা</b>, LAN এ সবচেয়ে বেশি ব্যবহার হয়।',
+  f(){let a='M20 150',b='M20 150';for(let x=20;x<=340;x+=4){a+=` L${x} ${150+10*Math.sin((x-20)/12)}`;b+=` L${x} ${150-10*Math.sin((x-20)/12)}`;}
+   $('st').innerHTML=`<path class="wireA" d="${a}"/><path class="wireB" d="${b}"/><text class="sm" x="180" y="186">দুটি তার পেঁচানো (পাশ থেকে)</text><text class="ll" x="20" y="60">ক্রসটক কমে, তবে বাইরের নয়েজ কিছুটা ঢোকে</text>`;
+   const P=[];for(let x=20;x<=340;x+=8)P.push([x,150+10*Math.sin((x-20)/12)]);const g=()=>{IM.emit(sv,P,'',{r:4,dur:1300});Q.later(260,g);};g();
+   const n=()=>{const x=100+Math.random()*180;IM.emit(sv,[[x,70],[x,145]],'⚡',{r:9,fs:10,dur:500,cls:'red'});Q.later(1000,n);};n();$('nt').textContent='⚠️ নয়েজ সহজে লাগে, দূরে গেলে ভুল বাড়ে';$('nt').style.fill='var(--bad)';}},
+ {tab:'4',t:'ফাইবার অপটিক: ভিতরের গঠন',m:'<b>ফাইবার অপটিক</b> কাচ বা প্লাস্টিকের সরু আঁশ। ৩ অংশ: মাঝে <b>কোর</b> (৮–১০০ মাইক্রন), তার চারপাশে <b>ক্ল্যাডিং</b>, বাইরে <b>জ্যাকেট</b>। কোরের প্রতিসরাঙ্ক ক্ল্যাডিংয়ের চেয়ে <b>বেশি</b>।',
+  f(){$('st').innerHTML=cross(FB);reveal();}},
+ {tab:'4',t:'ফাইবার: আলোর পূর্ণ অভ্যন্তরীণ প্রতিফলন',m:'ফাইবারে বিদ্যুৎ নয়, চলে <b>আলো 💡</b>। আলো কোর আর ক্ল্যাডিংয়ের সীমানায় বারবার <b>প্রতিফলিত</b> হয়ে আঁকাবাঁকা পথে এগোয়, বাইরে বের হয় না। একে বলে <b>পূর্ণ অভ্যন্তরীণ প্রতিফলন</b>। বজ্রপাতের ⚡ বিদ্যুৎ-চৌম্বক নয়েজ এর কিছুই করতে পারে না (<b>EMI মুক্ত</b>)।',
+  f(){const P=[];for(let i=0;i<=10;i++)P.push([20+i*32,i%2?164:136]);
+   $('st').innerHTML=`<rect x="14" y="112" width="332" height="76" rx="12" fill="#2E3A52"/><rect x="16" y="120" width="328" height="60" fill="#D6EAF8"/><rect x="16" y="132" width="328" height="36" fill="#FEF9E7"/><polyline class="ray" points="${P.map(p=>p.join(',')).join(' ')}"/>
+    <text class="ll" x="22" y="128" style="fill:#2E86C1">ক্ল্যাডিং</text><text class="ll" x="22" y="152" style="fill:#B7950B">কোর</text><text class="ll" x="160" y="60">💡 আলো সীমানায় ধাক্কা খেয়ে ফেরত আসে</text><text class="emo" x="345" y="94" font-size="18">💡</text>`;
+   const g=()=>{IM.emit(sv,P,'',{r:5,dur:1500,cls:''});Q.later(300,g);};g();const n=()=>{noise(100+Math.random()*160,70,112,true);Q.later(1000,n);};n();$('nt').textContent='✅ EMI মুক্ত, ডেটা নিরাপদ, গিগাবিট গতি';$('nt').style.fill='#27AE60';}},
+ {t:'গতির দৌড়: কে কত দ্রুত?',m:'তিন ক্যাবলে ডেটা পাঠাই। <b>ফাইবার অপটিক</b> সবচেয়ে দ্রুত (আলোর গতি, গিগাবিট), তাই দেশের ইন্টারনেটের <b>ব্যাকবোন</b>। <b>কো-এক্সিয়াল</b> মাঝামাঝি, <b>টুইস্টেড পেয়ার</b> সবচেয়ে সস্তা, ঘরের LAN এ।',
+  f(){const R=[['টুইস্টেড পেয়ার',60,'#E67E22',520],['কো-এক্সিয়াল',110,'#C9A227',300],['ফাইবার অপটিক',160,'#F1C40F',90]];
+   $('st').innerHTML=R.map(([n,y,c])=>`<text class="ll" x="14" y="${y-14}">${n}</text><line x1="14" y1="${y}" x2="346" y2="${y}" stroke="${c}" stroke-width="10" stroke-linecap="round" opacity=".5"/>`).join('');
+   R.forEach(([n,y,c,gap])=>{const g=()=>{IM.emit(sv,[[16,y],[344,y]],'',{r:5,dur:1000});Q.later(gap,g);};g();});}}];
+function render(k){const s=S[k];Q.bump();sv.querySelectorAll('.pk').forEach(e=>e.remove());$('ttl').textContent=s.t;$('nt').textContent='';
+  $('tb').querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.k===s.tab));s.f();say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+var player=IM.player({count:()=>S.length,show:render,interval:4800,swipe:$('sv')});
+$('tb').querySelectorAll('.tab').forEach(b=>b.onclick=()=>player.go(+b.dataset.k));
+IM.compare($('cx0'),['','কো-এক্সিয়াল','টুইস্টেড পেয়ার','ফাইবার'],[
+ ['সিগন্যাল','বিদ্যুৎ','বিদ্যুৎ','আলো','ফাইবারে আলো চলে, তাই EMI মুক্ত।'],
+ ['গতি','মাঝারি (~২০০ Mbps)','তুলনামূলক কম','সবচেয়ে বেশি (গিগাবিট)','ফাইবার নেটওয়ার্কের ব্যাকবোন।'],
+ ['নয়েজ','কম (জাল ঢাল)','বেশি','নেই','টুইস্টেড পেয়ারে দূরে গেলে ভুল বাড়ে।'],
+ ['খরচ','মাঝারি','সবচেয়ে কম','সবচেয়ে বেশি','তাই ঘরের LAN এ টুইস্টেড পেয়ার।'],
+ ['ব্যবহার','টিভি ক্যাবল','LAN, টেলিফোন','সমুদ্রের তলদেশে, ব্যাকবোন','সাবমেরিন ক্যাবল ফাইবার অপটিক।']]);
+IM.compare($('cx1'),['','UTP','STP'],[
+ ['পুরো নাম','Unshielded Twisted Pair','Shielded Twisted Pair','Shield মানে ধাতব ঢাল।'],
+ ['ধাতব শিল্ড','নেই','প্রতি জোড়ায় আছে','শিল্ড থাকায় STP তে বাইরের নয়েজ কম।'],
+ ['ব্যবহার','LAN এ বেশি (Cat-5, Cat-6)','নয়েজ বেশি এমন জায়গায়','UTP সস্তা বলে বেশি জনপ্রিয়।']]);
+IM.mcq($('quiz6'),[
+ {q:'ফাইবার অপটিকে ডেটা চলে কোন নীতিতে?',o:['প্রতিসরণ','পূর্ণ অভ্যন্তরীণ প্রতিফলন','বিচ্ছুরণ','শোষণ'],a:1,w:'আলো কোর-ক্ল্যাডিং সীমানায় বারবার প্রতিফলিত হয়।'},
+ {q:'কোনটি EMI মুক্ত?',o:['কো-এক্সিয়াল','UTP','STP','ফাইবার অপটিক'],a:3,w:'আলোক সংকেত চলে, কাচ/প্লাস্টিক অপরিবাহী।'},
+ {q:'ক্রসটক কমাতে তার পেঁচানো হয় কোন ক্যাবলে?',o:['টুইস্টেড পেয়ার','কো-এক্সিয়াল','ফাইবার','কোনোটিতে না'],a:0,w:'পেঁচানো থাকলে নয়েজ কাটাকাটি হয়।'},
+ {q:'ফাইবারের কোরের প্রতিসরাঙ্ক ক্ল্যাডিংয়ের চেয়ে—',o:['কম','বেশি','সমান','শূন্য'],a:1,w:'বেশি বলেই পূর্ণ অভ্যন্তরীণ প্রতিফলন হয়।'}]);
+player.reset();
+</script>

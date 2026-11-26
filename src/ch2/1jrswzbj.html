@@ -1,0 +1,102 @@
+---
+ch: ২
+kit: 1
+title: ব্লুটুথ ওয়াই-ফাই ওয়াইম্যাক্স
+eyebrow: ২.৪ ওয়্যারলেস: হটস্পট, ব্লুটুথ, ওয়াই-ফাই, ওয়াইম্যাক্স
+h1: কার সিগন্যাল কতদূর যায়
+lead: হেডফোনের ব্লুটুথ, বাসার ওয়াই-ফাই আর শহরজুড়ে ওয়াইম্যাক্স: তিনটাই তারবিহীন, কিন্তু পরিসীমা আর গতি আলাদা। ▶ চাপো আর দেখো সিগন্যালের বৃত্ত কতদূর ছড়ায়। যেকোনো ডিভাইসে টাচ করো।
+---
+<style>
+svg.scene .rng{fill:#3B82F6;fill-opacity:.08;stroke:#3B82F6;stroke-width:2;stroke-dasharray:6 4}
+svg.scene .rip{fill:none;stroke:#3B82F6;stroke-width:2}
+svg.scene .dv{font-size:20px;text-anchor:middle;dominant-baseline:central}
+svg.scene .dvl{font-size:9px;font-weight:700;text-anchor:middle;fill:var(--muted)}
+svg.scene .lnk{stroke:#3B82F6;stroke-width:1.5;stroke-dasharray:3 3;opacity:.7}
+svg.scene .scl{font-size:11px;font-weight:800;fill:var(--accent)}
+svg.scene .spd2{font-family:var(--f-mono);font-size:11px;font-weight:800;fill:var(--signal);text-anchor:end}
+svg.scene .house{fill:#FFF6E5;stroke:#C99A4A;stroke-width:2}
+</style>
+  <section class="card" id="main">
+    <div class="tabs" id="tb"><button class="tab" data-k="1">ব্লুটুথ</button><button class="tab" data-k="2">ওয়াই-ফাই</button><button class="tab" data-k="4">ওয়াইম্যাক্স</button></div>
+    <div class="sbox">
+    <svg class="scene" id="sv" viewBox="0 0 360 230">
+      <text id="ttl" class="lbl" x="180" y="18" style="fill:var(--accent)"></text>
+      <g id="st"></g>
+      <text id="scl" class="scl" x="10" y="222"></text><text id="sp" class="spd2" x="350" y="222"></text>
+      <text id="nt" class="lbl" x="180" y="38"></text>
+    </svg>
+    </div>
+  </section>
+  <section class="card">
+    <h2>ব্লুটুথ, ওয়াই-ফাই, ওয়াইম্যাক্স (টাচ করো)</h2>
+    <div id="cx0"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>হটস্পট:</b> স্বল্প পরিসরের নির্দিষ্ট এলাকা যেখানে তারবিহীন ইন্টারনেট পাওয়া যায়। জনপ্রিয় তিন প্রযুক্তি: ব্লুটুথ, ওয়াই-ফাই, ওয়াইম্যাক্স।</li>
+      <li><b>ব্লুটুথ:</b> তারবিহীন <b>PAN</b> প্রটোকল, পরিসীমা সাধারণত <b>১০–১০০ মিটার</b>। হেডফোন, মাউস, ফাইল আদান-প্রদান।</li>
+      <li><b>ওয়াই-ফাই (Wireless Fidelity):</b> <b>IEEE 802.11</b>, রেডিও ওয়েভ ব্যবহার করে। 802.11b তে ১১ Mbps, 802.11g তে ৫৪ Mbps। তারবিহীন LAN।</li>
+      <li><b>ওয়াইম্যাক্স (Worldwide Interoperability for Microwave Access):</b> <b>IEEE 802.16</b>, বিস্তৃত এলাকায় (প্রায় <b>৫০ কিমি</b>) দ্রুতগতির ইন্টারনেট, চলন্ত অবস্থায়ও। তারবিহীন MAN।</li>
+    </ul>
+  </section>
+<script>
+const {$,say,bn}=IM;const Q=IM.seq(),sv=$('sv');const NS='http://www.w3.org/2000/svg';
+const C=[180,124];
+function ripple(R,ms){const go=()=>{const c=document.createElementNS(NS,'circle');c.setAttribute('class','rip pk');c.setAttribute('cx',C[0]);c.setAttribute('cy',C[1]);c.setAttribute('r',R);sv.appendChild(c);
+  c.animate([{r:'4px',opacity:.9},{r:R+'px',opacity:0}],{duration:1600/player.speed,easing:'ease-out'}).onfinish=()=>c.remove();Q.later(ms||700,go);};go();}
+function grow(R){const r=$('st').querySelector('.rng');if(!r)return;r.animate([{r:'0px'},{r:R+'px'}],{duration:900/player.speed,easing:'ease-out'});}
+const dv=(x,y,e,l,k)=>`<g class="hit" data-x="${k||'dv'}"><text class="dv" x="${x}" y="${y}">${e}</text>${l?`<text class="dvl" x="${x}" y="${y+18}">${l}</text>`:''}</g>`;
+const lnk=(a,b)=>`<line class="lnk" x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}"/>`;
+const send=(a,b,o)=>IM.emit(sv,[a,b],'',Object.assign({r:5,dur:700},o||{}));
+const BT=[[120,90,'🎧','হেডফোন'],[240,90,'⌚','ঘড়ি'],[120,160,'🖱️','মাউস'],[240,160,'📱','আরেক ফোন']];
+const WF=[[100,90,'💻','ল্যাপটপ'],[260,90,'📺','স্মার্ট টিভি'],[100,165,'📱','ফোন'],[260,165,'🖨️','প্রিন্টার']];
+const WM=[[90,80,'🏙️','শহর'],[275,80,'🏫','কলেজ'],[80,170,'🏘️','গ্রাম'],[285,170,'🏥','হাসপাতাল']];
+const S=[
+ {t:'হটস্পট কী?',m:'<b>হটস্পট</b> হলো ছোট একটা নির্দিষ্ট এলাকা, যেখানে <b>তার ছাড়াই</b> ইন্টারনেট পাওয়া যায়। যেমন এয়ারপোর্ট, রেলস্টেশন, ক্যাফে। জনপ্রিয় তিন প্রযুক্তি: <b>ব্লুটুথ, ওয়াই-ফাই, ওয়াইম্যাক্স</b>।',
+  f(){$('st').innerHTML=`<circle class="rng" cx="${C[0]}" cy="${C[1]}" r="80"/>`+dv(180,124,'📶','হটস্পট','ap')+[[110,80,'🧑‍💻'],[250,84,'👩'],[120,170,'🧒'],[250,168,'👨']].map(([x,y,e])=>dv(x,y,e)).join('')+dv(330,190,'🚶','বাইরে: নেট নেই');
+   grow(80);ripple(80);}},
+ {tab:'1',t:'ব্লুটুথ (Bluetooth)',m:'<b>ব্লুটুথ</b> হলো তারবিহীন <b>পার্সোনাল এরিয়া নেটওয়ার্ক (PAN)</b>। খুব কাছের যন্ত্রগুলো যুক্ত করে: হেডফোন, ঘড়ি, মাউস। পরিসীমা সাধারণত <b>১০ থেকে ১০০ মিটার</b>। দেখো, ফোন থেকে ফোনে গান পাঠানো হচ্ছে।',sc:'পরিসীমা: ১০–১০০ মিটার',sp:'স্বল্প দূরত্ব',
+  f(){$('st').innerHTML=`<circle class="rng" cx="${C[0]}" cy="${C[1]}" r="95"/>`+BT.map(b=>lnk(C,b)).join('')+dv(180,124,'📱','তোমার ফোন','bt')+BT.map(([x,y,e,l])=>dv(x,y,e,l,'btd')).join('');grow(95);ripple(95,900);
+   let i=0;const g=()=>{const b=BT[i%4];i++;send(C,[b[0],b[1]],{cls:'blue'});Q.later(450,g);};g();}},
+ {tab:'2',t:'ওয়াই-ফাই (Wi-Fi)',m:'<b>ওয়াই-ফাই</b> (IEEE 802.11) রেডিও ওয়েভ দিয়ে বাসা, অফিস বা ক্যাম্পাসের যন্ত্রগুলোকে <b>রাউটারের</b> সাথে যুক্ত করে, ইন্টারনেট দেয়। এটা তারবিহীন <b>LAN</b>। গতি ১১ Mbps (802.11b), ৫৪ Mbps (802.11g)।',sc:'পরিসীমা: একটি বাসা বা ভবন',sp:'১১ – ৫৪ Mbps',
+  f(){$('st').innerHTML=`<path class="house" d="M60 200 V90 L180 40 L300 90 V200 Z"/><circle class="rng" cx="${C[0]}" cy="${C[1]}" r="100"/>`+WF.map(b=>lnk(C,b)).join('')+dv(180,124,'📶','রাউটার','wf')+WF.map(([x,y,e,l])=>dv(x,y,e,l,'wfd')).join('');grow(100);ripple(100,800);
+   let i=0;const g=()=>{const b=WF[i%4];i++;send(C,[b[0],b[1]]);send([b[0],b[1]],C,{cls:'blue',dur:800});Q.later(400,g);};g();}},
+ {tab:'2',t:'ওয়াই-ফাই এর সীমা',m:'কিন্তু ওয়াই-ফাই এর এলাকা ছোট। গাড়িতে চড়ে বাসা থেকে দূরে গেলেই সংযোগ <b>কেটে যায় ❌</b>। চলার পথে ওয়াই-ফাই এ কাজ করা প্রায় অসম্ভব। নিরাপত্তা ঝুঁকিও থাকে।',sc:'এলাকার বাইরে = সংযোগ নেই',sp:'চলন্ত অবস্থায় সমস্যা',
+  f(){$('st').innerHTML=`<circle class="rng" cx="${C[0]}" cy="${C[1]}" r="100"/>`+dv(180,124,'📶','রাউটার','wf')+`<text id="car" class="dv" x="0" y="0">🚗</text>`;ripple(100,800);
+   const car=$('car');IM.moveAlong(car,[[150,170],[340,190]],2600/player.speed,Q.guard(()=>{$('nt').textContent='❌ সংযোগ বিচ্ছিন্ন!';$('nt').style.fill='var(--bad)';}));
+   const g=()=>{const m=car.getAttribute('transform')?.match(/translate\(([-\d.]+),([-\d.]+)\)/);if(m){const x=+m[1],y=+m[2],d=Math.hypot(x-C[0],y-C[1]);if(d<100)send(C,[x,y],{dur:350});else{const k=96/d;send(C,[C[0]+(x-C[0])*k,C[1]+(y-C[1])*k],{dur:350,cls:'red'});}}Q.later(380,g);};g();}},
+ {tab:'4',t:'ওয়াইম্যাক্স (WiMAX)',m:'<b>ওয়াইম্যাক্স</b> (IEEE 802.16) একটা টাওয়ার থেকে <b>প্রায় ৫০ কিলোমিটার</b> জুড়ে, গ্রাম-শহর মিলিয়ে, দ্রুতগতির তারবিহীন ইন্টারনেট দেয়। এটা তারবিহীন <b>MAN</b>। মাটির নিচে তার বা DSL টানার দরকার নেই।',sc:'পরিসীমা: প্রায় ৫০ কিলোমিটার',sp:'~৪০ Mbps+',
+  f(){$('st').innerHTML=`<circle class="rng" cx="${C[0]}" cy="${C[1]}" r="104"/>`+WM.map(b=>lnk(C,b)).join('')+dv(180,124,'🗼','ওয়াইম্যাক্স টাওয়ার','wm')+WM.map(([x,y,e,l])=>dv(x,y,e,l,'wmd')).join('');grow(104);ripple(104,700);
+   let i=0;const g=()=>{const b=WM[i%4];i++;send(C,[b[0],b[1]],{dur:900});Q.later(300,g);};g();}},
+ {tab:'4',t:'চলন্ত গাড়িতেও সংযোগ',m:'ওয়াইম্যাক্স এ গাড়ি চলতে থাকলেও সংযোগ <b>থাকে ✅</b>, কারণ এলাকাটা বিশাল। VoIP কল, আইপি টিভি, স্মার্ট মিটারিংয়েও ব্যবহার হয়। তবে খারাপ আবহাওয়ায় সিগন্যাল সমস্যা আর রক্ষণাবেক্ষণ খরচ বেশি।',sc:'বিশাল এলাকা',sp:'চলন্ত অবস্থায়ও ✅',
+  f(){$('st').innerHTML=`<circle class="rng" cx="${C[0]}" cy="${C[1]}" r="104"/>`+dv(180,124,'🗼','টাওয়ার','wm')+`<text id="car" class="dv" x="0" y="0">🚌</text>`;ripple(104,700);const car=$('car');
+   const P=[[100,180],[260,180],[260,70],[100,70],[100,180]];let pos=[100,180];IM.moveAlong(car,P,5000/player.speed);$('nt').textContent='✅ সংযোগ চালু';$('nt').style.fill='#27AE60';
+   const g=()=>{const m=car.getAttribute('transform')?.match(/translate\(([-\d.]+),([-\d.]+)\)/);if(m)send(C,[+m[1],+m[2]],{dur:350});Q.later(380,g);};g();}},
+ {t:'তুলনা: কার পরিসীমা কত',m:'তিনজনকে পাশাপাশি রাখি (মাপ বাস্তব অনুপাতে নয়): <b>ব্লুটুথ</b> খুব কাছে (PAN), <b>ওয়াই-ফাই</b> একটা ভবন (LAN), <b>ওয়াইম্যাক্স</b> পুরো শহর (MAN)। গতিতেও ওয়াইম্যাক্স এগিয়ে।',
+  f(){$('st').innerHTML=[[104,'ওয়াইম্যাক্স ~৫০ কিমি','#8E44AD'],[66,'ওয়াই-ফাই (ভবন)','#3B82F6'],[30,'ব্লুটুথ ১০–১০০ মি','#27AE60']].map(([r,l,c],i)=>`<circle cx="${C[0]}" cy="${C[1]}" r="${r}" fill="${c}" fill-opacity=".1" stroke="${c}" stroke-width="2"/><text class="dvl" x="${C[0]}" y="${C[1]-r+12}" style="fill:${c};font-weight:800;font-size:10px">${l}</text>`).join('')+dv(180,128,'📱');
+   [...$('st').querySelectorAll('circle')].reverse().forEach((c,i)=>{c.style.opacity=0;Q.later(i*600,()=>{c.style.opacity=1;c.animate([{r:'0px'},{r:c.getAttribute('r')+'px'}],{duration:700});});});}}];
+function render(k){const s=S[k];Q.bump();sv.querySelectorAll('.pk').forEach(e=>e.remove());$('ttl').textContent=s.t;$('nt').textContent='';$('scl').textContent=s.sc||'';$('sp').textContent=s.sp||'';
+  $('tb').querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.k===s.tab));s.f();say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+var player=IM.player({count:()=>S.length,show:render,interval:4600,swipe:$('sv')});
+$('tb').querySelectorAll('.tab').forEach(b=>b.onclick=()=>player.go(+b.dataset.k));
+IM.tapx(sv,{ap:{t:'📶 হটস্পট',d:'তারবিহীন ইন্টারনেট দেয় এমন ছোট এলাকা। এর বাইরে গেলে নেট পাওয়া যায় না।'},dv:{t:'ব্যবহারকারী',d:'হটস্পট এলাকার ভিতরে থাকলে তারবিহীন ইন্টারনেট পায়।'},bt:{t:'📱 ব্লুটুথ ডিভাইস',d:'ফোন, ল্যাপটপে বিল্ট-ইন থাকে। USB ব্লুটুথ অ্যাডাপ্টার দিয়ে যেকোনো কম্পিউটারে চালু করা যায়।'},btd:{t:'ব্লুটুথ যন্ত্র',d:'খুব কাছের যন্ত্র, যেমন হেডফোন, ঘড়ি, মাউস। এদের নিয়ে তৈরি হয় PAN।'},
+ wf:{t:'📶 ওয়াই-ফাই রাউটার',d:'রেডিও ওয়েভে ইন্টারনেট ছড়ায়। IEEE 802.11 স্ট্যান্ডার্ড, Wi-Fi Alliance সনদপ্রাপ্ত।'},wfd:{t:'ওয়াই-ফাই যন্ত্র',d:'প্রায় সব ল্যাপটপ, ফোন, স্মার্ট টিভি ওয়াই-ফাই উপযোগী।'},wm:{t:'🗼 ওয়াইম্যাক্স টাওয়ার',d:'IEEE 802.16। প্রায় ৫০ কিমি জুড়ে ব্রডব্যান্ড। দূরত্ব বেশি হলে আরও বেস স্টেশন লাগে।'},wmd:{t:'ওয়াইম্যাক্স এলাকা',d:'গ্রাম ও শহর মিলিয়ে বিশাল এলাকা এক টাওয়ারে।'}});
+IM.compare($('cx0'),['','ব্লুটুথ','ওয়াই-ফাই','ওয়াইম্যাক্স'],[
+ ['স্ট্যান্ডার্ড','IEEE 802.15','IEEE 802.11','IEEE 802.16','বোর্ডে স্ট্যান্ডার্ড নম্বর প্রায়ই আসে।'],
+ ['নেটওয়ার্ক','PAN','LAN','MAN','পরিসীমা অনুযায়ী নেটওয়ার্কের ধরন।'],
+ ['পরিসীমা','১০–১০০ মিটার','একটি ভবন/ক্যাম্পাস','প্রায় ৫০ কিমি','ওয়াইম্যাক্স সবচেয়ে দূরে যায়।'],
+ ['গতি','কম','১১–৫৪ Mbps','~৪০ Mbps বা বেশি','৫০ কিমির বেশি দূরে ৭০ Mbps এর বেশি দিতে পারে না।'],
+ ['চলন্ত অবস্থা','কাছে থাকলে','প্রায় অসম্ভব','সম্ভব','তাই চলন্ত গাড়িতে ওয়াইম্যাক্স ভালো।'],
+ ['ব্যবহার','হেডফোন, ফাইল শেয়ার','বাসা, অফিসের নেট','গ্রাম-শহরে ব্রডব্যান্ড','সৃজনশীলে উদ্দীপক দেখে প্রযুক্তি চিনতে হবে।']]);
+IM.mcq($('quiz6'),[
+ {q:'ওয়াইম্যাক্স এর স্ট্যান্ডার্ড কোনটি?',o:['IEEE 802.11','IEEE 802.16','IEEE 802.15','IEEE 802.3'],a:1,w:'ওয়াই-ফাই 802.11, ওয়াইম্যাক্স 802.16।'},
+ {q:'ব্লুটুথ কোন ধরনের নেটওয়ার্ক?',o:['PAN','LAN','MAN','WAN'],a:0,w:'তারবিহীন পার্সোনাল এরিয়া নেটওয়ার্ক।'},
+ {q:'চলন্ত গাড়িতে ইন্টারনেটের জন্য কোনটি উপযোগী?',o:['ব্লুটুথ','ওয়াই-ফাই','ওয়াইম্যাক্স','ইনফ্রারেড'],a:2,w:'বিশাল এলাকা জুড়ে থাকে।'},
+ {q:'Wi-Fi এর পূর্ণরূপ—',o:['Wireless Fidelity','Wide Fiber','Wireless Field','World Fidelity'],a:0,w:'Wireless Fidelity।'}]);
+player.reset();
+</script>

@@ -1,0 +1,132 @@
+---
+title: অ্যাডার ল্যাব
+eyebrow: ৩.২.১০ হাফ অ্যাডার ও ফুল অ্যাডার
+h1: যোগ করার সার্কিট: অ্যাডার
+lead: কম্পিউটারের সব যোগ এই ছোট সার্কিটগুলো দিয়েই হয়। সুইচ চেপে দেখো যোগফল (S) আর হাতে থাকা (C) কীভাবে আসে।
+---
+<style>
+.rip{display:flex;flex-direction:column;gap:8px;align-items:stretch}
+.rrow{display:grid;grid-template-columns:52px repeat(4,1fr);gap:6px;align-items:center}
+.rrow .h{font-size:.8rem;font-weight:700;color:var(--muted)}
+.fa{border:2px solid var(--accent);border-radius:10px;background:var(--accent-soft);text-align:center;padding:6px 2px;font-family:var(--f-mono);font-size:.8rem;font-weight:700;color:var(--accent);position:relative;transition:all .25s}
+.fa.act{background:var(--signal-soft);border-color:var(--signal)}
+.fa .cy{display:block;font-size:.72rem;color:var(--muted)}
+.fa .cy b{color:var(--bad)}
+.sbit{text-align:center;font-family:var(--f-mono);font-weight:800;font-size:1.4rem;height:44px;border-radius:8px;display:grid;place-items:center;background:var(--board);color:var(--muted)}
+.sbit.on{background:var(--signal);color:#1A1200}
+.rrow .bitc{width:100%}
+</style>
+  <div class="tabs" id="tabs">
+    <button class="tab" data-k="h" aria-selected="true">হাফ অ্যাডার</button>
+    <button class="tab" data-k="f" aria-selected="false">ফুল অ্যাডার</button>
+    <button class="tab" data-k="r" aria-selected="false">৪ বিট যোগ</button>
+  </div>
+
+  <section class="card" id="p-h">
+    <h2>হাফ অ্যাডার</h2>
+    <p class="hint">দুটি বিট যোগ করে। একটি XOR গেট যোগফল (S) দেয়, একটি AND গেট ক্যারি (C) দেয়।</p>
+    <div class="stage" style="border:none;padding:0"><svg id="ch"></svg></div>
+    <div class="controls" id="tgh"></div>
+    <p class="readout expr" id="rh"></p>
+    <div class="scroll-x"><table id="tth"></table></div>
+    <p class="answer" style="font-size:1.05rem">S = A ⊕ B = A'B + AB'<br>C = A · B</p>
+  </section>
+
+  <section class="card" id="p-f" hidden>
+    <h2>ফুল অ্যাডার</h2>
+    <p class="hint">তিনটি বিট যোগ করে: A, B আর আগের ঘর থেকে আসা ক্যারি (C<sub>in</sub>)। দুটি হাফ অ্যাডার আর একটি OR গেট দিয়ে তৈরি।</p>
+    <div class="stage" style="border:none;padding:0"><svg id="cf"></svg></div>
+    <div class="controls" id="tgf"></div>
+    <p class="readout expr" id="rf"></p>
+    <div class="scroll-x"><table id="ttf"></table></div>
+    <p class="answer" style="font-size:1.05rem">S = A ⊕ B ⊕ C<sub>in</sub><br>C<sub>out</sub> = AB + C<sub>in</sub>(A ⊕ B)</p>
+  </section>
+
+  <section class="card" id="p-r" hidden>
+    <h2>৪ বিটের প্যারালাল অ্যাডার</h2>
+    <p class="hint">৪টি ফুল অ্যাডার পাশাপাশি। ডানের অ্যাডারের ক্যারি বাঁয়ের অ্যাডারে যায় (রিপল ক্যারি)। বিটগুলো চেপে সংখ্যা বানাও, তারপর "যোগ করো"।</p>
+    <div class="rip">
+      <div class="rrow"><span class="h">A</span><span id="ra"></span></div>
+      <div class="rrow"><span class="h">B</span><span id="rb"></span></div>
+      <div class="rrow" id="rfa"></div>
+      <div class="rrow" id="rs"></div>
+    </div>
+    <p class="readout expr" id="rr"></p>
+    <div class="btns"><button class="btn primary" id="go">যোগ করো ▶</button></div>
+  </section>
+
+  <section class="card" id="quiz"></section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq3"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points"><li>হাফ অ্যাডার: S = A ⊕ B, C = A·B।</li><li>ফুল অ্যাডার: S = A ⊕ B ⊕ Cin, Cout = AB + Cin(A ⊕ B)।</li><li>ফুল অ্যাডার = দুটি হাফ অ্যাডার + একটি OR গেট।</li></ul>
+  </section>
+<script>
+const {$}=IM;
+const sh={A:0,B:0};
+const ch=IM.circuit($('ch'),{vb:[380,160],st:sh,onChange:rh,inputs:[{id:'A',x:4,y:40},{id:'B',x:4,y:110}],
+  gates:[{id:'s',t:'XOR',x:150,y:20,in:['A','B'],mx:[90,100]},{id:'c',t:'AND',x:150,y:100,in:['A','B'],mx:[80,110]}],
+  outputs:[{id:'S',s:'s',x:320,y:42},{id:'C',s:'c',x:320,y:122}],dots:[[80,40,'A'],[100,110,'B']]});
+const th=IM.toggles($('tgh'),['A','B'],sh,rh);
+const tth=IM.tt($('tth'),['A','B'],[{h:'S',f:e=>e.A^e.B},{h:'C',f:e=>e.A&e.B}],sh,rh);
+function rh(){const v=ch.render();th();tth();$('rh').innerHTML=`${sh.A} + ${sh.B} = ${sh.A+sh.B} = ${v.c}${v.s}<sub>2</sub> → C = <span class="v">${v.c}</span>, S = <span class="v">${v.s}</span>`;}
+rh();
+
+const sf={A:0,B:0,Ci:0};
+const cf=IM.circuit($('cf'),{vb:[420,250],st:sf,onChange:rf,
+  inputs:[{id:'A',x:4,y:24},{id:'B',x:4,y:70},{id:'Ci',x:4,y:232,lbl:'C'}],
+  gates:[{id:'x1',t:'XOR',x:110,y:25,in:['A','B'],mx:[80,90]},
+    {id:'a1',t:'AND',x:110,y:160,in:['A','B'],mx:[70,62]},
+    {id:'x2',t:'XOR',x:230,y:30,in:['x1','Ci'],mx:[205,195]},
+    {id:'a2',t:'AND',x:230,y:110,in:['x1','Ci'],mx:[190,200]},
+    {id:'o',t:'OR',x:310,y:150,in:['a2','a1'],mx:[296,300]}],
+  outputs:[{id:'S',s:'x2',x:385,y:52},{id:'Co',s:'o',x:385,y:172,lbl:'C'}],
+  dots:[[70,24,'A'],[80,24,'A'],[62,70,'B'],[90,70,'B'],[190,47,'x1'],[195,232,'Ci']],
+  extra:'<text class="lbl sm" x="12" y="216">in</text><text class="lbl sm" x="402" y="190">out</text><text class="hint" x="112" y="18" style="font-size:10px;fill:var(--muted)">হাফ অ্যাডার ১</text><text class="hint" x="232" y="104" style="font-size:10px;fill:var(--muted)">হাফ অ্যাডার ২</text>'});
+const tf=IM.toggles($('tgf'),['A','B','Ci'],sf,rf,n=>n==='Ci'?'C<sub>in</sub>':'ইনপুট '+n);
+const ttf=IM.tt($('ttf'),['A','B','Ci'],[{h:'S',f:e=>e.A^e.B^e.Ci},{h:'Cout',f:e=>(e.A&e.B)|(e.Ci&(e.A^e.B))}],sf,rf);
+$('ttf').querySelectorAll('th')[2].innerHTML='C<sub>in</sub>'; $('ttf').querySelectorAll('th')[4].innerHTML='C<sub>out</sub>';
+function rf(){const v=cf.render();tf();ttf();const t=sf.A+sf.B+sf.Ci;$('rf').innerHTML=`${sf.A} + ${sf.B} + ${sf.Ci} = ${t} = ${v.o}${v.x2}<sub>2</sub> → C<sub>out</sub> = <span class="v">${v.o}</span>, S = <span class="v">${v.x2}</span>`;}
+rf();
+
+// ripple adder
+const RA=[1,0,1,1], RB=[0,1,1,1]; // MSB first
+let anim=null;
+function rr(stage){
+  const cell=(arr,id)=>arr.map((b,i)=>`<button class="bitc ${b?'on':''}" data-a="${id}" data-i="${i}">${b}</button>`).join('');
+  $('ra').outerHTML=`<span id="ra" style="display:contents">${cell(RA,'a')}</span>`;
+  $('rb').outerHTML=`<span id="rb" style="display:contents">${cell(RB,'b')}</span>`;
+  document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{(b.dataset.a==='a'?RA:RB)[+b.dataset.i]^=1; clearTimeout(anim); rr(-1);});
+  // compute
+  let c=0; const S=[0,0,0,0], C=[0,0,0,0,0];
+  for(let k=3;k>=0;k--){ const t=RA[k]+RB[k]+c; S[k]=t&1; C[k]=c; c=t>>1; }
+  C[4]=c; // final
+  const done=k=> stage>=4-k; // k index MSB first; FA for k is processed at step 4-k (1..4)
+  $('rfa').innerHTML=`<span class="h">যোগ</span>`+[0,1,2,3].map(k=>`<div class="fa ${stage===4-k?'act':''}">FA${3-k}<span class="cy">C<sub>in</sub>=<b>${done(k)||stage===4-k?C[k]:'?'}</b></span></div>`).join('');
+  $('rs').innerHTML=`<span class="h">S</span>`+[0,1,2,3].map(k=>`<div class="sbit ${done(k)&&S[k]?'on':''}">${done(k)?S[k]:'·'}</div>`).join('');
+  const a=parseInt(RA.join(''),2), b=parseInt(RB.join(''),2);
+  $('rr').innerHTML= stage>=4 ? `${RA.join('')} + ${RB.join('')} = <span class="v">${C[4]}${S.join('')}</span><sub>2</sub> &nbsp;(${a} + ${b} = ${a+b})${C[4]?'<br><span class="hint">শেষ ক্যারি 1 টি ৫ম বিট হয়ে গেল</span>':''}` : `${a} + ${b} = ?`;
+}
+$('go').onclick=()=>{ clearTimeout(anim); let s=0; const tick=()=>{ s++; rr(s); if(s<4) anim=setTimeout(tick,650); }; rr(0); anim=setTimeout(tick,300); };
+rr(-1);
+IM.tabs($('tabs'),k=>{['h','f','r'].forEach(x=>$('p-'+x).hidden=x!==k);});
+
+IM.quiz01($('quiz'),()=>{ const full=Math.random()<.5, a=IM.rnd(0,1),b=IM.rnd(0,1),c=full?IM.rnd(0,1):0, sum=a+b+c, askS=Math.random()<.5;
+  return {ask:`${full?'ফুল':'হাফ'} অ্যাডারে A = ${a}, B = ${b}${full?`, C<sub>in</sub> = ${c}`:''} হলে ${askS?'যোগফল S':'ক্যারি C'} কত?`, ans: askS? sum&1 : sum>>1, why:`${a} + ${b}${full?' + '+c:''} = ${sum} = ${(sum>>1)}${sum&1}₂`}; });
+
+IM.mcq(document.getElementById('mcq3'),[{"q": "হাফ অ্যাডারের যোগফল S = ?", "o": ["A·B", "A + B", "A ⊕ B", "(AB)'"], "a": 2, "w": "XOR গেট।"}, {"q": "হাফ অ্যাডারের ক্যারি C = ?", "o": ["A·B", "A ⊕ B", "A + B", "A'B"], "a": 0, "w": "AND গেট।"}, {"q": "ফুল অ্যাডারে ইনপুট কয়টি?", "o": ["২", "৩", "৪", "১"], "a": 1, "w": "A, B আর Cin।"}, {"q": "একটি ফুল অ্যাডার = ?", "o": ["দুটি হাফ অ্যাডার + OR গেট", "দুটি AND", "একটি XOR", "তিনটি হাফ অ্যাডার"], "a": 0, "w": "সবচেয়ে বেশি আসা প্রশ্ন।"}]);
+/*TOUR*/{const T=IM.T;
+IM.tour([
+ {m:'<b>হাফ অ্যাডার</b> দুটি বিট যোগ করে: যোগফল <b>S = A ⊕ B</b>, হাতে থাকে <b>C = A · B</b>।',do(){T.tab('h','#tabs');T.tog('#tgh','A',0);T.tog('#tgh','B',0);}},
+ {m:'1 + 0 = 1: S = 1, C = 0।',el:'#ch',do(){T.tab('h','#tabs');T.tog('#tgh','A',1);T.tog('#tgh','B',0);}},
+ {m:'1 + 1 = 10: S = <b>0</b>, C = <b>1</b>। তাই XOR আর AND গেট লাগে।',el:'#ch',do(){T.tab('h','#tabs');T.tog('#tgh','A',1);T.tog('#tgh','B',1);}},
+ {m:'হাফ অ্যাডার আগের ঘরের হাতের সংখ্যা নিতে পারে না। তাই <b>ফুল অ্যাডার</b> লাগে: ৩টি বিট যোগ (A, B, Cin)।',el:'#cf',do(){T.tab('f','#tabs');T.tog('#tgf','A',0);T.tog('#tgf','B',0);T.tog('#tgf','Ci',0);}},
+ {m:'1 + 1 + 1 = 11: S = 1, Cout = 1।',el:'#cf',do(){T.tab('f','#tabs');T.tog('#tgf','A',1);T.tog('#tgf','B',1);T.tog('#tgf','Ci',1);}},
+ {m:'একটা ফুল অ্যাডার = দুটো হাফ অ্যাডার + একটা OR গেট।',el:'#ttf',do(){T.tab('f','#tabs');}},
+ {m:'৪ বিটের <b>প্যারালাল অ্যাডার</b>: ৪টি ফুল অ্যাডার পাশাপাশি, একটার Cout পরেরটার Cin এ যায়।',el:'#rs',do(){T.tab('r','#tabs');T.click('#go');}}
+]);
+}/*ENDTOUR*/
+</script>

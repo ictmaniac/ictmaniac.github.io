@@ -1,0 +1,74 @@
+---
+ch: ৪
+kit: 1
+title: HTML এ ছবি
+eyebrow: ৪.২.৮ চিত্র যোগ করা (ব্যানারসহ)
+h1: ছবি যোগ করো
+lead: ▶ চাপলে &lt;img&gt; ট্যাগে একটা করে অ্যাট্রিবিউট যোগ হবে, আর ছবিটা কীভাবে বদলায় দেখবে। নিচে স্লাইডার টেনেও দেখতে পারো।
+---
+<style>
+.page{min-height:120px}
+.page img{display:block;transition:width .4s,height .4s}
+.page img.flash{outline:3px solid #E9A23B;outline-offset:2px}
+.alt{display:inline-flex;align-items:center;gap:6px;border:1px dashed #999;padding:6px 10px;color:#444;font-family:sans-serif;font-size:.9rem}
+.sl{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center}
+.sl input[type=range]{min-height:auto;padding:0;accent-color:var(--accent)}
+.sl b{font-family:var(--f-mono);min-width:44px;text-align:right}
+.sw{display:flex;gap:8px;flex-wrap:wrap}
+</style>
+  <section class="card" id="main">
+    <div class="browser"><div class="bar"><b></b><b></b><span>image.html</span></div><div class="page" id="page"></div></div>
+    <pre id="code"></pre>
+  </section>
+  <section class="card">
+    <h2>নিজে বদলাও</h2>
+    <div class="sl"><span>width</span><input type="range" id="w" min="40" max="300" value="200"><b id="wv"></b></div>
+    <div class="sl"><span>height</span><input type="range" id="h" min="30" max="200" value="100"><b id="hv"></b></div>
+    <div class="sw"><button class="chip" id="miss">ছবির ফাইল নেই (alt দেখাও)</button><button class="chip" id="ban">ব্যানার (width="100%")</button></div>
+    <pre class="cv" id="mcode" style="padding:10px;white-space:pre-wrap"></pre>
+    <div class="browser"><div class="page" id="mout"></div></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>&lt;img&gt;</b> এম্পটি ট্যাগ, শেষ ট্যাগ নেই।</li>
+      <li><b>src</b> (source) ছাড়া ছবি আসবে না। এখানে ছবির ফাইলের নাম বা ঠিকানা দিতে হয়।</li>
+      <li><b>alt</b> ছবি না আসলে তার বদলে এই লেখা দেখায়।</li>
+      <li>শুধু width দিলে উচ্চতা অনুপাতে ঠিক থাকে। দুটোই দিলে ছবি চ্যাপ্টা বা লম্বা হতে পারে।</li>
+      <li><b>ব্যানার:</b> পেজের উপরে পুরো প্রস্থ জুড়ে ছবি। width="100%" দিয়ে বানানো হয়।</li>
+    </ul>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
+<script>
+const {$,say,bn}=IM;
+const SVG=`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 180'><rect width='300' height='180' fill='%23BFDBFE'/><circle cx='240' cy='45' r='24' fill='%23FBBF24'/><path d='M0 150 L80 70 L150 140 L210 90 L300 160 L300 180 L0 180Z' fill='%231550B8'/><path d='M0 165 Q150 140 300 170 L300 180 L0 180Z' fill='%2322A06B'/></svg>`;
+const IMG='data:image/svg+xml;utf8,'+SVG;
+const S=[
+ {c:'<img src="nodi.jpg">',a:{},m:'<code>src</code> দিয়ে কোন ছবি দেখাবে তা বলা হলো। ছবি তার নিজের আসল মাপে এলো।'},
+ {c:'<img src="nodi.jpg" alt="নদীর ছবি">',a:{},m:'<code>alt</code> যোগ হলো। ছবি ঠিকমতো এলে alt দেখা যায় না, কিন্তু না এলে এই লেখা দেখায়।'},
+ {c:'<img src="nodi.jpg" alt="নদীর ছবি">',a:{miss:1},m:'ধরো nodi.jpg ফাইলটা নেই। তখন ছবির জায়গায় alt এর লেখা "নদীর ছবি" দেখাচ্ছে।'},
+ {c:'<img src="nodi.jpg" width="150">',a:{w:150},m:'<code>width="150"</code> দিলে প্রস্থ ১৫০ পিক্সেল হলো। উচ্চতা নিজে নিজে অনুপাতে ছোট হলো।'},
+ {c:'<img src="nodi.jpg" width="150" height="150">',a:{w:150,h:150},m:'<code>height="150"</code> ও দিলাম। দেখো ছবি চ্যাপ্টা না হয়ে লম্বা হয়ে গেলো, কারণ অনুপাত বদলে গেছে।'},
+ {c:'<img src="nodi.jpg" width="150" border="3">',a:{w:150,b:3},m:'<code>border="3"</code> দিলে ছবির চারপাশে ৩ পিক্সেলের দাগ হয়।'},
+ {c:'<img src="banner.jpg" width="100%" height="80">',a:{w:'100%',h:80},m:'ব্যানার: <code>width="100%"</code> দিলে ছবি পেজের পুরো প্রস্থ নেয়। ওয়েবসাইটের উপরের বড় ছবিটাকে ব্যানার বলে।'}];
+const cv=IM.codeView($('code'),S.map(s=>IM.hHL(s.c)),i=>say('কোডের লাইন',S[i].m,true));
+function img(a,flash){if(a.miss)return `<span class="alt">🖼️ নদীর ছবি</span>`;
+  const st=(a.w?`width:${typeof a.w==='number'?a.w+'px':a.w};`:'width:300px;')+(a.h?`height:${a.h}px;`:'height:auto;')+(a.b?`border:${a.b}px solid #000;`:'')+(a.w&&!a.h?'height:auto;':'');
+  return `<img src="${IMG}" alt="নদীর ছবি" class="${flash?'flash':''}" style="${st};max-width:100%">`;}
+function render(k){cv.on(k);cv.dimAfter(k);$('page').innerHTML=img(S[k].a,true);say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,S[k].m);}
+const player=IM.player({count:()=>S.length,show:render,swipe:$('main'),interval:1800});
+let miss=false,ban=false;
+function man(){const w=+$('w').value,h=+$('h').value;$('wv').textContent=w;$('hv').textContent=h;
+  const c=`<img src="${ban?'banner':'nodi'}.jpg" alt="নদীর ছবি" width="${ban?'100%':w}" height="${h}">`;
+  $('mcode').innerHTML=IM.hHL(c);$('mout').innerHTML=img({miss,w:ban?'100%':w,h});
+  $('miss').setAttribute('aria-pressed',miss);$('ban').setAttribute('aria-pressed',ban);
+  $('miss').style.background=miss?'var(--signal-soft)':'';$('ban').style.background=ban?'var(--signal-soft)':'';}
+$('w').oninput=()=>{ban=false;man();};$('h').oninput=man;
+$('miss').onclick=()=>{miss=!miss;man();say('alt',miss?'ফাইল না থাকলে ছবির জায়গায় alt এর লেখা দেখায়।':'ফাইল পাওয়া গেলো, ছবি দেখাচ্ছে।',true);};
+$('ban').onclick=()=>{ban=!ban;man();if(ban)say('ব্যানার','width="100%" দিলে ছবি পুরো প্রস্থ জুড়ে থাকে। পেজের মাপ বদলালেও ছবি সাথে সাথে বদলায়।',true);};
+man();player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "ছবি যোগ করার ট্যাগ—", "o": ["&lt;pic&gt;", "&lt;img&gt;", "&lt;image&gt;", "&lt;src&gt;"], "a": 1, "w": "&lt;img&gt; এম্পটি ট্যাগ।"}, {"q": "ছবির ফাইলের নাম দেওয়া হয় কোন অ্যাট্রিবিউটে?", "o": ["href", "alt", "src", "name"], "a": 2, "w": "src = source।"}, {"q": "ছবি না আসলে তার বদলে লেখা দেখায়—", "o": ["title", "alt", "src", "text"], "a": 1, "w": "alt = alternative text।"}, {"q": "পুরো প্রস্থ জুড়ে ব্যানার বানাতে—", "o": ["width=\"100%\"", "height=\"100%\"", "size=\"full\"", "border=\"0\""], "a": 0, "w": "শুধু width দিলে উচ্চতা অনুপাতে ঠিক থাকে।"}]);
+</script>

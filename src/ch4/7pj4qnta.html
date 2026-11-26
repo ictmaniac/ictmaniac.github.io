@@ -1,0 +1,77 @@
+---
+ch: ৪
+kit: 1
+title: HTML হাইপারলিংক
+eyebrow: ৪.২.৭ হাইপারলিংক (Hyperlink)
+h1: লিংকে চাপ দিলে কী হয়?
+lead: ▶ চাপো। প্রতিটা লিংক আগে দেখাবে, তারপর আঙুল দিয়ে চাপ দিলে ব্রাউজারে কী হয় তা দেখাবে। ছোট ব্রাউজারের লিংকেও নিজে চাপ দিতে পারো।
+---
+<style>
+.tabsb{display:flex;gap:4px;padding:6px 8px 0;background:var(--board);border-bottom:1px solid var(--line);overflow-x:auto}
+.tabsb i{font-style:normal;font-size:.78rem;padding:4px 10px;border-radius:8px 8px 0 0;background:var(--line);color:var(--muted);white-space:nowrap;max-width:150px;overflow:hidden;text-overflow:ellipsis}
+.tabsb i.on{background:var(--panel);color:var(--ink);font-weight:700}
+.tabsb i.new{animation:pop .4s ease-out}
+.page a{color:#1a0dab;text-decoration:underline;cursor:pointer}
+.page a.press{background:#FDEBC8;border-radius:4px;animation:press .6s ease-out}
+@keyframes press{0%{transform:scale(1)}40%{transform:scale(.92)}100%{transform:scale(1)}}
+.page .ans{margin-top:220px;padding:6px;border-radius:6px}
+.page .ans.flash{background:#FDEBC8}
+.page{max-height:230px;overflow-y:auto;position:relative}
+.page.nav{animation:fadeup .35s ease-out}
+.anat{display:flex;flex-wrap:wrap;gap:3px;font-family:var(--f-mono);font-size:.98rem;font-weight:700}
+.anat span{padding:6px;border-radius:8px;cursor:pointer;border:2px solid var(--line);background:var(--panel)}
+.anat .o{color:var(--accent);border-color:var(--accent)}.anat .a{color:var(--bad);border-color:var(--bad)}.anat .c{color:#1a0dab;text-decoration:underline}
+</style>
+  <section class="card" id="main">
+    <div class="browser"><div class="tabsb" id="tb"></div><div class="bar"><b></b><b></b><span id="url"></span></div><div class="page" id="page"></div></div>
+    <pre id="code"></pre>
+  </section>
+  <section class="card">
+    <h2>লিংক ট্যাগের অংশ</h2>
+    <div class="anat" id="anat"><span class="o" data-x="a">&lt;a</span><span class="a" data-x="h">href="page2.html"</span><span class="a" data-x="t">target="_blank"</span><span class="o" data-x="g">&gt;</span><span class="c" data-x="c">পরের পেজ</span><span class="o" data-x="e">&lt;/a&gt;</span></div>
+    <ul class="points">
+      <li><b>a</b> মানে Anchor (নোঙর)। <b>href</b> = Hypertext Reference, যেখানে যাবে তার ঠিকানা।</li>
+      <li><b>এক্সটার্নাল লিংক:</b> অন্য ওয়েবসাইটে যায় (পুরো URL দিতে হয়)। <b>ইন্টারনাল লিংক:</b> নিজের সাইটের অন্য পেজে বা একই পেজের অন্য অংশে (#id) যায়।</li>
+      <li><b>target="_blank"</b> দিলে লিংক নতুন ট্যাবে খোলে।</li>
+    </ul>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
+<script>
+const {$,say,bn}=IM;
+const HOME={url:'ictmaniac.github.io/home.html',title:'হোম',html:null};
+const LK=[
+ {code:'<a href="https://www.dshe.gov.bd">শিক্ষা অধিদপ্তর</a>',text:'শিক্ষা অধিদপ্তর',to:{url:'www.dshe.gov.bd',title:'শিক্ষা অধিদপ্তর',html:'<h3 style="margin:0">মাধ্যমিক ও উচ্চ শিক্ষা অধিদপ্তর</h3><p>(অন্য ওয়েবসাইট)</p>'},
+  a:'এক্সটার্নাল লিংক: অন্য ওয়েবসাইটের পুরো ঠিকানা href এ দেওয়া।',b:'চাপ দিতেই একই ট্যাবে অন্য ওয়েবসাইট খুলে গেলো। URL বদলে গেছে।'},
+ {code:'<a href="page2.html">পরের পেজ</a>',text:'পরের পেজ',to:{url:'ictmaniac.github.io/page2.html',title:'পেজ ২',html:'<h3 style="margin:0">পেজ ২</h3><p>নিজের সাইটের আরেকটা পেজ।</p>'},
+  a:'ইন্টারনাল লিংক: নিজের সাইটের আরেকটা ফাইলের নাম দিলেই হয়।',b:'নিজের সাইটের page2.html খুলে গেলো।'},
+ {code:'<a href="https://ictmaniac.github.io" target="_blank">নতুন ট্যাবে</a>',text:'নতুন ট্যাবে',newtab:1,to:{url:'ictmaniac.github.io',title:'ICT Maniac',html:'<h3 style="margin:0">ICT Maniac</h3><p>নতুন ট্যাবে খুলেছে, আগের ট্যাবও আছে।</p>'},
+  a:'target="_blank" যোগ করা হয়েছে।',b:'উপরে খেয়াল করো: নতুন একটা ট্যাব খুলেছে! আগের পেজ বন্ধ হয়নি।'},
+ {code:'<a href="#ans">উত্তরে যাও</a>',text:'উত্তরে যাও',jump:1,
+  a:'href="#ans" মানে একই পেজের id="ans" অংশে যাও।',b:'পেজ নিচে স্ক্রল হয়ে উত্তরের অংশে চলে গেলো।'},
+ {code:'<a href="mailto:info@example.com">ইমেইল</a>',text:'ইমেইল',mail:1,
+  a:'mailto: দিলে ইমেইল লেখার লিংক হয়।',b:'চাপ দিলে ইমেইল অ্যাপ খুলে যায়, প্রাপকের ঠিকানা আগে থেকেই বসানো থাকে।'}];
+let tabs,act;
+function homeHTML(n,press){return '<p style="margin:0 0 6px">আমার হোম পেজ</p>'+LK.slice(0,n).map((l,i)=>`<a data-i="${i}" class="${press===i?'press':''}">${l.text}</a>`).join('<br>')+'<p class="ans" id="ans">উত্তর: HTML মানে Hyper Text Markup Language।</p>';}
+function show(anim){const t=tabs[act];$('tb').innerHTML=tabs.map((x,i)=>`<i class="${i===act?'on':''} ${anim&&i===tabs.length-1&&tabs.length>1?'new':''}">${x.title}</i>`).join('');$('url').textContent='https://'+t.url;
+  const p=$('page');p.innerHTML=t.html;p.scrollTop=0;if(anim){p.classList.remove('nav');void p.offsetWidth;p.classList.add('nav');}
+  p.querySelectorAll('a[data-i]').forEach(a=>a.onclick=()=>{player.stop();click(+a.dataset.i,true);});}
+function click(i,user){const l=LK[i];
+  if(l.jump){const p=$('page'),an=$('ans');p.scrollTo({top:an.offsetTop-10,behavior:IM.reduce()?'auto':'smooth'});an.classList.add('flash');$('url').textContent='https://'+HOME.url+'#ans';}
+  else if(l.mail){$('page').insertAdjacentHTML('afterbegin','<div style="border:2px solid #3B82F6;border-radius:8px;padding:6px;margin-bottom:6px;font-family:sans-serif;font-size:.9rem">📧 নতুন ইমেইল<br>প্রাপক: info@example.com</div>');}
+  else if(l.newtab){tabs.push({...l.to});act=tabs.length-1;show(true);}
+  else{tabs[act]={...l.to};show(true);}
+  if(user)say('তুমি চাপ দিলে',l.b,true);}
+const cv=IM.codeView($('code'),LK.map(l=>IM.hHL(l.code)),i=>say('কোডের লাইন',LK[i].a,true));
+function render(k){const i=Math.floor(k/2),after=k%2===1;cv.on(i);cv.dimAfter(i);
+  tabs=[{...HOME,html:homeHTML(i+1,after?i:null)}];act=0;show(false);
+  if(after){setTimeout(()=>{if(player.k===k)click(i,false);},IM.reduce()?0:550);}
+  say(`ধাপ ${bn(k+1)} / ${bn(LK.length*2)}`,after?'👆 লিংকে চাপ দিলাম… '+LK[i].b:LK[i].a+' ব্রাউজারে নীল দাগওয়ালা লিংক দেখা যাচ্ছে।');}
+const player=IM.player({count:()=>LK.length*2,show:render,swipe:$('main'),interval:2200});
+IM.tapx($('anat'),{a:{t:'<a',d:'<code>&lt;a</code> Anchor ট্যাগ শুরু।'},h:{t:'href',d:'<code>href</code> এ যেখানে যাবে তার ঠিকানা লিখতে হয়। এটা ছাড়া লিংক কাজ করে না।'},
+ t:{t:'target',d:'<code>target="_blank"</code> লিংকটা নতুন ট্যাবে খোলে। না দিলে একই ট্যাবে খোলে (_self)।'},g:{t:'>',d:'শুরু ট্যাগ শেষ।'},c:{t:'লিংক টেক্সট',d:'এই লেখাটাই পেজে নীল দাগসহ দেখা যায়, এতে চাপ দিতে হয়।'},e:{t:'</a>',d:'লিংক ট্যাগ শেষ।'}});
+player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "হাইপারলিংক তৈরির ট্যাগ—", "o": ["&lt;link&gt;", "&lt;a&gt;", "&lt;href&gt;", "&lt;url&gt;"], "a": 1, "w": "a মানে Anchor।"}, {"q": "লিংক কোথায় যাবে তা লেখা হয় কোন অ্যাট্রিবিউটে?", "o": ["src", "href", "alt", "target"], "a": 1, "w": "href = Hypertext Reference।"}, {"q": "লিংক নতুন ট্যাবে খুলতে—", "o": ["target=\"_blank\"", "target=\"_new\"", "new=\"tab\"", "open=\"new\""], "a": 0, "w": "_blank মানে নতুন ট্যাব।"}, {"q": "অন্য ওয়েবসাইটে যাওয়া লিংককে বলে—", "o": ["ইন্টারনাল লিংক", "এক্সটার্নাল লিংক", "ইমেইল লিংক", "লোকাল লিংক"], "a": 1, "w": "এক্সটার্নাল লিংকে পুরো URL দিতে হয়।"}]);
+</script>

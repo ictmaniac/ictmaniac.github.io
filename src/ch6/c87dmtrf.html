@@ -1,0 +1,222 @@
+---
+ch: ৬
+kit: 1
+title: সর্টিং ও ইনডেক্স
+eyebrow: ৬.৬ ডেটা সর্টিং ও ইনডেক্স
+h1: সর্টিং বনাম ইনডেক্স
+lead: একই টেবিল দুইভাবে সাজানো দেখো। সর্টিংয়ে আসল সারিগুলোই সরে যায়, আর ইনডেক্সে মূল টেবিল যেমন ছিল তেমনই থাকে। ▶ চাপো, আর যেকোনো সারি বা ঘরে টাচ করে মানে দেখো।
+---
+<style>
+#main{position:relative}
+.fld{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.fld>span{font-weight:700;color:var(--muted);font-size:.9rem}
+.fld .chip{min-height:32px;padding:2px 10px;font-size:.85rem}
+.fld .chip.sel{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tbl{position:relative;border:2px solid var(--accent);border-radius:12px;overflow:hidden;background:var(--panel)}
+.tr{display:grid;grid-template-columns:62px 52px 1fr 60px;align-items:center;height:38px;font-family:var(--f-mono);font-weight:700;font-size:.95rem}
+.tr>span{padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.th{background:var(--accent);color:#fff;font-family:var(--f-body);font-size:.85rem;height:34px;position:relative;z-index:5}
+.th>span{cursor:pointer}
+.th>span.key{background:var(--signal);color:#1A1200;height:100%;display:flex;align-items:center}
+.row{position:absolute;left:0;right:0;top:34px;border-top:1.5px solid var(--line);background:var(--panel);transition:transform .7s cubic-bezier(.45,0,.25,1),background .35s,box-shadow .35s;cursor:pointer;z-index:1}
+.row .sn{color:var(--accent);display:flex;align-items:center;gap:2px}
+.row .sn b{display:inline-block;min-width:26px;text-align:center;border-radius:8px;background:var(--accent-soft);padding:1px 4px;transition:background .3s}
+.row .sn b.new{background:var(--signal);color:#1A1200;animation:flip .6s ease-out}
+.row .sn b.same{background:var(--ok);color:#fff;animation:pop .4s ease-out}
+.row .mv{font-style:normal;font-size:1.25rem;font-weight:900;color:var(--bad);line-height:1;animation:bob .7s ease-in-out infinite alternate}
+.row.ok{background:color-mix(in srgb,var(--ok) 12%,var(--panel));box-shadow:inset 5px 0 0 var(--ok)}
+.row.zone{background:var(--board)}
+.row.look{background:color-mix(in srgb,var(--accent) 14%,var(--panel))}
+.row.best{box-shadow:inset 0 0 0 3px var(--signal)}
+.row.hot{background:var(--signal-soft);z-index:3;box-shadow:inset 0 0 0 3px var(--signal),0 8px 18px -8px rgba(20,33,61,.6)}
+.row.out{background:color-mix(in srgb,var(--accent) 16%,var(--panel));z-index:2;box-shadow:inset 0 0 0 3px var(--accent)}
+.row.found{background:var(--signal);color:#1A1200;z-index:3;animation:glow .9s ease-in-out 3}
+.row.found .sn b{background:#fff}
+.row .kc{transition:color .3s}
+.row.hot .kc,.row.found .kc,.row.best .kc{color:var(--bad)}
+.row.src .kc{background:var(--signal);color:#1A1200;border-radius:6px}
+.mag{position:absolute;z-index:6;font-size:1.3rem;pointer-events:none;transition:transform .22s ease-out,opacity .2s;opacity:0;left:0;top:0;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+.mag.on{opacity:1}
+.flyer{position:absolute;left:0;top:0;z-index:7;pointer-events:none;font-family:var(--f-mono);font-weight:800;font-size:.85rem;padding:4px 8px;border-radius:10px;background:var(--signal);color:#1A1200;box-shadow:0 8px 16px -6px rgba(20,33,61,.6);white-space:nowrap}
+.flyer i{font-style:normal;background:#fff;border-radius:6px;padding:0 5px;margin-left:6px;color:var(--accent)}
+svg.ov{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:6;overflow:visible}
+svg.ov path{fill:none;stroke:var(--signal);stroke-width:4;stroke-linecap:round;stroke-dasharray:600;stroke-dashoffset:600;animation:draw .9s ease-out forwards}
+svg.ov polygon{fill:var(--signal);opacity:0;animation:fadein .2s .8s forwards}
+.lock{display:none;align-items:center;gap:6px;font-size:.82rem;margin:-4px 0;font-weight:700;color:var(--ok)}
+.lock.pulse{animation:pulse .8s ease-in-out 2}
+.mode-idx .lock{display:flex}
+.idxw{display:none}
+.mode-idx .idxw{display:block}
+.idx{border:2px dashed var(--accent);border-radius:12px;padding:6px;background:var(--board)}
+.idx h3{margin:0 0 6px;font-size:.9rem;color:var(--accent);display:flex;justify-content:space-between}
+.idx h3 small{color:var(--muted);font-weight:600}
+.il{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ie{position:relative;display:flex;justify-content:space-between;align-items:center;gap:4px;padding:4px 7px;min-height:32px;border-radius:10px;background:transparent;border:1.5px dashed var(--wire-off);font-family:var(--f-mono);font-weight:700;font-size:.85rem;transition:all .35s;cursor:pointer;min-width:0}
+.ie>*{opacity:0;transition:opacity .3s}
+.ie::before{content:attr(data-n);position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:var(--wire-off);font-size:.8rem}
+.ie span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ie i{font-style:normal;font-size:.75rem;color:var(--accent);background:var(--accent-soft);border-radius:6px;padding:0 5px;flex:none}
+.ie.show{background:var(--panel);border:1.5px solid var(--accent)}
+.ie.show::before{content:none}
+.ie.show>*{opacity:1}
+.ie.hot{border-color:var(--signal);background:var(--signal-soft);box-shadow:0 0 0 3px var(--signal)}
+.ie.look{background:color-mix(in srgb,var(--accent) 16%,var(--panel))}
+.ie.found{background:var(--signal);border-color:var(--signal);color:#1A1200;box-shadow:0 0 0 3px var(--signal)}
+.ie.found i{background:#fff}
+@keyframes flip{0%{transform:rotateX(90deg)}100%{transform:none}}
+@keyframes bob{to{transform:translateY(-3px)}}
+@keyframes pulse{50%{transform:scale(1.03)}}
+@keyframes glow{50%{box-shadow:0 0 0 5px var(--signal-soft),0 0 18px 4px var(--signal)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fadein{to{opacity:1}}
+.cmp{display:grid;grid-template-columns:1fr 1fr 1fr;border:2px solid var(--line);border-radius:12px;overflow:hidden;font-size:.86rem}
+.cmp>*{padding:8px;border-top:1px solid var(--line);line-height:1.35}
+.cmp .h{background:var(--accent);color:#fff;font-weight:800;border-top:0}
+.cmp .q{font-weight:700;color:var(--muted);background:var(--board)}
+.cmp .c{cursor:pointer}
+.cmp .c:active,.cmp .c.on{background:var(--signal-soft)}
+@media (prefers-reduced-motion:reduce){.row,.mag,.ie{transition:none}.row .mv{animation:none}}
+</style>
+  <div class="tabs" id="tabs">
+    <button class="tab" data-k="sort" aria-selected="true">সর্টিং</button>
+    <button class="tab" data-k="idx" aria-selected="false">ইনডেক্স</button>
+  </div>
+  <section class="card" id="main">
+    <div class="fld" id="fld"><span>ফিল্ড:</span>
+      <button class="chip sel" data-f="name">Name A→Z</button>
+      <button class="chip" data-f="marks">Marks বেশি→কম</button></div>
+    <div class="lock" id="lock">🔒 মূল টেবিল (ক্রম বদলাবে না)</div>
+    <div class="tbl" id="tbl"></div>
+    <div class="idxw"><div class="idx"><h3><span id="ixn">ইনডেক্স ফাইল</span><small>মান → রেকর্ড নং</small></h3><div class="il" id="il"></div></div></div>
+    <span class="mag" id="mag">🔍</span>
+    <svg class="ov" id="ov"></svg>
+  </section>
+  <section class="card">
+    <h2>পার্থক্য (টাচ করো)</h2>
+    <div class="cmp" id="cmp"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>সর্টিং:</b> ডেটাকে ঊর্ধ্বক্রমে (A→Z, ছোট→বড়) বা অধঃক্রমে (Z→A, বড়→ছোট) সাজানো। মূল টেবিলের রেকর্ডের ক্রমিক নম্বর বদলে যায়।</li>
+      <li><b>ইনডেক্স:</b> মূল টেবিল না বদলে, আলাদা একটা ইনডেক্স ফাইলে মান আর রেকর্ডের ঠিকানা সাজিয়ে রাখা, যাতে দ্রুত খোঁজা যায়।</li>
+      <li>বইয়ের শেষের নির্ঘণ্টের মতো: শব্দগুলো বর্ণানুক্রমে, পাশে পৃষ্ঠা নম্বর। কিন্তু বইয়ের পাতা যেমন ছিল তেমনই থাকে।</li>
+      <li>MS Access এ কোনো ফিল্ডকে প্রাইমারি কী করলে সেটা নিজে নিজেই ইনডেক্স হয়ে যায়।</li>
+    </ul>
+  </section>
+<script>
+const {$,say,bn}=IM;
+const D=[{r:101,n:'Rahim',m:72},{r:102,n:'Karim',m:85},{r:103,n:'Ayesha',m:91},{r:104,n:'Nila',m:64},{r:105,n:'Babu',m:78},{r:106,n:'Mitu',m:69}];
+const RH=38,TH=34;
+let K='sort',F='name',S=[],gen=0;
+const key=i=>F==='name'?D[i].n:D[i].m;
+const better=(a,b)=>F==='name'?D[a].n<D[b].n:D[a].m>D[b].m;
+const FL=()=>F==='name'?'Name':'Marks';
+const ORD=()=>F==='name'?'A থেকে Z':'বেশি থেকে কম';
+const BEST=()=>F==='name'?'বর্ণানুক্রমে সবার আগে':'সবচেয়ে বেশি';
+const nm=id=>`<b>${D[id].n}${F==='marks'?' ('+D[id].m+')':''}</b>`;
+// table
+$('tbl').style.height=(TH+2+RH*6)+'px';
+$('tbl').innerHTML=`<div class="tr th"><span data-h="sn">ক্রম</span><span data-h="r">Roll</span><span data-h="n">Name</span><span data-h="m">Marks</span></div>`+
+  D.map((d,i)=>`<div class="tr row" id="r${i}" data-i="${i}"><span class="sn"><b>${bn(i+1)}</b><em class="mv"></em></span><span>${d.r}</span><span data-c="n">${d.n}</span><span data-c="m">${d.m}</span></div>`).join('');
+function markKey(){$('tbl').querySelectorAll('.th>span').forEach(s=>s.classList.toggle('key',s.dataset.h===(F==='name'?'n':'m')));
+  D.forEach((_,i)=>$('r'+i).querySelectorAll('[data-c]').forEach(c=>c.classList.toggle('kc',c.dataset.c===(F==='name'?'n':'m'))));}
+// geometry helpers
+const rel=el=>{const m=$('main').getBoundingClientRect(),r=el.getBoundingClientRect();return {x:r.left-m.left,y:r.top-m.top,w:r.width,h:r.height};};
+const later=(ms,fn)=>{const g=gen;setTimeout(()=>{if(g===gen)fn();},ms);};
+const sp=()=>player?player.speed:1;
+function magTo(el){const r=rel(el),m=$('mag');m.classList.add('on');m.style.transform=`translate(${r.x+r.w-30}px,${r.y+r.h/2-14}px)`;}
+function magOff(){$('mag').classList.remove('on');}
+// ---------- steps ----------
+function sortSteps(){const o=[0,1,2,3,4,5],S=[];
+  S.push({o:o.slice(),done:0,m:`এটা মূল টেবিল। বাম পাশের <b>ক্রম</b> নম্বর দেখো: রেকর্ডগুলো যে ক্রমে ঢোকানো হয়েছিল। এবার ${FL()} অনুযায়ী ${ORD()} সাজাবো।`});
+  for(let p=0;p<5;p++){let b=p;for(let j=p+1;j<6;j++)if(better(o[j],o[b]))b=j;
+    const id=o[b],moved=b!==p;
+    S.push({t:'scan',o:o.slice(),done:p,from:p,hot:id,m:`🔍 ${bn(p+1)} নম্বর জায়গার জন্য নিচের বাকি সারিগুলো একে একে দেখছি। ${FL()} ${BEST()}: ${nm(id)}`});
+    if(moved){const other=o[p];o[p]=o[b];o[b]=other;
+      S.push({t:'swap',o:o.slice(),prevO:S[S.length-1].o,done:p,hot:id,out:other,m:`${nm(id)} উঠে গেলো ${bn(p+1)} নম্বরে ⬆, আর সেখানে থাকা ${nm(other)} নেমে গেলো ${bn(b+1)} নম্বরে ⬇। পুরো সারি (রোল, নাম, মার্কস) একসাথে সরে।`});}
+    else S[S.length-1].m+='। এটা আগে থেকেই ঠিক জায়গায় আছে, সরাতে হলো না ✓';}
+  S.push({o:o.slice(),done:6,m:`সাজানো শেষ ✓ ${ORD()} ক্রমে আছে। খেয়াল করো, সারিগুলোর আসল জায়গাই বদলে গেছে, তাই বাম পাশের পুরোনো ক্রম নম্বর এলোমেলো।`});
+  S.push({o:o.slice(),done:6,renum:1,m:'সর্টিংয়ের পর টেবিলে নতুন করে ক্রমিক নম্বর বসে (হলুদ)। মূল টেবিলটাই বদলে গেলো, আগের ক্রম আর নেই।'});
+  return S;}
+function idxSteps(){const ix=[0,1,2,3,4,5].sort((a,b)=>better(a,b)?-1:1),S=[];
+  S.push({n:0,lock:1,m:`মূল টেবিল তালাবদ্ধ 🔒, এর কোনো সারি নড়বে না। নিচের ফাঁকা ঘরগুলো হলো আলাদা একটা <b>ইনডেক্স ফাইল</b>, ${FL()} অনুযায়ী ${ORD()} ভরবো।`});
+  ix.forEach((id,k)=>S.push({t:'add',n:k+1,hot:id,slot:k,m:`${FL()} ${BEST()} (বাকিদের মধ্যে) ${nm(id)}, আছে রেকর্ড ${bn(id+1)} এ। শুধু মান <b>${key(id)}</b> আর ঠিকানা <b>${bn(id+1)}</b> উড়ে গিয়ে ইনডেক্সের ${bn(k+1)} নম্বর ঘরে বসলো। পুরো সারি কপি হয়নি।`}));
+  S.push({n:6,same:1,m:`ইনডেক্স তৈরি ✓ নিচে ${ORD()} সাজানো, অথচ উপরের মূল টেবিলের ক্রম ১, ২, ৩… একদম আগের মতো (সবুজ)। আলাদা ফাইলের জন্য একটু বেশি মেমোরি লাগে।`});
+  const tg=F==='name'?3:4,pos=ix.indexOf(tg);
+  S.push({t:'scan',n:6,to:pos,m:`এবার খুঁজি 🔍 <b>${F==='name'?'Nila':'Marks = 78'}</b> কোথায়? ইনডেক্স সাজানো, তাই ক্রম ধরে দ্রুত পাওয়া যায়।`});
+  S.push({t:'jump',n:6,find:tg,fpos:pos,m:`ইনডেক্সে পেলাম: ${key(tg)} → রেকর্ড ${bn(tg+1)}। তীর ধরে সরাসরি মূল টেবিলের ${bn(tg+1)} নম্বর সারিতে লাফ! পুরো টেবিল ঘাঁটতে হলো না। এটাই ইনডেক্সের সুবিধা।`});
+  S.ix=ix;return S;}
+function buildIdx(){const ix=S.ix;$('ixn').textContent=`ইনডেক্স ফাইল: ${FL()}`;
+  $('il').innerHTML=ix.map((id,k)=>`<div class="ie" id="e${k}" data-k="${k}" data-n="${bn(k+1)}"><span>${key(id)}</span><i>${bn(id+1)}</i></div>`).join('');
+  $('il').querySelectorAll('.ie').forEach(e=>e.onclick=()=>{if(!e.classList.contains('show'))return;const id=ix[+e.dataset.k];say(`ইনডেক্স: ${key(id)}`,`ইনডেক্স ফাইলের এই ঘরে আছে শুধু মান <b>${key(id)}</b> আর রেকর্ডের ঠিকানা <b>${bn(id+1)}</b>। এই নম্বর ধরে মূল টেবিলে ${D[id].n} এর পুরো সারিটা পাওয়া যায়।`,true);});}
+function build(){document.body.classList.toggle('mode-idx',K==='idx');S=K==='sort'?sortSteps():idxSteps();if(K==='idx')buildIdx();markKey();}
+// ---------- render ----------
+const row=i=>$('r'+i);
+function clearFx(){gen++;magOff();$('ov').innerHTML='';$('main').querySelectorAll('.flyer').forEach(f=>f.remove());
+  D.forEach((_,i)=>{const r=row(i);r.classList.remove('look','best','zone','src','hot','out','found','ok');r.querySelector('.mv').textContent='';r.getAnimations().forEach(a=>a.cancel());});}
+function place(o,anim,s){o.forEach((id,p)=>{row(id).style.transform=`translateY(${p*RH}px)`;});}
+function renderSort(s,fwd){
+  const anim=fwd&&!IM.reduce();
+  if(s.t==='swap'&&anim){ // lift out sideways, slide, drop back
+    const a=s.hot,b=s.out,pa=s.prevO.indexOf(a),pb=s.prevO.indexOf(b),na=s.o.indexOf(a),nb=s.o.indexOf(b),d=1300/sp();
+    place(s.o);
+    [[a,pa,na,26],[b,pb,nb,-26]].forEach(([id,f,t,x])=>{const r=row(id);r.style.transition='background .35s,box-shadow .35s';
+      r.animate([{transform:`translateY(${f*RH}px)`},{transform:`translate(${x}px,${f*RH}px) scale(1.03)`,offset:.2},{transform:`translate(${x}px,${t*RH}px) scale(1.03)`,offset:.8},{transform:`translateY(${t*RH}px)`}],{duration:d,easing:'ease-in-out'}).onfinish=()=>{r.style.transition='';};});
+  } else place(s.o);
+  s.o.forEach((id,p)=>{const r=row(id);r.classList.toggle('ok',p<s.done);
+    const b=r.querySelector('.sn b');const nv=bn(s.renum?p+1:id+1);if(b.textContent!==nv||!s.renum)b.textContent=nv;b.className=s.renum?'new':'';});
+  if(s.t==='swap'){row(s.hot).classList.add('hot');row(s.out).classList.add('out');row(s.hot).querySelector('.mv').textContent='⬆';row(s.out).querySelector('.mv').textContent='⬇';}
+  if(s.t==='scan'){const zone=s.o.slice(s.from);zone.forEach(id=>row(id).classList.add('zone'));
+    if(anim){let best=zone[0],i=0;const stepT=Math.min(380,1500/zone.length)/sp();
+      const tick=()=>{zone.forEach(id=>row(id).classList.remove('look','best'));
+        if(i<zone.length){const id=zone[i];if(better(id,best))best=id;row(id).classList.add('look');row(best).classList.add('best');magTo(row(id));i++;later(stepT,tick);}
+        else{magOff();row(s.hot).classList.add('hot');}};
+      tick();}
+    else row(s.hot).classList.add('hot');}
+}
+function fly(fromEl,toEl,html,done){const f=document.createElement('div');f.className='flyer';f.innerHTML=html;$('main').appendChild(f);
+  const a=rel(fromEl),b=rel(toEl),d=1100/sp();
+  const mx=Math.min(a.x,b.x)+Math.abs(a.x-b.x)/2+40,my=(a.y+b.y)/2;
+  f.animate([{transform:`translate(${a.x}px,${a.y}px) scale(.8)`,opacity:.2},{transform:`translate(${a.x}px,${a.y-6}px) scale(1.15)`,opacity:1,offset:.15},{transform:`translate(${mx}px,${my}px) scale(1.2)`,offset:.55},{transform:`translate(${b.x}px,${b.y}px) scale(1)`}],{duration:d,easing:'ease-in-out',fill:'forwards'}).onfinish=()=>{f.remove();done&&done();};}
+function arrow(fromEl,toEl){const a=rel(fromEl),b=rel(toEl),x1=a.x+a.w/2,y1=a.y,x2=b.x+b.w-24,y2=b.y+b.h,cx=Math.max(x1,x2)+60;
+  $('ov').innerHTML=`<path d="M${x1} ${y1} C ${cx} ${y1-40}, ${cx} ${y2+40}, ${x2} ${y2+4}"/><polygon points="${x2-8},${y2+14} ${x2+8},${y2+14} ${x2},${y2+2}"/>`;}
+function renderIdx(s,fwd){const anim=fwd&&!IM.reduce();place([0,1,2,3,4,5]);
+  D.forEach((_,i)=>{const b=row(i).querySelector('.sn b');b.textContent=bn(i+1);b.className=s.same?'same':'';});
+  $('lock').classList.toggle('pulse',!!s.lock&&anim);
+  S.ix.forEach((id,j)=>{const e=$('e'+j);e.classList.toggle('show',j<s.n&&!(anim&&s.t==='add'&&j===s.slot));e.classList.remove('hot','look','found');});
+  if(s.t==='add'){const g=gen,r=row(s.hot);r.classList.add('hot','src');const e=$('e'+s.slot);
+    if(anim){later(250/sp(),()=>fly(r.querySelector('.kc'),e,`${key(s.hot)}<i>${bn(s.hot+1)}</i>`,()=>{if(g!==gen)return;e.classList.add('show','hot');r.classList.remove('src');}));}
+    else e.classList.add('hot');}
+  if(s.t==='scan'){if(anim){let i=0;const stepT=Math.min(380,1500/(s.to+1))/sp();
+      const tick=()=>{S.ix.forEach((_,j)=>$('e'+j).classList.remove('look'));
+        if(i<=s.to){$('e'+i).classList.add('look');magTo($('e'+i));i++;later(stepT,tick);}else{magOff();$('e'+s.to).classList.add('found');}};tick();}
+    else $('e'+s.to).classList.add('found');}
+  if(s.t==='jump'){const e=$('e'+s.fpos);e.classList.add('found');row(s.find).classList.add('found');later(60,()=>arrow(e,row(s.find)));}
+}
+function render(k,prev){clearFx();const s=S[k],fwd=prev===k-1;
+  (K==='sort'?renderSort:renderIdx)(s,fwd);
+  say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+var player=IM.player({count:()=>S.length,show:render,swipe:$('main'),interval:2600});
+addEventListener('resize',()=>{if(K==='idx'&&S[player.k].t==='jump'){const s=S[player.k];arrow($('e'+s.fpos),row(s.find));}});
+// taps
+$('tbl').querySelectorAll('.row').forEach(r=>r.onclick=()=>{const d=D[+r.dataset.i];say(`রেকর্ড: ${d.n}`,`একটা সারি = একটা <b>রেকর্ড</b>: Roll ${d.r}, Name ${d.n}, Marks ${d.m}। `+(K==='sort'?'সর্টিংয়ে পুরো রেকর্ডটাই এক জায়গা থেকে আরেক জায়গায় সরে যায়।':'ইনডেক্সিংয়ে এই রেকর্ড নিজের জায়গাতেই থাকে, ইনডেক্স শুধু এর ঠিকানা মনে রাখে।'),true);});
+const HX={sn:['ক্রমিক নম্বর','রেকর্ডটা টেবিলের কত নম্বর সারিতে আছে। সর্টিং করলে এই নম্বর বদলে যায়, ইনডেক্সে বদলায় না।'],r:['ফিল্ড: Roll','একটা কলাম = একটা ফিল্ড। Roll প্রত্যেকের আলাদা, তাই এটা প্রাইমারি কী হতে পারে।'],n:['ফিল্ড: Name','লেখা (Text) ফিল্ড। বর্ণানুক্রমে (A→Z) সাজানো যায়।'],m:['ফিল্ড: Marks','সংখ্যা (Number) ফিল্ড। ছোট→বড় (ঊর্ধ্বক্রম) বা বড়→ছোট (অধঃক্রম) সাজানো যায়।']};
+$('tbl').querySelectorAll('.th>span').forEach(s=>s.onclick=e=>{e.stopPropagation();const h=HX[s.dataset.h];say(h[0],h[1]+' হলুদ কলামটা দিয়ে এখন সাজানো হচ্ছে।',true);});
+const CM=[['মূল টেবিল','ক্রম বদলে যায়','একই থাকে','সর্টিংয়ে আসল রেকর্ড সরে যায়। ইনডেক্সে মূল টেবিল ছোঁয়া হয় না, আলাদা ফাইলে সাজানো থাকে।'],
+ ['আলাদা ফাইল','লাগে না','ইনডেক্স ফাইল লাগে','ইনডেক্সে মান আর রেকর্ডের ঠিকানা দিয়ে আলাদা ফাইল তৈরি হয়।'],
+ ['মেমোরি','কম লাগে','বেশি লাগে','পাঠ্যবই অনুযায়ী: ইনডেক্সে আলাদা ফাইল থাকে বলে বেশি মেমোরি লাগে। পরীক্ষায় এটাই লিখবে।'],
+ ['খোঁজার গতি','তুলনামূলক ধীর','দ্রুত','ইনডেক্স সাজানো ঠিকানার তালিকা, তাই সরাসরি রেকর্ডে যাওয়া যায়।'],
+ ['নতুন রেকর্ড','আবার সর্ট করতে হয়','ইনডেক্স নিজেই হালনাগাদ হয়','নতুন ডেটা যোগ করলে সর্ট করা টেবিল আবার সাজাতে হয়, ইনডেক্স স্বয়ংক্রিয়ভাবে আপডেট হয়।']];
+$('cmp').innerHTML='<div class="h">বিষয়</div><div class="h">সর্টিং</div><div class="h">ইনডেক্স</div>'+CM.map((c,i)=>`<div class="q c" data-i="${i}">${c[0]}</div><div class="c" data-i="${i}">${c[1]}</div><div class="c" data-i="${i}">${c[2]}</div>`).join('');
+$('cmp').querySelectorAll('.c').forEach(c=>c.onclick=()=>{const i=+c.dataset.i;$('cmp').querySelectorAll('.c').forEach(x=>x.classList.toggle('on',+x.dataset.i===i));say(CM[i][0],CM[i][3],true);});
+// controls
+IM.tabs($('tabs'),k=>{K=k;build();player.reset();});
+$('fld').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{F=c.dataset.f;$('fld').querySelectorAll('.chip').forEach(x=>x.classList.toggle('sel',x===c));build();player.reset();});
+build();player.reset();
+IM.mcq($('quiz6'),[{"q": "ইনডেক্স করলে মূল টেবিলের রেকর্ডের ক্রম—", "o": ["বদলে যায়", "একই থাকে", "মুছে যায়", "উল্টে যায়"], "a": 1, "w": "আলাদা ইনডেক্স ফাইলে সাজানো থাকে।"}, {"q": "কোনটিতে মূল টেবিলের রেকর্ডের ক্রম বদলে যায়?", "o": ["ইনডেক্সিং", "সর্টিং", "দুটোই", "কোনোটিই না"], "a": 1, "w": "সর্টিংয়ে আসল সারিগুলো সরে যায়।"}, {"q": "কোনটিতে বেশি মেমোরি লাগে (পাঠ্যবই)?", "o": ["সর্টিং", "ইনডেক্সিং", "সমান", "বলা যায় না"], "a": 1, "w": "আলাদা ইনডেক্স ফাইল তৈরি হয় বলে।"}, {"q": "নতুন রেকর্ড যোগ হলে নিজে থেকে হালনাগাদ হয়—", "o": ["ইনডেক্স", "সর্ট করা টেবিল", "দুটোই", "কোনোটিই না"], "a": 0, "w": "ইনডেক্স স্বয়ংক্রিয়ভাবে আপডেট হয়, সর্ট আবার করতে হয়।"}]);
+</script>

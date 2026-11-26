@@ -1,0 +1,119 @@
+---
+ch: ১
+kit: 1
+title: ক্রায়োসার্জারি
+eyebrow: ১.১৪.৩ ক্রায়োসার্জারি (Cryosurgery)
+h1: বরফ দিয়ে টিউমার ধ্বংস
+lead: ছুরি দিয়ে না কেটে, প্রচণ্ড ঠান্ডা দিয়ে কীভাবে রোগাক্রান্ত টিস্যু মেরে ফেলা যায়? ▶ চাপো আর থার্মোমিটারের দিকে খেয়াল রাখো। যেকোনো অংশে টাচ করলে ব্যাখ্যা পাবে।
+---
+<style>
+svg.scene .cell{transform-box:fill-box;transform-origin:center;fill:#9B59B6;stroke:#6C3483;stroke-width:1;transition:fill .6s,opacity .6s}
+svg.scene .cell.fz{fill:#D6F0FF;stroke:#5DADE2}
+svg.scene .cell.dead{fill:#A4ADBF;stroke:#7B8499;opacity:.55}
+svg.scene .vein{stroke:#E74C3C;stroke-width:5;fill:none;stroke-dasharray:8 6;animation:dashmv 1s linear infinite;transition:stroke .5s}
+svg.scene .vein.stop{stroke:#A4ADBF;animation:none}
+svg.scene .ice{fill:#DFF3FF;stroke:#7FC8F8;stroke-width:2;opacity:.85}
+svg.scene .tmp{font-family:var(--f-mono);font-size:14px;font-weight:800;text-anchor:middle;fill:var(--accent)}
+svg.scene .gas{font-size:10px;font-weight:800;opacity:.35;transition:opacity .3s}
+svg.scene .gas.on{opacity:1}
+svg.scene .scan{stroke:var(--accent);stroke-width:3;opacity:.8}
+</style>
+  <section class="card" id="main">
+    <div class="sbox">
+    <svg class="scene" id="sv" viewBox="0 0 360 230">
+      <rect x="8" y="70" width="262" height="152" rx="8" fill="#F9D9D0" class="hit" data-x="tis"/>
+      <rect x="8" y="70" width="262" height="14" rx="6" fill="#E8B796" class="hit" data-x="skin"/>
+      <text class="sm" x="40" y="80" style="fill:#7A4A2A">ত্বক</text><text class="sm" x="44" y="214">সুস্থ টিস্যু</text>
+      <path id="vein" class="vein hit" data-x="vein" d="M8 176 Q70 160 140 176 T270 176"/>
+      <ellipse cx="140" cy="160" rx="38" ry="28" fill="#D7BDE2" stroke="#8E44AD" stroke-width="2" id="tum" class="hit" data-x="tum" style="transition:opacity .8s"/>
+      <g id="cells"></g>
+      <circle id="ice" class="ice" cx="140" cy="160" r="0"/>
+      <g id="tgt" class="hide"><circle cx="140" cy="160" r="46" fill="none" stroke="var(--signal)" stroke-width="2" stroke-dasharray="5 4"/><text class="sm" x="140" y="114" style="fill:var(--signal)">টিউমার এখানে</text></g>
+      <line id="scan" class="scan hide" x1="8" y1="90" x2="8" y2="220"/>
+      <g id="probe" class="hit" data-x="probe" transform="translate(0,-120)">
+        <rect x="128" y="14" width="24" height="22" rx="4" fill="#5B6B88"/><line x1="140" y1="36" x2="140" y2="158" stroke="#7B8499" stroke-width="6" stroke-linecap="round"/>
+      </g>
+      <text id="ar" class="gas" x="160" y="22" style="fill:#2E86DE">🧊 আর্গন গ্যাস</text>
+      <text id="he" class="gas" x="160" y="38" style="fill:#E67E22">🔥 হিলিয়াম গ্যাস</text>
+      <g class="hit" data-x="th"><rect x="292" y="50" width="16" height="146" rx="8" fill="#fff" stroke="#8B9AB8" stroke-width="2"/>
+      <rect id="lv" x="295" y="60" width="10" height="130" rx="5" fill="#E74C3C"/><circle cx="300" cy="204" r="12" fill="#E74C3C" id="bulb"/></g>
+      <text id="tv" class="tmp" x="300" y="38">৩৭°সে</text>
+      <text class="sm" x="330" y="64">৪০°</text><text class="sm" x="330" y="128">−৫০°</text><text class="sm" x="330" y="194">−১৭০°</text>
+      <text id="cyc" class="lbl" x="214" y="62" style="fill:var(--signal)"></text>
+    </svg>
+    </div>
+    <div class="parts" id="parts"><button data-k="a" data-x="a">✂️ ছোট কাটা</button><button data-k="b" data-x="b">🩸 রক্তপাত কম</button><button data-k="c" data-x="c">⚡ দ্রুত আরোগ্য</button><button data-k="d" data-x="d">💰 খরচ কম</button></div>
+  </section>
+  <section class="card">
+    <h2>সাধারণ সার্জারি বনাম ক্রায়োসার্জারি (টাচ করো)</h2>
+    <div id="cx0"></div>
+  </section>
+  <section class="card">
+    <h2>কোন গ্যাস কী কাজে (টাচ করো)</h2>
+    <div id="cx1"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>ক্রায়োসার্জারি:</b> অত্যধিক শীতল তাপমাত্রা প্রয়োগ করে ত্বকের অস্বাভাবিক ও রোগাক্রান্ত টিস্যু ধ্বংস করার চিকিৎসা পদ্ধতি। Cryo মানে "খুব শীতল"।</li>
+      <li>সবচেয়ে বেশি ব্যবহৃত ক্রায়োজেনিক এজেন্ট <b>তরল নাইট্রোজেন (−১৯৬°সে)</b>। আর্গন গ্যাসে ১২ সেকেন্ডে −১২০° থেকে −১৬৫°সে পর্যন্ত ঠান্ডা করা হয়, হিলিয়াম দিয়ে আবার ২০°–৪০°সে এ গরম করা হয়।</li>
+      <li>ধাপ: আল্ট্রাসাউন্ড/সিটি/এমআরআই দিয়ে টিউমার খোঁজা → ক্রায়োপ্রোব ঢোকানো → জমানো → গলানো → সাধারণত ২ চক্র।</li>
+      <li>ব্যবহার: তিল, আঁচিল, ত্বকের ছোট ক্যান্সার, যকৃৎ, স্তন, প্রোস্টেট, ফুসফুস ক্যান্সার, পাইলস ইত্যাদি।</li>
+    </ul>
+  </section>
+<script>
+const {$,say,bn}=IM;const Q=IM.seq(),sv=$('sv');
+const CP=[[124,152],[136,146],[150,150],[160,162],[146,166],[130,168],[118,162],[142,156],[154,172],[126,176]];
+$('cells').innerHTML=CP.map(([x,y])=>`<circle class="cell" cx="${x}" cy="${y}" r="5"/>`).join('');
+let T=37,ir=0,py=-120;
+const bnum=v=>(v<0?'−':'')+bn(Math.abs(Math.round(v)));
+function setT(v){T=v;const h=Math.max(4,(v+170)/210*130);$('lv').setAttribute('y',190-h);$('lv').setAttribute('height',h);const col=v<0?'#3498DB':'#E74C3C';$('lv').setAttribute('fill',col);$('bulb').setAttribute('fill',col);$('tv').textContent=bnum(v)+'°সে';$('tv').style.fill=col;}
+function setI(r){ir=r;$('ice').setAttribute('r',r);}
+function setP(y){py=y;$('probe').setAttribute('transform',`translate(0,${y})`);}
+function tw(from,to,ms,set,done){const g=Q.g,t0=performance.now(),dur=IM.reduce()?1:ms/player.speed;const f=t=>{if(g!==Q.g)return;const p=Math.min(1,(t-t0)/dur),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;set(from+(to-from)*e);if(p<1)requestAnimationFrame(f);else done&&done();};requestAnimationFrame(f);}
+const cells=c=>$('cells').querySelectorAll('.cell').forEach(e=>e.setAttribute('class','cell'+(c?' '+c:'')));
+const gas=k=>{$('ar').classList.toggle('on',k==='ar');$('he').classList.toggle('on',k==='he');};
+const flow=(col)=>{const go=()=>{IM.emit(sv,[[140,30],[140,156]],'',{r:4,dur:600,cls:col});Q.later(180,go);};go();};
+const parts=(on,done)=>$('parts').querySelectorAll('button').forEach(b=>{b.classList.toggle('on',b.dataset.k===on);b.classList.toggle('done',done.includes(b.dataset.k));});
+function freeze(d){gas('ar');flow('blue');tw(T,-165,1800*d,setT);tw(ir,52,1800*d,setI,()=>{Q.later(300,()=>{cells('fz');$('vein').classList.add('stop');});});}
+function thaw(d,done){gas('he');tw(T,30,1500*d,setT);tw(ir,0,1500*d,setI,()=>{cells('dead');done&&done();});}
+const S=[
+ {m:'ত্বকের নিচে একটা <b>টিউমার</b> (রোগাক্রান্ত কোষের দলা, বেগুনি)। পাশ দিয়ে রক্তনালি দিয়ে রক্ত চলছে, কোষগুলো তাই বেঁচে আছে।',f(){$('cells').querySelectorAll('.cell').forEach((c,i)=>c.animate([{transform:'scale(1)'},{transform:'scale(1.35)'},{transform:'scale(1)'}],{duration:700,delay:i*80}));}},
+ {m:'প্রথমে <b>আল্ট্রাসাউন্ড, সিটি স্ক্যান বা এমআরআই</b> দিয়ে টিউমার ঠিক কোথায় তা খুঁজে বের করা হয়।',f(){const s=$('scan');s.classList.replace('hide','show');IM.moveAlong(s,[[0,0],[260,0],[130,0]],1800/player.speed,Q.guard(()=>{s.classList.replace('show','hide');$('tgt').classList.replace('hide','show');}));}},
+ {m:'সুচের মতো সরু <b>ক্রায়োপ্রোব</b> ত্বক ভেদ করে টিউমারের ঠিক মাঝখানে ঢোকানো হলো। বড় করে কাটতে হলো না!',tgt:1,f(){tw(-120,0,1300,setP);}},
+ {m:'প্রোবের মাথা দিয়ে <b>আর্গন গ্যাস 🧊</b> ছাড়া হলো। মাত্র <b>১২ সেকেন্ডে</b> তাপমাত্রা নেমে গেলো <b>−১৬৫°সে</b> এ! টিউমার ঘিরে বরফের বল তৈরি হচ্ছে।',p:0,f(){freeze(1);}},
+ {m:'কোষের ভিতরের পানি জমে বরফ হয়ে গেলো ❄️। এত ঠান্ডায় <b>রক্ত ও অক্সিজেন চলাচল বন্ধ</b>, তাই কোষগুলো আর খাবার পাচ্ছে না।',p:0,ice:1,f(){cells('fz');$('vein').classList.add('stop');$('cells').querySelectorAll('.cell').forEach((c,i)=>c.animate([{opacity:.3},{opacity:1}],{duration:500,delay:i*90}));}},
+ {m:'এবার <b>হিলিয়াম গ্যাস 🔥</b> দিয়ে তাপমাত্রা তোলা হলো <b>২০° থেকে ৪০°সে</b> এ। বরফ গলার সময় কোষগুলো ফেটে <b>ধ্বংস</b> হয়ে গেলো (ধূসর)।',p:0,ice:1,f(){cells('fz');$('vein').classList.add('stop');flow('red');thaw(1);}},
+ {m:'নিশ্চিত হতে সাধারণত <b>দুই চক্র</b> জমানো-গলানো হয়। পুরো টিউমার আর চারপাশের ৫–১০ মিলিমিটার টিস্যু বরফে ঢাকা না পড়া পর্যন্ত চলে।',p:0,dead:1,f(){$('cyc').textContent='চক্র ২ / ২';freeze(.7);Q.later(2000,()=>{flow('red');thaw(.7);});}},
+ {m:'প্রোব বের করা হলো। মৃত কোষ শরীর নিজেই সরিয়ে ফেলে। <b>ছোট কাটা, কম রক্তপাত, কম ব্যথা, দ্রুত আরোগ্য, খরচও কম</b>!',dead:1,f(){setP(0);tw(0,-120,1000,setP);Q.later(900,()=>{$('tum').style.opacity=.25;$('cells').style.opacity=.2;$('vein').classList.remove('stop');});
+   ['a','b','c','d'].forEach((k,i)=>Q.later(800+i*500,()=>parts(k,['a','b','c','d'].slice(0,i))));Q.later(2900,()=>parts('',['a','b','c','d']));}}];
+function render(k){const s=S[k];Q.bump();sv.querySelectorAll('.pk').forEach(e=>e.remove());gas('');parts('',[]);
+  setT(37);setI(s.ice?52:0);if(s.ice)setT(-165);setP(s.p===0?0:-120);cells(s.dead?'dead':'');$('vein').classList.toggle('stop',!!s.dead);
+  $('tgt').setAttribute('class',s.tgt||s.p===0?'show':'hide');$('scan').setAttribute('class','scan hide');$('cyc').textContent=s.p===0&&k>2&&k<6?'চক্র ১ / ২':'';
+  $('tum').style.opacity=1;$('cells').style.opacity=1;s.f();say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+var player=IM.player({count:()=>S.length,show:render,interval:4200,swipe:$('sv')});
+const X={tum:{t:'🟣 টিউমার',d:'রোগাক্রান্ত অস্বাভাবিক কোষের দলা। এটাকেই ধ্বংস করতে হবে।'},tis:{t:'সুস্থ টিস্যু',d:'আশেপাশের সুস্থ অংশ। চিকিৎসক বরফের বলের আকার নিয়ন্ত্রণ করেন যাতে সুস্থ টিস্যুর ক্ষতি কম হয়।'},skin:{t:'ত্বক',d:'প্রোব ঢোকাতে ত্বকে শুধু ছোট্ট একটা ছিদ্র লাগে।'},vein:{t:'🩸 রক্তনালি',d:'কোষে রক্ত ও অক্সিজেন পৌঁছায়। −১৬৫°সে এ রক্ত চলাচল বন্ধ হয়ে যায়।'},probe:{t:'💉 ক্রায়োপ্রোব',d:'সুচের মতো সরু নল। এর মাথা দিয়ে খুব ঠান্ডা বা গরম গ্যাস ছাড়া হয়।'},th:{t:'🌡️ তাপমাত্রা',d:'জমানোর সময় −১২০° থেকে −১৬৫°সে, গলানোর সময় ২০° থেকে ৪০°সে।'},
+ a:{t:'✂️ ছোট কাটা',d:'বড় করে কাটতে হয় না, শুধু প্রোব ঢোকানোর ছিদ্র।'},b:{t:'🩸 রক্তপাত কম',d:'ঠান্ডায় রক্তনালি সংকুচিত হয়, রক্তপাত খুব কম।'},c:{t:'⚡ দ্রুত আরোগ্য',d:'হাসপাতালে কম সময় থাকতে হয়, ব্যথাও কম।'},d:{t:'💰 খরচ কম',d:'সাধারণ অপারেশনের চেয়ে খরচ কম, দরকার হলে আবার করা যায়।'}};
+IM.tapx(sv,X);IM.tapx($('parts'),X);
+IM.compare($('cx0'),['','সাধারণ সার্জারি','ক্রায়োসার্জারি'],[
+ ['কীভাবে','ছুরি দিয়ে কেটে বাদ','ঠান্ডায় জমিয়ে ধ্বংস','ক্রায়োসার্জারিতে টিস্যু শরীরের ভিতরেই মরে যায়।'],
+ ['কাটা','বড়','খুব ছোট (প্রোবের ছিদ্র)','তাই দাগ ও ব্যথা কম।'],
+ ['রক্তপাত','বেশি','খুবই কম','ঠান্ডা রক্তনালি বন্ধ করে দেয়।'],
+ ['হাসপাতালে থাকা','অনেক দিন','কম সময়','দ্রুত আরোগ্য হয়।'],
+ ['সীমাবদ্ধতা','বড় টিউমারেও চলে','বড় বা গভীর টিউমারে সবসময় নয়','পাশের সুস্থ টিস্যু বা স্নায়ুর ক্ষতিও হতে পারে।']]);
+IM.compare($('cx1'),['এজেন্ট','কাজ'],[
+ ['💧 তরল নাইট্রোজেন','সবচেয়ে বেশি ব্যবহৃত (−১৯৬°সে)','বোর্ড MCQ তে সবচেয়ে বেশি আসে।'],
+ ['🧊 আর্গন','দ্রুত ঠান্ডা করে (−১২০° থেকে −১৬৫°সে)','১২ সেকেন্ডের মধ্যে টিস্যু জমিয়ে দেয়।'],
+ ['🔥 হিলিয়াম','আবার গরম করে (২০°–৪০°সে)','বরফ গলার সময় কোষ ফেটে ধ্বংস হয়।'],
+ ['অন্যান্য','নাইট্রাস অক্সাইড, কার্বন ডাই-অক্সাইড','ইথাইল ক্লোরাইড, ফ্লোরিনেটেড হাইড্রোকার্বনও ব্যবহার হয়।']]);
+IM.mcq($('quiz6'),[
+ {q:'ক্রায়োসার্জারিতে সবচেয়ে বেশি ব্যবহৃত এজেন্ট—',o:['অক্সিজেন','তরল নাইট্রোজেন','হাইড্রোজেন','ক্লোরিন'],a:1,w:'তরল নাইট্রোজেন (প্রায় −১৯৬°সে)।'},
+ {q:'Cryo শব্দের অর্থ—',o:['খুব গরম','খুব শীতল','খুব ছোট','খুব দ্রুত'],a:1,w:'গ্রিক শব্দ Cryo মানে বরফশীতল।'},
+ {q:'টিস্যু আবার গরম করতে কোন গ্যাস ব্যবহার হয়?',o:['আর্গন','হিলিয়াম','নাইট্রোজেন','কার্বন ডাই-অক্সাইড'],a:1,w:'হিলিয়াম দিয়ে ২০°–৪০°সে এ তোলা হয়।'},
+ {q:'টিউমারের অবস্থান নির্ণয়ে কোনটি ব্যবহার হয় না?',o:['আল্ট্রাসাউন্ড','সিটি স্ক্যান','এমআরআই','বায়োমেট্রিক্স'],a:3,w:'বায়োমেট্রিক্স ব্যক্তি শনাক্তকরণের প্রযুক্তি।'}]);
+player.reset();
+</script>

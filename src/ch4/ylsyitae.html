@@ -1,0 +1,100 @@
+---
+ch: ৪
+kit: 1
+title: ওয়েব পেজ কীভাবে আসে
+eyebrow: ৪.১ ওয়েব ডিজাইনের ধারণা
+h1: URL লিখলে কী হয়?
+lead: ব্রাউজারে ঠিকানা লিখলে পেজটা কীভাবে তোমার ফোনে আসে, ধাপে ধাপে দেখো। নিচের ▶ চাপো বা সোয়াইপ করো।
+---
+<style>
+.tokl{font-family:var(--f-mono);font-size:11px;font-weight:700;fill:var(--ink)}
+.tokbg{fill:var(--signal-soft);stroke:var(--signal);stroke-width:1.5}
+.lbl2{font-size:12px;fill:var(--muted);text-anchor:middle}
+.ttl{font-weight:700;font-size:13px;text-anchor:middle}
+.urlchips{display:flex;flex-wrap:wrap;gap:4px;font-family:var(--f-mono);font-size:1rem;font-weight:700}
+.urlchips span{padding:6px 8px;border-radius:8px;border:2px solid var(--line);background:var(--panel);cursor:pointer}
+.urlchips span.p{border-color:#7C3AED;color:#7C3AED}.urlchips span.d{border-color:var(--accent);color:var(--accent)}.urlchips span.t{border-color:var(--ok);color:var(--ok)}.urlchips span.h{border-color:var(--signal);color:#B26E00}
+.ipbox{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;font-family:var(--f-mono);font-weight:800}
+.ipbox span{padding:6px 10px;border-radius:8px;background:var(--accent-soft);color:var(--accent);cursor:pointer}
+.ipbox small{display:block;font-size:.7rem;color:var(--muted);text-align:center;font-weight:600}
+</style>
+  <div class="chips" id="sites"></div>
+  <section class="card" id="main">
+    <svg class="scene" id="sc" viewBox="0 0 360 230"></svg>
+    <div class="browser"><div class="bar"><b></b><b></b><span id="url"></span></div>
+      <div class="page" id="page"><span style="color:#888">পেজ এখনো আসেনি…</span></div></div>
+  </section>
+  <section class="card">
+    <h2>URL এর অংশগুলো</h2>
+    <p class="hint">প্রতিটি অংশে আঙুল দাও।</p>
+    <div class="urlchips" id="parts"></div>
+  </section>
+  <section class="card">
+    <h2>আইপি অ্যাড্রেস (IPv4)</h2>
+    <div class="ipbox" id="ip"></div>
+    <p class="hint">৪টি অংশ, প্রতিটি ৮ বিট (০ থেকে ২৫৫)। মোট ৩২ বিট। প্রতিটি অংশে আঙুল দিলে বাইনারি দেখাবে।</p>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>DNS</b> (Domain Name System) ডোমেইন নেইমকে আইপি অ্যাড্রেসে রূপান্তর করে। মানুষ নাম মনে রাখে, কম্পিউটার নম্বর চেনে।</li>
+      <li><b>ওয়েব সার্ভার</b> ওয়েবসাইটের ফাইল জমা রাখে, আর <b>ব্রাউজার</b> (ক্লায়েন্ট) সেটা চেয়ে নেয়। এটাই ক্লায়েন্ট-সার্ভার পদ্ধতি।</li>
+      <li><b>স্ট্যাটিক</b> সাইটে সবার জন্য একই পেজ। <b>ডাইনামিক</b> সাইটে সার্ভার প্রতিবার ডেটাবেজ থেকে নতুন পেজ বানায় (যেমন ফেসবুক)।</li>
+    </ul>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
+<script>
+const {$,say,bn}=IM;
+const SITES=[{d:'www.example.com',ip:'93.184.216.34',path:'/index.html',title:'Example Domain'},{d:'ictmaniac.github.io',ip:'185.199.108.153',path:'/index.html',title:'ICT Maniac'}];
+let site=SITES[0];
+const N={ph:{x:62,y:140,w:96,h:64,t:'তোমার ব্রাউজার',s:'ক্লায়েন্ট'},dns:{x:282,y:46,w:116,h:56,t:'DNS সার্ভার',s:'নাম → IP'},web:{x:282,y:178,w:116,h:60,t:'ওয়েব সার্ভার',s:''}};
+const X={ph:{t:'ব্রাউজার (ক্লায়েন্ট)',d:'ব্রাউজার হলো ক্লায়েন্ট। সে সার্ভারের কাছে পেজ চায় আর পেজটা সুন্দর করে দেখায়। যেমন Chrome, Firefox।'},
+ dns:{t:'DNS সার্ভার',d:'DNS সার্ভার একটা বড় ফোনবুকের মতো। ডোমেইন নেইম দিলে তার আইপি অ্যাড্রেস বলে দেয়।'},
+ web:{t:'ওয়েব সার্ভার',d:'যে কম্পিউটারে ওয়েবসাইটের ফাইল রাখা থাকে। সারাদিন চালু থাকে আর অনুরোধ এলে ফাইল পাঠায়।'}};
+function scene(){const s=$('sc'),c=(id)=>[N[id].x,N[id].y];
+  const node=id=>{const n=N[id];return `<g class="node tapme" id="n-${id}" data-x="${id}"><rect x="${n.x-n.w/2}" y="${n.y-n.h/2}" width="${n.w}" height="${n.h}" rx="12"/><text class="ttl" x="${n.x}" y="${n.y-4}">${n.t}</text><text class="lbl2 mono" x="${n.x}" y="${n.y+14}">${id==='web'?site.ip:n.s}</text></g>`;};
+  s.innerHTML=`<path class="edge" id="e-dns" d="M${c('ph')} L${c('dns')}"/><path class="edge" id="e-web" d="M${c('ph')} L${c('web')}"/>
+   <text class="lbl2" x="150" y="80">১. নাম দিয়ে IP চাওয়া</text><text class="lbl2" x="150" y="222">২. IP তে পেজ চাওয়া</text>
+   ${['ph','dns','web'].map(node).join('')}
+   <g id="tok" transform="translate(${c('ph')})" opacity="0"><rect class="tokbg" x="-4" y="-12" width="8" height="24" rx="8" id="tokr"/><text class="tokl" id="tokt" x="0" y="4" text-anchor="middle"></text></g>`;}
+IM.tapx($('sc'),X);
+const S=[
+ {at:'ph',m:()=>`তুমি ব্রাউজারে লিখলে <code>https://${site.d}</code>। কিন্তু কম্পিউটার নাম বোঝে না, নম্বর (IP) বোঝে।`},
+ {at:'dns',from:'ph',tok:()=>`${site.d} এর IP?`,e:'dns',m:()=>`ব্রাউজার DNS সার্ভারকে জিজ্ঞেস করছে: <code>${site.d}</code> এর আইপি অ্যাড্রেস কত?`},
+ {at:'ph',from:'dns',tok:()=>site.ip,e:'dns',m:()=>`DNS উত্তর দিলো: আইপি হলো <code>${site.ip}</code>।`},
+ {at:'web',from:'ph',tok:()=>'GET '+site.path,e:'web',m:()=>`ব্রাউজার এবার <code>${site.ip}</code> ঠিকানার ওয়েব সার্ভারের কাছে পেজটা চাইলো (HTTP request)।`},
+ {at:'web',tok:()=>'index.html',m:()=>'ওয়েব সার্ভার তার ভিতরে রাখা <code>index.html</code> ফাইলটা খুঁজে বের করলো।'},
+ {at:'ph',from:'web',tok:()=>'HTML ফাইল',e:'web',m:()=>'সার্ভার HTML ফাইলটা ব্রাউজারে পাঠিয়ে দিলো (HTTP response)।'},
+ {at:'ph',page:1,m:()=>'ব্রাউজার HTML পড়ে সুন্দর পেজ বানিয়ে দেখালো। পুরো কাজটা হয় চোখের পলকে!'}];
+function render(k,prev){const s=S[k];
+  say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m());
+  $('url').textContent='https://'+site.d;
+  ['ph','dns','web'].forEach(id=>$('n-'+id).classList.toggle('on',id===s.at));
+  ['dns','web'].forEach(e=>$('e-'+e).classList.toggle('on',s.e===e));
+  const tok=$('tok'),txt=s.tok?s.tok():'';
+  tok.setAttribute('opacity',txt?1:0);$('tokt').textContent=txt;
+  const w=Math.max(30,txt.length*7+14);$('tokr').setAttribute('x',-w/2);$('tokr').setAttribute('width',w);
+  const P=id=>[N[id].x,N[id].y+(id==='ph'?-44:id==='dns'?40:-42)];
+  if(s.from&&prev!==null)IM.moveAlong(tok,[P(s.from),P(s.at)],900/player.speed);else tok.setAttribute('transform',`translate(${P(s.at)})`);
+  $('page').innerHTML=s.page?`<h1 style="font-size:1.4rem;margin:0 0 6px">${site.title}</h1><p style="margin:0">এই পেজটি ${site.d} সার্ভার থেকে এসেছে।</p>`:'<span style="color:#888">পেজ এখনো আসেনি…</span>';
+}
+const player=IM.player({count:()=>S.length,show:render,swipe:$('main'),interval:1700});
+function parts(){const tld=site.d.split('.').pop();
+  const P=[['p','https://','প্রোটোকল','https মানে নিরাপদ (Secure) উপায়ে ডেটা আসা-যাওয়া। http হলে নিরাপত্তা কম।'],
+    ['h',site.d.replace('.'+tld,''),'ডোমেইন নেইম','ওয়েবসাইটের নাম। মানুষের মনে রাখার সুবিধার জন্য নম্বরের বদলে নাম ব্যবহার হয়।'],
+    ['t','.'+tld,'টপ লেভেল ডোমেইন','.com (বাণিজ্যিক), .edu (শিক্ষা), .gov (সরকারি), .org (সংগঠন), .bd (বাংলাদেশ) ইত্যাদি।'],
+    ['d',site.path,'পাথ / ফাইলের নাম','সার্ভারের ভিতরে কোন ফাইলটা চাই। কিছু না লিখলে সাধারণত index.html দেয়।']];
+  $('parts').innerHTML=P.map(p=>`<span class="${p[0]}" data-x="${p[0]}">${p[1]}</span>`).join('');
+  Object.keys(DP).forEach(k=>{DP[k]=null;});P.forEach(p=>DP[p[0]]={t:p[2],d:`<code>${p[1]}</code> = ${p[2]}। ${p[3]}`});
+  const ip=site.ip.split('.');
+  ip.forEach((o,i)=>DI['o'+i]={t:`অংশ ${bn(i+1)}`,d:`${o} = বাইনারিতে <code>${(+o).toString(2).padStart(8,'0')}</code> (৮ বিট)। প্রতিটি অংশ ০ থেকে ২৫৫ এর মধ্যে হয়।`});
+  $('ip').innerHTML=ip.map((o,i)=>`<span data-x="o${i}">${o}<small>${(+o).toString(2).padStart(8,'0')}</small></span>`).join('<b style="align-self:center">.</b>');}
+const DP={},DI={};IM.tapx($('parts'),DP);IM.tapx($('ip'),DI);
+$('sites').innerHTML=SITES.map((s,i)=>`<button class="chip" data-i="${i}">${s.d}</button>`).join('');
+$('sites').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{site=SITES[+b.dataset.i];scene();parts();player.reset();});
+scene();parts();player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "ডোমেইন নেইমকে আইপি অ্যাড্রেসে রূপান্তর করে—", "o": ["HTTP", "DNS", "FTP", "ISP"], "a": 1, "w": "DNS নামকে নম্বরে (আইপি) বদলায়।"}, {"q": "ওয়েবসাইটের ফাইল জমা থাকে কোথায়?", "o": ["ব্রাউজারে", "ওয়েব সার্ভারে", "রাউটারে", "DNS এ"], "a": 1, "w": "ব্রাউজার সার্ভারের কাছে পেজ চায়।"}, {"q": "সবার জন্য একই পেজ দেখায় যে সাইট—", "o": ["স্ট্যাটিক", "ডাইনামিক", "হাইব্রিড", "নেটওয়ার্ক"], "a": 0, "w": "ডাইনামিক সাইটে ডেটাবেজ থেকে প্রতিবার নতুন পেজ তৈরি হয়।"}, {"q": "URL এর https:// অংশটা কী?", "o": ["ডোমেইন", "প্রোটোকল", "ফাইলের নাম", "পোর্ট"], "a": 1, "w": "কোন নিয়মে ডেটা আসবে সেটা প্রোটোকল।"}]);
+</script>

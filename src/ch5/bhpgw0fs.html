@@ -1,0 +1,83 @@
+---
+ch: ৫
+kit: 1
+title: if else ও switch
+eyebrow: ৫.২.১১ কন্ট্রোল স্টেটমেন্ট: শর্তযুক্ত
+h1: প্রোগ্রাম কোন পথে যাবে?
+lead: মান বদলাও, তারপর ▶ চাপো। প্রতিটি শর্ত সত্য না মিথ্যা দেখাবে, আর প্রোগ্রাম কোন লাইনে ঢুকলো তা জ্বলে উঠবে।
+---
+<style>
+.inrow{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
+.inrow input[type=range]{min-height:auto;padding:0;accent-color:var(--accent)}
+.inrow b{font-family:var(--f-mono);font-size:1.5rem;min-width:48px;text-align:center;color:var(--accent)}
+.cv .ln .bd{margin-left:8px;font-family:var(--f-body);font-size:.78rem;font-weight:800;padding:0 6px;border-radius:6px}
+.cv .ln .bd.t{background:color-mix(in srgb,var(--ok) 20%,transparent);color:var(--ok)}
+.cv .ln .bd.f{background:var(--bad-soft);color:var(--bad)}
+.cv .ln.skip{opacity:.35}
+.cv .ln.go{background:color-mix(in srgb,var(--ok) 16%,transparent)}
+.road{display:flex;align-items:center;gap:4px;flex-wrap:wrap;justify-content:center;font-family:var(--f-mono);font-weight:800;font-size:.85rem}
+.road span{padding:4px 8px;border-radius:999px;background:var(--board);color:var(--muted)}
+.road span.f{background:var(--bad-soft);color:var(--bad);text-decoration:line-through}
+.road span.t{background:var(--ok);color:var(--panel);animation:pop .4s ease-out}
+.road i{font-style:normal;color:var(--wire-off)}
+</style>
+  <div class="tabs" id="tabs">
+    <button class="tab m" data-k="ie" aria-selected="true">if…else</button>
+    <button class="tab m" data-k="lad" aria-selected="false">else if</button>
+    <button class="tab m" data-k="sw" aria-selected="false">switch</button>
+  </div>
+  <section class="card" id="main">
+    <div class="inrow"><span id="vl"></span><input type="range" id="v"><b id="vv"></b></div>
+    <pre id="code"></pre>
+    <div class="road" id="road"></div>
+    <div class="console"><small>আউটপুট</small><span id="out"></span></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>if…else:</b> দুটি পথ। শর্ত সত্য হলে if এর অংশ, মিথ্যা হলে else এর অংশ।</li>
+      <li><b>else if ল্যাডার:</b> উপর থেকে একটা একটা শর্ত দেখে। প্রথম যে শর্ত সত্য, শুধু সেটাই চলে, বাকিগুলো আর দেখা হয় না।</li>
+      <li><b>switch:</b> চলকের মান মিলিয়ে সরাসরি সেই case এ চলে যায়। <b>break</b> না দিলে পরের case গুলোও চলে যায়! কোনোটা না মিললে <b>default</b>।</li>
+      <li>switch এ শুধু int বা char মান চলে, float বা শর্ত (&gt;, &lt;) চলে না।</li>
+    </ul>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
+<script>
+const {$,say,bn}=IM;
+const G=[[80,'A+'],[70,'A'],[60,'A-'],[50,'B'],[40,'C'],[33,'D']];
+const DAY=['Saturday','Sunday','Monday'];
+const T={
+ ie:{lab:'age',min:5,max:40,def:15,lines:v=>['if (age >= 18)','    printf("Can vote");','else','    printf("Cannot vote");'],
+  steps(v){const ok=v>=18;return [{l:-1,m:`চলক <b>age</b> এ মান আছে <b>${v}</b>। স্লাইডার টেনে মান বদলে দেখো, পথও বদলাবে।`},{l:0,m:`প্রোগ্রাম প্রথমে <b>if</b> লাইনে এলো। এখানে একটা প্রশ্ন: age কি ১৮ বা তার বেশি?`},{l:0,b:[[0,ok]],m:`শর্ত দেখো: ${v} >= 18 ? <span class="${ok?'t':'f'}">${ok?'সত্য':'মিথ্যা'}</span>`},
+   {l:ok?1:3,b:[[0,ok]],go:ok?1:3,skip:ok?[2,3]:[1],out:ok?'Can vote':'Cannot vote',m:ok?'শর্ত সত্য, তাই if এর নিচের লাইন চললো। else অংশ বাদ।':'শর্ত মিথ্যা, তাই if এর লাইন বাদ দিয়ে else এর লাইন চললো।'},{l:ok?1:3,b:[[0,ok]],go:ok?1:3,skip:ok?[2,3]:[1],out:ok?'Can vote':'Cannot vote',m:`আউটপুট স্ক্রিনে এলো: <b>${ok?'Can vote':'Cannot vote'}</b>। দুই পথের মধ্যে <b>শুধু একটা</b> পথই চলে, কখনো দুটো একসাথে না।`}];}},
+ lad:{lab:'marks',min:0,max:100,def:65,lines:v=>[...G.map((g,i)=>`${i?'else if':'if'} (m >= ${g[0]}) printf("${g[1]}");`),'else printf("F");'],
+  steps(v){const S=[],b=[];let hit=-1;for(let i=0;i<G.length;i++){const ok=v>=G[i][0];b.push([i,ok]);
+    S.push({l:i,b:b.slice(),m:`শর্ত ${bn(i+1)}: ${v} >= ${G[i][0]} ? <span class="${ok?'t':'f'}">${ok?'সত্য':'মিথ্যা'}</span>${ok?' পেয়ে গেছি!':', পরের শর্তে যাও।'}`});if(ok){hit=i;break;}}
+   const g=hit<0?'F':G[hit][1],line=hit<0?G.length:hit;
+   S.push({l:line,b:b.slice(),go:line,skip:[...Array(G.length+1).keys()].filter(i=>i>line),out:'Grade: '+g,m:hit<0?'কোনো শর্তই সত্য হয়নি, তাই শেষের else চললো: F':`তাই গ্রেড ${g}। এর নিচের শর্তগুলো আর পরীক্ষাই করা হলো না।`});return S;}},
+ sw:{lab:'day',min:1,max:5,def:2,lines:v=>['switch (day)','{',...DAY.map((d,i)=>`    case ${i+1}: printf("${d}"); break;`),'    default: printf("Invalid");','}'],
+  steps(v){const i=v<=3?v-1:-1,line=i<0?5:i+2;return [{l:0,m:`switch দেখলো day এর মান ${v}।`},
+   {l:line,go:line,m:i<0?`${v} এর সাথে কোনো case মেলেনি, তাই সরাসরি default এ গেলো।`:`সরাসরি <code>case ${v}:</code> এ লাফ দিলো। আগের case গুলো একটা একটা করে দেখতে হয়নি।`,out:i<0?'Invalid':DAY[i],road:1},
+   {l:line,go:line,m:i<0?'default এর পরে switch শেষ।':'<code>break;</code> পেয়ে switch থেকে বের হয়ে গেলো। break না থাকলে নিচের case গুলোও চলে যেতো!',out:i<0?'Invalid':DAY[i],road:1}];}}};
+let K='ie',V=15,cv,S;
+function build(){const t=T[K];$('vl').textContent=t.lab;const r=$('v');r.min=t.min;r.max=t.max;r.value=V;$('vv').textContent=V;
+  cv=IM.codeView($('code'),t.lines(V).map(IM.cHL),i=>say(`লাইন ${bn(i+1)}`,'এই লাইনটা '+(K==='lad'&&i<G.length?`চলবে যদি আগের সব শর্ত মিথ্যা আর m >= ${G[i][0]} সত্য হয়।`:'উপরের শর্ত অনুযায়ী চলবে বা বাদ যাবে।'),true));
+  S=t.steps(V);}
+function render(k){const s=S[k];cv.on(s.l);
+  cv.lines.forEach((e,i)=>{e.classList.toggle('go',s.go===i);e.classList.toggle('skip',!!(s.skip&&s.skip.includes(i)));const old=e.querySelector('.bd');if(old)old.remove();});
+  (s.b||[]).forEach(([i,ok])=>cv.lines[i].lastElementChild.insertAdjacentHTML('beforeend',`<span class="bd ${ok?'t':'f'}">${ok?'✓':'✗'}</span>`));
+  // road of conditions
+  if(K==='lad'){const b=s.b||[];$('road').innerHTML=[...G.map((g,i)=>{const x=b.find(y=>y[0]===i);return `<span class="${x?(x[1]?'t':'f'):''}">≥${g[0]}</span>`;}),`<span class="${s.go===G.length?'t':''}">F</span>`].join('<i>→</i>');}
+  else if(K==='sw'){$('road').innerHTML=[...DAY.map((d,i)=>`<span class="${s.road&&V===i+1?'t':''}">case ${i+1}</span>`),`<span class="${s.road&&V>3?'t':''}">default</span>`].join('<i>·</i>');}
+  else $('road').innerHTML=`<span class="${s.b?(s.b[0][1]?'t':'f'):''}">if</span><i>/</i><span class="${s.b&&!s.b[0][1]&&s.go?'t':''}">else</span>`;
+  $('out').textContent=s.out||'';
+  say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+const player=IM.player({count:()=>S.length,show:render,swipe:$('code'),interval:1600});
+$('v').oninput=()=>{V=+$('v').value;build();player.reset();};
+IM.tabs($('tabs'),k=>{K=k;V=T[k].def;build();player.reset();});
+build();player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "if…else এ শর্ত মিথ্যা হলে চলে—", "o": ["if অংশ", "else অংশ", "দুটোই", "কোনোটিই না"], "a": 1, "w": "সত্য হলে if, মিথ্যা হলে else।"}, {"q": "else if ল্যাডারে কয়টি অংশ চলে?", "o": ["সবগুলো", "প্রথম যে শর্ত সত্য শুধু সেটা", "শেষেরটা", "দুটো"], "a": 1, "w": "একটা পেলেই বাকি সব বাদ।"}, {"q": "switch এ break না দিলে—", "o": ["ভুল হয়", "পরের case গুলোও চলে", "প্রোগ্রাম থামে", "default চলে না"], "a": 1, "w": "একে fall-through বলে।"}, {"q": "switch এর case এ কোনটি চলে না?", "o": ["int মান", "char মান", "float মান", "ধ্রুবক"], "a": 2, "w": "শুধু int বা char।"}]);
+</script>

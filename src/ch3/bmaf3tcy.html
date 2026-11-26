@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>মৌলিক গেট ল্যাব · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=10">
+<style>
+:root{
+  --board:#F3F6FC;--panel:#FFFFFF;--ink:#14213D;--muted:#5A6785;--line:#D5DEEE;
+  --wire-off:#A9B6CF;--signal:#E9A23B;--signal-soft:#FDEBC8;--accent:#3B82F6;--accent-soft:#E2EBFB;
+  --ok:#1F8A4C;--bad:#C2412D;
+  --f-display:"Baloo Da 2","Hind Siliguri","Noto Sans Bengali",sans-serif;
+  --f-body:"Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --board:#0D1526;--panel:#141F36;--ink:#E4EAF6;--muted:#93A1BF;--line:#26324D;
+  --wire-off:#3A4A6B;--signal:#F2B24C;--signal-soft:#4A3610;--accent:#6EA0FF;--accent-soft:#1A2B52;
+  --ok:#4CC27E;--bad:#F07560;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --board:#0D1526;--panel:#141F36;--ink:#E4EAF6;--muted:#93A1BF;--line:#26324D;
+  --wire-off:#3A4A6B;--signal:#F2B24C;--signal-soft:#4A3610;--accent:#6EA0FF;--accent-soft:#1A2B52;
+  --ok:#4CC27E;--bad:#F07560;color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--board);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+h1,h2{font-family:var(--f-display);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:2rem;font-weight:800}
+h2{font-size:1.3rem;font-weight:700;color:var(--accent)}
+p{margin:0}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--f-display);font-weight:800;color:var(--accent);font-size:1.05rem}
+.brand i{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--accent);color:var(--panel);font-style:normal;font-size:.9rem}
+.eyebrow{font-size:.85rem;color:var(--muted);font-weight:600}
+.mono{font-family:var(--f-mono)}
+header{display:flex;flex-direction:column;gap:4px}
+.lead{color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
+
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tab{font:inherit;font-family:var(--f-mono);font-weight:700;font-size:1.1rem;min-height:48px;border-radius:12px;border:2px solid var(--line);
+  background:var(--panel);color:var(--muted);cursor:pointer}
+.tab[aria-selected="true"]{border-color:var(--accent);background:var(--accent);color:var(--panel)}
+.tab:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 8px 14px}
+svg.circuit{display:block;width:100%;height:auto}
+.wire{fill:none;stroke:var(--wire-off);stroke-width:5;stroke-linecap:round;transition:stroke .25s}
+.wire.on{stroke:var(--signal)}
+.flow{fill:none;stroke:var(--panel);stroke-width:1.6;stroke-dasharray:4 12;stroke-linecap:round;opacity:0}
+.flow.on{opacity:.9;animation:flow .6s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-16}}
+.gate-body{fill:var(--accent-soft);stroke:var(--accent);stroke-width:3}
+.gate-label{font-family:var(--f-mono);font-weight:700;fill:var(--accent);font-size:15px}
+.pin{fill:var(--panel);stroke:var(--wire-off);stroke-width:3;transition:all .25s}
+.pin.on{fill:var(--signal);stroke:var(--signal)}
+.bit{font-family:var(--f-mono);font-weight:700;font-size:16px;fill:var(--ink)}
+.lbl{font-family:var(--f-mono);font-weight:700;font-size:18px;fill:var(--ink)}
+.sw{cursor:pointer}
+.sw rect{fill:var(--panel);stroke:var(--line);stroke-width:2}
+.sw:focus{outline:none}
+.sw:focus-visible rect{stroke:var(--accent);stroke-width:3}
+.bulb-glass{fill:var(--panel);stroke:var(--wire-off);stroke-width:3;transition:all .3s}
+.bulb.on .bulb-glass{fill:var(--signal);stroke:var(--signal)}
+.bulb-halo{fill:var(--signal);opacity:0;transition:opacity .3s}
+.bulb.on .bulb-halo{opacity:.28}
+.bulb-base{fill:var(--wire-off)}
+[hidden]{display:none!important}
+
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.controls.one{grid-template-columns:1fr}
+.toggle{font:inherit;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:12px;
+  border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;min-height:60px}
+.toggle:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.toggle .name{font-weight:600}
+.toggle .val{font-family:var(--f-mono);font-weight:700;font-size:1.4rem;width:44px;height:44px;border-radius:10px;display:grid;place-items:center;
+  background:var(--board);color:var(--muted);transition:all .2s}
+.toggle[aria-pressed="true"]{border-color:var(--signal)}
+.toggle[aria-pressed="true"] .val{background:var(--signal);color:#1A1200}
+
+.readout{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 14px;font-size:1.05rem}
+.expr{font-family:var(--f-mono);font-weight:700;font-size:1.35rem}
+.expr .v{color:var(--signal)}
+.status{font-weight:600}
+
+.tt-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{text-align:center;padding:9px 6px;border-bottom:1px solid var(--line)}
+th{font-family:var(--f-mono);font-weight:700;color:var(--muted);font-size:.95rem}
+td{font-family:var(--f-mono);font-size:1.15rem;font-weight:500}
+tbody tr{cursor:pointer;transition:background .2s}
+tbody tr:hover{background:var(--board)}
+tbody tr.active{background:var(--signal-soft)}
+tbody tr.active td{font-weight:700}
+td.y{color:var(--accent);font-weight:700}
+.hint{font-size:.85rem;color:var(--muted)}
+
+ul.points{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+.analogy{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center}
+@media (max-width:420px){.analogy{grid-template-columns:1fr}.analogy svg{max-width:180px;margin:0 auto}}
+.analogy svg{width:100%;height:auto}
+.analogy .wr{fill:none;stroke:var(--wire-off);stroke-width:3;stroke-linecap:round}
+
+.q-ask{font-size:1.05rem}
+.q-ask .mono{font-weight:700;color:var(--accent)}
+.q-btns{display:flex;gap:12px}
+.q-btns button,.btn{font:inherit;font-weight:600;border-radius:10px;border:2px solid var(--accent);background:var(--panel);color:var(--accent);
+  padding:10px 18px;cursor:pointer;min-height:48px}
+.q-btns button{font-family:var(--f-mono);font-size:1.3rem;flex:1}
+.q-btns button:disabled{opacity:.45;cursor:default}
+.btn.primary{background:var(--accent);color:var(--panel)}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.feedback{font-weight:600;min-height:1.6em}
+.feedback.ok{color:var(--ok)}.feedback.bad{color:var(--bad)}
+.q-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.score{font-family:var(--f-mono);color:var(--muted)}
+footer{font-size:.85rem;color:var(--muted);text-align:center}
+@media (prefers-reduced-motion:reduce){.flow.on{animation:none}*{transition:none!important}}
+</style>
+<style>.sndb.float{position:fixed;right:12px;bottom:14px;z-index:9;width:48px;height:48px;border-radius:999px;background:#fff;border:2px solid #A9C8FA;box-shadow:0 4px 14px -6px rgba(0,0,0,.35);font-size:1.1rem;cursor:pointer}.sndb[aria-pressed="false"]{opacity:.65}</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">অধ্যায় ৩ · ৩.২.৫ মৌলিক গেট</span>
+    <h1 id="g-title">AND গেট</h1>
+    <p class="lead" id="g-lead"></p>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="গেট বেছে নাও">
+    <button class="tab" role="tab" data-g="AND">AND</button>
+    <button class="tab" role="tab" data-g="OR">OR</button>
+    <button class="tab" role="tab" data-g="NOT">NOT</button>
+  </div>
+
+  <section class="stage" aria-label="সার্কিট">
+    <svg class="circuit" viewBox="0 0 400 172" role="img" aria-labelledby="g-title">
+      <g class="sw" id="swA" tabindex="0" role="button" aria-label="ইনপুট A বদলাও">
+        <rect x="8" y="52" width="48" height="46" rx="10"/>
+        <text class="lbl" x="18" y="81">A</text><text class="bit" id="bitA" x="38" y="81">0</text>
+      </g>
+      <g class="sw" id="swB" tabindex="0" role="button" aria-label="ইনপুট B বদলাও">
+        <rect x="8" y="112" width="48" height="46" rx="10"/>
+        <text class="lbl" x="18" y="141">B</text><text class="bit" id="bitB" x="38" y="141">0</text>
+      </g>
+      <path class="wire" id="wA"/><path class="flow" id="fA"/>
+      <path class="wire" id="wB"/><path class="flow" id="fB"/>
+      <path class="wire" id="wY"/><path class="flow" id="fY"/>
+      <g id="gate"></g>
+      <circle class="pin" id="pA" r="5"/><circle class="pin" id="pB" r="5"/>
+      <g class="bulb" id="bulb">
+        <circle class="bulb-halo" cx="352" cy="96" r="34"/>
+        <circle class="bulb-glass" cx="352" cy="96" r="20"/>
+        <rect class="bulb-base" x="343" y="114" width="18" height="12" rx="2"/>
+        <text class="lbl" x="343" y="160">Y</text><text class="bit" id="bitY" x="362" y="160">0</text>
+      </g>
+    </svg>
+  </section>
+
+  <div class="controls" id="controls">
+    <button class="toggle" id="tA" aria-pressed="false"><span class="name">সুইচ A</span><span class="val mono">0</span></button>
+    <button class="toggle" id="tB" aria-pressed="false"><span class="name">সুইচ B</span><span class="val mono">0</span></button>
+  </div>
+
+  <div class="card readout" aria-live="polite">
+    <span class="expr" id="exprLive"></span>
+    <span class="status" id="status"></span>
+  </div>
+
+  <section class="card">
+    <h2>সত্যক সারণি (Truth Table)</h2>
+    <div class="tt-wrap"><table id="tt"><thead></thead><tbody></tbody></table></div>
+    <p class="hint">যেকোনো সারিতে চাপ দিলে সার্কিট সেই ইনপুটে চলে যাবে।</p>
+  </section>
+
+  <section class="card">
+    <h2>সহজ কথায়</h2>
+    <p id="g-def"></p>
+    <div class="analogy" id="analogy"></div>
+    <ul class="points" id="g-points"></ul>
+  </section>
+
+  <section class="card">
+    <h2>আগে অনুমান করো</h2>
+    <p class="q-ask" id="qAsk"></p>
+    <div class="q-btns"><button id="q0">0</button><button id="q1">1</button></div>
+    <p class="feedback" id="qFb" aria-live="polite"></p>
+    <div class="q-foot">
+      <span class="score" id="qScore">স্কোর: 0/0</span>
+      <button class="btn primary" id="qNext">পরের প্রশ্ন</button>
+    </div>
+  </section>
+
+  <section class="card"><h2>নিজেকে যাচাই করো</h2><div id="mcq9"></div></section>
+<section class="card"><h2>মনে রাখো</h2><ul class="points"><li><b>AND:</b> সব ইনপুট 1 হলে আউটপুট 1 (Y = A·B)।</li><li><b>OR:</b> যেকোনো একটি ইনপুট 1 হলে আউটপুট 1 (Y = A + B)।</li><li><b>NOT:</b> ইনপুট উল্টে দেয় (Y = A')।</li></ul></section>
+<footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+
+<script src="../../a/im.js?v=10"></script>
+<script>
+const $ = id => document.getElementById(id);
+const SHAPES = {
+  AND:{d:'M150 46 H195 A50 50 0 0 1 195 146 H150 Z', inX:150, outX:245},
+  OR: {d:'M145 46 Q175 96 145 146 Q215 146 250 96 Q215 46 145 46 Z', inX:160, outX:250},
+  NOT:{d:'M155 56 L155 136 L225 96 Z', inX:155, outX:225, bubble:true, one:true},
+};
+const GATES = {
+  AND:{name:'AND গেট', fn:(a,b)=>a&b, expr:'A·B', op:'·', lead:'সুইচ A আর B চেপে দেখো, কখন বাতি জ্বলে।',
+    def:'AND গেটের <b>সবগুলো ইনপুট 1 হলেই</b> আউটপুট 1 হয়। যেকোনো একটি ইনপুট 0 হলেই আউটপুট 0। একে লজিক্যাল গুণ বলে, তাই লেখা হয় <span class="mono" style="white-space:nowrap">Y = A·B</span>।',
+    points:['দুই ইনপুটের গেটে 2² = 4 টি ইনপুট সমাবেশ থাকে।','চারটির মধ্যে মাত্র একটিতে (A=1, B=1) আউটপুট 1।','বুলিয়ান গুণ: 0·0=0, 0·1=0, 1·0=0, 1·1=1।'],
+    analogy:'বাস্তব উদাহরণ: দুটি সুইচ <b>সিরিজে</b> লাগানো একটি বাতি। দুটো সুইচই অন থাকলে তবেই বাতি জ্বলে।', an:'series'},
+  OR:{name:'OR গেট', fn:(a,b)=>a|b, expr:'A+B', op:'+', lead:'সুইচ চেপে দেখো, একটা অন করলেই কি বাতি জ্বলে?',
+    def:'OR গেটের <b>যেকোনো একটি ইনপুট 1 হলেই</b> আউটপুট 1 হয়। সবগুলো ইনপুট 0 হলে তবেই আউটপুট 0। একে লজিক্যাল যোগ বলে, তাই লেখা হয় <span class="mono" style="white-space:nowrap">Y = A+B</span>।',
+    points:['চারটি সমাবেশের মধ্যে তিনটিতেই আউটপুট 1।','শুধু A=0, B=0 হলে আউটপুট 0।','বুলিয়ান যোগ: 0+0=0, 0+1=1, 1+0=1, 1+1=1 (এখানে 1+1 = 1, 2 নয়!)।'],
+    analogy:'বাস্তব উদাহরণ: দুটি সুইচ <b>প্যারালালে</b> লাগানো একটি বাতি। যেকোনো একটি সুইচ অন করলেই বাতি জ্বলে।', an:'parallel'},
+  NOT:{name:'NOT গেট', fn:a=>a^1, expr:"A'", op:'', lead:'সুইচ চেপে দেখো, আউটপুট সবসময় উল্টো হয়।',
+    def:'NOT গেটের <b>একটি মাত্র ইনপুট</b>। ইনপুট যা, আউটপুট তার উল্টো: 0 দিলে 1, 1 দিলে 0। একে ইনভার্টার বা পূরক (complement) বলে, লেখা হয় <span class="mono" style="white-space:nowrap">Y = A\'</span> বা A-এর মাথায় দাগ (A̅)।',
+    points:['সত্যক সারণিতে মাত্র 2 টি সারি।','গেটের মাথার ছোট গোল দাগ (বাবল) মানেই "উল্টে দাও"।','দুবার NOT করলে আগের মান ফিরে আসে: (A\')\' = A।'],
+    analogy:'বাস্তব উদাহরণ: সুইচটি বাতির <b>সাথে প্যারালালে</b> লাগানো। সুইচ অন করলে বিদ্যুৎ সুইচ দিয়ে চলে যায়, বাতি নিভে যায়।', an:'not'},
+};
+let GATE='AND', G, S;
+const st={A:0,B:0};
+const rowsFor = () => S.one ? [[0],[1]] : [[0,0],[0,1],[1,0],[1,1]];
+const calc = r => S.one ? G.fn(r[0]) : G.fn(r[0], r[1]);
+
+function build(){
+  G=GATES[GATE]; S=SHAPES[GATE];
+  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected', t.dataset.g===GATE));
+  const yA = S.one ? 96 : 71, yB = 121, outX = S.outX + (S.bubble ? 12 : 0);
+  let g = `<path class="gate-body" d="${S.d}"/>`;
+  if (S.bubble) g += `<circle cx="${S.outX+6}" cy="96" r="6" fill="var(--panel)" stroke="var(--accent)" stroke-width="3"/>`;
+  g += `<text class="gate-label" x="${S.inX+(S.one?10:(GATE==='OR'?22:18))}" y="101">${GATE}</text>`;
+  $('gate').innerHTML = g;
+  const setD=(ids,d)=>ids.forEach(i=>$(i).setAttribute('d',d));
+  setD(['wA','fA'], S.one ? `M56 75 H100 V96 H${S.inX}` : `M56 75 H100 V${yA} H${S.inX}`);
+  setD(['wB','fB'], `M56 135 H100 V${yB} H${S.inX}`);
+  setD(['wY','fY'], `M${outX} 96 H332`);
+  $('pA').setAttribute('cx',S.inX); $('pA').setAttribute('cy',yA);
+  $('pB').setAttribute('cx',S.inX); $('pB').setAttribute('cy',yB);
+  ['swB','wB','fB','pB','tB'].forEach(i=>$(i).style.display=S.one?'none':'');
+  $('controls').classList.toggle('one', !!S.one);
+  $('g-title').textContent=G.name; $('g-lead').textContent=G.lead;
+  $('g-def').innerHTML=G.def; $('g-points').innerHTML=G.points.map(p=>`<li>${p}</li>`).join('');
+  const an = {
+    series:`<path class="wr" d="M10 20 H40 M62 20 H75 M97 20 H110 V60 H10 V20"/><path class="wr" id="anA"/><path class="wr" id="anB"/>
+      <text x="44" y="38" class="lbl" style="font-size:12px">A</text><text x="80" y="38" class="lbl" style="font-size:12px">B</text>`,
+    parallel:`<path class="wr" d="M10 60 V12 H40 M62 12 H110 V60 M10 40 H40 M62 40 H110 M10 60 H110"/><path class="wr" id="anA"/><path class="wr" id="anB"/>
+      <text x="44" y="8" class="lbl" style="font-size:11px">A</text><text x="44" y="54" class="lbl" style="font-size:11px">B</text>`,
+    not:`<path class="wr" d="M10 20 H110 V60 H10 Z M45 20 V34 M45 50 V60"/><path class="wr" id="anA"/>
+      <text x="28" y="46" class="lbl" style="font-size:12px">A</text>`,
+  }[G.an];
+  const bulbY = G.an==='parallel' ? 60 : (G.an==='not' ? 40 : 60), bulbX = G.an==='not' ? 85 : 60;
+  $('analogy').innerHTML = `<svg viewBox="0 0 120 80" aria-hidden="true">${an}
+    <circle id="anBulb" cx="${bulbX}" cy="${G.an==='not'?40:bulbY}" r="9" fill="var(--panel)" stroke="var(--wire-off)" stroke-width="3"/>
+    ${G.an==='not'?`<path class="wr" d="M85 20 V31 M85 49 V60"/>`:''}</svg><p>${G.analogy}</p>`;
+  const rows = rowsFor();
+  $('tt').querySelector('thead').innerHTML = `<tr>${S.one?'<th>A</th>':'<th>A</th><th>B</th>'}<th>Y = ${G.expr}</th></tr>`;
+  $('tt').querySelector('tbody').innerHTML = rows.map(r=>`<tr data-a="${r[0]}" data-b="${r[1]??''}" tabindex="0">${r.map(v=>`<td>${v}</td>`).join('')}<td class="y">${calc(r)}</td></tr>`).join('');
+  document.querySelectorAll('#tt tbody tr').forEach(tr=>{
+    const go=()=>{st.A=+tr.dataset.a; if(!S.one) st.B=+tr.dataset.b; render();};
+    tr.addEventListener('click',go);
+    tr.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});
+  });
+  st.A=0; st.B=0; right=0; total=0; $('qScore').textContent='স্কোর: 0/0';
+  newQ(); render();
+}
+
+let outTimer;
+function render(){
+  const y = calc([st.A, st.B]);
+  for (const k of ['A','B']) {
+    const on=!!st[k];
+    $('w'+k).classList.toggle('on',on); $('f'+k).classList.toggle('on',on); $('p'+k).classList.toggle('on',on);
+    $('bit'+k).textContent=st[k];
+    $('t'+k).setAttribute('aria-pressed',on); $('t'+k).querySelector('.val').textContent=st[k];
+  }
+  clearTimeout(outTimer);
+  outTimer=setTimeout(()=>{
+    $('wY').classList.toggle('on',!!y); $('fY').classList.toggle('on',!!y);
+    $('bulb').classList.toggle('on',!!y); $('bitY').textContent=y;
+  },280);
+  $('exprLive').innerHTML = S.one ? `Y = ${st.A}' = <span class="v">${y}</span>`
+    : `Y = ${G.expr} = ${st.A}${G.op}${st.B} = <span class="v">${y}</span>`;
+  $('status').textContent = y ? 'বাতি জ্বলছে' : 'বাতি নিভে আছে';
+  document.querySelectorAll('#tt tbody tr').forEach(tr=>tr.classList.toggle('active', +tr.dataset.a===st.A && (S.one || +tr.dataset.b===st.B)));
+  const anA=$('anA'), anB=$('anB'), b=$('anBulb');
+  if (G.an==='series'){ anA.setAttribute('d',st.A?'M40 20 L62 20':'M40 20 L60 10'); anB.setAttribute('d',st.B?'M75 20 L97 20':'M75 20 L95 10'); }
+  if (G.an==='parallel'){ anA.setAttribute('d',st.A?'M40 12 L62 12':'M40 12 L58 2'); anB.setAttribute('d',st.B?'M40 40 L62 40':'M40 40 L58 30'); }
+  if (G.an==='not'){ anA.setAttribute('d',st.A?'M45 34 L45 50':'M45 34 L56 46'); }
+  b.setAttribute('fill', y ? 'var(--signal)' : 'var(--panel)');
+}
+const flip=k=>{st[k]^=1; render();};
+['A','B'].forEach(k=>{
+  $('t'+k).addEventListener('click',()=>flip(k));
+  $('sw'+k).addEventListener('click',()=>flip(k));
+  $('sw'+k).addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flip(k);}});
+});
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{GATE=t.dataset.g; build();}));
+
+let q=null, right=0, total=0, last=-1;
+function newQ(){
+  const rows=rowsFor(); let i;
+  do { i=Math.floor(Math.random()*rows.length); } while (i===last && rows.length>1);
+  last=i; q=rows[i];
+  $('qAsk').innerHTML = S.one ? `${GATE} গেটে A = <span class="mono">${q[0]}</span> হলে Y কত?`
+    : `${GATE} গেটে A = <span class="mono">${q[0]}</span> এবং B = <span class="mono">${q[1]}</span> হলে Y কত?`;
+  $('qFb').textContent=''; $('qFb').className='feedback';
+  $('q0').disabled=$('q1').disabled=false;
+}
+function answer(v){
+  const y=calc(q); total++; if(v===y) right++;
+  $('qFb').className='feedback '+(v===y?'ok':'bad');
+  $('qFb').textContent = v===y ? `ঠিক! Y = ${y}। সার্কিটে মিলিয়ে দেখো।` : `হয়নি। সঠিক উত্তর Y = ${y}। সার্কিটে দেখো কেন।`;
+  $('qScore').textContent=`স্কোর: ${right}/${total}`;
+  $('q0').disabled=$('q1').disabled=true;
+  st.A=q[0]; if(!S.one) st.B=q[1]; render();
+}
+$('q0').onclick=()=>answer(0); $('q1').onclick=()=>answer(1); $('qNext').onclick=newQ;
+const pick = new URLSearchParams(location.search).get('g');
+if (pick && GATES[pick.toUpperCase()]) GATE = pick.toUpperCase();
+build();
+
+IM.mcq(document.getElementById('mcq9'),[{"q": "AND গেটের আউটপুট 1 হয় যখন—", "o": ["যেকোনো একটি ইনপুট 1", "সব ইনপুট 1", "সব ইনপুট 0", "কখনো না"], "a": 1, "w": "সব 1 হলেই শুধু 1।"}, {"q": "OR গেটের আউটপুট 0 হয় যখন—", "o": ["সব ইনপুট 0", "একটি ইনপুট 1", "সব ইনপুট 1", "সবসময়"], "a": 0, "w": "একটা 1 থাকলেই OR = 1।"}, {"q": "NOT গেটে ইনপুট কয়টি?", "o": ["১", "২", "৩", "যেকোনো"], "a": 0, "w": "একটি ইনপুট উল্টে দেয়।"}, {"q": "সিরিজে লাগানো দুটি সুইচ কোন গেটের মতো?", "o": ["OR", "AND", "NOT", "XOR"], "a": 1, "w": "দুটোই চালু হলে বাতি জ্বলে।"}]);
+/*TOUR*/{const T=IM.T;const $=id=>document.getElementById(id);
+const G=g=>{const t=document.querySelector(`.tab[data-g="${g}"]`);if(t.getAttribute('aria-selected')!=='true')t.click();};
+const SI=(k,v)=>{if(+$('bit'+k).textContent!==v)$('t'+k).click();};
+IM.tour([
+ {m:'<b>AND গেট</b>: সব ইনপুট <b>1</b> হলেই শুধু আউটপুট 1। যেকোনো একটা 0 হলেই 0।',do(){G('AND');SI('A',0);SI('B',0);}},
+ {m:'A = 1, B = 0: একটা ইনপুট 0, তাই বাল্ব জ্বলে না। Y = <b>0</b>।',el:'#gate',do(){G('AND');SI('A',1);SI('B',0);}},
+ {m:'A = 1, B = 1: দুটোই 1, তাই Y = <b>1</b>। দুটো সুইচ সিরিজে লাগানো বাতির মতো।',el:'#gate',do(){G('AND');SI('A',1);SI('B',1);}},
+ {m:'<b>OR গেট</b>: যেকোনো একটা ইনপুট 1 হলেই আউটপুট 1।',el:'#gate',do(){G('OR');SI('A',0);SI('B',1);}},
+ {m:'OR এ শুধু A = B = 0 হলেই Y = <b>0</b>। প্যারালাল সুইচের মতো।',el:'#gate',do(){G('OR');SI('A',0);SI('B',0);}},
+ {m:'<b>NOT গেট</b>: ইনপুট উল্টে দেয়। 1 দিলে 0, 0 দিলে 1।',el:'#gate',do(){G('NOT');SI('A',1);}},
+ {m:'সত্যক সারণিতে সব সম্ভাব্য ইনপুটের আউটপুট একসাথে দেখো।',el:'#tt',do(){G('AND');}}
+]);
+}/*ENDTOUR*/
+</script>
+</body>
+</html>

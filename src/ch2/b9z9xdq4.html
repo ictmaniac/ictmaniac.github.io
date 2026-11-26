@@ -1,0 +1,112 @@
+---
+ch: ২
+kit: 1
+title: ডেটা ট্রান্সমিশন মোড
+eyebrow: ২.১.৫ ডেটা ট্রান্সমিশন মোড
+h1: ডেটা কোন দিকে, কার কাছে যায়
+lead: রেডিও শুধু শোনায়, ওয়াকি-টকিতে পালা করে বলতে হয়, আর মোবাইলে দুজন একসাথে বলা যায়। কেন? ▶ চাপো আর দেখো সিমপ্লেক্স, হাফ-ডুপ্লেক্স, ফুল-ডুপ্লেক্স আর ইউনিকাস্ট, ব্রডকাস্ট, মাল্টিকাস্ট।
+---
+<style>
+svg.scene .lane{stroke:#C9D5EA;stroke-width:16;stroke-linecap:round}
+svg.scene .lane.on{stroke:#FCE9C6}
+svg.scene .lane.no{stroke:var(--bad-soft)}
+svg.scene .dev{font-size:30px;text-anchor:middle;dominant-baseline:central}
+svg.scene .dn{font-size:11px;font-weight:800;text-anchor:middle;fill:var(--ink)}
+svg.scene .who{font-size:12px;font-weight:800;text-anchor:middle;fill:var(--signal)}
+svg.scene .rv circle{fill:var(--panel);stroke:var(--line);stroke-width:2.5;transition:all .3s}
+svg.scene .rv.on circle{fill:#D5F5E3;stroke:#27AE60;stroke-width:3}
+svg.scene .rv.grp circle{stroke:#E67E22;stroke-dasharray:4 3}
+svg.scene .rv.on.grp circle{stroke:#27AE60;stroke-dasharray:none}
+svg.scene .rv text{font-size:16px;text-anchor:middle;dominant-baseline:central}
+svg.scene .x{font-size:20px;text-anchor:middle;dominant-baseline:central;opacity:0}
+</style>
+  <section class="card" id="main">
+    <div class="tabs" id="tb"><button class="tab" data-k="0">দিক অনুসারে</button><button class="tab" data-k="3">প্রাপক অনুসারে</button></div>
+    <div class="sbox">
+    <svg class="scene" id="sv" viewBox="0 0 360 230">
+      <text id="ttl" class="lbl" x="180" y="20" style="fill:var(--accent)"></text>
+      <g id="A">
+        <line id="l1" class="lane" x1="70" y1="92" x2="290" y2="92"/><line id="l2" class="lane" x1="70" y1="128" x2="290" y2="128"/>
+        <text class="sm" x="180" y="74" id="a1">ক → খ</text><text class="sm" x="180" y="152" id="a2">খ → ক</text>
+        <text id="dA" class="dev" x="38" y="110">📡</text><text class="dn" x="38" y="146">ক</text>
+        <text id="dB" class="dev" x="322" y="110">📻</text><text class="dn" x="322" y="146">খ</text>
+        <text id="who" class="who" x="180" y="182"></text>
+        <text id="xx" class="x" x="230" y="128">❌</text>
+      </g>
+      <g id="B">
+        <text class="dev" x="50" y="120">🧑‍💻</text><text class="dn" x="50" y="156">প্রেরক</text>
+        <g id="rvs"></g>
+        <text class="sm" x="160" y="212" id="gl"></text>
+      </g>
+    </svg>
+    </div>
+  </section>
+  <section class="card">
+    <h2>সিমপ্লেক্স, হাফ-ডুপ্লেক্স, ফুল-ডুপ্লেক্স (টাচ করো)</h2>
+    <div id="cx0"></div>
+  </section>
+  <section class="card">
+    <h2>ইউনিকাস্ট, ব্রডকাস্ট, মাল্টিকাস্ট (টাচ করো)</h2>
+    <div id="cx1"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>ট্রান্সমিশন মোড:</b> উৎস থেকে গন্তব্যে ডেটা প্রবাহের দিক।</li>
+      <li><b>সিমপ্লেক্স:</b> শুধু একদিকে (রেডিও, টিভি, কী-বোর্ড → কম্পিউটার)। <b>হাফ-ডুপ্লেক্স:</b> দুই দিকে, কিন্তু একসাথে নয় (ওয়াকি-টকি)। <b>ফুল-ডুপ্লেক্স:</b> একই সময়ে দুই দিকে (মোবাইল ফোন)।</li>
+      <li><b>ইউনিকাস্ট:</b> একজন প্রাপক। <b>ব্রডকাস্ট:</b> নেটওয়ার্কের সকল নোড। <b>মাল্টিকাস্ট:</b> শুধু নির্দিষ্ট গ্রুপের সদস্যরা।</li>
+      <li>রেডিও-টিভি = সিমপ্লেক্স + ব্রডকাস্ট। মোবাইলে দুজনের কথা = ফুল-ডুপ্লেক্স + ইউনিকাস্ট। ভিডিও কনফারেন্স = মাল্টিকাস্ট।</li>
+    </ul>
+  </section>
+<script>
+const {$,say,bn}=IM;const Q=IM.seq(),sv=$('sv');
+const RP=[[250,40],[312,62],[250,92],[312,122],[250,152],[312,182]],GRP=[1,2,4],EM=['👩','👨','🧑','👧','👴','👦'];
+$('rvs').innerHTML=RP.map(([x,y],i)=>`<g class="rv${GRP.includes(i)?' grp':''}" id="r${i}"><circle cx="${x}" cy="${y}" r="17"/><text x="${x}" y="${y}">${EM[i]}</text></g>`).join('');
+const R=(i)=>[[78,120],[170,120],RP[i]];
+const lane=(id,c)=>$(id).setAttribute('class','lane'+(c?' '+c:''));
+const fw=(o)=>IM.emit(sv,[[70,92],[290,92]],'',Object.assign({r:7,dur:1100},o||{}));
+const bk=(o)=>IM.emit(sv,[[290,128],[70,128]],'',Object.assign({r:7,dur:1100,cls:'blue'},o||{}));
+const rv=(ids)=>RP.forEach((_,i)=>$('r'+i).classList.toggle('on',ids.includes(i)));
+const S=[
+ {A:1,t:'১. সিমপ্লেক্স (Simplex)',d:['📡','📻'],m:'<b>সিমপ্লেক্স:</b> ডেটা যায় <b>শুধু একদিকে</b>, ক থেকে খ। রেডিও স্টেশন গান পাঠায়, কিন্তু রেডিও থেকে স্টেশনে কিছু পাঠানো যায় না ❌। উদাহরণ: রেডিও, টিভি, কী-বোর্ড → CPU।',
+  f(){lane('l1','on');lane('l2','no');$('a2').textContent='খ → ক (বন্ধ)';const g=()=>{fw({fs:11});Q.later(380,g);};g();
+   const b=()=>{IM.emit(sv,[[290,128],[232,128]],'',{r:7,dur:600,cls:'red',done(){$('xx').animate([{opacity:0},{opacity:1},{opacity:0}],{duration:700});}});Q.later(2000,b);};Q.later(700,b);}},
+ {A:1,t:'২. হাফ-ডুপ্লেক্স (Half-Duplex)',d:['📟','📟'],m:'<b>হাফ-ডুপ্লেক্স:</b> দুই দিকেই পাঠানো যায়, কিন্তু <b>একই সময়ে নয়</b>। ক যখন বলে, খ তখন শুধু শোনে। "ওভার" বলার পর অন্যজন বলে। উদাহরণ: <b>ওয়াকি-টকি</b>।',
+  f(){const turn=a=>{if(a){lane('l1','on');lane('l2');$('who').textContent='🗣️ এখন বলছে: ক (খ শুধু শুনছে)';for(let i=0;i<4;i++)Q.later(i*300,()=>fw());}
+    else{lane('l1');lane('l2','on');$('who').textContent='🗣️ এখন বলছে: খ (ক শুধু শুনছে)';for(let i=0;i<4;i++)Q.later(i*300,()=>bk());}Q.later(2300,()=>turn(!a));};turn(true);}},
+ {A:1,t:'৩. ফুল-ডুপ্লেক্স (Full-Duplex)',d:['📱','📱'],m:'<b>ফুল-ডুপ্লেক্স:</b> <b>একই সময়ে দুই দিকেই</b> ডেটা যায়। মোবাইলে দুজন একসাথে কথা বললেও দুজনই শুনতে পায়। উদাহরণ: <b>মোবাইল ফোন, টেলিফোন</b>।',
+  f(){lane('l1','on');lane('l2','on');$('who').textContent='🗣️🗣️ দুজনই একসাথে বলছে ও শুনছে';const g=()=>{fw();bk();Q.later(380,g);};g();}},
+ {B:1,t:'৪. ইউনিকাস্ট (Unicast)',m:'এবার প্রাপকের সংখ্যা অনুসারে। <b>ইউনিকাস্ট:</b> একজন প্রেরক থেকে <b>শুধু একজন</b> প্রাপক ডেটা পায়। যেমন দুজনের মোবাইল কল। (সিমপ্লেক্স, হাফ, ফুল তিনটাই ইউনিকাস্ট হতে পারে)',
+  f(){$('gl').textContent='শুধু একজন পায়';const g=()=>{rv([]);IM.emit(sv,R(3),'✉️',{r:11,fs:11,dur:1100,done(){rv([3]);}});Q.later(1900,g);};g();}},
+ {B:1,t:'৫. ব্রডকাস্ট (Broadcast)',m:'<b>ব্রডকাস্ট:</b> একটা নোড থেকে পাঠালে নেটওয়ার্কের <b>সকল নোড</b> ডেটা পায়। যেমন টিভি সম্প্রচার: যার কাছেই টিভি আছে, সবাই দেখে।',
+  f(){$('gl').textContent='সবাই পায়';const g=()=>{rv([]);RP.forEach((_,i)=>IM.emit(sv,R(i),'📺',{r:11,fs:11,dur:1100,done(){$('r'+i).classList.add('on');}}));Q.later(1900,g);};g();}},
+ {B:1,t:'৬. মাল্টিকাস্ট (Multicast)',m:'<b>মাল্টিকাস্ট:</b> ব্রডকাস্টের মতো, কিন্তু সবাই না, <b>শুধু নির্দিষ্ট গ্রুপের</b> সদস্যরা পায় (কমলা দাগের বৃত্ত)। যেমন <b>ভিডিও কনফারেন্সে</b> শুধু অংশগ্রহণকারীরা।',
+  f(){$('gl').textContent='কমলা দাগ = গ্রুপের সদস্য, শুধু তারাই পায়';const g=()=>{rv([]);GRP.forEach(i=>IM.emit(sv,R(i),'🎥',{r:11,fs:11,dur:1100,done(){$('r'+i).classList.add('on');}}));Q.later(1900,g);};g();}},
+ {A:1,t:'মনে রাখার কৌশল',d:['📺','🏠'],m:'<b>রেডিও-টিভি</b> = সিমপ্লেক্স + ব্রডকাস্ট। <b>মোবাইলে দুজনের কথা</b> = ফুল-ডুপ্লেক্স + ইউনিকাস্ট। <b>ওয়াকি-টকি</b> = হাফ-ডুপ্লেক্স। <b>ভিডিও কনফারেন্স</b> = মাল্টিকাস্ট।',
+  f(){const C=[['📺','🏠','টিভি: সিমপ্লেক্স + ব্রডকাস্ট',1,0],['📱','📱','মোবাইল কল: ফুল-ডুপ্লেক্স + ইউনিকাস্ট',1,1],['📟','📟','ওয়াকি-টকি: হাফ-ডুপ্লেক্স',1,2]];let i=0;
+   const nx=()=>{const c=C[i%3];i++;$('dA').textContent=c[0];$('dB').textContent=c[1];$('who').textContent=c[2];lane('l1','on');lane('l2',c[4]?'on':'no');
+    for(let j=0;j<3;j++)Q.later(j*350,()=>{if(c[4]===2){j%2?bk():fw();}else{fw();if(c[4])bk();}});Q.later(2200,nx);};nx();}}];
+function render(k){const s=S[k];Q.bump();sv.querySelectorAll('.pk').forEach(e=>e.remove());$('A').style.display=s.A?'':'none';$('B').style.display=s.B?'':'none';
+  $('ttl').textContent=s.t;if(s.d){$('dA').textContent=s.d[0];$('dB').textContent=s.d[1];}lane('l1');lane('l2');$('a2').textContent='খ → ক';$('who').textContent='';$('gl').textContent='';rv([]);
+  $('tb').querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',(s.B?'3':'0')===b.dataset.k));s.f();say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+var player=IM.player({count:()=>S.length,show:render,interval:4400,swipe:$('sv')});
+$('tb').querySelectorAll('.tab').forEach(b=>b.onclick=()=>player.go(+b.dataset.k));
+IM.compare($('cx0'),['','দিক','একসাথে?'],[
+ ['সিমপ্লেক্স','শুধু একদিকে','—','রেডিও, টিভি, কী-বোর্ড → CPU। যে পাঠায় সে গ্রহণ করতে পারে না।'],
+ ['হাফ-ডুপ্লেক্স','দুই দিকে','না, পালা করে','ওয়াকি-টকি। ক পাঠালে খ তখন শুধু গ্রহণ করে।'],
+ ['ফুল-ডুপ্লেক্স','দুই দিকে','হ্যাঁ, একই সময়ে','মোবাইল ফোন, টেলিফোন। পাঠানোর সময় গ্রহণও করা যায়।']]);
+IM.compare($('cx1'),['','কে পায়','উদাহরণ'],[
+ ['ইউনিকাস্ট','শুধু একজন','দুজনের মোবাইল কল','এক প্রেরক, এক প্রাপক।'],
+ ['ব্রডকাস্ট','নেটওয়ার্কের সবাই','টিভি, রেডিও সম্প্রচার','সব নোড ডেটা গ্রহণ করে।'],
+ ['মাল্টিকাস্ট','নির্দিষ্ট গ্রুপ','ভিডিও কনফারেন্স','গ্রুপের বাইরের কেউ পায় না।']]);
+IM.mcq($('quiz6'),[
+ {q:'ওয়াকি-টকি কোন মোডের উদাহরণ?',o:['সিমপ্লেক্স','হাফ-ডুপ্লেক্স','ফুল-ডুপ্লেক্স','ব্রডকাস্ট'],a:1,w:'দুই দিকে, কিন্তু পালা করে।'},
+ {q:'টিভি সম্প্রচার কোন মোড?',o:['সিমপ্লেক্স ও ব্রডকাস্ট','ফুল-ডুপ্লেক্স ও ইউনিকাস্ট','হাফ-ডুপ্লেক্স','মাল্টিকাস্ট'],a:0,w:'একদিকে, সবার কাছে।'},
+ {q:'ভিডিও কনফারেন্স কোনটি?',o:['ইউনিকাস্ট','ব্রডকাস্ট','মাল্টিকাস্ট','সিমপ্লেক্স'],a:2,w:'শুধু নির্দিষ্ট গ্রুপের সদস্যরা পায়।'},
+ {q:'একই সময়ে দুই দিকে ডেটা যায় কোন মোডে?',o:['সিমপ্লেক্স','হাফ-ডুপ্লেক্স','ফুল-ডুপ্লেক্স','মাল্টিকাস্ট'],a:2,w:'যেমন মোবাইল ফোন।'}]);
+player.reset();
+</script>

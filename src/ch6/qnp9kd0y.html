@@ -1,0 +1,121 @@
+---
+ch: ৬
+kit: 1
+title: প্রাইমারি কী ও ফরেন কী
+eyebrow: ৬.৩ রিলেশনাল ডেটাবেজ মডেল
+h1: কোন ফিল্ড হবে "কী"?
+lead: কোন ফিল্ড দিয়ে প্রত্যেক রেকর্ডকে আলাদা করে চেনা যায়, আর এক টেবিল কীভাবে আরেক টেবিলের সাথে জোড়া লাগে, ▶ চাপো আর দেখো। যেকোনো ঘরে টাচ করলে মানে আসবে।
+---
+<style>
+#main{position:relative}
+.cus .hd,.cus .rw{grid-template-columns:72px 1fr 100px}
+.ord .hd,.ord .rw{grid-template-columns:64px 74px 1fr}
+.hd>span{display:flex;align-items:center;gap:4px;height:100%;cursor:pointer;transition:background .3s}
+.hd>span.pk{background:var(--signal);color:#1A1200}
+.dtbl .hd>span.fk{background:#D6E6FD;color:#0B2350}
+.dtbl .hd>span.pk{background:var(--signal);color:#1A1200}
+.hd em{font-style:normal;font-size:.85rem;font-weight:800;padding:0 5px;border-radius:6px;background:#fff;color:var(--ink);animation:pop .4s ease-out}
+.hd em.x{color:var(--bad)}.hd em.ok{color:var(--ok)}
+.rw>span{cursor:pointer;transition:background .3s,color .3s}
+.rw>span.look{background:color-mix(in srgb,var(--accent) 18%,var(--panel))}
+.rw>span.dup{background:var(--bad-soft);color:var(--bad)}
+.rw>span.uq{background:color-mix(in srgb,var(--ok) 16%,var(--panel));color:var(--ok)}
+.rw>span.pkc{color:#8A5A00}
+.rw.try{background:var(--bad-soft);animation:shake .5s ease-in-out .3s}
+.rw.try>span:first-child{color:var(--bad)}
+.rw.gone{opacity:0;transform:translateX(40px);height:0;min-height:0;border:0;overflow:hidden}
+.rw.hit{background:var(--signal-soft)}
+.msg{font-weight:800;font-size:.85rem;color:var(--bad);text-align:center;min-height:1.2em}
+.ord{transition:opacity .5s,transform .5s}
+.ord.off{opacity:0;transform:translateY(14px);pointer-events:none}
+.ord .rw>span:nth-child(2){color:#1E5BC6}
+.key{position:absolute;z-index:9;font-size:1.6rem;pointer-events:none}
+</style>
+  <section class="card" id="main">
+    <div class="dtbl cus" id="cus"></div>
+    <div class="msg" id="msg"></div>
+    <div class="dtbl ord off" id="ord"></div>
+    <span class="mag" id="mag">🔍</span>
+    <svg class="ov" id="ov"></svg>
+  </section>
+  <section class="card">
+    <h2>প্রাইমারি কী বনাম ফরেন কী (টাচ করো)</h2>
+    <div id="cx0"></div>
+  </section>
+  <section class="card">
+    <h2>অন্য কী গুলো (টাচ করো)</h2>
+    <div id="cx1"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>প্রাইমারি কী (🔑):</b> যে ফিল্ড দিয়ে প্রতিটি রেকর্ড আলাদাভাবে চেনা যায়। মান অনন্য (একই মান দুবার নয়) আর ফাঁকা (Null) রাখা যায় না। একটি টেবিলে একটিই প্রাইমারি কী।</li>
+      <li><b>ক্যান্ডিডেট কী:</b> যেসব ফিল্ড প্রাইমারি কী হওয়ার যোগ্য (যেমন C_ID, Phone)। এদের একটিকে প্রাইমারি কী বানানো হয়।</li>
+      <li><b>ফরেন কী (🔗):</b> এক টেবিলের প্রাইমারি কী যখন অন্য টেবিলে সাধারণ ফিল্ড হিসেবে থাকে। এর মান পুনরাবৃত্তি হতে পারে। এটাই দুই টেবিল জোড়া দেয়।</li>
+      <li><b>কম্পোজিট কী:</b> একাধিক ফিল্ড মিলে যখন প্রাইমারি কী হয় (যেমন Order_no + Product_no)।</li>
+    </ul>
+  </section>
+<script>
+const {$,say,bn}=IM;
+const CH=['C_ID','Name','Phone'],C=[['C1','Rahim','01711'],['C2','Karim','01822'],['C3','Rahim','01933'],['C4','Nila','01644']];
+const OH=['O_No','C_ID','Item'],O=[['501','C1','Pen'],['502','C3','Book'],['503','C1','Bag']];
+const TRY=[['C2','Mitu','01555'],['','Babu','01399']];
+$('cus').innerHTML=`<div class="cap">📋 Customer টেবিল</div><div class="hd" id="ch">${CH.map((h,j)=>`<span data-h="${j}">${h}</span>`).join('')}</div>`+
+  C.map((r,i)=>`<div class="rw" id="cr${i}">${r.map((v,j)=>`<span id="c${i}${j}" data-i="${i}" data-j="${j}">${v}</span>`).join('')}</div>`).join('')+
+  TRY.map((r,i)=>`<div class="rw gone" id="tr${i}">${r.map(v=>`<span>${v||'(ফাঁকা)'}</span>`).join('')}</div>`).join('');
+$('ord').innerHTML=`<div class="cap">📋 Order টেবিল</div><div class="hd" id="oh">${OH.map((h,j)=>`<span data-o="${j}">${h}</span>`).join('')}</div>`+
+  O.map((r,i)=>`<div class="rw" id="or${i}">${r.map((v,j)=>`<span id="o${i}${j}">${v}</span>`).join('')}</div>`).join('');
+const S=[
+ {m:'এটা Customer টেবিল। প্রশ্ন: কোন ফিল্ড দিয়ে প্রত্যেক কাস্টমারকে <b>আলাদা করে</b> চেনা যাবে? একটা একটা করে পরীক্ষা করি।'},
+ {t:'scan',col:1,bad:[0,2],tags:{1:'x'},m:'🔍 <b>Name</b> পরীক্ষা: "Rahim" দুবার আছে! একই মান একাধিকবার, তাই Name দিয়ে আলাদা চেনা যায় না ✗'},
+ {t:'scan',col:2,tags:{1:'x',2:'ok'},m:'🔍 <b>Phone</b> পরীক্ষা: সবগুলো আলাদা ✓ তাই Phone প্রাইমারি কী হওয়ার যোগ্য, মানে <b>ক্যান্ডিডেট কী</b>।'},
+ {t:'scan',col:0,tags:{1:'x',2:'ok',0:'ok'},m:'🔍 <b>C_ID</b> পরীক্ষা: সবগুলো আলাদা ✓ এটাও ক্যান্ডিডেট কী। যোগ্য ফিল্ড দুইটা: C_ID আর Phone।'},
+ {t:'pk',pk:1,tags:{1:'x',2:'ok'},m:'ক্যান্ডিডেটদের মধ্যে থেকে <b>C_ID</b> কে বেছে নিলাম <b>প্রাইমারি কী 🔑</b>। একটি টেবিলে একটিই প্রাইমারি কী থাকে।'},
+ {t:'try',pk:1,tr:0,m:'এবার নতুন রেকর্ড ঢোকাতে চাইলাম C_ID = <b>C2</b>। কিন্তু C2 আগেই আছে! ❌ প্রাইমারি কী তে একই মান দুবার ঢোকানো যায় না।',msg:'❌ বাতিল: C2 আগে থেকেই আছে'},
+ {t:'try',pk:1,tr:1,m:'C_ID ফাঁকা রেখে Babu কে ঢোকাতে চাইলাম। ❌ প্রাইমারি কী ফাঁকা (Null) রাখা যায় না।',msg:'❌ বাতিল: প্রাইমারি কী ফাঁকা থাকতে পারে না'},
+ {t:'ord',pk:1,ord:1,fk:1,m:'এবার Order টেবিল। এখানে <b>C_ID</b> ফিল্ড আছে, যেটা Customer টেবিলের প্রাইমারি কী। অন্য টেবিলে বসা এই ফিল্ডকে বলে <b>ফরেন কী 🔗</b>।'},
+ {t:'link',pk:1,ord:1,fk:1,m:'প্রতিটি অর্ডারের C_ID ধরে তীর চলে গেলো Customer টেবিলের সঠিক সারিতে। C1 দুবার এসেছে: ফরেন কী তে <b>পুনরাবৃত্তি চলে</b>। Rahim দুইটা অর্ডার দিয়েছে।'},
+ {pk:1,ord:1,fk:1,links:1,m:'সারকথা: প্রাইমারি কী নিজের টেবিলের রেকর্ড চেনায় (অনন্য, ফাঁকা নয়)। ফরেন কী অন্য টেবিলের প্রাইমারি কী, যা দুই টেবিলের মধ্যে সম্পর্ক তৈরি করে।'}];
+let gen=0;const later=(ms,fn)=>{const g=gen;setTimeout(()=>{if(g===gen)fn();},ms/player.speed);};
+function magTo(el){const r=IM.rel($('main'),el),m=$('mag');m.classList.add('on');m.style.transform=`translate(${r.x+r.w-26}px,${r.y+r.h/2-14}px)`;}
+function heads(s){$('ch').querySelectorAll('span').forEach((h,j)=>{h.innerHTML=CH[j]+(s.pk&&j===0?' 🔑':'');h.classList.toggle('pk',!!s.pk&&j===0);
+    const t=(s.tags||{})[j];if(t&&!(s.pk&&j===0))h.insertAdjacentHTML('beforeend',`<em class="${t}">${t==='x'?'✗':'✓'}</em>`);});
+  $('oh').querySelectorAll('span').forEach((h,j)=>{h.innerHTML=OH[j]+(j===0?' 🔑':'')+(s.fk&&j===1?' 🔗':'');h.classList.toggle('fk',!!s.fk&&j===1);h.classList.toggle('pk',j===0);});}
+function arrows(list,anim){const m=$('main');$('ov').innerHTML=list.map((i,n)=>{const a=IM.rel(m,$('o'+i+'1')),ci=C.findIndex(r=>r[0]===O[i][1]),b=IM.rel(m,$('c'+ci+'0'));
+  const x1=IM.rel(m,$('or'+i)).x+3,y1=a.y+a.h/2,x2=b.x+4,y2=b.y+b.h/2,cx=-4+n*5;
+  return `<path class="${anim?'draw':''}" style="animation-delay:${anim?n*0.45:0}s" d="M${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}"/><polygon points="${x2},${y2} ${x2-9},${y2-6} ${x2-9},${y2+6}" fill="var(--signal)"/>`;}).join('');}
+function render(k,prev){gen++;const s=S[k],fwd=prev===k-1&&!IM.reduce();$('ov').innerHTML='';$('mag').classList.remove('on');
+  document.querySelectorAll('.rw>span').forEach(e=>e.classList.remove('look','dup','uq','pkc'));
+  document.querySelectorAll('.rw').forEach(e=>e.classList.remove('hit','try'));
+  heads(s);$('msg').textContent='';
+  if(s.pk)C.forEach((_,i)=>$('c'+i+'0').classList.add('pkc'));
+  TRY.forEach((_,i)=>$('tr'+i).classList.toggle('gone',s.tr!==i));
+  $('ord').classList.toggle('off',!s.ord);
+  if(s.t==='scan'){const mark=()=>C.forEach((_,i)=>$('c'+i+s.col).classList.add((s.bad||[]).includes(i)?'dup':'uq'));
+    if(fwd){let i=0;const tick=()=>{C.forEach((_,r)=>$('c'+r+s.col).classList.remove('look'));if(i<C.length){$('c'+i+s.col).classList.add('look');magTo($('c'+i+s.col));i++;later(330,tick);}else{$('mag').classList.remove('on');mark();}};
+      $('ch').querySelectorAll('em').forEach(e=>e.style.visibility='hidden');tick();later(330*C.length+50,()=>$('ch').querySelectorAll('em').forEach(e=>e.style.visibility=''));}
+    else mark();}
+  if(s.t==='pk'&&fwd){const g=gen,h=$('ch').children[0];h.classList.remove('pk');h.textContent=CH[0];
+    IM.fly($('main'),$('c00'),h,'🔑',{dur:900/player.speed,lift:60,done:()=>{if(g===gen)heads(s);}});}
+  if(s.t==='try'){const r=$('tr'+s.tr);r.classList.add('try');later(fwd?700:0,()=>{$('msg').textContent=s.msg;});
+    if(s.tr===0){$('c10').classList.add('dup');}}
+  if(s.t==='ord'){O.forEach((_,i)=>$('o'+i+'1').classList.add('look'));}
+  if(s.t==='link'||s.links){O.forEach((_,i)=>$('o'+i+'1').classList.add('look'));later(fwd?500:0,()=>arrows([0,1,2],fwd));
+    if(s.t==='link')[0,2].forEach(i=>$('cr'+i).classList.add('hit'));}
+  say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+var player=IM.player({count:()=>S.length,show:render,swipe:$('main'),interval:3000});
+const HX={0:['C_ID','কাস্টমারের আইডি। সবার আলাদা আর কখনো ফাঁকা নয়, তাই এটাই প্রাইমারি কী 🔑।'],1:['Name','নাম। একই নামে একাধিক মানুষ থাকতে পারে (দুইজন Rahim), তাই এটা কী হতে পারে না।'],2:['Phone','ফোন নম্বর সবার আলাদা, তাই এটা ক্যান্ডিডেট কী। তবে প্রাইমারি কী হিসেবে C_ID বেছে নেওয়া হয়েছে।']};
+$('cus').addEventListener('click',e=>{const h=e.target.closest('[data-h]');if(h){const x=HX[h.dataset.h];say('ফিল্ড: '+x[0],x[1],true);return;}
+  const c=e.target.closest('[data-i]');if(c){const r=C[+c.dataset.i];say(`রেকর্ড: ${r[0]}`,`${r[1]} এর রেকর্ড। প্রাইমারি কী <b>${r[0]}</b> দিয়েই এই রেকর্ডটাকে আলাদা করে চেনা যায়, নাম একই হলেও।`,true);}});
+$('ord').addEventListener('click',e=>{const h=e.target.closest('[data-o]');const j=h?+h.dataset.o:1;
+  say(j===1?'ফরেন কী: C_ID':j===0?'প্রাইমারি কী: O_No':'Item',j===1?'Order টেবিলের C_ID হলো ফরেন কী। এটা Customer টেবিলের প্রাইমারি কী, এর মাধ্যমে বোঝা যায় অর্ডারটা কার। একই C_ID অনেকবার আসতে পারে।':j===0?'O_No হলো Order টেবিলের নিজের প্রাইমারি কী, প্রতিটি অর্ডারের আলাদা নম্বর।':'কী জিনিস অর্ডার করা হয়েছে।',true);});
+addEventListener('resize',()=>{const s=S[player.k];if(s.t==='link'||s.links)arrows([0,1,2],false);});
+player.reset();
+IM.compare($('cx0'),["", "প্রাইমারি কী 🔑", "ফরেন কী 🔗"],[["কোথায় থাকে", "নিজের টেবিলে", "অন্য টেবিলে বসে", "Customer এর C_ID প্রাইমারি কী। সেই C_ID যখন Order টেবিলে বসে, তখন Order এ সেটা ফরেন কী।"], ["কাজ", "রেকর্ড আলাদা করে চেনায়", "দুই টেবিল জোড়া দেয়", "প্রাইমারি কী দিয়ে প্রতিটি রেকর্ড চেনা যায়। ফরেন কী দিয়ে বোঝা যায় এই অর্ডার কোন কাস্টমারের।"], ["একই মান দুবার", "হয় না (Unique)", "হতে পারে", "Order টেবিলে C1 দুবার আছে, কারণ Rahim দুইটা অর্ডার দিয়েছে। প্রাইমারি কী তে এটা চলে না।"], ["ফাঁকা (Null)", "রাখা যায় না", "রাখা যেতে পারে", "প্রাইমারি কী ফাঁকা থাকলে রেকর্ড চেনা যাবে না, তাই বাধ্যতামূলক।"], ["টেবিলে কয়টি", "মাত্র একটি", "একাধিক হতে পারে", "একটি টেবিলে একটিই প্রাইমারি কী, কিন্তু কয়েকটা অন্য টেবিলের সাথে জোড়ার জন্য একাধিক ফরেন কী থাকতে পারে।"]]);
+IM.compare($('cx1'),["", "মানে", "উদাহরণ"],[["ক্যান্ডিডেট কী", "প্রাইমারি কী হওয়ার যোগ্য সব ফিল্ড", "Roll, NID, Phone", "যেসব ফিল্ডের মান অনন্য আর ফাঁকা নয়, সবাই ক্যান্ডিডেট। এদের একটাকে প্রাইমারি কী বানানো হয়।"], ["কম্পোজিট কী", "একাধিক ফিল্ড মিলে প্রাইমারি কী", "Order_no + Product_no", "একটা ফিল্ড একা অনন্য নয়, কিন্তু দুইটা মিলে অনন্য। যেমন জাংশন টেবিলে।"]]);
+IM.mcq($('quiz6'),[{"q": "একটি টেবিলে প্রাইমারি কী কয়টি থাকে?", "o": ["একটি", "দুটি", "যত খুশি", "একটিও না"], "a": 0, "w": "একটি টেবিলে একটিমাত্র প্রাইমারি কী থাকে।"}, {"q": "কোনটির মান পুনরাবৃত্তি হতে পারে?", "o": ["প্রাইমারি কী", "ক্যান্ডিডেট কী", "ফরেন কী", "কম্পোজিট কী"], "a": 2, "w": "ফরেন কী তে একই মান একাধিকবার আসতে পারে।"}, {"q": "Roll ও NID দুটিই অনন্য। এরা—", "o": ["ফরেন কী", "ক্যান্ডিডেট কী", "কম্পোজিট কী", "কোনোটিই না"], "a": 1, "w": "প্রাইমারি কী হওয়ার যোগ্য ফিল্ডগুলো ক্যান্ডিডেট কী।"}, {"q": "Order_no + Product_no মিলে প্রাইমারি কী হলে তাকে বলে—", "o": ["ফরেন কী", "কম্পোজিট কী", "ক্যান্ডিডেট কী", "সুপার কী"], "a": 1, "w": "একাধিক ফিল্ড মিলে প্রাইমারি কী = কম্পোজিট কী।"}]);
+</script>

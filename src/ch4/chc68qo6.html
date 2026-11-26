@@ -1,0 +1,334 @@
+---
+ch: ৪
+title: HTML টেবিল ল্যাব
+eyebrow: ৪.২.৯ টেবিল (Table)
+h1: টেবিল: rowspan ও colspan
+lead: ঘরে ট্যাপ করো, তারপর ডানে বা নিচে মেলাও। ঘর জোড়া লাগবে আর HTML কোড সাথে সাথে বদলাবে। কোডের লাইনে আঙুল দিলে টেবিলের সেই ঘর জ্বলে উঠবে।
+---
+<style>
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--board)}
+.explain{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:#E8F1FF;color:var(--ink);border:2px solid #A9C8FA;border-top:0;border-radius:0 0 14px 14px;padding:10px 14px 12px;margin-inline:-4px;box-shadow:0 6px 16px -10px rgba(0,0,0,.5);min-height:5.2em}
+.explain .tag{display:inline-block;font-size:.78rem;font-weight:700;padding:1px 8px;border-radius:999px;background:var(--accent);color:#fff;margin-bottom:3px}
+.explain .tag.tap{background:var(--signal);color:#1A1200}
+.explain p{font-size:1.02rem;font-weight:600;line-height:1.5}
+.explain p.fade{animation:fadeup .3s ease-out}
+.explain code{font-family:var(--f-mono);background:color-mix(in srgb,var(--panel) 18%,transparent);padding:0 4px;border-radius:4px;font-feature-settings:"calt" 0,"liga" 0}
+@keyframes fadeup{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.pv{position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pv table{border-collapse:collapse;width:100%;min-width:260px;font-family:var(--f-body)}
+.pv td,.pv th{border:2px solid var(--ink);padding:10px 6px;font-family:var(--f-mono);font-weight:700;font-size:1rem;text-align:center;background:var(--panel);border-bottom-width:2px}
+.pv th{background:var(--accent-soft);color:var(--ink)}
+#grid,#ptab table,#target table{table-layout:fixed}
+#grid td{cursor:pointer;transition:background .3s;-webkit-tap-highlight-color:transparent}
+#grid td.sel{background:var(--signal-soft);box-shadow:inset 0 0 0 3px var(--signal)}
+#grid td.hl{background:var(--accent-soft);box-shadow:inset 0 0 0 3px var(--accent)}
+#grid td small{display:block;font-size:.72rem;color:var(--accent);font-weight:700}
+.ghost{position:absolute;display:grid;place-items:center;font-family:var(--f-mono);font-weight:700;background:var(--signal);color:#1A1200;border-radius:6px;pointer-events:none;z-index:2}
+.code{margin:0;padding:10px 6px;border-radius:12px;background:var(--board);font-family:var(--f-mono);font-size:.9rem;line-height:1.75;overflow-x:auto;white-space:pre;font-feature-settings:"calt" 0,"liga" 0}
+.code .ln{display:block;border-radius:6px;padding:0 6px;transition:background .25s}
+.code .ln[data-k]{cursor:pointer}
+.code .ln.hi{background:var(--signal-soft)}
+.code .ln.tl{background:var(--accent-soft)}
+.code .ln.new{animation:typein .35s ease-out}
+.code .ln.dim{opacity:.28}
+@keyframes typein{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.code .tg{color:var(--accent);font-weight:700}
+.code .at{color:var(--bad);font-weight:700}
+.code .cm{color:var(--muted)}
+.sizer{display:flex;gap:10px;flex-wrap:wrap}
+.sizer .field{flex:1 1 130px}
+.step{display:flex;align-items:center;gap:8px}
+.step button{font:inherit;font-weight:800;font-size:1.3rem;width:48px;height:48px;border-radius:10px;border:2px solid var(--accent);background:var(--panel);color:var(--accent);cursor:pointer;flex:none;touch-action:manipulation}
+.step b{font-family:var(--f-mono);font-size:1.3rem;min-width:28px;text-align:center}
+.btn{touch-action:manipulation}
+textarea{font:inherit;font-family:var(--f-mono);font-size:.92rem;line-height:1.6;width:100%;min-height:220px;padding:12px;border-radius:12px;border:2px solid var(--line);background:var(--board);color:var(--ink);resize:vertical;font-feature-settings:"calt" 0,"liga" 0}
+textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.goal{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:480px){.goal{grid-template-columns:1fr}}
+.goal .pv td{padding:8px 4px;font-size:.85rem}
+.status{font-weight:700;min-height:1.5em}
+/* player */
+#ptab{min-height:120px;display:grid;align-items:start}
+#ptab table{transition:outline-color .3s;outline:3px dashed transparent;outline-offset:3px}
+#ptab table.blank{outline-color:var(--wire-off);min-height:60px}
+#ptab tr.newrow{animation:rowin .4s ease-out}
+#ptab tr.ghostrow td{border-style:dashed;border-color:var(--wire-off);height:44px;background:transparent}
+#ptab td.newcell{animation:cellin .45s cubic-bezier(.2,1.4,.4,1)}
+@keyframes rowin{from{opacity:0}to{opacity:1}}
+@keyframes cellin{from{transform:scale(.3);opacity:0;background:var(--signal)}to{transform:none;opacity:1}}
+#ptab td.cur{background:var(--signal-soft);box-shadow:inset 0 0 0 3px var(--signal)}
+.pctl{display:grid;grid-template-columns:58px 1fr 58px;gap:8px}
+.pctl button{font:inherit;font-weight:800;padding:0;border-radius:14px;border:2px solid var(--accent);background:var(--panel);color:var(--accent);min-height:56px;cursor:pointer;font-size:1.2rem;touch-action:manipulation}
+.pctl #p-nx{background:var(--accent);color:var(--panel);font-size:1.05rem}
+.pctl #p-nx.again{background:var(--signal);border-color:var(--signal);color:#1A1200}
+.pctl #p-au{font-size:.95rem;position:relative;overflow:hidden}
+.pctl #p-au span{position:relative;z-index:1}
+.pctl #p-au .tm{position:absolute;left:0;bottom:0;height:5px;width:0;background:#1A1200;opacity:.35}
+.pctl{grid-template-columns:58px 1fr 100px}
+.pctl #p-au[aria-pressed="true"]{background:var(--signal);border-color:var(--signal);color:#1A1200}
+.pctl button:disabled{opacity:.4}
+.pbar{height:4px;border-radius:4px;background:var(--board);overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--signal);width:0;transition:width .3s}
+#player{touch-action:pan-y}
+</style>
+  <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
+
+  <section class="card">
+    <h2>টেবিল বানাও</h2>
+    <div class="sizer">
+      <div class="field"><label>সারি (tr)</label><div class="step"><button id="r-" aria-label="সারি কমাও">−</button><b id="rv">3</b><button id="r+" aria-label="সারি বাড়াও">+</button></div></div>
+      <div class="field"><label>কলাম (td)</label><div class="step"><button id="c-" aria-label="কলাম কমাও">−</button><b id="cv">3</b><button id="c+" aria-label="কলাম বাড়াও">+</button></div></div>
+    </div>
+    <div class="pv" id="gwrap"><table id="grid"></table></div>
+    <div class="btns">
+      <button class="btn primary" id="mr">ডানের ঘর মেলাও ⇥ (colspan)</button>
+      <button class="btn primary" id="md">নিচের ঘর মেলাও ⤓ (rowspan)</button>
+    </div>
+    <div class="btns">
+      <button class="btn" id="sp">আলাদা করো</button>
+      <button class="btn" id="rs">নতুন করে শুরু</button>
+    </div>
+    <h3>এই টেবিলের HTML কোড</h3>
+    <pre class="code" id="code"></pre>
+    <p class="hint">কোডের যেকোনো td লাইনে আঙুল দাও, টেবিলের সেই ঘর জ্বলে উঠবে।</p>
+  </section>
+
+  <section class="card" id="player">
+    <h2>কোড থেকে টেবিল তৈরি</h2>
+    <p class="hint">উপরে যে টেবিল বানালে, ব্রাউজার সেটা কীভাবে লাইন ধরে ধরে আঁকে দেখো। ▶ চাপো বা সোয়াইপ করো।</p>
+    <div class="pv" id="ptab"></div>
+    <pre class="code" id="pcode"></pre>
+    <div class="pbar"><i id="pbar"></i></div>
+    <div class="pctl">
+      <button id="p-pv" aria-label="আগের ধাপ">◀</button>
+      <button id="p-nx">পরের লাইন ▶</button>
+      <button id="p-au" aria-pressed="false"><span id="p-aul">▶ অটো</span><i class="tm" id="p-tm"></i></button>
+    </div>
+    <div class="spd" id="p-spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div>
+  </section>
+
+  <section class="card">
+    <h2>চ্যালেঞ্জ: পাশের টেবিলটা বানাও</h2>
+    <div class="tabs" id="ctabs">
+      <button class="tab" data-k="0" aria-selected="true">১</button>
+      <button class="tab" data-k="1" aria-selected="false">২</button>
+      <button class="tab" data-k="2" aria-selected="false">৩</button>
+    </div>
+    <div class="goal">
+      <div><p class="hint">লক্ষ্য</p><div class="pv" id="target"></div></div>
+      <div><p class="hint">কী লাগবে</p><p id="clue"></p></div>
+    </div>
+    <button class="btn primary" id="chk">উপরের টেবিলের সাথে মিলিয়ে দেখো</button>
+    <p class="status" id="cres" aria-live="polite"></p>
+  </section>
+
+  <section class="card">
+    <h2>নিজে কোড লিখে দেখো</h2>
+    <div class="chips" id="presets">
+      <button class="chip" data-p="0">colspan</button>
+      <button class="chip" data-p="1">rowspan</button>
+      <button class="chip" data-p="2">ক্লাস রুটিন</button>
+      <button class="chip" data-p="b">উপরের টেবিল</button>
+    </div>
+    <textarea id="ed" spellcheck="false" aria-label="HTML কোড"></textarea>
+    <p class="hint">ফলাফল (লিখতে লিখতেই বদলাবে)</p>
+    <div class="pv" id="out"></div>
+  </section>
+
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>&lt;table&gt;</b> পুরো টেবিল, <b>&lt;tr&gt;</b> একটি সারি, <b>&lt;td&gt;</b> একটি ঘর, <b>&lt;th&gt;</b> হেডার ঘর (মোটা ও মাঝে)।</li>
+      <li><b>colspan="2"</b> মানে ঘরটি ডানদিকে ২ কলাম জায়গা নেবে। ওই সারিতে একটি td কম লিখতে হয়।</li>
+      <li><b>rowspan="2"</b> মানে ঘরটি নিচে ২ সারি জায়গা নেবে। নিচের সারিতে একটি td কম লিখতে হয়।</li>
+      <li><b>border="1"</b> দিলে ঘরের দাগ দেখা যায়। বোর্ড প্রশ্নে টেবিল কোড লিখতে border দিতে ভুলো না।</li>
+    </ul>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
+<script>
+const {$}=IM;
+const bn=x=>String(x).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+function say(tag,txt,tap){$('extag').textContent=(tap?'👆 ':'')+tag;$('extag').className='tag'+(tap?' tap':'');const p=$('extx');p.innerHTML=txt;p.classList.remove('fade');void p.offsetWidth;p.classList.add('fade');}
+let R=3,C=3,cells={},sel=null,hl=null;
+const key=(r,c)=>r+','+c, name=(r,c)=>String.fromCharCode(65+r)+(c+1);
+const kName=k=>{const [r,c]=k.split(',').map(Number);return name(r,c);};
+function fresh(){cells={};for(let r=0;r<R;r++)for(let c=0;c<C;c++)cells[key(r,c)]={rs:1,cs:1};}
+function single(r,c){const x=cells[key(r,c)];return x&&x.rs===1&&x.cs===1;}
+function warn(t){say('সমস্যা',t,false);}
+function tdCode(k){const x=cells[k];return `<code>&lt;td${x.cs>1?` colspan="${x.cs}"`:''}${x.rs>1?` rowspan="${x.rs}"`:''}&gt;${kName(k)}&lt;/td&gt;</code>`;}
+function cellMeaning(k){const x=cells[k],n=kName(k);
+  if(x.cs>1&&x.rs>1)return `ঘর ${n}: ${tdCode(k)}। ডানে ${bn(x.cs)} কলাম আর নিচে ${bn(x.rs)} সারি জুড়ে আছে।`;
+  if(x.cs>1)return `ঘর ${n}: ${tdCode(k)}। colspan="${x.cs}" তাই ডানদিকে ${bn(x.cs)} কলাম জায়গা নিয়েছে। এই সারিতে ${bn(x.cs-1)}টি td কম লিখতে হলো।`;
+  if(x.rs>1)return `ঘর ${n}: ${tdCode(k)}। rowspan="${x.rs}" তাই নিচে ${bn(x.rs)} সারি জায়গা নিয়েছে। নিচের সারিতে ${bn(x.rs-1)}টি td কম লাগবে।`;
+  return `ঘর ${n}: সাধারণ ঘর ${tdCode(k)}। এখন "ডানের ঘর মেলাও" বা "নিচের ঘর মেলাও" চাপো।`;}
+function rectIn(el,wrap){const a=el.getBoundingClientRect(),b=wrap.getBoundingClientRect();return {x:a.left-b.left+wrap.scrollLeft,y:a.top-b.top,w:a.width,h:a.height};}
+function animateMerge(absorbed,dir){
+  // absorbed: keys of cells about to disappear. Record their boxes, then fly them into the merged cell.
+  if(reduce)return ()=>{};
+  const wrap=$('gwrap');
+  const boxes=absorbed.map(k=>{const td=$('grid').querySelector(`td[data-k="${k}"]`);return td?{r:rectIn(td,wrap),t:td.textContent.slice(0,2)}:null;}).filter(Boolean);
+  const sTd=$('grid').querySelector(`td[data-k="${sel}"]`),old=rectIn(sTd,wrap);
+  return ()=>{
+    const nTd=$('grid').querySelector(`td[data-k="${sel}"]`);if(!nTd)return;const nw=rectIn(nTd,wrap);
+    boxes.forEach(b=>{const g=document.createElement('div');g.className='ghost';g.textContent=b.t;
+      Object.assign(g.style,{left:b.r.x+'px',top:b.r.y+'px',width:b.r.w+'px',height:b.r.h+'px'});wrap.appendChild(g);
+      const dx=old.x-b.r.x+(dir==='r'?old.w/2:0),dy=old.y-b.r.y+(dir==='d'?old.h/2:0);
+      g.animate([{transform:'none',opacity:.95},{transform:`translate(${dx}px,${dy}px) scale(.4)`,opacity:0}],{duration:520,easing:'cubic-bezier(.5,0,.3,1)'}).onfinish=()=>g.remove();});
+    const insR=dir==='r'?`inset(0 ${Math.max(0,nw.w-old.w)}px 0 0)`:`inset(0 0 ${Math.max(0,nw.h-old.h)}px 0)`;
+    nTd.animate([{clipPath:insR},{clipPath:'inset(0 0 0 0)'}],{duration:520,easing:'cubic-bezier(.2,.9,.3,1.1)'});
+  };}
+function mergeRight(){ if(!sel)return warn('আগে একটা ঘরে ট্যাপ করো।');
+  const [r,c]=sel.split(',').map(Number),x=cells[sel],nc=c+x.cs;
+  if(nc>=C)return warn('ডানে আর কোনো ঘর নেই। কলাম বাড়াও বা অন্য ঘর বাছো।');
+  for(let i=0;i<x.rs;i++)if(!single(r+i,nc))return warn('ডানের ঘরটি আগে থেকেই মেলানো। আগে সেটা আলাদা করো।');
+  const ab=[...Array(x.rs)].map((_,i)=>key(r+i,nc)),fin=animateMerge(ab,'r');
+  ab.forEach(k=>delete cells[k]);x.cs++;draw();fin();say('মেলানো হলো',cellMeaning(sel));}
+function mergeDown(){ if(!sel)return warn('আগে একটা ঘরে ট্যাপ করো।');
+  const [r,c]=sel.split(',').map(Number),x=cells[sel],nr=r+x.rs;
+  if(nr>=R)return warn('নিচে আর কোনো ঘর নেই। সারি বাড়াও বা অন্য ঘর বাছো।');
+  for(let j=0;j<x.cs;j++)if(!single(nr,c+j))return warn('নিচের ঘরটি আগে থেকেই মেলানো। আগে সেটা আলাদা করো।');
+  const ab=[...Array(x.cs)].map((_,j)=>key(nr,c+j)),fin=animateMerge(ab,'d');
+  ab.forEach(k=>delete cells[k]);x.rs++;draw();fin();say('মেলানো হলো',cellMeaning(sel));}
+function split(){ if(!sel)return warn('আগে একটা ঘরে ট্যাপ করো।');
+  const [r,c]=sel.split(',').map(Number),x=cells[sel];
+  for(let i=0;i<x.rs;i++)for(let j=0;j<x.cs;j++)cells[key(r+i,c+j)]={rs:1,cs:1};draw();say('আলাদা করা হলো',cellMeaning(sel));}
+function resize(dr,dc){const nR=Math.min(6,Math.max(1,R+dr)),nC=Math.min(6,Math.max(1,C+dc));if(nR===R&&nC===C)return;R=nR;C=nC;fresh();sel=null;draw();say('নতুন মাপ',`${bn(R)}টি সারি (tr), প্রতি সারিতে ${bn(C)}টি ঘর (td)। একটা ঘরে ট্যাপ করো।`);}
+function rowsOf(){const out=[];for(let r=0;r<R;r++){const row=[];for(let c=0;c<C;c++){const x=cells[key(r,c)];if(x)row.push({r,c,...x});}out.push(row);}return out;}
+function lines(rows,plain){
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const tg=s=>plain?s:`<span class="tg">${esc(s)}</span>`;
+  const at=(n,v)=>plain?` ${n}="${v}"`:` <span class="at">${n}="${v}"</span>`;
+  const L=[{t:tg('<table border="1">'),kind:'table'}];
+  rows.forEach((row,ri)=>{
+    L.push({t:'  '+tg('<tr>')+(plain?'':`  <span class="cm">&lt;!-- ${row.length}টি td --&gt;</span>`),kind:'tr',ri,n:row.length});
+    row.forEach(x=>L.push({k:key(x.r,x.c),kind:'td',ri,t:'    '+(plain?'<td':'<span class="tg">&lt;td</span>')+(x.cs>1?at('colspan',x.cs):'')+(x.rs>1?at('rowspan',x.rs):'')+(plain?'>':'<span class="tg">&gt;</span>')+name(x.r,x.c)+tg('</td>')}));
+    L.push({t:'  '+tg('</tr>'),kind:'/tr',ri});
+  });
+  L.push({t:tg('</table>'),kind:'/table'});
+  return L;}
+function tableHTML(rows,attrs){return rows.map(row=>'<tr>'+row.map(x=>{const k=key(x.r,x.c);
+  return `<td data-k="${k}"${x.cs>1?` colspan="${x.cs}"`:''}${x.rs>1?` rowspan="${x.rs}"`:''}${attrs?attrs(k):''}>${name(x.r,x.c)}${(x.cs>1||x.rs>1)?`<small>${x.cs>1?'colspan='+x.cs:''} ${x.rs>1?'rowspan='+x.rs:''}</small>`:''}</td>`;}).join('')+'</tr>').join('');}
+function draw(){
+  $('rv').textContent=R;$('cv').textContent=C;
+  const rows=rowsOf();
+  $('grid').innerHTML='<colgroup>'+'<col>'.repeat(C)+'</colgroup>'+tableHTML(rows,k=>` class="${k===sel?'sel':''} ${k===hl?'hl':''}"`);
+  $('grid').querySelectorAll('td').forEach(td=>td.onclick=()=>{sel=td.dataset.k;hl=null;draw();say('ঘর বাছাই',cellMeaning(sel),true);});
+  $('code').innerHTML=lines(rows).map(l=>`<span class="ln ${l.k&&l.k===sel?'hi':''} ${l.k&&l.k===hl?'tl':''}" ${l.k?`data-k="${l.k}"`:`data-kind="${l.kind}"`}>${l.t}</span>`).join('');
+  $('code').querySelectorAll('.ln').forEach(e=>e.onclick=()=>{
+    if(e.dataset.k){hl=e.dataset.k;draw();say('কোডের লাইন',cellMeaning(hl),true);}
+    else{const m={table:'<code>&lt;table border="1"&gt;</code> টেবিল শুরু। border="1" দিলে দাগ দেখা যায়।','/table':'<code>&lt;/table&gt;</code> টেবিল শেষ।',tr:'<code>&lt;tr&gt;</code> নতুন সারি শুরু (table row)।','/tr':'<code>&lt;/tr&gt;</code> সারি শেষ।'};say('কোডের লাইন',m[e.dataset.kind],true);}});
+  buildPlayer();
+}
+$('mr').onclick=mergeRight;$('md').onclick=mergeDown;$('sp').onclick=split;
+$('rs').onclick=()=>{fresh();sel=null;hl=null;draw();say('নতুন করে শুরু','সব ঘর আলাদা। একটা ঘরে ট্যাপ করো।');};
+$('r-').onclick=()=>resize(-1,0);$('r+').onclick=()=>resize(1,0);$('c-').onclick=()=>resize(0,-1);$('c+').onclick=()=>resize(0,1);
+
+// ---------- code → table player ----------
+let PL=[],pk=0,ptimer=null;
+function buildPlayer(){stopP();PL=lines(rowsOf());pk=0;renderP();if(typeof KP!=='undefined'){kpStarted=false;KP.reset();}}
+function renderP(){
+  const L=PL,cur=L[pk],rows=rowsOf();
+  $('pcode').innerHTML=L.map((l,i)=>`<span class="ln ${i===pk?'hi new':''} ${i>pk?'dim':''}">${l.t}</span>`).join('');
+  // which rows/cells are visible so far
+  let h='';const seen=new Set(L.slice(0,pk+1).filter(l=>l.kind==='td').map(l=>l.k));
+  const open=L.slice(0,pk+1).filter(l=>l.kind==='tr').map(l=>l.ri);
+  if(pk===0){h='<table border="1" class="blank"></table>';}
+  else{h='<table border="1"><colgroup>'+'<col>'.repeat(C)+'</colgroup>'+rows.filter((_,ri)=>open.includes(ri)).map((row,i)=>{
+      const ri=open[i],cs=row.filter(x=>seen.has(key(x.r,x.c)));
+      const isNew=cur.kind==='tr'&&cur.ri===ri;
+      const body=cs.length?cs.map(x=>{const k=key(x.r,x.c);return `<td${x.cs>1?` colspan="${x.cs}"`:''}${x.rs>1?` rowspan="${x.rs}"`:''} class="${cur.k===k?'cur newcell':''}">${name(x.r,x.c)}</td>`;}).join(''):'';
+      return `<tr class="${isNew?'newrow ghostrow':''}">${body||`<td colspan="${C}" style="border-style:dashed;border-color:var(--wire-off);height:44px;background:transparent"></td>`}</tr>`;}).join('')+'</table>';}
+  $('ptab').innerHTML=h;
+  const msg={table:'ব্রাউজার <code>&lt;table&gt;</code> পড়লো। একটা খালি টেবিল তৈরি হলো।',
+    tr:`<code>&lt;tr&gt;</code> মানে নতুন সারি। ${bn(cur.ri+1)} নম্বর সারি শুরু। এই সারিতে ${bn(cur.n||0)}টি td আছে।`,
+    td:cur.k?cellMeaning(cur.k):'','/tr':`<code>&lt;/tr&gt;</code> ${bn((cur.ri||0)+1)} নম্বর সারি শেষ।`,'/table':'<code>&lt;/table&gt;</code> টেবিল সম্পূর্ণ! উপরের টেবিলের সাথে মিলিয়ে দেখো।'}[cur.kind];
+  if(ptouched)say(`লাইন ${bn(pk+1)} / ${bn(L.length)}`,msg);
+  $('p-pv').disabled=pk===0;{const e=pk===L.length-1,b=$('p-nx');b.disabled=false;b.classList.toggle('again',e);b.textContent=e?'🔄 আবার শুরু করো':'পরের লাইন ▶';}$('pbar').style.width=(100*(pk+1)/L.length)+'%';
+  const ln=$('pcode').querySelectorAll('.ln')[pk];if(ln&&ptouched){const pc=$('pcode');pc.scrollTop=Math.max(0,ln.offsetTop-pc.clientHeight/2);}
+}
+let ptouched=false;
+function pnext(){ptouched=true;if(pk<PL.length-1){pk++;renderP();}else stopP();}
+function pprev(){ptouched=true;if(pk>0){pk--;renderP();}}
+let pspd=1;try{const v=parseFloat(localStorage.getItem('im-speed'));if(v>0)pspd=v;}catch(e){}
+const PSB=[...$('p-spd').querySelectorAll('button')];const pmark=()=>PSB.forEach(b=>b.classList.toggle('sel',Math.abs(+b.dataset.s-pspd)<.01));pmark();
+PSB.forEach(b=>b.onclick=()=>{pspd=+b.dataset.s;pmark();try{localStorage.setItem('im-speed',pspd);}catch(e){}if(ptimer){clearTimeout(ptimer);pcd();ploop();}});
+function pcd(){const t=$('p-tm');t.style.animation='none';void t.offsetWidth;t.style.animation=`tmfill ${1300/pspd}ms linear forwards`;}
+function ploop(){ptimer=setTimeout(()=>{pnext();if(pk>=PL.length-1)stopP();else{pcd();ploop();}},1300/pspd);}
+function stopP(){clearTimeout(ptimer);ptimer=null;$('p-au').setAttribute('aria-pressed','false');$('p-aul').textContent='▶ অটো';$('p-tm').style.animation='none';}
+function playP(){ptouched=true;$('p-au').setAttribute('aria-pressed','true');$('p-aul').textContent='⏸ থামো';ptimer=-1;if(pk>=PL.length-1){pk=0;renderP();}else pnext();if(pk>=PL.length-1){stopP();return;}pcd();ploop();}
+$('p-nx').onclick=()=>{stopP();if(pk>=PL.length-1){ptouched=true;pk=0;renderP();}else pnext();};$('p-pv').onclick=()=>{stopP();pprev();};$('p-au').onclick=()=>ptimer?stopP():playP();
+let tx0=null,ty0=0;
+$('player').addEventListener('touchstart',e=>{const t=e.touches[0];tx0=t.clientX;ty0=t.clientY;},{passive:true});
+$('player').addEventListener('touchend',e=>{if(tx0===null)return;const t=e.changedTouches[0],dx=t.clientX-tx0,dy=t.clientY-ty0;tx0=null;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.5){stopP();dx<0?pnext():pprev();}},{passive:true});
+$('pcode').style.maxHeight='260px';$('pcode').style.position='relative';
+/* standard bottom dock (same as every page) drives the code-to-table player */
+document.querySelector('.pctl').hidden=true;$('p-spd').hidden=true;document.querySelector('.pbar').hidden=true;
+document.body.classList.add('kit');document.body.insertAdjacentHTML('beforeend',IM.DOCK);
+let kpStarted=false;
+var KP=IM.player({count:()=>PL.length,show:k=>{stopP();pk=k;ptouched=kpStarted;kpStarted=true;renderP();},swipe:$('player'),interval:1500});
+
+// start in a worked state: header across the top, one tall cell on the left
+fresh();cells['0,0'].cs=3;delete cells['0,1'];delete cells['0,2'];cells['1,0'].rs=2;delete cells['2,0'];sel='1,0';draw();
+say('শুরু করো','নিচের টেবিলে <b>A1</b> ঘর colspan দিয়ে ৩ কলাম, আর <b>B1</b> rowspan দিয়ে ২ সারি জুড়ে আছে। যেকোনো ঘরে বা কোডের লাইনে আঙুল দাও।');
+
+// challenges
+const CH=[
+  {R:2,C:3,m:{'0,0':[1,3]},clue:'২টি সারি, ৩টি কলাম। উপরের সারির প্রথম ঘর <b>colspan="3"</b>।'},
+  {R:3,C:2,m:{'0,0':[3,1]},clue:'৩টি সারি, ২টি কলাম। বাম দিকের প্রথম ঘর <b>rowspan="3"</b>।'},
+  {R:3,C:3,m:{'0,0':[2,2],'2,1':[1,2]},clue:'৩×৩ টেবিল। উপরের বাম ঘর ২ কলাম ও ২ সারি জুড়ে, আর নিচের সারির শেষ দুই ঘর মেলানো।'}];
+let ci=0;
+function build(ch){const c={};for(let r=0;r<ch.R;r++)for(let k=0;k<ch.C;k++)c[key(r,k)]={rs:1,cs:1};
+  for(const k in ch.m){const [r,cc]=k.split(',').map(Number),[rs,cs]=ch.m[k];for(let i=0;i<rs;i++)for(let j=0;j<cs;j++)delete c[key(r+i,cc+j)];c[k]={rs,cs};}return c;}
+function showCh(){const ch=CH[ci],c=build(ch);let h='<table><colgroup>'+'<col>'.repeat(ch.C)+'</colgroup>';
+  for(let r=0;r<ch.R;r++){h+='<tr>';for(let k=0;k<ch.C;k++){const x=c[key(r,k)];if(x)h+=`<td ${x.cs>1?`colspan="${x.cs}"`:''} ${x.rs>1?`rowspan="${x.rs}"`:''}>${name(r,k)}</td>`;}h+='</tr>';}
+  $('target').innerHTML=h+'</table>';$('clue').innerHTML=ch.clue;$('cres').textContent='';}
+IM.tabs($('ctabs'),k=>{ci=+k;showCh();});showCh();
+$('chk').onclick=()=>{const ch=CH[ci],want=build(ch);
+  const same=R===ch.R&&C===ch.C&&Object.keys(want).length===Object.keys(cells).length&&Object.keys(want).every(k=>cells[k]&&cells[k].rs===want[k].rs&&cells[k].cs===want[k].cs);
+  $('cres').className='status '+(same?'ok-txt':'bad-txt');
+  $('cres').textContent=same?'দারুণ! একদম মিলে গেছে।':(R!==ch.R||C!==ch.C?`আগে সারি ${ch.R} আর কলাম ${ch.C} করো।`:'এখনো মেলেনি। কোন ঘরে colspan বা rowspan লাগবে দেখো।');};
+
+// live editor
+const P=[
+`<table border="1">
+  <tr>
+    <th colspan="2">নাম</th>
+  </tr>
+  <tr>
+    <td>প্রথম</td>
+    <td>শেষ</td>
+  </tr>
+</table>`,
+`<table border="1">
+  <tr>
+    <td rowspan="2">ICT</td>
+    <td>তত্ত্বীয়</td>
+  </tr>
+  <tr>
+    <td>ব্যবহারিক</td>
+  </tr>
+</table>`,
+`<table border="1">
+  <tr>
+    <th colspan="4">ক্লাস রুটিন</th>
+  </tr>
+  <tr>
+    <th>বার</th> <th>১০টা</th> <th>১১টা</th> <th>১২টা</th>
+  </tr>
+  <tr>
+    <td>শনি</td> <td>বাংলা</td> <td>ICT</td>
+    <td rowspan="2">বিরতি</td>
+  </tr>
+  <tr>
+    <td>রবি</td> <td colspan="2">ICT ব্যবহারিক</td>
+  </tr>
+</table>`];
+function run(){$('out').innerHTML=$('ed').value.replace(/<\s*\/?\s*(script|iframe|style|link|meta|object|embed)[^>]*>/gi,'').replace(/\son\w+\s*=/gi,' x=');}
+$('ed').value=P[2];run();$('ed').oninput=run;
+$('presets').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{$('ed').value=b.dataset.p==='b'?lines(rowsOf(),true).map(l=>l.t).join('\n'):P[+b.dataset.p];run();});
+IM.mcq(document.getElementById('mcq45'),[{"q": "টেবিলের একটি সারি তৈরি করে—", "o": ["&lt;td&gt;", "&lt;tr&gt;", "&lt;th&gt;", "&lt;row&gt;"], "a": 1, "w": "tr = table row।"}, {"q": "একটি ঘর ডানে ২ কলাম জায়গা নিলে—", "o": ["rowspan=\"2\"", "colspan=\"2\"", "cellspan=\"2\"", "width=\"2\""], "a": 1, "w": "colspan কলাম জোড়া লাগায়।"}, {"q": "একটি ঘর নিচে ২ সারি জায়গা নিলে—", "o": ["rowspan=\"2\"", "colspan=\"2\"", "border=\"2\"", "height=\"2\""], "a": 0, "w": "নিচের সারিতে একটি td কম লিখতে হয়।"}, {"q": "হেডার ঘর (মোটা ও মাঝে) এর ট্যাগ—", "o": ["&lt;td&gt;", "&lt;th&gt;", "&lt;head&gt;", "&lt;tr&gt;"], "a": 1, "w": "th = table header।"}]);
+</script>

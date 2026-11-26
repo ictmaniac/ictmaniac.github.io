@@ -1,0 +1,137 @@
+---
+title: XOR ও XNOR ল্যাব
+eyebrow: ৩.২.৭ XOR ও XNOR গেট
+h1: XOR ও XNOR গেট
+lead: XOR বলে "দুটো আলাদা হলে 1", XNOR বলে "দুটো একই হলে 1"। সুইচ চেপে দেখো।
+---
+<style>
+.lab-t{font-family:var(--f-mono);font-weight:700;font-size:11px;fill:var(--accent);opacity:0;transition:opacity .4s}
+.lab-t.show{opacity:1;animation:none}
+.lab-bg{fill:var(--panel);opacity:0;transition:opacity .4s}
+.lab-bg.show{opacity:.9;animation:none}
+</style>
+  <div class="tabs" id="tabs">
+    <button class="tab m" data-k="XOR" aria-selected="true">XOR</button>
+    <button class="tab m" data-k="XNOR" aria-selected="false">XNOR</button>
+  </div>
+
+  <section class="stage"><svg id="g1"></svg></section>
+  <div class="controls" id="tg"></div>
+  <div class="card readout" aria-live="polite"><span class="expr" id="ex"></span><span class="status" id="stx"></span></div>
+
+  <section class="card">
+    <h2>সত্যক সারণি</h2>
+    <div class="scroll-x"><table id="tt"></table></div>
+    <ul class="points" id="pts"></ul>
+  </section>
+
+  <section class="card">
+    <h2 id="bh">মৌলিক গেট দিয়ে XOR</h2>
+    <p class="hint" id="bhint"></p>
+    <div class="stage" style="border:none;padding:0"><svg id="g2"></svg></div>
+    <div class="controls" id="tg2"></div>
+    <p class="hint" id="inner" aria-live="polite"></p>
+  </section>
+
+  <section class="card">
+    <h2>সার্কিট দেখে সমীকরণ লেখো</h2>
+    <p class="hint">বাঁ থেকে ডানে প্রতিটি গেটের আউটপুট আলাদা করে লেখো। "পরের গেট" চাপলে উত্তর বসবে।</p>
+    <div class="chips" id="pchips"></div>
+    <div class="stage" style="border:none;padding:0"><svg id="g3"></svg></div>
+    <div class="btns"><button class="btn primary" id="pnext">পরের গেট</button><button class="btn" id="pall">সব দেখাও</button></div>
+    <p class="answer" id="pans" hidden></p>
+  </section>
+
+  <section class="card" id="quiz"></section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq3"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points"><li><b>XOR:</b> ইনপুট আলাদা হলে 1। Y = A ⊕ B = A'B + AB'।</li><li><b>XNOR:</b> ইনপুট একই হলে 1। Y = A ⊙ B = AB + A'B'।</li><li>XNOR = XOR এর পরে NOT। XNOR কে সমতা যাচাইকারী গেট বলে।</li></ul>
+  </section>
+<script>
+const {$}=IM;
+let G='XOR'; const st={A:0,B:0}, st2={A:0,B:0};
+let c1,s1,stt,c2,s2;
+function main(){
+  c1=IM.circuit($('g1'),{vb:[360,130],st,onChange:r1,inputs:[{id:'A',x:4,y:40},{id:'B',x:4,y:94}],
+    gates:[{id:'g',t:G,x:150,y:45,in:['A','B'],mx:[110,110]}],outputs:[{id:'Y',s:'g',x:310,y:67}]});
+  s1=IM.toggles($('tg'),['A','B'],st,r1);
+  stt=IM.tt($('tt'),['A','B'],[{h:G==='XOR'?'A⊕B':'A⊙B',f:e=>G==='XOR'?e.A^e.B:1-(e.A^e.B)}],st,r1);
+  $('pts').innerHTML = G==='XOR'
+    ? `<li>সমীকরণ: <span class="mono">Y = A ⊕ B = A'B + AB'</span></li><li>ইনপুট দুটো <b>ভিন্ন</b> হলে আউটপুট 1, একই হলে 0।</li><li>অনেক ইনপুটে: <b>বিজোড় সংখ্যক</b> 1 থাকলে আউটপুট 1। তাই একে odd-parity চেকারেও ব্যবহার করা হয়।</li><li>হাফ অ্যাডারের যোগফল (Sum) এই গেট দিয়েই হয়।</li>`
+    : `<li>সমীকরণ: <span class="mono">Y = A ⊙ B = (A ⊕ B)' = AB + A'B'</span></li><li>ইনপুট দুটো <b>একই</b> হলে আউটপুট 1। তাই একে সমতা যাচাইকারী (equality detector) বলে।</li><li>অনেক ইনপুটে: <b>জোড় সংখ্যক</b> 1 থাকলে আউটপুট 1।</li>`;
+  $('bh').textContent=`মৌলিক গেট দিয়ে ${G}`;
+  $('bhint').innerHTML= G==='XOR' ? `<span class="mono">Y = A'B + AB'</span>: দুটি NOT, দুটি AND আর একটি OR গেট লাগে।` : `<span class="mono">Y = AB + A'B'</span>: দুটি NOT, দুটি AND আর একটি OR গেট লাগে।`;
+  const g = G==='XOR'
+   ? [{id:'na',t:'NOT',x:70,y:2,in:['A']},{id:'nb',t:'NOT',x:70,y:128,in:['B']},
+      {id:'a1',t:'AND',x:170,y:20,in:['na',{s:'B',p:[[56,140],[56,108],[135,108],[135,52]]}],lbl:"A'B"},
+      {id:'a2',t:'AND',x:170,y:100,in:[{s:'A',p:[[48,24],[48,84],[145,84],[145,114]]},'nb'],lbl:"AB'"},
+      {id:'o',t:'OR',x:270,y:60,in:['a1','a2'],mx:[245,245]}]
+   : [{id:'na',t:'NOT',x:70,y:2,in:['A']},{id:'nb',t:'NOT',x:70,y:128,in:['B']},
+      {id:'a1',t:'AND',x:170,y:20,in:[{s:'A',p:[[48,24],[48,34]]},{s:'B',p:[[56,140],[56,108],[135,108],[135,52]]}],lbl:'AB'},
+      {id:'a2',t:'AND',x:170,y:100,in:['na','nb'],mx:[150,140],lbl:"A'B'"},
+      {id:'o',t:'OR',x:270,y:60,in:['a1','a2'],mx:[245,245]}];
+  c2=IM.circuit($('g2'),{vb:[400,180],st:st2,onChange:r2,inputs:[{id:'A',x:4,y:24},{id:'B',x:4,y:150}],gates:g,outputs:[{id:'Y',s:'o',x:370,y:82}],
+    dots:[[48,24,'A'],[56,150,'B']]});
+  s2=IM.toggles($('tg2'),['A','B'],st2,r2);
+  r1(); r2();
+}
+function r1(){ const v=c1.render(); s1(); stt(); $('ex').innerHTML=`Y = A ${G==='XOR'?'⊕':'⊙'} B = <span class="v">${v.g}</span>`;
+  $('stx').textContent = st.A===st.B ? 'ইনপুট দুটো একই' : 'ইনপুট দুটো আলাদা'; }
+function r2(){ const v=c2.render(); s2(); const L=G==='XOR'?["A'B","AB'"]:['AB',"A'B'"];
+  $('inner').innerHTML=`${L[0]} = ${v.a1}, ${L[1]} = ${v.a2} → Y = ${v.a1} + ${v.a2} = <b>${v.o}</b>`; }
+IM.tabs($('tabs'),k=>{G=k;main();q.reset();});
+
+// circuit -> equation
+const PZ=[
+ {g:[{id:'g1',t:'OR',x:100,y:10,in:['A','B'],mx:[70,70]},{id:'g2',t:'NOT',x:100,y:100,in:['C']},{id:'g3',t:'AND',x:230,y:50,in:['g1','g2'],mx:[200,200]}],
+  L:{g1:'A + B',g2:"C'",g3:"(A + B)·C'"}},
+ {g:[{id:'g1',t:'NAND',x:100,y:10,in:['A','B'],mx:[70,70]},{id:'g3',t:'OR',x:230,y:50,in:['g1','C'],mx:[205,205]}],
+  L:{g1:"(AB)'",g3:"(AB)' + C"}},
+ {g:[{id:'g1',t:'XOR',x:100,y:10,in:['A','B'],mx:[70,70]},{id:'g2',t:'AND',x:100,y:90,in:[{s:'B',p:[[60,72],[60,105]]},'C'],mx:[70,70]},{id:'g3',t:'NOR',x:230,y:50,in:['g1','g2'],mx:[200,200]}],
+  L:{g1:'A ⊕ B',g2:'BC',g3:"(A ⊕ B + BC)'"}},
+];
+let pk=0,pcur,porder;
+$('pchips').innerHTML=PZ.map((p,i)=>`<button class="chip" data-i="${i}">সার্কিট ${i+1}</button>`).join('');
+$('pchips').querySelectorAll('.chip').forEach(c=>c.onclick=()=>pload(+c.dataset.i));
+function pload(i){
+  pcur=PZ[i]; pk=0; porder=Object.keys(pcur.L); $('pans').hidden=true;
+  const stp={A:0,B:0,C:0};
+  const c=IM.circuit($('g3'),{vb:[400,160],st:stp,inputs:[{id:'A',x:4,y:22},{id:'B',x:4,y:72},{id:'C',x:4,y:132}],gates:pcur.g,outputs:[{id:'Y',s:'g3',x:370,y:72}],
+    dots: i===2?[[60,72,'B']]:[]});
+  c.render();
+  const svg=$('g3'); let extra='';
+  pcur.g.forEach(g=>{ const sh={AND:52,OR:58,NOT:42,NAND:62,NOR:68,XOR:58}[g.t]; const x=g.x+sh+2, y=g.y+(g.t==='NOT'?14:12);
+    const lab=pcur.L[g.id]; const w=lab.length*6.8+6;
+    extra+=`<rect class="lab-bg" data-l="${g.id}" x="${x-2}" y="${y-11}" width="${w}" height="15" rx="3"/><text class="lab-t" data-l="${g.id}" x="${x+1}" y="${y}">${lab}</text>`; });
+  svg.insertAdjacentHTML('beforeend',extra);
+  $('pchips').querySelectorAll('.chip').forEach(c=>c.style.borderColor=+c.dataset.i===i?'var(--accent)':'');
+  pupd();
+}
+function pnext(){ if(pk>=porder.length) return; $('g3').querySelectorAll(`[data-l="${porder[pk]}"]`).forEach(e=>e.classList.add('show')); pk++;
+  if(pk===porder.length){ $('pans').hidden=false; $('pans').innerHTML=`Y = <span class="v">${pcur.L.g3}</span>`; } pupd(); }
+function pupd(){ $('pnext').disabled=$('pall').disabled=pk>=porder.length; }
+$('pnext').onclick=pnext; $('pall').onclick=()=>{while(pk<porder.length)pnext();};
+
+const q=IM.quiz01($('quiz'),()=>{const a=IM.rnd(0,1),b=IM.rnd(0,1),y=G==='XOR'?a^b:1-(a^b);
+  return {ask:`${G} গেটে A = <span class="mono">${a}</span>, B = <span class="mono">${b}</span> হলে Y কত?`,ans:y,after:()=>{st.A=a;st.B=b;r1();}};});
+main(); pload(0);
+
+IM.mcq(document.getElementById('mcq3'),[{"q": "XOR গেটের আউটপুট 1 হয় যখন—", "o": ["দুটো ইনপুট একই", "দুটো ইনপুট আলাদা", "দুটোই 1", "দুটোই 0"], "a": 1, "w": "আলাদা হলে 1।"}, {"q": "A ⊕ B = ?", "o": ["AB + A'B'", "A'B + AB'", "A + B", "(AB)'"], "a": 1, "w": "XOR এর SOP রূপ।"}, {"q": "XNOR কে বলে—", "o": ["সমতা যাচাইকারী গেট", "সার্বজনীন গেট", "অ্যাডার", "মেমোরি"], "a": 0, "w": "একই হলে 1।"}, {"q": "A ⊕ A = ?", "o": ["A", "1", "0", "A'"], "a": 2, "w": "একই, তাই 0।"}]);
+/*TOUR*/{const T=IM.T;
+IM.tour([
+ {m:'<b>XOR</b> গেটের নিয়ম: দুটো ইনপুট <b>আলাদা</b> হলে আউটপুট 1, <b>একই</b> হলে 0।',do(){T.tab('XOR');T.tog('#tg','A',0);T.tog('#tg','B',0);}},
+ {m:'A = 0, B = 0: দুটোই একই, তাই Y = <b>0</b>।',el:'#g1',do(){T.tab('XOR');T.tog('#tg','A',0);T.tog('#tg','B',0);}},
+ {m:'A = 1, B = 0: এবার দুটো আলাদা, তাই Y = <b>1</b>। বাল্ব জ্বলে উঠলো।',el:'#g1',do(){T.tab('XOR');T.tog('#tg','A',1);T.tog('#tg','B',0);}},
+ {m:'A = 1, B = 1: দুটোই একই, তাই Y = <b>0</b>। OR গেট হলে এখানে 1 হতো, এটাই XOR এর আসল পার্থক্য।',el:'#g1',do(){T.tab('XOR');T.tog('#tg','A',1);T.tog('#tg','B',1);}},
+ {m:'সত্যক সারণিতে দেখো: শুধু <b>01</b> আর <b>10</b> সারিতে Y = 1।',el:'#tt',do(){T.tab('XOR');}},
+ {m:'মৌলিক গেট দিয়ে XOR বানানো যায়: <b>Y = A\'B + AB\'</b>। সুইচ চেপে ভিতরের গেটগুলোর মান দেখো।',el:'#g2',do(){T.tab('XOR');}},
+ {m:'<b>XNOR</b> ঠিক উল্টো: দুটো ইনপুট <b>একই</b> হলে আউটপুট 1। Y = (A ⊕ B)\'।',el:'#g1',do(){T.tab('XNOR');T.tog('#tg','A',1);T.tog('#tg','B',1);}},
+ {m:'XNOR এ A = 0, B = 1: আলাদা, তাই Y = <b>0</b>। XNOR কে <b>সমতা যাচাইকারী</b> গেটও বলে।',el:'#g1',do(){T.tab('XNOR');T.tog('#tg','A',0);T.tog('#tg','B',1);}},
+ {m:'সার্কিট দেখে সমীকরণ লেখার নিয়ম: বাঁ থেকে ডানে প্রতিটি গেটের আউটপুট আলাদা করে লেখো।',el:'#g3',do(){T.click('#pchips .chip');T.click('#pall');}}
+]);
+}/*ENDTOUR*/
+</script>

@@ -1,0 +1,79 @@
+---
+ch: ৫
+kit: 1
+title: printf ও scanf
+eyebrow: ৫.২.১০ ইনপুট ও আউটপুট স্টেটমেন্ট
+h1: printf আর scanf কীভাবে কাজ করে
+lead: ▶ চাপো। কীবোর্ড থেকে সংখ্যা কীভাবে চলকে ঢোকে (scanf) আর চলকের মান কীভাবে স্ক্রিনে আসে (printf), ধাপে ধাপে দেখো।
+---
+<style>
+.vars{display:flex;gap:10px}
+.vars div{flex:1;border:2px solid var(--line);border-radius:12px;padding:4px 8px;text-align:center;font-family:var(--f-mono)}
+.vars small{display:block;color:var(--muted);font-size:.75rem}
+.vars b{font-size:1.6rem}
+.vars div.ch{border-color:var(--signal);background:var(--signal-soft);animation:pop .4s ease-out}
+.console .cur{display:inline-block;width:9px;height:1.1em;background:var(--ink);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+.console .typed{color:#B8650A;font-weight:800}
+@keyframes blink{50%{opacity:0}}
+.fmt{font-family:var(--f-mono);font-weight:800;font-size:1.05rem;text-align:center;padding:8px;border-radius:10px;background:var(--board);word-break:break-word}
+.fmt .h{background:var(--signal);color:#1A1200;border-radius:4px;padding:0 3px}
+.esc{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.esc button,.spec button{font:inherit;font-family:var(--f-mono);font-weight:800;font-size:1.05rem;min-height:48px;border-radius:10px;border:2px solid var(--accent);background:var(--panel);color:var(--accent);cursor:pointer}
+.esc button.on{background:var(--accent);color:var(--panel)}
+.spec{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+</style>
+  <section class="card" id="main">
+    <pre id="code"></pre>
+    <div class="fmt" id="fmt" hidden></div>
+    <div class="vars"><div id="va"><small>a (ঠিকানা &amp;a = 2000)</small><b id="a">?</b></div><div id="vb"><small>b (ঠিকানা &amp;b = 2004)</small><b id="b">?</b></div></div>
+    <div class="console"><small>স্ক্রিন</small><span id="out"></span></div>
+  </section>
+  <section class="card">
+    <h2>এস্কেপ সিকোয়েন্স</h2>
+    <p class="hint">বোতাম চাপো: <code>printf("ICT?Maniac");</code> এর ? এর জায়গায় বসবে।</p>
+    <div class="esc" id="esc"></div>
+    <div class="console"><small>আউটপুট</small><span id="eout"></span></div>
+  </section>
+  <section class="card">
+    <h2>ফরম্যাট স্পেসিফায়ার</h2>
+    <div class="spec" id="spec"></div>
+    <ul class="points">
+      <li>scanf এ চলকের আগে <b>&amp;</b> (ঠিকানা) দিতে হয়, কারণ scanf কে বলতে হয় মান কোন ঘরে রাখবে।</li>
+      <li>printf এ &amp; লাগে না, কারণ সে শুধু মান পড়ে।</li>
+    </ul>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
+<script>
+const {$,say,bn}=IM;
+const SRC=['int a, b;','printf("Enter two numbers: ");','scanf("%d %d", &a, &b);','printf("Sum = %d\\n", a + b);','printf("a\\tb\\n%d\\t%d", a, b);'];
+const cv=IM.codeView($('code'),SRC.map(IM.cHL),i=>say('কোডের লাইন',LX[i],true));
+const LX=['দুটি int চলক তৈরি। মান এখনো অজানা।','printf উদ্ধৃতির ভিতরের লেখা হুবহু স্ক্রিনে দেখায়।','scanf কীবোর্ড থেকে দুটি পূর্ণসংখ্যা (%d) পড়ে a আর b এর ঠিকানায় (&a, &b) রাখে।','%d এর জায়গায় a + b এর মান বসে। \\n মানে নতুন লাইন।','\\t মানে ট্যাব (কয়েক ঘর ফাঁকা), সারিবদ্ধ করে দেখাতে কাজে লাগে।'];
+const P='Enter two numbers: ';
+const S=[
+ {l:0,o:'',m:'<code>int a, b;</code> দুটো চলক তৈরি হলো, মান এখনো জানা নেই।'},
+ {l:1,o:P,cur:1,m:'printf স্ক্রিনে লিখলো: Enter two numbers: (ব্যবহারকারীকে কী করতে হবে বলে দিলো)'},
+ {l:2,o:P,typed:'12 30',cur:1,m:'scanf অপেক্ষা করছে। ব্যবহারকারী কীবোর্ডে টাইপ করলো 12 30 তারপর Enter চাপলো।'},
+ {l:2,o:P,typed:'12 30',a:12,ch:'a',f:'scanf("<span class="h">%d</span> %d", <span class="h">&amp;a</span>, &amp;b);',m:'প্রথম %d পেলো 12, রাখলো &amp;a ঠিকানায় (2000)। এখন a = 12।'},
+ {l:2,o:P,typed:'12 30',a:12,b:30,ch:'b',f:'scanf("%d <span class="h">%d</span>", &amp;a, <span class="h">&amp;b</span>);',m:'দ্বিতীয় %d পেলো 30, রাখলো &amp;b ঠিকানায়। এখন b = 30।'},
+ {l:3,o:P+'12 30\nSum = 42\n',a:12,b:30,f:'printf("Sum = <span class="h">%d</span>\\n", <span class="h">a + b</span>);',m:'%d এর জায়গায় a + b = 42 বসলো। \\n এর কারণে কার্সর নতুন লাইনে গেলো।'},
+ {l:4,o:P+'12 30\nSum = 42\na\tb\n12\t30',a:12,b:30,f:'printf("a<span class="h">\\t</span>b<span class="h">\\n</span>%d<span class="h">\\t</span>%d", a, b);',m:'\\t ফাঁকা জায়গা দিলো, \\n নতুন লাইনে নিলো। তাই a আর 12 এক কলামে, b আর 30 আরেক কলামে।'}];
+const esc=s=>IM.esc(s);
+function render(k){const s=S[k];cv.on(s.l);cv.dimAfter(s.l);
+  $('out').innerHTML=esc(s.o)+(s.typed&&!s.o.includes(s.typed)?`<span class="typed">${s.typed}</span>`:'')+(s.cur?'<span class="cur"></span>':'');
+  $('a').textContent=s.a??'?';$('b').textContent=s.b??'?';$('va').classList.toggle('ch',s.ch==='a');$('vb').classList.toggle('ch',s.ch==='b');
+  $('fmt').hidden=!s.f;if(s.f)$('fmt').innerHTML=s.f;
+  say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+const player=IM.player({count:()=>S.length,show:render,swipe:$('main'),interval:2000});
+const ES=[['\\n','ICT\nManiac','নতুন লাইন (new line)'],['\\t','ICT\tManiac','ট্যাব, কয়েক ঘর ফাঁকা'],['\\\\','ICT\\Maniac','একটা \\ দেখাতে'],['\\"','ICT"Maniac','উদ্ধৃতি চিহ্ন দেখাতে'],['\\a','ICTManiac (🔔 বিপ শব্দ)','বিপ শব্দ (alert)'],['\\b','ICManiac','এক ঘর পিছনে (backspace)'],['\\\'','ICT\'Maniac','একক উদ্ধৃতি'],['\\0','ICT','স্ট্রিং এর শেষ (null), পরের অংশ দেখায় না']];
+$('esc').innerHTML=ES.map((e,i)=>`<button data-i="${i}">${esc(e[0])}</button>`).join('');
+$('esc').querySelectorAll('button').forEach(b=>b.onclick=()=>{const e=ES[+b.dataset.i];$('esc').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));$('eout').textContent=e[1];say(e[0],`<code>${esc(e[0])}</code> মানে ${e[2]}।`,true);});
+$('esc').querySelector('button').click();
+const SP=[['%d','int (পূর্ণসংখ্যা)'],['%f','float (দশমিক)'],['%c','char (একটি অক্ষর)'],['%lf','double'],['%s','string (শব্দ)'],['%ld','long int'],['%o','অক্টাল সংখ্যা'],['%x','হেক্সাডেসিমাল']];
+$('spec').innerHTML=SP.map((s,i)=>`<button data-i="${i}">${s[0]}</button>`).join('');
+$('spec').querySelectorAll('button').forEach(b=>b.onclick=()=>{const s=SP[+b.dataset.i];say(s[0],`<code>${s[0]}</code> দিয়ে ${s[1]} টাইপের মান পড়া বা দেখানো হয়।`,true);});
+say('শুরু','নিচের ▶ চাপো।');player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "কিবোর্ড থেকে মান নিতে—", "o": ["printf", "scanf", "getch", "return"], "a": 1, "w": "scanf ইনপুট নেয়।"}, {"q": "scanf এ চলকের আগে & কেন?", "o": ["গুণ করতে", "ঠিকানা বলতে", "শর্ত দিতে", "মন্তব্য করতে"], "a": 1, "w": "মান কোন ঘরে রাখবে তা জানাতে।"}, {"q": "int এর ফরম্যাট স্পেসিফায়ার—", "o": ["%f", "%c", "%d", "%s"], "a": 2, "w": "%d = integer।"}, {"q": "float এর ফরম্যাট স্পেসিফায়ার—", "o": ["%d", "%f", "%c", "%i"], "a": 1, "w": "%f = float।"}]);
+</script>

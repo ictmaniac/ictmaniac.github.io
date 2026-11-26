@@ -1,0 +1,80 @@
+---
+ch: ৫
+kit: 1
+title: C অপারেটর
+eyebrow: ৫.২.৮ অপারেটর, অপারেন্ড ও এক্সপ্রেশন
+h1: কোনটা আগে হিসাব হয়?
+lead: একটা এক্সপ্রেশন বাছো, তারপর ▶ চাপো। কম্পিউটার কোন অংশ আগে হিসাব করে আর কেন, ধাপে ধাপে দেখাবে।
+---
+<style>
+.xpr{font-family:var(--f-mono);font-weight:800;font-size:1.5rem;text-align:center;padding:16px 8px;border-radius:12px;background:var(--board);word-break:break-word;line-height:1.6;min-height:84px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:2px}
+.xpr .h{background:var(--signal);color:#1A1200;border-radius:6px;padding:0 4px;animation:pop .4s ease-out}
+.xpr .r{background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:0 4px;animation:pop .4s ease-out}
+.given{font-family:var(--f-mono);text-align:center;color:var(--muted);font-weight:700}
+.boxes{display:flex;gap:10px;justify-content:center}
+.boxes div{width:90px;border:2px solid var(--line);border-radius:12px;padding:6px;text-align:center;font-family:var(--f-mono)}
+.boxes small{display:block;color:var(--muted)}
+.boxes b{font-size:1.8rem}
+.boxes div.ch{border-color:var(--signal);background:var(--signal-soft);animation:pop .4s ease-out}
+.prec{display:flex;flex-direction:column;gap:5px}
+.prec button{font:inherit;display:grid;grid-template-columns:30px 1fr auto;gap:8px;align-items:center;text-align:left;padding:6px 10px;border-radius:10px;border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.prec button i{font-style:normal;font-weight:800;color:var(--accent)}
+.prec button code{font-family:var(--f-mono);font-weight:800}
+</style>
+  <div class="chips" id="exs"></div>
+  <section class="card" id="main">
+    <p class="given" id="given"></p>
+    <div class="xpr" id="xpr"></div>
+    <div class="boxes" id="boxes" hidden><div id="bx"><small>x</small><b id="vx"></b></div><div id="by"><small>y</small><b id="vy"></b></div></div>
+  </section>
+  <section class="card">
+    <h2>অগ্রাধিকার (উপরেরটা আগে)</h2>
+    <div class="prec" id="prec"></div>
+    <p class="hint">একই স্তরের অপারেটর থাকলে সাধারণত বাম থেকে ডানে হিসাব হয়।</p>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points"><li>অগ্রাধিকার: () → ++ -- ! → * / % → + − → তুলনা → && → || → =।</li><li>int দিয়ে int ভাগ করলে দশমিক অংশ বাদ যায়: 10/3 = 3।</li><li>x++ আগে ব্যবহার পরে বৃদ্ধি, ++x আগে বৃদ্ধি পরে ব্যবহার।</li></ul>
+  </section>
+<script>
+const {$,say,bn}=IM;
+const H=s=>`<span class="h">${s}</span>`,R=s=>`<span class="r">${s}</span>`;
+const EX=[
+ {n:'a + b * c',g:'a = 10, b = 3, c = 2',S:[
+  ['a + b * c','এক্সপ্রেশন: অপারেটর (+, *) আর অপারেন্ড (a, b, c)। বাম থেকে পড়লে মনে হয় আগে যোগ, কিন্তু না!'],
+  ['a + '+H('b * c'),'* এর অগ্রাধিকার + এর চেয়ে বেশি। তাই আগে গুণ: b * c = 3 * 2'],
+  ['a + '+R('6'),'b * c = 6'],[H('10 + 6'),'এবার যোগ: a + 6 = 10 + 6'],[R('16'),'উত্তর 16। (যদি আগে যোগ করতাম, ভুল উত্তর 26 আসতো।)']]},
+ {n:'(a + b) * c',g:'a = 10, b = 3, c = 2',S:[
+  ['(a + b) * c','বন্ধনী থাকলে নিয়ম বদলে যায়।'],[H('(a + b)')+' * c','বন্ধনীর ভিতরের অংশ সবার আগে: a + b = 10 + 3'],[R('13')+' * c','= 13'],[H('13 * 2'),'এবার গুণ'],[R('26'),'উত্তর 26। বন্ধনী দিয়ে ইচ্ছামতো ক্রম ঠিক করা যায়।']]},
+ {n:'a / b + a % b',g:'int a = 10, b = 3',S:[
+  ['a / b + a % b','/ আর % দুটোরই অগ্রাধিকার + এর চেয়ে বেশি।'],[H('a / b')+' + a % b','int দিয়ে int ভাগ করলে দশমিক অংশ বাদ যায়: 10 / 3 = 3 (3.33 না!)'],
+  [R('3')+' + '+H('a % b'),'% মানে ভাগশেষ (Modulus): 10 % 3 = 1'],[H('3 + 1'),'এবার যোগ'],[R('4'),'উত্তর 4']]},
+ {n:'a > b && b > c',g:'a = 10, b = 3, c = 2',S:[
+  ['a > b && b > c','> হলো রিলেশনাল (তুলনা) অপারেটর, && হলো লজিক্যাল AND।'],[H('a > b')+' && b > c','তুলনা আগে: 10 > 3 সত্য, C তে সত্য = 1'],[R('1')+' && '+H('b > c'),'3 > 2 সত্য = 1'],[H('1 && 1'),'&& তখনই 1 যখন দুই পাশই সত্য'],[R('1'),'উত্তর 1 (সত্য)। মিথ্যা হলে 0 হতো।']]},
+ {n:'x++ বনাম ++x',box:1,g:'int x = 5, y;',S:[
+  ['int x = 5;','x এ 5 রাখা হলো।',{x:5,y:'?'}],
+  ['y = '+H('x')+'++;','<b>পোস্টফিক্স x++:</b> আগে x এর পুরোনো মান (5) y তে দাও…',{x:5,y:5,ch:'y'}],
+  ['y = x'+H('++')+';','…তারপর x বাড়াও। এখন x = 6, কিন্তু y = 5 রয়ে গেলো।',{x:6,y:5,ch:'x'}],
+  ['y = '+H('++')+'x;','<b>প্রিফিক্স ++x:</b> আগে x বাড়াও (6 থেকে 7)…',{x:7,y:5,ch:'x'}],
+  ['y = ++'+H('x')+';','…তারপর নতুন মান y তে দাও। এখন x = 7, y = 7।',{x:7,y:7,ch:'y'}],
+  [R('x++ : আগে ব্যবহার, পরে বৃদ্ধি'),'মনে রাখার কৌশল: ++ যেদিকে, কাজ সেদিকে। আগে ++ মানে আগে বৃদ্ধি।',{x:7,y:7}]]}];
+let E=EX[0];
+function render(k){const s=E.S[k];$('xpr').innerHTML=s[0];$('given').textContent=E.g;
+  $('boxes').hidden=!E.box;if(E.box){const v=s[2];$('vx').textContent=v.x;$('vy').textContent=v.y;$('bx').classList.toggle('ch',v.ch==='x');$('by').classList.toggle('ch',v.ch==='y');}
+  say(`ধাপ ${bn(k+1)} / ${bn(E.S.length)}`,s[1]);}
+const player=IM.player({count:()=>E.S.length,show:render,swipe:$('main'),interval:1800});
+$('exs').innerHTML=EX.map((e,i)=>`<button class="chip" data-i="${i}">${e.n}</button>`).join('');
+const chips=[...$('exs').querySelectorAll('.chip')];
+chips.forEach(b=>b.onclick=()=>{E=EX[+b.dataset.i];chips.forEach(c=>c.style.background=c===b?'var(--signal-soft)':'');player.reset();});
+chips[0].style.background='var(--signal-soft)';
+const PR=[['()','বন্ধনী','সবার আগে বন্ধনীর ভিতরের অংশ।'],['++ -- !','ইউনারি','একটি অপারেন্ড নিয়ে কাজ করে। ! মানে NOT।'],['* / %','গাণিতিক (গুণ, ভাগ, ভাগশেষ)','% শুধু পূর্ণসংখ্যায় কাজ করে।'],['+ -','গাণিতিক (যোগ, বিয়োগ)',''],
+ ['< <= > >=','রিলেশনাল','তুলনা করে, ফল 1 (সত্য) বা 0 (মিথ্যা)।'],['== !=','সমতা','== মানে সমান কিনা পরীক্ষা। = (মান বসানো) এর সাথে গুলিয়ে ফেলো না!'],['&&','লজিক্যাল AND','দুই পাশ সত্য হলে সত্য।'],['||','লজিক্যাল OR','যেকোনো এক পাশ সত্য হলে সত্য।'],['= += -=','অ্যাসাইনমেন্ট','সবার শেষে। ডানের মান হিসাব করে বামের চলকে রাখে। a += 5 মানে a = a + 5।']];
+$('prec').innerHTML=PR.map((p,i)=>`<button data-i="${i}"><i>${bn(i+1)}</i><code>${IM.esc(p[0])}</code><span>${p[1].split(' (')[0]}</span></button>`).join('');
+$('prec').querySelectorAll('button').forEach(b=>b.onclick=()=>{const p=PR[+b.dataset.i];say(`অগ্রাধিকার ${bn(+b.dataset.i+1)}`,`<code>${IM.esc(p[0])}</code> ${p[1]}। ${p[2]}`,true);});
+player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "a = 5 + 3 * 2; এর মান—", "o": ["16", "11", "13", "10"], "a": 1, "w": "আগে গুণ: 3*2=6, তারপর 5+6=11।"}, {"q": "10 % 3 এর মান—", "o": ["3", "1", "0", "3.33"], "a": 1, "w": "% ভাগশেষ দেয়।"}, {"q": "(5 + 3) * 2 এর মান—", "o": ["11", "16", "13", "10"], "a": 1, "w": "বন্ধনী আগে: 8*2=16।"}, {"q": "a &gt; b && b &gt; c তে && কী ধরনের অপারেটর?", "o": ["গাণিতিক", "যৌক্তিক", "সম্পর্কসূচক", "অ্যাসাইনমেন্ট"], "a": 1, "w": "&& মানে AND, যৌক্তিক অপারেটর।"}]);
+</script>

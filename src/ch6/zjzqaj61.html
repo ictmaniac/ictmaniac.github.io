@@ -1,0 +1,152 @@
+---
+ch: ৬
+kit: 1
+title: ডেটা এনক্রিপশন
+eyebrow: ৬.১১ ডেটা এনক্রিপশন
+h1: গোপন বার্তা বানানো
+lead: সিজার কোডে প্রতিটি অক্ষর কীভাবে লাফ দিয়ে বদলে যায়, আর চাবি দিয়ে বার্তা কীভাবে তালাবদ্ধ হয়ে যায়, ▶ চাপো আর দেখো। যেকোনো জিনিসে টাচ করলে মানে আসবে।
+---
+<style>
+#main{position:relative}
+.cz{display:flex;flex-direction:column;gap:10px}
+.mode-sc .cz{display:none}.scene{display:none}.mode-sc .scene{display:block}
+.in{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+.in input{font:inherit;font-family:var(--f-mono);font-weight:800;font-size:1.1rem;text-transform:uppercase;padding:6px 10px;border-radius:10px;border:2px solid var(--line);min-width:0;background:var(--panel);color:var(--ink)}
+.keys{display:flex;gap:4px;align-items:center;font-weight:700;font-size:.85rem}
+.keys button{font:inherit;font-family:var(--f-mono);font-weight:800;width:32px;height:34px;border-radius:9px;border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.keys button.sel{background:var(--accent);border-color:var(--accent);color:#fff}
+.az{display:grid;grid-template-columns:repeat(13,1fr);gap:3px}
+.az b{font-family:var(--f-mono);font-size:.85rem;text-align:center;padding:4px 0;border-radius:6px;background:var(--board);border:1.5px solid var(--line);transition:all .2s}
+.az b.from{background:var(--accent);color:#fff;border-color:var(--accent)}
+.az b.hop{background:var(--accent-soft);border-color:var(--accent)}
+.az b.to{background:var(--signal);color:#1A1200;border-color:var(--signal);transform:scale(1.15)}
+.wl{display:flex;align-items:center;gap:8px}
+.wl>small{width:62px;font-weight:700;color:var(--muted);font-size:.75rem;flex:none}
+.word{display:flex;gap:4px;flex-wrap:wrap}
+.word b{font-family:var(--f-mono);font-size:1.1rem;width:28px;height:34px;display:grid;place-items:center;border-radius:8px;border:2px solid var(--line);background:var(--panel);transition:all .3s}
+.word b.cur{border-color:var(--accent);background:var(--accent-soft);transform:translateY(-3px)}
+.word.ci b{border-style:dashed}
+.word.ci b.got{border-style:solid;border-color:var(--signal);background:var(--signal-soft);animation:pop .4s ease-out}
+.frog{position:absolute;z-index:8;font-size:1.1rem;pointer-events:none;transition:transform .26s cubic-bezier(.3,1.6,.6,1);opacity:0}
+.frog.on{opacity:1}
+/* scene */
+.scene{position:relative;height:270px;border-radius:14px;background:linear-gradient(#F4F8FF,#E8F1FF);border:2px solid #C9DBFA;overflow:hidden}
+.who{position:absolute;display:flex;flex-direction:column;align-items:center;gap:2px;width:84px;cursor:pointer}
+.who .av{font-size:2rem;line-height:1}
+.who b{font-size:.82rem}
+.who .kr{display:flex;gap:3px;min-height:26px}
+.kc{font-size:1rem;padding:1px 4px;border-radius:7px;background:var(--panel);border:1.5px solid var(--line);transition:all .3s}
+.kc.glow{border-color:var(--signal);box-shadow:0 0 0 3px var(--signal);transform:scale(1.15)}
+.kc.pub{background:#DCEBFF}.kc.pri{background:#FFE1DA}
+#wK{left:8px;top:38px}#wR{right:8px;top:38px}#wH{left:50%;transform:translateX(-50%);bottom:8px}
+.net{position:absolute;left:92px;right:92px;top:62px;border-top:3px dashed #A9C8FA}
+.net small{position:absolute;left:50%;transform:translate(-50%,-150%);font-size:.7rem;color:var(--muted);font-weight:700;background:#EDF4FF;padding:0 4px}
+.msg{position:absolute;left:0;top:0;z-index:5;font-family:var(--f-mono);font-weight:800;font-size:.95rem;padding:5px 10px;border-radius:10px;background:var(--panel);border:2px solid var(--accent);transition:transform .9s cubic-bezier(.45,0,.25,1),background .3s;white-space:nowrap;box-shadow:0 6px 14px -6px rgba(20,33,61,.5)}
+.msg.enc{background:var(--signal-soft);border-color:var(--signal)}
+.msg.ok{background:color-mix(in srgb,var(--ok) 18%,var(--panel));border-color:var(--ok)}
+.bub{position:absolute;z-index:6;font-size:.78rem;font-weight:800;padding:3px 8px;border-radius:10px;background:var(--panel);border:2px solid var(--line);opacity:0;transition:opacity .3s;white-space:nowrap}
+.bub.on{opacity:1;animation:pop .35s ease-out}
+.bub.bad{border-color:var(--bad);color:var(--bad)}.bub.good{border-color:var(--ok);color:var(--ok)}
+</style>
+  <div class="tabs" id="tabs">
+    <button class="tab" data-k="cz" aria-selected="true">সিজার কোড</button>
+    <button class="tab" data-k="sy" aria-selected="false">সিমেট্রিক</button>
+    <button class="tab" data-k="pk" aria-selected="false">পাবলিক কী</button>
+  </div>
+  <section class="card" id="main">
+    <div class="cz">
+      <div class="in"><input id="txt" maxlength="8" value="ICT" aria-label="লেখা"><div class="keys" id="keys">কী:</div></div>
+      <div class="wl"><small>প্লেইনটেক্সট</small><div class="word" id="pw"></div></div>
+      <div class="az" id="az"></div>
+      <div class="wl"><small>সাইফারটেক্সট</small><div class="word ci" id="cw"></div></div>
+      <span class="frog" id="frog">🐸</span>
+    </div>
+    <div class="scene" id="scene">
+      <div class="net"><small>ইন্টারনেট</small></div>
+      <div class="who" id="wK" data-w="K"><span class="av">👦</span><b>কামাল</b><span class="kr" id="kK"></span></div>
+      <div class="who" id="wR" data-w="R"><span class="av">👨</span><b>রহিম</b><span class="kr" id="kR"></span></div>
+      <div class="who" id="wH" data-w="H"><span class="av">🕵️</span><b>হ্যাকার</b><span class="kr" id="kH"></span></div>
+      <div class="msg" id="msg">HELLO</div>
+      <div class="bub" id="bub"></div>
+    </div>
+  </section>
+  <section class="card">
+    <h2>সিমেট্রিক বনাম অ্যাসিমেট্রিক (টাচ করো)</h2>
+    <div id="cx0"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>এনক্রিপশন:</b> ডেটাকে অপাঠযোগ্য রূপে বদলানো। <b>ডিক্রিপশন:</b> আবার মূল রূপে ফেরানো।</li>
+      <li>চারটি অংশ: <b>প্লেইনটেক্সট</b> (আগের পাঠযোগ্য বার্তা), <b>সাইফারটেক্সট</b> (পরের অপাঠযোগ্য বার্তা), <b>অ্যালগরিদম</b> (নিয়ম), <b>কী</b> (গোপন কোড)।</li>
+      <li><b>সিজার কোড:</b> প্রতিটি অক্ষর পরের ৩য় অক্ষর দিয়ে বদলায় (কী = ৩)। JULIA ROBERT → MXOLD UREHUW।</li>
+      <li><b>সিমেট্রিক (গোপন কী):</b> প্রেরক ও প্রাপক একই কী ব্যবহার করে। <b>অ্যাসিমেট্রিক (পাবলিক কী):</b> প্রাপকের পাবলিক কী দিয়ে এনক্রিপ্ট, প্রাপকের প্রাইভেট কী দিয়ে ডিক্রিপ্ট।</li>
+      <li>পদ্ধতি: সিজার কোড, DES, IDEA (পাঠ্যবই)। এখন AES ও RSA বেশি ব্যবহৃত।</li>
+    </ul>
+  </section>
+<script>
+const {$,say,bn}=IM;
+const AZ='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+$('az').innerHTML=[...AZ].map((c,i)=>`<b id="z${i}">${c}</b>`).join('');
+$('keys').insertAdjacentHTML('beforeend',[1,2,3,4,5].map(k=>`<button data-k="${k}"${k===3?' class="sel"':''}>${k}</button>`).join(''));
+let K='cz',KEY=3,W='ICT',S=[],gen=0;
+const later=(ms,fn)=>{const g=gen;setTimeout(()=>{if(g===gen)fn();},ms/player.speed);};
+const enc=s=>[...s].map(c=>AZ[(AZ.indexOf(c)+KEY)%26]).join('');
+function czSteps(){const S=[{m:`<b>সিজার কোড</b>: প্রতিটি অক্ষর বর্ণমালায় <b>${bn(KEY)} ঘর</b> সামনে লাফ দেবে (কী = ${bn(KEY)})। উপরে নিজের শব্দ লিখতে পারো, কী বদলাতে পারো।`}];
+  [...W].forEach((c,i)=>{const a=AZ.indexOf(c),b=(a+KEY)%26;S.push({i,a,b,m:`<b>${c}</b> থেকে ${bn(KEY)} লাফ: ${Array.from({length:KEY},(_,j)=>AZ[(a+j+1)%26]).join(' → ')}। তাই ${c} হয়ে গেলো <b>${AZ[b]}</b>।`+(a+KEY>25?' (Z এর পর আবার A থেকে ঘুরে আসে)':'')});});
+  S.push({fin:1,m:`এনক্রিপ্ট শেষ: <b>${W}</b> → <b>${enc(W)}</b>। যে কী জানে না, তার কাছে এটা অর্থহীন। ডিক্রিপ্ট করতে প্রতিটি অক্ষর ${bn(KEY)} ঘর পিছনে নিলেই আবার ${W}।`});return S;}
+function czBuild(){W=($('txt').value.toUpperCase().replace(/[^A-Z]/g,'')||'ICT').slice(0,8);
+  $('pw').innerHTML=[...W].map((c,i)=>`<b id="pc${i}">${c}</b>`).join('');$('cw').innerHTML=[...W].map((c,i)=>`<b id="cc${i}"></b>`).join('');S=czSteps();}
+function frogTo(i){const r=IM.rel($('main'),$('z'+i)),f=$('frog');f.classList.add('on');f.style.transform=`translate(${r.x+r.w/2-10}px,${r.y-18}px)`;}
+function czRender(k,fwd){const s=S[k];AZ.split('').forEach((_,i)=>$('z'+i).className='');$('frog').classList.remove('on');
+  [...W].forEach((c,i)=>{$('pc'+i).classList.toggle('cur',s.i===i);const done=s.fin||(s.i!==undefined&&i<s.i);const cc=$('cc'+i);cc.textContent=done?enc(c)[0]:'';cc.classList.toggle('got',done);});
+  if(s.i===undefined)return;
+  const land=()=>{$('z'+s.b).className='to';const cc=$('cc'+s.i);
+    if(fwd)IM.fly($('main'),$('z'+s.b),cc,AZ[s.b],{dur:700/player.speed,lift:-10,done:()=>{if(cc.isConnected&&S[player.k]===s){cc.textContent=AZ[s.b];cc.classList.add('got');}}});
+    else{cc.textContent=AZ[s.b];cc.classList.add('got');}};
+  $('z'+s.a).className='from';
+  if(!fwd){for(let j=1;j<KEY;j++)$('z'+((s.a+j)%26)).className='hop';land();return;}
+  frogTo(s.a);let j=0;const hop=()=>{j++;const p=(s.a+j)%26;frogTo(p);if(j<KEY){$('z'+p).className='hop';later(340,hop);}else later(260,()=>{$('frog').classList.remove('on');land();});};later(380,hop);}
+// ---------- scenes ----------
+const SC={sy:[
+ {keys:{K:['🔑'],R:['🔑']},at:'K',txt:'HELLO',m:'কামাল রহিমকে "HELLO" পাঠাবে। দুজনের কাছেই <b>একই চাবি 🔑</b> আছে। এটাই <b>সিমেট্রিক</b> বা গোপন কী এনক্রিপশন।'},
+ {keys:{K:['🔑'],R:['🔑']},glow:'K0',at:'K',txt:'🔒 KHOOR',enc:1,m:'কামাল নিজের 🔑 দিয়ে বার্তা <b>এনক্রিপ্ট</b> করলো: HELLO হয়ে গেলো KHOOR (সাইফারটেক্সট)।'},
+ {keys:{K:['🔑'],R:['🔑']},at:'M',txt:'🔒 KHOOR',enc:1,bub:['H','"KHOOR"?? কিছুই বুঝছি না 😵','bad'],m:'বার্তা ইন্টারনেট দিয়ে যাচ্ছে। হ্যাকার মাঝপথে ধরে ফেললো, কিন্তু চাবি নেই, তাই পড়তে পারলো না।'},
+ {keys:{K:['🔑'],R:['🔑']},glow:'R0',at:'R',txt:'🔓 HELLO',ok:1,bub:['R','পড়তে পারছি ✓','good'],m:'রহিম <b>একই 🔑</b> দিয়ে <b>ডিক্রিপ্ট</b> করলো: KHOOR আবার HELLO।'},
+ {keys:{K:['🔑'],R:['🔑']},at:'R',txt:'🔓 HELLO',ok:1,m:'সিমেট্রিক: প্রেরক ও প্রাপকের <b>একই কী</b>। দ্রুত, কিন্তু সমস্যা: চাবিটা আগে গোপনে ভাগ করে নিতে হয়।'}],
+ pk:[
+ {keys:{R:['🔓','🔑']},at:'K',txt:'HELLO',m:'রহিমের দুইটা চাবি: <b>পাবলিক কী 🔓</b> (সবাই জানতে পারে) আর <b>প্রাইভেট কী 🔑</b> (শুধু রহিমের কাছে গোপন)।'},
+ {keys:{R:['🔓','🔑'],K:['🔓'],H:['🔓']},fly:1,at:'K',txt:'HELLO',m:'রহিম তার <b>পাবলিক কী</b> সবাইকে দিলো। কামাল পেলো, হ্যাকারও পেলো। এতে কোনো ক্ষতি নেই!'},
+ {keys:{R:['🔓','🔑'],K:['🔓'],H:['🔓']},glow:'K0',at:'K',txt:'🔒 #Q8@Z',enc:1,m:'কামাল রহিমের <b>পাবলিক কী 🔓</b> দিয়ে বার্তা এনক্রিপ্ট করলো।'},
+ {keys:{R:['🔓','🔑'],K:['🔓'],H:['🔓']},glow:'H0',at:'M',txt:'🔒 #Q8@Z',enc:1,bub:['H','পাবলিক কী দিয়ে খুলছে না ✗','bad'],m:'হ্যাকার মাঝপথে বার্তা ধরে পাবলিক কী দিয়ে খুলতে চাইলো। পারলো না! পাবলিক কী দিয়ে তালা দেওয়া যায়, খোলা যায় না।'},
+ {keys:{R:['🔓','🔑'],K:['🔓'],H:['🔓']},glow:'R1',at:'R',txt:'🔓 HELLO',ok:1,bub:['R','প্রাইভেট কী দিয়ে খুললো ✓','good'],m:'রহিম নিজের <b>প্রাইভেট কী 🔑</b> দিয়ে ডিক্রিপ্ট করে HELLO পড়লো।'},
+ {keys:{R:['🔓','🔑'],K:['🔓'],H:['🔓']},at:'R',txt:'🔓 HELLO',ok:1,m:'অ্যাসিমেট্রিক (পাবলিক কী): <b>দুইটা ভিন্ন কী</b>। প্রাপকের পাবলিক কী দিয়ে এনক্রিপ্ট, প্রাপকের প্রাইভেট কী দিয়ে ডিক্রিপ্ট। চাবি গোপনে পাঠানোর ঝামেলা নেই।'}]};
+function spot(w){const sc=$('scene'),r=w==='M'?{x:sc.clientWidth/2-40,y:30,w:80,h:20}:IM.rel(sc,$('w'+w)),m=$('msg');
+  return w==='K'?[r.x+4,r.y+r.h+6]:w==='R'?[r.x+r.w-m.offsetWidth-4,r.y+r.h+6]:[sc.clientWidth/2-m.offsetWidth/2,r.y+70];}
+function scRender(k,fwd){const s=S[k],sc=$('scene');
+  ['K','R','H'].forEach(w=>{$('k'+w).innerHTML=(s.keys[w]||[]).map((c,i)=>`<span class="kc ${c==='🔓'?'pub':c==='🔑'&&K==='pk'?'pri':''}${s.glow===w+i?' glow':''}" id="kk${w}${i}">${c}</span>`).join('');});
+  const m=$('msg');m.textContent=s.txt;m.classList.toggle('enc',!!s.enc);m.classList.toggle('ok',!!s.ok);
+  if(!fwd)m.style.transition='none';const [x,y]=spot(s.at);m.style.transform=`translate(${x}px,${y}px)`;if(!fwd){void m.offsetWidth;m.style.transition='';}
+  const b=$('bub');b.className='bub';if(s.bub){const run=()=>{const r=IM.rel(sc,$('w'+s.bub[0]));b.textContent=s.bub[1];b.className='bub on '+s.bub[2];
+      const bw=b.offsetWidth;b.style.transform=`translate(${Math.max(4,Math.min(sc.clientWidth-bw-4,r.x+r.w/2-bw/2))}px,${Math.max(4,r.y-30)}px)`;};fwd?later(900,run):run();}
+  if(s.fly&&fwd){['K','H'].forEach(w=>{const to=$('kk'+w+'0');to.style.visibility='hidden';IM.fly(sc,$('kkR0'),to,'🔓',{dur:1000/player.speed,lift:20,done:()=>{to.style.visibility='';}});});}}
+const WX={K:['কামাল (প্রেরক)','বার্তা পাঠাচ্ছে। পাঠানোর আগে এনক্রিপ্ট করে।'],R:['রহিম (প্রাপক)','বার্তা পাবে। ডিক্রিপ্ট করে পড়বে।'],H:['হ্যাকার','মাঝপথে বার্তা চুরি করতে চায়। এনক্রিপ্ট করা থাকলে পড়তে পারে না।']};
+$('scene').addEventListener('click',e=>{const k=e.target.closest('.kc');if(k){const t=k.textContent;say(t==='🔓'?'পাবলিক কী':K==='pk'?'প্রাইভেট কী':'গোপন কী (শেয়ার্ড)',t==='🔓'?'সবাই জানতে পারে। এটা দিয়ে শুধু তালা দেওয়া (এনক্রিপ্ট) যায়।':K==='pk'?'শুধু মালিকের কাছে গোপন থাকে। পাবলিক কী দিয়ে তালা দেওয়া বার্তা এটা দিয়েই খোলে।':'প্রেরক ও প্রাপক দুজনের কাছে একই চাবি। এটা দিয়ে তালা দেওয়াও যায়, খোলাও যায়।',true);return;}
+  const w=e.target.closest('.who');if(w){const x=WX[w.dataset.w];say(x[0],x[1],true);return;}
+  if(e.target.closest('#msg'))say('বার্তা',$('msg').classList.contains('enc')?'এটা সাইফারটেক্সট: এনক্রিপ্ট করা অপাঠযোগ্য বার্তা।':'এটা প্লেইনটেক্সট: মানুষের পড়ার যোগ্য বার্তা।',true);});
+function render(k,prev){gen++;const fwd=prev===k-1&&!IM.reduce();(K==='cz'?czRender:scRender)(k,fwd);if(!(K==='cz'&&S[k].i!==undefined&&fwd)||true)say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,S[k].m);}
+var player=IM.player({count:()=>S.length,show:render,swipe:$('main'),interval:2800});
+function build(){document.body.classList.toggle('mode-sc',K!=='cz');if(K==='cz')czBuild();else S=SC[K];}
+IM.tabs($('tabs'),k=>{K=k;build();player.reset();});
+$('keys').querySelectorAll('button').forEach(b=>b.onclick=()=>{KEY=+b.dataset.k;$('keys').querySelectorAll('button').forEach(x=>x.classList.toggle('sel',x===b));build();player.reset();});
+$('txt').addEventListener('input',()=>{build();player.reset();});
+$('az').addEventListener('click',e=>{const z=e.target.closest('b');if(!z)return;const i=AZ.indexOf(z.textContent);say(`${z.textContent} → ${AZ[(i+KEY)%26]}`,`কী = ${bn(KEY)} হলে ${z.textContent} এনক্রিপ্ট হয়ে <b>${AZ[(i+KEY)%26]}</b> হয়।`,true);});
+addEventListener('resize',()=>{if(K!=='cz')scRender(player.k,false);});
+build();player.reset();
+IM.compare($('cx0'),["", "সিমেট্রিক (গোপন কী)", "অ্যাসিমেট্রিক (পাবলিক কী)"],[["কী কয়টি", "একটি, দুজনের কাছে একই", "দুটি: পাবলিক ও প্রাইভেট", "সিমেট্রিকে একই চাবি দিয়ে তালা দেওয়া ও খোলা। পাবলিক কী পদ্ধতিতে আলাদা দুই চাবি।"], ["এনক্রিপ্ট", "শেয়ার্ড কী দিয়ে", "প্রাপকের পাবলিক কী দিয়ে", "পাবলিক কী সবাই জানতে পারে, এটা দিয়ে শুধু তালা দেওয়া যায়।"], ["ডিক্রিপ্ট", "একই কী দিয়ে", "প্রাপকের প্রাইভেট কী দিয়ে", "প্রাইভেট কী শুধু প্রাপকের কাছে, তাই অন্য কেউ খুলতে পারে না।"], ["গতি", "দ্রুত", "তুলনামূলক ধীর", "বড় ডেটার জন্য সিমেট্রিক দ্রুত।"], ["ঝামেলা", "কী গোপনে পাঠাতে হয়", "কী পাঠানোর ঝামেলা নেই", "সিমেট্রিকে চাবি চুরি হলে সব শেষ। পাবলিক কী পদ্ধতিতে প্রাইভেট কী কখনো পাঠাতে হয় না।"], ["উদাহরণ", "DES, IDEA, AES", "RSA", "পাঠ্যবইয়ে DES, IDEA। এখন AES ও RSA বেশি ব্যবহৃত।"]]);
+IM.mcq($('quiz6'),[{"q": "সাইফারটেক্সট মানে—", "o": ["মূল লেখা", "এনক্রিপ্ট করা লেখা", "পাসওয়ার্ড", "কী"], "a": 1, "w": "প্লেইনটেক্সট এনক্রিপ্ট হয়ে সাইফারটেক্সট হয়।"}, {"q": "সিজার কোডে (কী = ৩) \"ICT\" এর সাইফারটেক্সট—", "o": ["JDU", "LFW", "KEV", "FZQ"], "a": 1, "w": "I→L, C→F, T→W। উপরে \"ICT\" লিখে নিজে দেখো!"}, {"q": "এনক্রিপ্ট করার আগের পাঠযোগ্য বার্তা—", "o": ["সাইফারটেক্সট", "প্লেইনটেক্সট", "কী", "অ্যালগরিদম"], "a": 1, "w": "আগে প্লেইনটেক্সট, পরে সাইফারটেক্সট।"}, {"q": "পাবলিক কী পদ্ধতিতে বার্তা খোলা হয়—", "o": ["প্রেরকের পাবলিক কী", "প্রাপকের পাবলিক কী", "প্রাপকের প্রাইভেট কী", "যেকোনো কী"], "a": 2, "w": "প্রাপকের পাবলিক কী দিয়ে তালা, প্রাপকের প্রাইভেট কী দিয়ে খোলা।"}]);
+</script>

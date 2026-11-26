@@ -1,0 +1,149 @@
+---
+ch: ৬
+kit: 1
+title: রিলেশনশিপ
+eyebrow: ৬.৭ রিলেশনশিপ (Relationship)
+h1: টেবিলের সাথে টেবিলের সম্পর্ক
+lead: উপরে সম্পর্কের ধরন বাছো, তারপর ▶ চাপো। কোন রেকর্ড কোন রেকর্ডের সাথে জোড়া লাগে, তার দাগ একটা একটা করে আঁকা হবে। যেকোনো সারি বা চিহ্নে টাচ করলে মানে আসবে।
+---
+<style>
+#main{position:relative}
+.tbs{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;min-height:150px}
+.mt{border:2px solid var(--accent);border-radius:10px;overflow:hidden;background:var(--panel);font-family:var(--f-mono);font-weight:700;font-size:.78rem;flex:none}
+.mt .cp{background:var(--accent-soft);color:var(--accent);font-family:var(--f-body);font-weight:800;font-size:.74rem;padding:2px 6px;text-align:center}
+.mt .hh,.mt .rr{display:grid;align-items:center;height:30px}
+.mt .hh{background:var(--accent);color:#fff;font-family:var(--f-body);font-size:.72rem}
+.mt .rr{border-top:1.5px solid var(--line);cursor:pointer;transition:background .3s}
+.mt .hh>span,.mt .rr>span{padding:0 6px;white-space:nowrap;overflow:hidden}
+.mt .rr.on{background:var(--signal-soft)}
+.mt .rr.src{background:var(--signal);color:#1A1200}
+.mt .k{color:#B8650A}
+.mt .hh .k{color:#FFE3A8}
+.mt.jn .hh .k{color:#1A1200}
+.mt.jn{border-style:dashed;border-color:#C98300}
+.mt.jn .cp{background:var(--signal-soft);color:#8A5A00}
+.mt.jn .hh{background:#E9A23B;color:#1A1200}
+.big{display:flex;justify-content:center;gap:12px;align-items:center;font-family:var(--f-mono);font-weight:900;font-size:1.5rem;color:var(--accent);min-height:36px}
+.big span{padding:2px 14px;border-radius:999px;background:var(--accent-soft);transition:all .3s}
+.big span.on{background:var(--signal);color:#1A1200;animation:pop .4s ease-out}
+svg.er{width:100%;height:auto;display:none}
+.mode-er svg.er{display:block}.mode-er .tbs,.mode-er .big{display:none}
+svg.er .shp{fill:var(--panel);stroke:var(--accent);stroke-width:2.5}
+svg.er .rel{fill:var(--signal-soft);stroke:#C98300}
+svg.er .att{fill:var(--accent-soft)}
+svg.er .pk{text-decoration:underline}
+svg.er text{font-size:13px;font-weight:700;fill:var(--ink);text-anchor:middle;dominant-baseline:middle;font-family:var(--f-body)}
+svg.er line,svg.er path.cn{stroke:var(--accent);stroke-width:2;fill:none}
+svg.er .card{fill:var(--bad);font-size:15px;font-weight:900}
+svg.er g.it{cursor:pointer}
+svg.er g.it.new{animation:pop .45s ease-out both}
+</style>
+  <div class="tabs" id="tabs">
+    <button class="tab m" data-k="oo" aria-selected="true">১:১</button>
+    <button class="tab m" data-k="om" aria-selected="false">১:M</button>
+    <button class="tab m" data-k="mn" aria-selected="false">M:N</button>
+    <button class="tab" data-k="er" aria-selected="false">E-R চিত্র</button>
+  </div>
+  <section class="card" id="main">
+    <div class="big" id="big"></div>
+    <div class="tbs" id="tbs"></div>
+    <svg class="er" id="er" viewBox="0 0 340 250"></svg>
+    <svg class="ov" id="ov"></svg>
+  </section>
+  <section class="card">
+    <h2>তিন রকম রিলেশন পাশাপাশি (টাচ করো)</h2>
+    <div id="cx0"></div>
+  </section>
+  <section class="card">
+    <h2>রিলেশনশিপের ডিগ্রি (টাচ করো)</h2>
+    <div id="cx1"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
+    <h2>দুই টেবিলে রিলেশন তৈরির শর্ত</h2>
+    <ul class="points">
+      <li>টেবিল দুটিতে অন্তত একটি <b>কমন ফিল্ড</b> থাকতে হবে, যার নাম, ডেটা টাইপ, ফিল্ড সাইজ ও ফরম্যাট হুবহু এক।</li>
+      <li>একটি টেবিলে কমন ফিল্ডটিকে <b>প্রাইমারি কী</b> করতে হবে।</li>
+      <li>রিলেশন তৈরির সময় টেবিল দুটি একসাথে খোলা থাকতে হবে।</li>
+      <li><b>১:M</b> সবচেয়ে বেশি ব্যবহৃত। <b>M:N</b> তৈরি করতে তৃতীয় একটি জাংশন টেবিল লাগে।</li>
+    </ul>
+  </section>
+<script>
+const {$,say,bn}=IM;
+const SET={
+ oo:{big:['1','1'],T:[{id:'a',cp:'Student',h:['Roll','Name'],w:'44px 62px',r:[['101','Rafi'],['102','Mitu'],['103','Sumaiya']],k:0},{id:'b',cp:'Result',h:['Roll','GPA'],w:'44px 46px',r:[['101','5.00'],['102','4.50'],['103','4.75']],k:0}],
+  S:[{L:[],m:'দুইটা টেবিল: Student আর Result। কমন ফিল্ড <b>Roll</b>। দেখি প্রতিটি শিক্ষার্থীর সাথে কয়টা ফলাফল মেলে।'},
+   {L:[['a0','b0']],src:'a0',m:'Rafi (101) এর ফলাফল টেবিলে <b>একটিই</b> রেকর্ড।',bi:0},
+   {L:[['a0','b0'],['a1','b1']],src:'a1',m:'Mitu (102) এরও একটিই।'},
+   {L:[['a0','b0'],['a1','b1'],['a2','b2']],src:'a2',m:'Sumaiya (103) এরও একটিই।'},
+   {L:[['a0','b0'],['a1','b1'],['a2','b2']],bi:1,m:'প্রথম টেবিলের একটা রেকর্ডের জন্য দ্বিতীয় টেবিলে <b>কেবল একটি</b> রেকর্ড, আর উল্টো দিকেও একটি। এটাই <b>One to One (১:১)</b>। যেমন: একজন কর্মীর একটিই NID।'}]},
+ om:{big:['1','M'],T:[{id:'a',cp:'Class',h:['C_ID','Group'],w:'38px 78px',r:[['S','Science'],['C','Commerce']],k:0},{id:'b',cp:'Student',h:['Roll','C_ID'],w:'44px 44px',r:[['101','S'],['102','C'],['103','S'],['104','S'],['105','C']],k:1}],
+  S:[{L:[],m:'Class টেবিলে বিভাগ, Student টেবিলে শিক্ষার্থী। কমন ফিল্ড <b>C_ID</b>: Class এ প্রাইমারি কী, Student এ ফরেন কী।'},
+   {L:[['a0','b0'],['a0','b2'],['a0','b3']],src:'a0',m:'Science (S) এর সাথে জুড়লো <b>তিনজন</b> শিক্ষার্থী: 101, 103, 104। একটা রেকর্ড → অনেক রেকর্ড!'},
+   {L:[['a0','b0'],['a0','b2'],['a0','b3'],['a1','b1'],['a1','b4']],src:'a1',m:'Commerce (C) এর সাথে <b>দুইজন</b>: 102, 105।'},
+   {L:[['a0','b0'],['a0','b2'],['a0','b3'],['a1','b1'],['a1','b4']],bi:1,m:'একটা বিভাগে অনেক শিক্ষার্থী, কিন্তু প্রত্যেক শিক্ষার্থী একটাই বিভাগে। এটাই <b>One to Many (১:M)</b>, সবচেয়ে বেশি ব্যবহৃত রিলেশন। ডান দিক থেকে দেখলে Many to One।'}]},
+ mn:{big:['M','N'],T:[{id:'a',cp:'Order',h:['O_No'],w:'44px',r:[['O1'],['O2']],k:0},{id:'j',cp:'Order Details',jn:1,h:['O_No','P_No'],w:'40px 40px',r:[['O1','P1'],['O1','P2'],['O2','P2'],['O2','P3']],k:-1},{id:'b',cp:'Product',h:['P_No','Item'],w:'38px 46px',r:[['P1','Pen'],['P2','Book'],['P3','Bag']],k:0}],
+  S:[{L:[],m:'Order আর Product টেবিল। মাঝখানে একটা তৃতীয় টেবিল <b>Order Details</b>, একে বলে <b>জাংশন টেবিল</b>। এতে দুই টেবিলেরই প্রাইমারি কী আছে।'},
+   {L:[['a0','j0'],['a0','j1'],['j0','b0'],['j1','b1']],src:'a0',m:'অর্ডার O1 এ আছে <b>দুইটা পণ্য</b>: Pen আর Book। একটা অর্ডারে অনেক পণ্য।'},
+   {L:[['a0','j1'],['a1','j2'],['j1','b1'],['j2','b1']],src:'b1',m:'আবার উল্টো দিকে: Book (P2) আছে <b>দুইটা অর্ডারে</b>: O1 আর O2। একটা পণ্য অনেক অর্ডারে।'},
+   {L:[['a0','j0'],['a0','j1'],['a1','j2'],['a1','j3'],['j0','b0'],['j1','b1'],['j2','b1'],['j3','b2']],bi:1,m:'দুই দিকেই "অনেক", তাই <b>Many to Many (M:N)</b>। সরাসরি দুই টেবিল জোড়া যায় না, জাংশন টেবিল দিয়ে দুইটা ১:M বানিয়ে জোড়া হয়।'}]}};
+// E-R
+const ER=[
+ {it:[['e1','rect',20,95,80,40,'শিক্ষক']],m:'<b>আয়তক্ষেত্র = এনটিটি</b>। যার সম্পর্কে তথ্য রাখা হয়, যেমন শিক্ষক।'},
+ {it:[['a1','oval',60,30,56,30,'ID','pk',60,95],['a2','oval',75,200,56,30,'নাম','',60,135]],m:'<b>ডিম্বাকৃতি = অ্যাট্রিবিউট</b>, এনটিটির বৈশিষ্ট্য। নিচে দাগ দেওয়া (ID) হলো কী অ্যাট্রিবিউট।'},
+ {it:[['r1','dia',170,115,0,0,'পড়ান']],m:'<b>রম্বস (ডায়মন্ড) = রিলেশনশিপ</b>। দুই এনটিটির মধ্যে কী সম্পর্ক, যেমন "পড়ান"।'},
+ {it:[['e2','rect',240,95,80,40,'ছাত্র'],['a3','oval',280,30,56,30,'Roll','pk',280,95]],m:'অন্য পাশে আরেক এনটিটি <b>ছাত্র</b>, তার অ্যাট্রিবিউট Roll।'},
+ {card:1,m:'দাগের উপরের <b>1</b> আর <b>M</b> হলো কার্ডিনালিটি: একজন শিক্ষক অনেক ছাত্রকে পড়ান। দুইটা এনটিটি অংশ নিয়েছে, তাই এটা <b>বাইনারি</b> (ডিগ্রি ২) রিলেশনশিপ।'},
+ {deg:'u',m:'<b>ইউনারি</b> (ডিগ্রি ১): একটাই এনটিটি নিজের সাথে সম্পর্ক। যেমন মানুষ মানুষকে বিয়ে করে।'},
+ {deg:'t',m:'<b>টারনারি</b> (ডিগ্রি ৩): তিনটি এনটিটি একসাথে। যেমন বিক্রেতা ওয়্যারহাউজে পণ্য সরবরাহ করেন।'}];
+let K='oo',S=SET.oo.S,gen=0;
+function build(){document.body.classList.toggle('mode-er',K==='er');$('ov').innerHTML='';
+  if(K==='er'){S=ER;return;}const st=SET[K];S=st.S;
+  $('big').innerHTML=`<span id="g0">${st.big[0]}</span><b>:</b><span id="g1">${st.big[1]}</span>`;
+  $('tbs').innerHTML=st.T.map(t=>`<div class="mt${t.jn?' jn':''}" id="t${t.id}"><div class="cp">${t.cp}</div><div class="hh" style="grid-template-columns:${t.w}">${t.h.map((h,j)=>`<span class="${j===t.k||(t.jn)?'k':''}">${h}</span>`).join('')}</div>`+
+    t.r.map((r,i)=>`<div class="rr" id="${t.id}${i}" style="grid-template-columns:${t.w}">${r.map((v,j)=>`<span class="${j===t.k||t.jn?'k':''}">${v}</span>`).join('')}</div>`).join('')+'</div>').join('');
+  $('tbs').querySelectorAll('.rr').forEach(r=>r.onclick=()=>{const t=st.T.find(x=>x.id===r.id[0]),i=+r.id.slice(1);
+    say(`${t.cp}: ${t.r[i].join(', ')}`,t.jn?'জাংশন টেবিলের প্রতিটি সারি বলে কোন অর্ডারে কোন পণ্য। এখানে দুই টেবিলের প্রাইমারি কী মিলে কম্পোজিট কী।':`${t.cp} টেবিলের একটা রেকর্ড। হলুদ দাগগুলো দেখাচ্ছে অন্য টেবিলের কোন রেকর্ডের সাথে এটা জোড়া।`,true);});}
+function lines(L,newL){const m=$('main');$('ov').innerHTML=L.map(([a,b],n)=>{const A=IM.rel(m,$(a)),B=IM.rel(m,$(b));
+  const x1=A.x+A.w,y1=A.y+A.h/2,x2=B.x,y2=B.y+B.h/2,dx=(x2-x1)/2,isNew=newL.has(a+b);
+  return `<path class="${isNew?'draw':''}" style="animation-delay:${isNew?[...newL].indexOf(a+b)*0.35:0}s" d="M${x1} ${y1} C ${x1+dx} ${y1}, ${x2-dx} ${y2}, ${x2} ${y2}"/><circle cx="${x1}" cy="${y1}" r="4" fill="var(--signal)"/><circle cx="${x2}" cy="${y2}" r="4" fill="var(--signal)"/>`;}).join('');}
+function erDraw(k,fwd){const el=$('er');const s=S[k];
+  const shape=(t,x,y,w,h,txt,cls)=>t==='rect'?`<rect class="shp" x="${x}" y="${y}" width="${w}" height="${h}" rx="4"/><text x="${x+w/2}" y="${y+h/2}">${txt}</text>`:
+    t==='oval'?`<ellipse class="shp att" cx="${x}" cy="${y}" rx="${w/2}" ry="${h/2}"/><text class="${cls||''}" x="${x}" y="${y}">${txt}</text>`:
+    `<polygon class="shp rel" points="${x},${y-26} ${x+40},${y} ${x},${y+26} ${x-40},${y}"/><text x="${x}" y="${y}">${txt}</text>`;
+  if(s.deg){const u=s.deg==='u';
+    el.innerHTML=u?`<g class="it new"><rect class="shp" x="40" y="105" width="90" height="40" rx="4"/><text x="85" y="125">মানুষ</text><path class="cn" d="M130 115 C 190 115, 190 80, 220 80"/><path class="cn" d="M130 135 C 190 135, 190 170, 220 170"/><polygon class="shp rel" points="250,100 290,125 250,150 210,125"/><text x="250" y="125">বিয়ে</text><path class="cn" d="M220 80 L250 100 M220 170 L250 150"/></g>`:
+     `<g class="it new"><polygon class="shp rel" points="170,99 210,125 170,151 130,125"/><text x="170" y="125">সরবরাহ</text><line x1="130" y1="125" x2="88" y2="125"/><line x1="210" y1="125" x2="252" y2="125"/><line x1="170" y1="151" x2="170" y2="190"/>
+      <rect class="shp" x="8" y="105" width="80" height="40" rx="4"/><text x="48" y="125">বিক্রেতা</text><rect class="shp" x="252" y="105" width="80" height="40" rx="4"/><text x="292" y="125">পণ্য</text><rect class="shp" x="120" y="190" width="100" height="40" rx="4"/><text x="170" y="210">ওয়্যারহাউজ</text></g>`;
+    return;}
+  let h='';const upto=s.card?4:k;
+  // connectors first
+  const cn=[];if(upto>=1){cn.push('<line x1="60" y1="45" x2="60" y2="95"/>','<line x1="75" y1="185" x2="60" y2="135"/>');}
+  if(upto>=2)cn.push('<line x1="100" y1="115" x2="130" y2="115"/>');if(upto>=3)cn.push('<line x1="210" y1="115" x2="240" y2="115"/>','<line x1="280" y1="45" x2="280" y2="95"/>');
+  h+=cn.join('');
+  ER.slice(0,upto+1).forEach((st,j)=>(st.it||[]).forEach(it=>{h+=`<g class="it${fwd&&j===k?' new':''}" data-x="${it[0]}">${shape(it[1],it[2],it[3],it[4],it[5],it[6],it[7])}</g>`;}));
+  if(s.card)h+=`<g class="it${fwd?' new':''}"><text class="card" x="115" y="102">1</text><text class="card" x="226" y="102">M</text></g>`;
+  el.innerHTML=h;}
+const ERX={e1:['এনটিটি','আয়তক্ষেত্র। যার সম্পর্কে তথ্য রাখা হয় (শিক্ষক, ছাত্র)।'],e2:['এনটিটি','আয়তক্ষেত্র। যার সম্পর্কে তথ্য রাখা হয়।'],a1:['কী অ্যাট্রিবিউট','ডিম্বাকৃতির ভিতরে নিচে দাগ দেওয়া নাম মানে এটা প্রাইমারি কী।'],a2:['অ্যাট্রিবিউট','ডিম্বাকৃতি। এনটিটির একটা বৈশিষ্ট্য।'],a3:['কী অ্যাট্রিবিউট','Roll ছাত্রের প্রাইমারি কী, তাই নিচে দাগ।'],r1:['রিলেশনশিপ','রম্বস বা ডায়মন্ড। দুই এনটিটির মধ্যে সম্পর্ক বোঝায়।']};
+$('er').addEventListener('click',e=>{const g=e.target.closest('[data-x]');if(g&&ERX[g.dataset.x]){const x=ERX[g.dataset.x];say(x[0],x[1],true);}});
+function render(k,prev){gen++;const g=gen,s=S[k],fwd=prev===k-1&&!IM.reduce();
+  if(K==='er'){erDraw(k,fwd);say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);return;}
+  document.querySelectorAll('.mt .rr').forEach(r=>r.classList.remove('on','src'));
+  const prevL=new Set(fwd&&k>0?S[k-1].L.map(x=>x.join('')):(fwd?[]:s.L.map(x=>x.join(''))));
+  const newL=new Set(s.L.map(x=>x.join('')).filter(x=>!prevL.has(x)));
+  s.L.forEach(([a,b])=>{if(newL.has(a+b)||!s.src){$(a).classList.add('on');$(b).classList.add('on');}});
+  if(s.src)$(s.src).classList.add('src');
+  ['g0','g1'].forEach((id,i)=>$(id)&&$(id).classList.toggle('on',s.bi===1||(s.bi===0&&i===0)));
+  lines(s.L,newL);
+  say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+var player=IM.player({count:()=>S.length,show:render,swipe:$('main'),interval:3000});
+IM.tabs($('tabs'),k=>{K=k;build();player.reset();});
+addEventListener('resize',()=>{if(K!=='er')lines(S[player.k].L,new Set());});
+build();player.reset();
+IM.compare($('cx0'),["", "১:১", "১:M", "M:N"],[["মানে", "একটার সাথে একটা", "একটার সাথে অনেক", "অনেকের সাথে অনেক", "প্রথম টেবিলের একটা রেকর্ডের সাথে দ্বিতীয় টেবিলের কয়টা রেকর্ড মেলে, সেটাই দেখার বিষয়।"], ["উদাহরণ", "শিক্ষার্থী–ফলাফল", "বিভাগ–শিক্ষার্থী", "অর্ডার–পণ্য", "একজন শিক্ষার্থীর একটা ফলাফল; এক বিভাগে অনেক শিক্ষার্থী; এক অর্ডারে অনেক পণ্য আর এক পণ্য অনেক অর্ডারে।"], ["কীভাবে জোড়া", "কমন ফিল্ড দুই দিকেই অনন্য", "এক দিকে প্রাইমারি কী, অন্য দিকে ফরেন কী", "তৃতীয় জাংশন টেবিল", "M:N সরাসরি তৈরি হয় না, জাংশন টেবিল দিয়ে দুইটা ১:M বানাতে হয়।"], ["ব্যবহার", "কম", "সবচেয়ে বেশি", "মাঝারি", "১:M সবচেয়ে বেশি ব্যবহৃত রিলেশন।"]]);
+IM.compare($('cx1'),["ডিগ্রি", "কয়টি এনটিটি", "উদাহরণ"],[["ইউনারি", "১টি", "মানুষ বিয়ে করে মানুষকে", "একটাই এনটিটি নিজের সাথে সম্পর্ক তৈরি করে।"], ["বাইনারি", "২টি", "শিক্ষক পড়ান ছাত্রকে", "দুইটা এনটিটি অংশ নেয়। সবচেয়ে বেশি দেখা যায়।"], ["টারনারি", "৩টি", "বিক্রেতা, ওয়্যারহাউজ, পণ্য", "তিনটা এনটিটি একসাথে একটা সম্পর্কে।"]]);
+IM.mcq($('quiz6'),[{"q": "সবচেয়ে বেশি ব্যবহৃত রিলেশন—", "o": ["১:১", "১:M", "M:N", "ইউনারি"], "a": 1, "w": "One to Many সবচেয়ে বেশি ব্যবহৃত।"}, {"q": "M:N রিলেশন তৈরিতে কী লাগে?", "o": ["জাংশন টেবিল", "ইনডেক্স", "কোয়েরি", "ফর্ম"], "a": 0, "w": "দুই টেবিলের প্রাইমারি কী নিয়ে তৃতীয় জাংশন টেবিল।"}, {"q": "E-R চিত্রে রম্বস (ডায়মন্ড) বোঝায়—", "o": ["এনটিটি", "অ্যাট্রিবিউট", "রিলেশনশিপ", "কী"], "a": 2, "w": "আয়তক্ষেত্র = এনটিটি, ডিম্বাকৃতি = অ্যাট্রিবিউট, রম্বস = রিলেশনশিপ।"}, {"q": "তিনটি এনটিটি অংশ নিলে রিলেশনশিপের ডিগ্রি—", "o": ["ইউনারি", "বাইনারি", "টারনারি", "কোয়াটারনারি"], "a": 2, "w": "ডিগ্রি ৩ = টারনারি।"}]);
+</script>

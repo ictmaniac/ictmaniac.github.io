@@ -1,0 +1,133 @@
+---
+title: স্থানীয় মান ল্যাব
+eyebrow: ৩.১.১ সংখ্যা পদ্ধতি ও স্থানীয় মান
+h1: অঙ্কের দাম, ঘরের দাম
+lead: একই অঙ্ক কোন ঘরে বসেছে তার উপর তার মান বদলায়। ▲ ▼ চেপে বা "+1 গোনো" চেপে দেখো।
+---
+<style>
+.cols{display:flex;gap:6px;justify-content:center}
+.col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1 1 0;max-width:72px;min-width:0}
+.col button{font:inherit;width:100%;min-height:40px;border-radius:8px;border:2px solid var(--line);background:var(--board);color:var(--accent);font-weight:700;cursor:pointer}
+.dig{font-family:var(--f-mono);font-weight:800;font-size:1.9rem;width:100%;text-align:center;padding:6px 0;border-radius:10px;background:var(--accent-soft);transition:background .3s}
+.dig.flash{background:var(--signal)}
+.wt{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);text-align:center;line-height:1.2}
+.pv{font-family:var(--f-mono);font-size:.85rem;font-weight:700;color:var(--accent);text-align:center;border-top:1px solid var(--line);width:100%;padding-top:2px;word-break:break-all}
+.big{font-family:var(--f-mono);font-size:1.6rem;font-weight:800;text-align:center}
+.big sub{font-size:.6em}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cmp>div{background:var(--board);border-radius:10px;padding:10px}
+@media (max-width:420px){.dig{font-size:1.5rem}.cols{gap:4px}}
+</style>
+  <div class="tabs" id="bases">
+    <button class="tab" data-k="10" aria-selected="true">দশমিক<br>(10)</button>
+    <button class="tab" data-k="2" aria-selected="false">বাইনারি<br>(2)</button>
+    <button class="tab" data-k="8" aria-selected="false">অক্টাল<br>(8)</button>
+    <button class="tab" data-k="16" aria-selected="false">হেক্সা<br>(16)</button>
+  </div>
+
+  <section class="card">
+    <p class="hint" id="info"></p>
+    <div class="cols" id="cols"></div>
+    <div class="big" id="num"></div>
+    <p class="expr" style="text-align:center;font-size:1rem" id="sum"></p>
+    <div class="btns">
+      <button class="btn primary" id="inc">+1 গোনো</button>
+      <button class="btn" id="auto">▶ নিজে নিজে গুনুক</button>
+      <button class="btn" id="clr" style="flex:none">0</button>
+    </div>
+    <p class="hint">লক্ষ করো: কোনো ঘরে সবচেয়ে বড় অঙ্কের পর আবার 0 হয়, আর বাঁয়ের ঘরে 1 যোগ হয় (হাতে থাকে)।</p>
+  </section>
+
+  <section class="card">
+    <h2>সহজ কথায়</h2>
+    <ul class="points">
+      <li><b>ভিত্তি (base):</b> একটি সংখ্যা পদ্ধতিতে মোট যতগুলো আলাদা অঙ্ক/প্রতীক থাকে। দশমিকে 10টি (0–9), বাইনারিতে 2টি (0, 1), অক্টালে 8টি (0–7), হেক্সাডেসিমালে 16টি (0–9, A–F)।</li>
+      <li><b>স্থানীয় মান:</b> ডান দিক থেকে প্রতি ঘরের দাম = ভিত্তি<sup>অবস্থান</sup>। অবস্থান শুরু 0 থেকে।</li>
+      <li><b>অঙ্কের প্রকৃত মান</b> = অঙ্ক × তার ঘরের স্থানীয় মান। সব যোগ করলে পুরো সংখ্যার মান।</li>
+    </ul>
+    <div class="cmp">
+      <div><h3>পজিশনাল</h3><p class="hint">ঘর বদলালে মান বদলায়। যেমন 505-এ বাঁয়ের 5 = 500, ডানের 5 = 5।</p></div>
+      <div><h3>নন-পজিশনাল</h3><p class="hint">ঘরের দাম নেই, প্রতীকের নিজের মান। যেমন রোমান: XVI = 10+5+1 = 16।</p></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>এক নজরে</h2>
+    <div class="scroll-x"><table>
+      <tr><th>পদ্ধতি</th><th>ভিত্তি</th><th>অঙ্ক</th><th>ঘরের দাম (ডান থেকে)</th></tr>
+      <tr><td style="font-family:var(--f-body)">বাইনারি</td><td>2</td><td>0,1</td><td>1, 2, 4, 8, 16…</td></tr>
+      <tr><td style="font-family:var(--f-body)">অক্টাল</td><td>8</td><td>0–7</td><td>1, 8, 64, 512…</td></tr>
+      <tr><td style="font-family:var(--f-body)">দশমিক</td><td>10</td><td>0–9</td><td>1, 10, 100…</td></tr>
+      <tr><td style="font-family:var(--f-body)">হেক্সা</td><td>16</td><td>0–9, A–F</td><td>1, 16, 256…</td></tr>
+    </table></div>
+  </section>
+
+  <section class="card" id="quiz"></section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq3"></div>
+  </section>
+<script>
+const {$}=IM; const DIG='0123456789ABCDEF';
+let B=10, N=5, d=[], timer=null;
+const NAMES={10:'দশমিক',2:'বাইনারি',8:'অক্টাল',16:'হেক্সাডেসিমাল'};
+function setBase(b){ B=+b; N = B===2 ? 8 : 5; d=Array(N).fill(0); if(B===10){d=[0,0,5,0,5];} if(B===2){d=[0,0,0,0,1,1,0,1];} if(B===8){d=[0,0,1,7,5];} if(B===16){d=[0,0,2,10,15];}
+  $('info').innerHTML=`${NAMES[B]} পদ্ধতি: ভিত্তি <b>${B}</b>, অঙ্ক <span class="mono">${DIG.slice(0,B).split('').join(' ')}</span>`;
+  build(); render(); }
+function build(){
+  $('cols').innerHTML=d.map((_,i)=>{const p=N-1-i;return `<div class="col"><button data-i="${i}" data-s="1" aria-label="বাড়াও">▲</button><div class="dig" id="d${i}"></div><button data-i="${i}" data-s="-1" aria-label="কমাও">▼</button><div class="wt">${B}<sup>${p}</sup><br>=${Math.pow(B,p)}</div><div class="pv" id="v${i}"></div></div>`}).join('');
+  $('cols').querySelectorAll('button').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;d[i]=(d[i]+ +b.dataset.s+B)%B;render();});
+}
+function value(){return d.reduce((s,x,i)=>s+x*Math.pow(B,N-1-i),0);}
+function render(){
+  d.forEach((x,i)=>{$('d'+i).textContent=DIG[x]; $('v'+i).textContent=x*Math.pow(B,N-1-i);});
+  const s=d.map(x=>DIG[x]).join('').replace(/^0+(?=.)/,'');
+  $('num').innerHTML = `${s}<sub>${B}</sub>` + (B!==10?` = <span style="color:var(--accent)">${value()}</span><sub>10</sub>`:'');
+  const parts=d.map((x,i)=>[x,N-1-i]).filter(([x])=>x>0).map(([x,p])=>`${B===16?DIG[x]+(x>9?'('+x+')':''):x}×${B}<sup>${p}</sup>`);
+  $('sum').innerHTML = parts.length ? parts.join(' + ')+` = ${value()}` : '0';
+}
+function inc(){
+  let i=N-1;
+  while(i>=0){ d[i]++; const el=$('d'+i); if(d[i]<B){break;} d[i]=0; el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),350); i--; }
+  if(i<0) d=Array(N).fill(0);
+  render();
+}
+$('inc').onclick=inc;
+$('clr').onclick=()=>{d=Array(N).fill(0);render();};
+$('auto').onclick=()=>{ if(timer){clearInterval(timer);timer=null;$('auto').textContent='▶ নিজে নিজে গুনুক';} else {timer=setInterval(inc,B===2?700:450);$('auto').textContent='⏸ থামাও';} };
+IM.tabs($('bases'),setBase);
+
+const qRoot=$('quiz');
+qRoot.innerHTML=`<h2>নিজে চেষ্টা করো</h2><p class="q-ask" id="qa"></p><div class="q-btns" id="qb"></div><p class="feedback" id="qf" aria-live="polite"></p><div class="q-foot"><span class="score" id="qs">স্কোর: 0/0</span><button class="btn primary" style="flex:none" id="qn">পরের প্রশ্ন</button></div>`;
+let q,right=0,total=0;
+function newQ(){
+  const b=[10,2,8,16][IM.rnd(0,3)], len=b===2?5:4, digs=[...Array(len)].map((_,k)=>k===0?IM.rnd(1,b-1):IM.rnd(0,b-1));
+  const k=IM.rnd(0,len-1), p=len-1-k, ans=digs[k]*Math.pow(b,p);
+  const num=digs.map((x,j)=>j===k?`<u style="color:var(--accent)">${DIG[x]}</u>`:DIG[x]).join('');
+  const opts=new Set([ans]); [digs[k], digs[k]*Math.pow(b,p+1), digs[k]*Math.pow(b,Math.max(p-1,0)), digs[k]*10**p, Math.pow(b,p)].forEach(v=>opts.add(v));
+  const arr=[...opts].slice(0,4).sort(()=>Math.random()-.5);
+  q={ans}; $('qa').innerHTML=`<span class="mono" style="font-size:1.3rem">${num}<sub>${b}</sub></span> সংখ্যায় দাগ দেওয়া অঙ্কটির প্রকৃত মান (দশমিকে) কত?`;
+  $('qb').innerHTML=arr.map(v=>`<button data-v="${v}">${v}</button>`).join('');
+  $('qf').textContent=''; $('qf').className='feedback';
+  $('qb').querySelectorAll('button').forEach(bt=>bt.onclick=()=>{const ok=+bt.dataset.v===ans;total++;if(ok)right++;
+    $('qf').className='feedback '+(ok?'ok':'bad');
+    $('qf').innerHTML=ok?'ঠিক!':`হয়নি। ${DIG[digs[k]]} আছে ${b}<sup>${p}</sup> = ${Math.pow(b,p)} এর ঘরে, তাই ${digs[k]} × ${Math.pow(b,p)} = ${ans}`;
+    $('qs').textContent=`স্কোর: ${right}/${total}`; $('qb').querySelectorAll('button').forEach(x=>x.disabled=true);});
+}
+$('qn').onclick=newQ; newQ();
+setBase(10);
+
+IM.mcq(document.getElementById('mcq3'),[{"q": "বাইনারি পদ্ধতির ভিত্তি—", "o": ["2", "8", "10", "16"], "a": 0, "w": "অঙ্ক শুধু 0 ও 1।"}, {"q": "হেক্সাডেসিমালে F এর মান—", "o": ["14", "15", "16", "10"], "a": 1, "w": "A=10 … F=15।"}, {"q": "(505)₁₀ এ বাম দিকের 5 এর স্থানীয় মান—", "o": ["5", "50", "500", "5000"], "a": 2, "w": "5 × 10² = 500।"}, {"q": "অক্টালে ব্যবহৃত অঙ্ক—", "o": ["0–7", "0–8", "1–8", "0–9"], "a": 0, "w": "ভিত্তি 8, তাই 0 থেকে 7।"}]);
+/*TOUR*/{const T=IM.T;
+IM.tour([
+ {m:'একই অঙ্ক কোন <b>ঘরে</b> বসেছে, তার উপর তার মান নির্ভর করে। এটাকে <b>স্থানীয় মান</b> বলে।',do(){T.tab('10','#bases');}},
+ {m:'দশমিকে 505: বাম দিকের 5 এর মান 5×10² = <b>500</b>, ডানের 5 এর মান মাত্র <b>5</b>।',el:'#cols',do(){T.tab('10','#bases');}},
+ {m:'প্রতিটি ঘরের মান = অঙ্ক × ভিত্তি<sup>ঘর</sup>। সব যোগ করলে সংখ্যার মান।',el:'#sum',do(){T.tab('10','#bases');}},
+ {m:'বাইনারিতে ভিত্তি <b>2</b>, অঙ্ক শুধু 0 আর 1। ঘরের মান 1, 2, 4, 8, 16…',el:'#cols',do(){T.tab('2','#bases');}},
+ {m:'+1 গুনলাম: শেষ ঘরে 1 এর বেশি হতে পারে না, তাই 0 হয়ে পাশের ঘরে <b>হাতে ১</b> যায়।',el:'#cols',do(){T.tab('2','#bases');T.click('#inc');}},
+ {m:'অক্টালে ভিত্তি <b>8</b>, অঙ্ক 0–7। ঘরের মান 1, 8, 64…',el:'#cols',do(){T.tab('8','#bases');}},
+ {m:'হেক্সাডেসিমালে ভিত্তি <b>16</b>, অঙ্ক 0–9 আর A–F (A = 10 … F = 15)।',el:'#cols',do(){T.tab('16','#bases');}},
+ {m:'নিজে চেষ্টা করো: ▲ ▼ চেপে অঙ্ক বদলাও, মান কীভাবে বদলায় দেখো।',el:'#num'}
+]);
+}/*ENDTOUR*/
+</script>

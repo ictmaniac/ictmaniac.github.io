@@ -1,0 +1,144 @@
+---
+ch: ৬
+kit: 1
+title: ডেটা টাইপ
+eyebrow: ৬.৪ ডেটাবেজ তৈরি: ডেটা টাইপ
+h1: কোন ডেটা কোন বাক্সে?
+lead: প্রতিটি ফিল্ডের মান কোন ডেটা টাইপে রাখা হবে, ▶ চাপলে উড়ে গিয়ে ঠিক বাক্সে বসবে। যেকোনো বাক্সে টাচ করলে সেই টাইপের ব্যাখ্যা আসবে।
+---
+<style>
+#main{position:relative}
+.fc{display:flex;align-items:center;gap:10px;justify-content:center;min-height:62px;padding:8px 12px;border-radius:14px;border:2px dashed var(--accent);background:var(--accent-soft)}
+.fc small{display:block;font-size:.78rem;color:var(--muted);font-weight:700}
+.fc .val{font-family:var(--f-mono);font-weight:800;font-size:1.05rem;padding:4px 10px;border-radius:10px;background:var(--signal);color:#1A1200;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;animation:pop .4s ease-out}
+.fc .val.ghost{visibility:hidden}
+.fc.wrong{animation:shake .5s ease-in-out}
+.bins{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.bin{position:relative;display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 4px 6px;border-radius:12px;border:2px solid var(--line);background:var(--panel);cursor:pointer;transition:all .35s;min-width:0}
+.bin .ic{font-size:1.3rem;line-height:1.2}
+.bin b{font-size:.82rem;font-family:var(--f-mono)}
+.bin small{font-size:.66rem;color:var(--muted);text-align:center;line-height:1.2;min-height:1.6em;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bin.hit{border-color:var(--signal);background:var(--signal-soft);transform:scale(1.07);z-index:2;box-shadow:0 8px 16px -8px rgba(20,33,61,.5)}
+.bin.no{border-color:var(--bad);background:var(--bad-soft);animation:shake .5s ease-in-out}
+.bin.got{border-color:var(--accent)}
+.bin.got small{color:var(--accent);font-weight:700}
+/* sizes */
+.vrow{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.vrow b{font-family:var(--f-mono);padding:4px 10px;border-radius:999px;border:2px solid var(--line);background:var(--panel)}
+.vrow b.on{background:var(--signal);border-color:var(--signal);color:#1A1200;animation:pop .4s ease-out}
+.sz{display:flex;flex-direction:column;gap:6px}
+.sr{display:grid;grid-template-columns:128px 1fr 28px;gap:8px;align-items:center;padding:6px 8px;border-radius:10px;border:2px solid var(--line);background:var(--panel);transition:all .3s;cursor:pointer}
+.sr b{font-family:var(--f-mono);font-size:.85rem}
+.sr small{display:block;white-space:nowrap;font-size:.68rem;color:var(--muted);font-weight:600}
+.sr .by{display:flex;gap:3px}
+.sr .by i{width:16px;height:16px;border-radius:4px;background:var(--accent-soft);border:1.5px solid #A9C8FA;transition:background .3s}
+.sr .mk{font-weight:900;font-size:1.1rem;text-align:center}
+.sr.look{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--panel))}
+.sr.no{opacity:.55}.sr.no .mk{color:var(--bad)}
+.sr.yes{border-color:var(--signal);background:var(--signal-soft);box-shadow:0 0 0 3px var(--signal)}
+.sr.yes .mk{color:var(--ok)}
+.sr.yes .by i{background:var(--signal);border-color:#C98300}
+.mode-sz .tp{display:none}.sz,.vrow{display:none}.mode-sz .sz,.mode-sz .vrow{display:flex}
+</style>
+  <div class="tabs" id="tabs">
+    <button class="tab" data-k="tp" aria-selected="true">কোন টাইপ?</button>
+    <button class="tab" data-k="sz" aria-selected="false">Number এর সাইজ</button>
+  </div>
+  <section class="card" id="main">
+    <div class="fc tp" id="fc"><span><small id="fn">ফিল্ড</small></span><span class="val" id="fv">?</span></div>
+    <div class="bins tp" id="bins"></div>
+    <div class="vrow" id="vrow"></div>
+    <div class="sz" id="sz"></div>
+    <span class="mag" id="mag">👉</span>
+  </section>
+  <section class="card">
+    <h2>কাছাকাছি টাইপের পার্থক্য (টাচ করো)</h2>
+    <div id="cx0"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>Text</b> সর্বোচ্চ ২৫৫ বর্ণ, এর সংখ্যায় হিসাব হয় না। <b>Memo</b> বড় লেখা (প্রায় ৬৫,৫৩৫ বর্ণ)।</li>
+      <li><b>Number</b> এ যোগ-বিয়োগ, তুলনা, সাজানো যায়। টাকার জন্য <b>Currency</b>।</li>
+      <li>মোবাইল নম্বর 0 দিয়ে শুরু আর এর উপর হিসাব হয় না, তাই এটা <b>Text</b>।</li>
+      <li>ছবি, শব্দ, ভিডিও: <b>OLE Object</b>। হ্যাঁ/না: <b>Yes/No</b>। নিজে থেকে ক্রমিক নম্বর: <b>AutoNumber</b>।</li>
+      <li>Access 2013 থেকে Text এর নাম Short Text আর Memo এর নাম Long Text। পরীক্ষায় পাঠ্যবইয়ের নামই লিখবে।</li>
+    </ul>
+  </section>
+<script>
+const {$,say,bn}=IM;
+const T=[['Text','🔤','অক্ষর, সংখ্যা, চিহ্ন; সর্বোচ্চ ২৫৫ বর্ণ। এই ফিল্ডের সংখ্যায় গাণিতিক হিসাব করা যায় না। যেমন Name, Address, Phone।'],
+ ['Memo','📝','বড় বর্ণনামূলক লেখা, প্রায় ৬৫,৫৩৫ বর্ণ পর্যন্ত। যেমন Remarks, রোগের বিবরণ।'],
+ ['Number','🔢','ধনাত্মক-ঋণাত্মক পূর্ণসংখ্যা ও ভগ্নাংশ। যোগ, বিয়োগ, গুণ, ভাগ, তুলনা করা যায়। যেমন Roll, Marks, GPA।'],
+ ['Date/Time','📅','তারিখ ও সময়। যেমন জন্ম তারিখ, ভর্তির তারিখ।'],
+ ['Currency','💰','টাকা-পয়সার মান, দশমিকের পর ৪ ঘর পর্যন্ত নির্ভুল। যেমন Tuition Fee, Salary।'],
+ ['AutoNumber','🔁','নতুন রেকর্ড যোগ হলে নিজে থেকেই ক্রমিক নম্বর (১, ২, ৩…) বসে। হাতে লিখতে হয় না।'],
+ ['Yes/No','✅','দুটি মানের একটি: Yes/No, True/False, On/Off। যেমন Paid, Present।'],
+ ['OLE Object','🖼️','ছবি, শব্দ, ভিডিও, এক্সেল শিট ইত্যাদি অবজেক্ট। যেমন Photograph, Signature।'],
+ ['Hyperlink','🔗','ওয়েব ঠিকানা বা ফাইলের লিংক। যেমন Website, Email।']];
+const F=[['Roll','280',2,'রোল একটা সংখ্যা। এটা দিয়ে তুলনা আর ছোট থেকে বড় সাজানো যায়, তাই <b>Number</b>।'],
+ ['Name','Md. Mirazur Rahman',0,'নাম মানে অক্ষর, ২৫৫ বর্ণের কম। তাই <b>Text</b>।'],
+ ['Address','27/1, Indira Road, Dhaka…',1,'ঠিকানা অনেক বড় হতে পারে, তাই বড় লেখার জন্য <b>Memo</b>।'],
+ ['DOB','30/12/2000',3,'জন্ম তারিখ, তাই <b>Date/Time</b>। এতে বয়স হিসাব বা তারিখ অনুযায়ী সাজানো যায়।'],
+ ['Tuition Fee','5,250.50',4,'টাকার পরিমাণ, তাই <b>Currency</b>।'],
+ ['Paid','Yes',6,'ফি দিয়েছে কি না, উত্তর শুধু হ্যাঁ বা না। তাই <b>Yes/No</b>।'],
+ ['Photograph','🖼️ ছবি',7,'ছবি রাখতে হয় <b>OLE Object</b> এ।'],
+ ['Serial','১, ২, ৩ …',5,'প্রতিটি নতুন রেকর্ডে নিজে থেকে নম্বর বাড়বে, তাই <b>AutoNumber</b>।'],
+ ['Website','www.ictmaniac.com',8,'ওয়েব ঠিকানা, ক্লিক করলে খুলবে, তাই <b>Hyperlink</b>।'],
+ ['Mobile','01711223344',0,'দেখতে সংখ্যা, কিন্তু Number এ রাখলে শুরুর 0 হারিয়ে যায়, আর ফোন নম্বর যোগ-বিয়োগ করা হয় না। তাই এটা <b>Text</b>!',2]];
+$('bins').innerHTML=T.map((t,i)=>`<div class="bin" id="b${i}" data-i="${i}"><span class="ic">${t[1]}</span><b>${t[0]}</b><small id="bs${i}"></small></div>`).join('');
+$('bins').querySelectorAll('.bin').forEach(b=>b.onclick=()=>{const t=T[+b.dataset.i];say(t[1]+' '+t[0],t[2],true);});
+// sizes
+const SZ=[['Byte',1,'০ থেকে ২৫৫',v=>Number.isInteger(v)&&v>=0&&v<=255],['Integer',2,'−৩২,৭৬৮ থেকে ৩২,৭৬৭',v=>Number.isInteger(v)&&v>=-32768&&v<=32767],['Long Integer',4,'প্রায় ±২১৪ কোটি',v=>Number.isInteger(v)&&Math.abs(v)<=2147483647],['Single',4,'ভগ্নাংশ, ~৭ অঙ্ক',v=>true],['Double',8,'ভগ্নাংশ, ~১৫ অঙ্ক',v=>true]];
+const VALS=[[200,'নম্বর (Marks)'],[30000,'বইয়ের সংখ্যা'],[50000,'জনসংখ্যা'],[3.75,'GPA']];
+$('sz').innerHTML=SZ.map((s,i)=>`<div class="sr" id="s${i}" data-i="${i}"><span><b>${s[0]}</b><small>${s[2]}</small></span><span class="by">${'<i></i>'.repeat(s[1])}</span><span class="mk" id="m${i}"></span></div>`).join('');
+$('sz').querySelectorAll('.sr').forEach(r=>r.onclick=()=>{const s=SZ[+r.dataset.i];say(`${s[0]} (${bn(s[1])} বাইট)`,`মেমোরিতে ${bn(s[1])} বাইট (প্রতি বাক্স = ১ বাইট) জায়গা নেয়। মানের ব্যাপ্তি: ${s[2]}।`,true);});
+$('vrow').innerHTML=VALS.map((v,i)=>`<b id="v${i}">${v[0]}</b>`).join('');
+const ST={tp:[{m:'প্রতিটি ফিল্ডে কী ধরনের ডেটা থাকবে, সেটাই <b>ডেটা টাইপ</b>। নিচের ৯টা বাক্স হলো MS Access এর প্রধান ডেটা টাইপ। ▶ চাপো, একটা একটা ফিল্ড আসবে।'},
+  ...F.map((f,i)=>({f:i,m:`<b>${f[0]}</b> = ${f[1]}। `+f[3]})),
+  {sum:1,m:'সব ফিল্ড ঠিক বাক্সে বসে গেলো! পরীক্ষায় উদ্দীপকের প্রতিটি ফিল্ডের ডেটা টাইপ আর কারণ এভাবেই লিখবে। উপরে "Number এর সাইজ" ট্যাবও দেখো।'}],
+ sz:[{m:'Number ফিল্ডের আবার সাইজ আছে। যত বড় মান রাখতে চাও, তত বেশি বাইট লাগে। প্রতিটি নীল বাক্স = ১ বাইট মেমোরি। ▶ চাপো।'},
+  ...VALS.map((v,i)=>({v:i})),
+  {m:'নিয়ম: যে মান রাখবে, তার জন্য সবচেয়ে ছোট যে সাইজে জায়গা হয় সেটা বাছো। এতে মেমোরি কম লাগে। ভগ্নাংশ হলে Single বা Double।'}]};
+const pick=v=>SZ.findIndex(s=>s[3](v));
+ST.sz.forEach(s=>{if(s.v!==undefined){const v=VALS[s.v][0],p=pick(v);s.m=`<b>${VALS[s.v][1]}: ${v}</b>। উপর থেকে একটা একটা সাইজ দেখি… ${SZ.slice(0,p).map(x=>x[0]+' ✗').join(', ')}${p?', ':''}<b>${SZ[p][0]} ✓</b>। লাগবে ${bn(SZ[p][1])} বাইট।`;}});
+let K='tp',S=ST.tp,gen=0;
+const later=(ms,fn)=>{const g=gen;setTimeout(()=>{if(g===gen)fn();},ms/player.speed);};
+function magTo(el){const r=IM.rel($('main'),el),m=$('mag');m.classList.add('on');m.style.transform=`translate(${r.x-26}px,${r.y+r.h/2-14}px)`;}
+function renderTp(k,fwd){const s=S[k];
+  T.forEach((_,i)=>{$('b'+i).classList.remove('hit','no','got');$('bs'+i).textContent='';});
+  const done=s.sum?F.length:(s.f===undefined?0:s.f);
+  for(let i=0;i<done;i++){const f=F[i];$('b'+f[2]).classList.add('got');$('bs'+f[2]).textContent=f[0];}
+  if(s.f===undefined){$('fn').textContent=s.sum?'সব শেষ ✓':'ফিল্ড';$('fv').textContent=s.sum?'৯টি টাইপ':'?';$('fv').classList.remove('ghost');return;}
+  const f=F[s.f],tgt=$('b'+f[2]);$('fn').textContent='ফিল্ড: '+f[0];$('fv').textContent=f[1];
+  const land=()=>{$('fv').classList.add('ghost');tgt.classList.add('hit','got');$('bs'+f[2]).textContent=f[0];};
+  if(!fwd){land();return;}
+  $('fv').classList.remove('ghost');
+  const go=to=>{IM.fly($('main'),$('fv'),to,f[1].length>14?f[1].slice(0,12)+'…':f[1],{dur:950/player.speed,lift:30,done:()=>{}});};
+  if(f[4]!==undefined){ // trap: try wrong bin first
+    later(300,()=>{$('fv').classList.add('ghost');go($('b'+f[4]));});
+    later(1300,()=>{$('b'+f[4]).classList.add('no');$('fv').classList.remove('ghost');$('fc').classList.remove('wrong');void $('fc').offsetWidth;$('fc').classList.add('wrong');});
+    later(2000,()=>{$('b'+f[4]).classList.remove('no');$('fv').classList.add('ghost');go(tgt);});
+    later(3000,land);}
+  else{later(250,()=>{$('fv').classList.add('ghost');go(tgt);});later(1250,land);}}
+function renderSz(k,fwd){const s=S[k];
+  VALS.forEach((_,i)=>$('v'+i).classList.toggle('on',s.v===i));
+  SZ.forEach((_,i)=>{$('s'+i).classList.remove('look','no','yes');$('m'+i).textContent='';});
+  if(s.v===undefined)return;const v=VALS[s.v][0],p=pick(v);
+  const fin=()=>{for(let i=0;i<p;i++){$('s'+i).classList.add('no');$('m'+i).textContent='✗';}$('s'+p).classList.add('yes');$('m'+p).textContent='✓';$('mag').classList.remove('on');};
+  if(!fwd){fin();return;}
+  let i=0;const tick=()=>{if(i>0){$('s'+(i-1)).classList.remove('look');$('s'+(i-1)).classList.add('no');$('m'+(i-1)).textContent='✗';}
+    if(i<p){$('s'+i).classList.add('look');magTo($('s'+i));i++;later(520,tick);}else{$('s'+p).classList.add('look');magTo($('s'+p));later(420,fin);}};
+  tick();}
+function render(k,prev){gen++;$('mag').classList.remove('on');const fwd=prev===k-1&&!IM.reduce();
+  (K==='tp'?renderTp:renderSz)(k,fwd);say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,S[k].m);}
+var player=IM.player({count:()=>S.length,show:render,swipe:$('main'),interval:3400});
+IM.tabs($('tabs'),k=>{K=k;S=ST[k];document.body.classList.toggle('mode-sz',k==='sz');player.reset();});
+player.reset();
+IM.compare($('cx0'),["", "কী রাখে", "হিসাব?", "উদাহরণ"],[["Text", "২৫৫ বর্ণ পর্যন্ত", "না", "Name, Phone", "অক্ষর, সংখ্যা, চিহ্ন সব রাখা যায়, কিন্তু যোগ-বিয়োগ হয় না। ছোট লেখার জন্য।"], ["Memo", "বড় লেখা (~৬৫,৫৩৫ বর্ণ)", "না", "Remarks", "Text এ ২৫৫ এর বেশি বর্ণ ধরে না, তাই লম্বা বর্ণনার জন্য Memo।"], ["Number", "সংখ্যা", "হ্যাঁ", "Roll, Marks", "যোগ, বিয়োগ, গড়, তুলনা, ছোট-বড় সাজানো যায়।"], ["Currency", "টাকা", "হ্যাঁ", "Fee, Salary", "Number এর মতোই, কিন্তু টাকার জন্য, দশমিকের পর ৪ ঘর পর্যন্ত নির্ভুল।"], ["AutoNumber", "নিজে বসা নম্বর", "—", "Serial", "হাতে লিখতে হয় না। নতুন রেকর্ড এলেই ১, ২, ৩… বসে যায়।"], ["Yes/No", "দুইটার একটা", "না", "Paid", "হ্যাঁ/না, সত্য/মিথ্যা, On/Off।"], ["OLE Object", "ছবি, শব্দ, ভিডিও", "না", "Photo", "লেখা নয় এমন জিনিস (ছবি, সই, এক্সেল শিট)।"]]);
+IM.mcq($('quiz6'),[{"q": "শিক্ষার্থীর ছবি রাখার ডেটা টাইপ—", "o": ["Memo", "Text", "OLE Object", "Hyperlink"], "a": 2, "w": "ছবি, শব্দ, ভিডিও রাখতে OLE Object।"}, {"q": "বড় বর্ণনামূলক লেখার জন্য—", "o": ["Currency", "Number", "Memo", "Yes/No"], "a": 2, "w": "Text এ ২৫৫ বর্ণ পর্যন্ত, তার বেশি হলে Memo।"}, {"q": "\"ফি দিয়েছে কি না\" ফিল্ডের ডেটা টাইপ—", "o": ["Memo", "Hyperlink", "OLE Object", "Yes/No"], "a": 3, "w": "উত্তর শুধু হ্যাঁ বা না, তাই Yes/No।"}, {"q": "মোবাইল নম্বরের উপযুক্ত ডেটা টাইপ—", "o": ["Number", "Text", "Currency", "AutoNumber"], "a": 1, "w": "শুরুর 0 রাখতে হয় আর হিসাব হয় না, তাই Text।"}]);
+</script>

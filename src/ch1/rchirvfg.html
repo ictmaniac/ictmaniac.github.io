@@ -1,0 +1,124 @@
+---
+ch: ১
+kit: 1
+title: বায়োমেট্রিক্স
+eyebrow: ১.১৪.৭ বায়োমেট্রিক্স (Biometrics)
+h1: আঙুলের ছাপই চাবি
+lead: আঙুল ছোঁয়ালেই দরজা খোলে, কিন্তু অন্য কেউ ছোঁয়ালে খোলে না কেন? ▶ চাপো আর দেখো আঙুলের ছাপ কীভাবে কোডে বদলে যায় আর ডেটাবেজের সাথে মেলানো হয়। যেকোনো অংশে টাচ করলে ব্যাখ্যা পাবে।
+---
+<style>
+svg.scene .ridge{fill:none;stroke:#9C6B45;stroke-width:2.2;stroke-linecap:round}
+svg.scene .mn{fill:var(--bad);opacity:0;transition:opacity .3s}
+svg.scene .mn.on{opacity:1}
+svg.scene .cd rect{fill:var(--panel);stroke:var(--line);stroke-width:1.5;transition:fill .3s,stroke .3s}
+svg.scene .cd text{font-family:var(--f-mono);font-size:11px;font-weight:800;text-anchor:middle;dominant-baseline:central;fill:var(--ink)}
+svg.scene .cd.ok rect{fill:#D5F5E3;stroke:#27AE60}
+svg.scene .cd.no rect{fill:var(--bad-soft);stroke:var(--bad)}
+svg.scene .door{fill:#C49A6C;stroke:#8A6424;stroke-width:2;transform-box:fill-box;transform-origin:left center;transition:transform .8s ease}
+svg.scene .door.open{transform:scaleX(.18)}
+svg.scene .sline{stroke:#22C55E;stroke-width:3;filter:drop-shadow(0 0 4px #22C55E)}
+svg.scene .res{font-size:13px;font-weight:800;text-anchor:middle}
+.parts .grp{width:100%;text-align:center;font-weight:800;font-size:.8rem;color:var(--muted)}
+</style>
+  <section class="card" id="main">
+    <div class="sbox">
+    <svg class="scene" id="sv" viewBox="0 0 360 230">
+      <defs><clipPath id="fpc"><ellipse cx="60" cy="104" rx="38" ry="50"/></clipPath></defs>
+      <ellipse cx="60" cy="104" rx="42" ry="54" fill="#FBE9DA" stroke="#D9B08C" stroke-width="2" class="hit" data-x="fp"/>
+      <g clip-path="url(#fpc)" id="rid" class="hit" data-x="fp"></g>
+      <g id="mns"></g>
+      <line id="sl" class="sline hide" x1="16" y1="0" x2="104" y2="0" transform="translate(0,50)"/>
+      <text id="who" class="emo hit" data-x="who" x="60" y="190" font-size="24">🧑</text>
+      <text id="whon" class="sm" x="60" y="216">রহিম</text>
+      <g class="hit" data-x="db"><ellipse cx="176" cy="22" rx="30" ry="8" fill="#DDE8FB" stroke="var(--accent)" stroke-width="2"/><path d="M146 22 V50 A30 8 0 0 0 206 50 V22" fill="#DDE8FB" stroke="var(--accent)" stroke-width="2"/><text class="sm" x="176" y="44" font-weight="800" style="fill:var(--accent)">🗄️ ডেটাবেজ</text></g>
+      <text class="sm" x="176" y="84">নতুন স্ক্যান</text><g id="cn"></g>
+      <text class="sm" x="176" y="140" id="cslbl">সংরক্ষিত (রহিম)</text><g id="cs"></g>
+      <text id="res" class="res" x="176" y="182"></text>
+      <rect x="268" y="40" width="84" height="170" rx="4" fill="#5B4632"/>
+      <rect x="272" y="44" width="76" height="162" fill="#EAF3FF"/>
+      <text x="310" y="130" class="emo" font-size="30">🏢</text>
+      <rect id="door" class="door hit" data-x="door" x="272" y="44" width="76" height="162"/>
+      <circle cx="338" cy="128" r="4" fill="#5B4632" id="knob"/>
+      <text id="lock" class="emo" x="310" y="30" font-size="16">🔒</text>
+    </svg>
+    </div>
+    <div class="parts" id="parts">
+      <span class="grp">শারীরিক বৈশিষ্ট্য</span>
+      <button data-k="f" data-x="f">👆 আঙুলের ছাপ</button><button data-k="fa" data-x="fa">🙂 মুখমণ্ডল</button><button data-k="h" data-x="h">✋ হাতের গঠন</button><button data-k="i" data-x="i">👁️ আইরিস ও রেটিনা</button><button data-k="d" data-x="d">🧬 DNA</button>
+      <span class="grp">আচরণগত বৈশিষ্ট্য</span>
+      <button data-k="v" data-x="v">🗣️ কণ্ঠস্বর</button><button data-k="s" data-x="s">✍️ স্বাক্ষর</button><button data-k="t" data-x="t">⌨️ টাইপিং</button>
+    </div>
+  </section>
+  <section class="card">
+    <h2>শারীরিক বনাম আচরণগত (টাচ করো)</h2>
+    <div id="cx0"></div>
+  </section>
+  <section class="card">
+    <h2>পাসওয়ার্ড বনাম বায়োমেট্রিক্স (টাচ করো)</h2>
+    <div id="cx1"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>বায়োমেট্রিক্স:</b> দেহের গঠন ও আচরণগত বৈশিষ্ট্যের ভিত্তিতে কোনো ব্যক্তিকে অদ্বিতীয়ভাবে শনাক্ত করার প্রযুক্তি। bio = জীবন, metric = পরিমাপ।</li>
+      <li>কাজের ধাপ: বৈশিষ্ট্য স্ক্যান → <b>ডিজিটাল কোডে রূপান্তর</b> → ডেটাবেজে সংরক্ষিত কোডের সাথে <b>তুলনা</b> → মিললে প্রবেশের অনুমতি।</li>
+      <li>শারীরিক: আঙুলের ছাপ, মুখ, হাতের গঠন, আইরিস, রেটিনা, DNA। আচরণগত: কণ্ঠস্বর, স্বাক্ষর, টাইপিং।</li>
+      <li>DNA সবচেয়ে নির্ভুল কিন্তু সময়সাপেক্ষ ও ব্যয়বহুল। আইরিস ও রেটিনা স্ক্যান অত্যন্ত নির্ভুল কিন্তু ব্যয়বহুল।</li>
+    </ul>
+  </section>
+<script>
+const {$,say,bn}=IM;const Q=IM.seq(),sv=$('sv');
+$('rid').innerHTML=[6,11,16,21,26,31,36,41,46].map((r,i)=>`<ellipse class="ridge" cx="${60+(i%2)}" cy="${110-i}" rx="${r*.8}" ry="${r}" stroke-dasharray="${30+i*9} ${3+i%3*2}"/>`).join('');
+const MP=[[44,84],[72,78],[52,120],[80,112],[60,140],[38,104]];
+$('mns').innerHTML=MP.map(([x,y])=>`<circle class="mn" cx="${x}" cy="${y}" r="4"/>`).join('');
+const RA=[1,0,1,1,0,1,1,0],ST=[0,1,1,0,0,1,0,1];
+const row=(id,y)=>$(id).innerHTML=RA.map((_,i)=>`<g class="cd"><rect x="${120+i*14}" y="${y}" width="13" height="18" rx="3"/><text x="${126.5+i*14}" y="${y+9}"></text></g>`).join('');
+row('cn',90);row('cs',146);
+const setRow=(id,bits)=>[...$(id).querySelectorAll('.cd')].forEach((g,i)=>{g.querySelector('text').textContent=bits?bn(bits[i]):'';g.setAttribute('class','cd');});
+const mns=n=>[...$('mns').children].forEach((c,i)=>c.classList.toggle('on',i<n));
+const door=o=>{$('door').classList.toggle('open',o);$('knob').style.opacity=o?0:1;$('lock').textContent=o?'🔓':'🔒';};
+const scan=done=>{const l=$('sl');l.setAttribute('class','sline show');IM.moveAlong(l,[[0,50],[0,158],[0,50]],1500/player.speed,Q.guard(()=>{l.setAttribute('class','sline hide');done&&done();}));};
+const who=(e,n)=>{$('who').textContent=e;$('whon').textContent=n;};
+const parts=(on,done)=>$('parts').querySelectorAll('button').forEach(b=>{b.classList.toggle('on',b.dataset.k===on);b.classList.toggle('done',done.includes(b.dataset.k));});
+function compare(bits,done){const cn=[...$('cn').querySelectorAll('.cd')],cs=[...$('cs').querySelectorAll('.cd')];let ok=true;
+  bits.forEach((b,i)=>Q.later(i*200,()=>{const m=b===RA[i];if(!m)ok=false;cn[i].setAttribute('class','cd '+(m?'ok':'no'));cs[i].setAttribute('class','cd '+(m?'ok':'no'));
+    if(i===bits.length-1)Q.later(300,()=>done(ok));}));}
+function res(t,c){$('res').textContent=t;$('res').style.fill=c;}
+const S=[
+ {m:'পাসওয়ার্ড ভুলে যাওয়া যায়, চাবি হারিয়ে যায়, চুরিও হয়। কিন্তু তোমার <b>আঙুলের ছাপ</b> পৃথিবীতে শুধু তোমারই, কারও সাথে মেলে না। একেই কাজে লাগায় <b>বায়োমেট্রিক্স</b>।',f(){$('rid').animate([{opacity:.2},{opacity:1}],{duration:900});}},
+ {m:'<b>নিবন্ধন (Enrollment):</b> রহিম প্রথমবার স্ক্যানারে আঙুল রাখলো। সবুজ আলো পুরো ছাপ স্ক্যান করছে, আর ছাপের বিশেষ বিন্দুগুলো (লাল) খুঁজে বের করছে।',f(){scan();MP.forEach((_,i)=>Q.later(250+i*220,()=>mns(i+1)));}},
+ {m:'বিন্দুগুলোর অবস্থান থেকে তৈরি হলো একটা <b>ডিজিটাল কোড</b>। কোডটা রহিমের নামে <b>ডেটাবেজে</b> জমা রাখা হলো।',mn:6,f(){setRow('cn',RA);[...$('cn').querySelectorAll('.cd')].forEach((g,i)=>g.animate([{opacity:0,transform:'translateY(-8px)'},{opacity:1,transform:'none'}],{duration:400,delay:i*90,fill:'backwards'}));
+   Q.later(1000,()=>IM.emit(sv,[[176,100],[176,56]],'🔑',{r:11,fs:12,dur:800,done(){setRow('cs',RA);}}));}},
+ {m:'<b>যাচাই (Verification):</b> পরের দিন রহিম দরজায় এসে আঙুল রাখলো। আবার স্ক্যান হয়ে নতুন কোড তৈরি হলো, আর ডেটাবেজ থেকে সংরক্ষিত কোড আনা হলো।',st:1,f(){scan(()=>{mns(6);setRow('cn',RA);});IM.emit(sv,[[176,56],[176,140]],'🔑',{r:11,fs:12,dur:800});}},
+ {m:'এবার দুই কোড <b>ঘর ধরে ঘর মেলানো</b> হচ্ছে। সব ঘর মিলে গেলো ✅। তাই দরজা খুলে গেলো!',st:1,mn:6,cn:RA,f(){compare(RA,ok=>{res('✅ মিলেছে! স্বাগতম রহিম','#27AE60');door(true);});}},
+ {m:'এবার এক <b>অচেনা লোক 🕵️</b> আঙুল রাখলো। তার ছাপের বিন্দু আলাদা জায়গায়, তাই কোডও আলাদা। না মেলায় দরজা <b>বন্ধ</b> থাকলো ❌',st:1,f(){who('🕵️','অচেনা');$('mns').setAttribute('transform','translate(6,-8) rotate(8 60 104)');
+   scan(()=>{mns(6);setRow('cn',ST);compare(ST,()=>{res('❌ মেলেনি! প্রবেশ নিষেধ','var(--bad)');$('lock').animate([{transform:'translateX(-4px)'},{transform:'translateX(4px)'},{transform:'none'}],{duration:300,iterations:3});});});}},
+ {m:'বায়োমেট্রিক্স দুই রকম। <b>শারীরিক বৈশিষ্ট্য:</b> আঙুলের ছাপ, মুখমণ্ডল, হাতের গঠন, আইরিস-রেটিনা, DNA। <b>আচরণগত বৈশিষ্ট্য:</b> কণ্ঠস্বর, স্বাক্ষর, টাইপ করার ধরন। নিচে টাচ করে পড়ো।',mn:6,f(){const ks=['f','fa','h','i','d','v','s','t'];ks.forEach((k,i)=>Q.later(i*420,()=>parts(k,ks.slice(0,i))));Q.later(ks.length*420+200,()=>parts('',ks));}},
+ {m:'ব্যবহার: মোবাইল আনলক, অফিসে <b>হাজিরা</b>, পাসপোর্ট ও জাতীয় পরিচয়পত্র, ব্যাংকের লেনদেন, সিম নিবন্ধন আর <b>অপরাধী শনাক্তকরণ</b>।',mn:6,f(){door(true);who('🧑','রহিম');['📱','🏦','🛂','👮'].forEach((t,i)=>Q.later(i*400,()=>IM.emit(sv,[[60,104],[176,40],[310,120]],t,{r:12,fs:13,dur:1200})));}}];
+function render(k){const s=S[k];Q.bump();sv.querySelectorAll('.pk').forEach(e=>e.remove());$('sl').setAttribute('class','sline hide');who('🧑','রহিম');$('mns').removeAttribute('transform');
+  mns(s.mn||0);setRow('cn',s.cn||null);setRow('cs',s.st?RA:null);res('','');door(false);parts('',[]);s.f();say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+var player=IM.player({count:()=>S.length,show:render,interval:4200,swipe:$('sv')});
+const X={fp:{t:'👆 আঙুলের ছাপ',d:'প্রত্যেকের আঙুলের ছাপ অদ্বিতীয়। রিডার ত্বকের টিস্যু ও নিচের রক্ত সঞ্চালন পড়ে ইলেকট্রোম্যাগনেটিক পদ্ধতিতে।'},who:{t:'ব্যবহারকারী',d:'যে দরজা খুলতে চাইছে। তার বৈশিষ্ট্য ডেটাবেজের সাথে মিলতে হবে।'},db:{t:'🗄️ ডেটাবেজ',d:'নিবন্ধনের সময় প্রত্যেকের কোড তার নামের সাথে এখানে জমা থাকে।'},door:{t:'🚪 দরজা',d:'কোড মিললেই খোলে। এভাবে প্রবেশাধিকার নিয়ন্ত্রণ করা হয় (Access Control)।'},
+ f:{t:'👆 ফিংগার প্রিন্ট রিডার',d:'সবচেয়ে বেশি ব্যবহৃত। মোবাইল, হাজিরা মেশিনে থাকে।'},fa:{t:'🙂 ফেইস রিকগনিশন',d:'দুই চোখের দূরত্ব, নাকের দৈর্ঘ্য, চোয়ালের কোণ মাপে। চুল, মেকআপ বা আলোয় ভুল হতে পারে।'},h:{t:'✋ হ্যান্ড জিওমিট্রি',d:'হাতের আকার মাপে, ৩১,০০০ এর বেশি বিন্দু, ৫ সেকেন্ডের কম সময়ে। ব্যবহার সবচেয়ে সহজ।'},i:{t:'👁️ আইরিস ও রেটিনা',d:'আইরিস: চোখের মণির চারপাশের রঙিন অংশ। রেটিনা: চোখের পেছনের রক্তনালি। খুব নির্ভুল কিন্তু ব্যয়বহুল।'},d:{t:'🧬 DNA',d:'রক্ত, চুল বা ত্বকের DNA মেলানো হয়। সবচেয়ে নির্ভুল, কিন্তু সময়সাপেক্ষ ও ব্যয়বহুল।'},
+ v:{t:'🗣️ ভয়েস রিকগনিশন',d:'কণ্ঠস্বরের বৈশিষ্ট্য মেলায়। ঠান্ডা লাগলে বা কোলাহলে ভুল হতে পারে।'},s:{t:'✍️ সিগনেচার ভেরিফিকেশন',d:'বিশেষ কলম-প্যাডে স্বাক্ষরের আকার, গতি, সময় আর চাপ মাপে। ব্যাংক ও বিমায় ব্যবহৃত।'},t:{t:'⌨️ টাইপিং কীস্ট্রোক',d:'কে কোন ছন্দে ও গতিতে টাইপ করে তা মেলায়।'}};
+IM.tapx(sv,X);IM.tapx($('parts'),X);
+IM.compare($('cx0'),['','শারীরিক','আচরণগত'],[
+ ['কী মাপে','দেহের গঠন','কাজ করার ধরন','শারীরিক বৈশিষ্ট্য সহজে বদলায় না, আচরণ একটু বদলাতে পারে।'],
+ ['উদাহরণ','আঙুলের ছাপ, মুখ, আইরিস, DNA','কণ্ঠস্বর, স্বাক্ষর, টাইপিং','বোর্ডে প্রায়ই জিজ্ঞেস করে কোনটা কোন ভাগে।'],
+ ['নির্ভুলতা','সাধারণত বেশি','তুলনামূলক কম','ঠান্ডা লাগলে কণ্ঠ বদলায়, কিন্তু আঙুলের ছাপ বদলায় না।']]);
+IM.compare($('cx1'),['','🔑 পাসওয়ার্ড','👆 বায়োমেট্রিক্স'],[
+ ['ভুলে যাওয়া','ভুলে যেতে পারি','ভোলার উপায় নেই','বৈশিষ্ট্যটা তো শরীরেই আছে।'],
+ ['চুরি','অন্যে জেনে ফেলতে পারে','নকল করা খুব কঠিন','তাই বায়োমেট্রিক্স বেশি নির্ভরযোগ্য।'],
+ ['শেয়ার','অন্যকে বলে দেওয়া যায়','অন্যকে দেওয়া যায় না','হাজিরায় একজনের বদলে আরেকজন দিতে পারে না।'],
+ ['খরচ','প্রায় শূন্য','যন্ত্র কিনতে খরচ','আইরিস, DNA পদ্ধতি বেশ ব্যয়বহুল।']]);
+IM.mcq($('quiz6'),[
+ {q:'নিচের কোনটি আচরণগত বায়োমেট্রিক্স?',o:['আইরিস','DNA','কণ্ঠস্বর','আঙুলের ছাপ'],a:2,w:'কণ্ঠস্বর, স্বাক্ষর, টাইপিং আচরণগত।'},
+ {q:'সবচেয়ে নির্ভুল কিন্তু সময়সাপেক্ষ পদ্ধতি—',o:['ফেইস রিকগনিশন','DNA','হ্যান্ড জিওমিট্রি','ভয়েস'],a:1,w:'DNA সবচেয়ে নির্ভুল, তবে ব্যয়বহুল ও সময়সাপেক্ষ।'},
+ {q:'চোখের পেছনের রক্তনালির বিন্যাস পরীক্ষা করে কোনটি?',o:['আইরিস স্ক্যান','রেটিনা স্ক্যান','ফেইস রিকগনিশন','ফিংগার প্রিন্ট'],a:1,w:'আইরিস হলো মণির চারপাশের রঙিন অংশ, রেটিনা পেছনের রক্তনালি।'},
+ {q:'বায়োমেট্রিক ডিভাইস বৈশিষ্ট্যকে কীসে রূপান্তর করে?',o:['ছবিতে','ডিজিটাল কোডে','শব্দে','আলোতে'],a:1,w:'ডিজিটাল কোড বানিয়ে সংরক্ষিত কোডের সাথে তুলনা করে।'}]);
+player.reset();
+</script>

@@ -1,0 +1,105 @@
+---
+ch: ২
+kit: 1
+title: ডেটা ট্রান্সমিশন মেথড
+eyebrow: ২.১.৪ ডেটা ট্রান্সমিশন মেথড
+h1: এসিনক্রোনাস, সিনক্রোনাস, আইসোক্রোনাস
+lead: প্রাপক কীভাবে বুঝবে কোন বিট থেকে একটা অক্ষর শুরু আর কোথায় শেষ? ▶ চাপো আর দেখো তিন পদ্ধতিতে ডেটার "ট্রেন" কীভাবে ছোটে। রঙিন বক্সে টাচ করলে ব্যাখ্যা পাবে।
+---
+<style>
+svg.scene .tt{font-family:var(--f-mono);font-size:10px;font-weight:800;text-anchor:middle;dominant-baseline:central;fill:#fff}
+svg.scene .line{stroke:#9DB3D6;stroke-width:4}
+svg.scene .line.idle{stroke:#D5DCE8;stroke-dasharray:6 5}
+svg.scene .rcv{font-family:var(--f-mono);font-size:15px;font-weight:800;fill:var(--accent);text-anchor:middle}
+svg.scene .st{font-size:11px;font-weight:800;text-anchor:middle}
+svg.scene .tick{stroke:var(--signal);stroke-width:2}
+svg.scene .buf rect{fill:#fff;stroke:var(--line);stroke-width:1.5}
+svg.scene .buf rect.f{fill:var(--accent-soft);stroke:var(--accent)}
+</style>
+  <section class="card" id="main">
+    <div class="sbox">
+    <svg class="scene" id="sv" viewBox="0 0 360 230">
+      <text id="ttl" class="lbl" x="180" y="20" style="fill:var(--accent)"></text>
+      <g class="node"><rect x="6" y="70" width="56" height="56" rx="10"/></g><text class="emo" x="34" y="92" font-size="22" id="se">⌨️</text><text class="sm" x="34" y="118">প্রেরক</text>
+      <g class="node"><rect x="298" y="70" width="56" height="56" rx="10"/></g><text class="emo" x="326" y="92" font-size="22" id="re">💻</text><text class="sm" x="326" y="118">প্রাপক</text>
+      <line id="ln" class="line" x1="62" y1="98" x2="298" y2="98"/>
+      <g id="ticks"></g>
+      <g id="buf" class="buf"></g>
+      <text id="idle" class="st" x="180" y="78" style="fill:var(--muted)"></text>
+      <text id="rcv" class="rcv" x="326" y="146"></text>
+      <g id="zoom"></g>
+    </svg>
+    </div>
+  </section>
+  <section class="card">
+    <h2>এসিনক্রোনাস বনাম সিনক্রোনাস (টাচ করো)</h2>
+    <div id="cx0"></div>
+  </section>
+  <section class="card">
+    <h2>তিন পদ্ধতি এক নজরে (টাচ করো)</h2>
+    <div id="cx1"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="quiz6"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>বিট সিনক্রোনাইজেশন:</b> সিগন্যাল পাঠানোর সময় বিটগুলোর মধ্যে সমন্বয়ের পদ্ধতি, যাতে প্রাপক বিটের শুরু-শেষ বুঝতে পারে।</li>
+      <li><b>এসিনক্রোনাস:</b> ক্যারেক্টার বাই ক্যারেক্টার, প্রতিটির আগে <b>স্টার্ট বিট</b> ও পরে ১ বা ২টি <b>স্টপ বিট</b>, বিরতি অসমান। ব্যবহার: কী-বোর্ড → কম্পিউটার, কম্পিউটার → প্রিন্টার।</li>
+      <li><b>সিনক্রোনাস:</b> আগে প্রাথমিক স্টোরেজে জমিয়ে <b>ব্লক</b> আকারে (৮০–১৩২ ক্যারেক্টার) পাঠায়, শুরুতে <b>হেডার</b>, শেষে <b>ট্রেইলার</b>, বিরতি সমান। ব্যবহার: কম্পিউটার → কম্পিউটার।</li>
+      <li><b>আইসোক্রোনাস:</b> সিনক্রোনাসের উন্নত রূপ, ডিলে প্রায় শূন্য। ব্যবহার: রিয়েল টাইম অডিও-ভিডিও।</li>
+    </ul>
+  </section>
+<script>
+const {$,say,bn}=IM;const Q=IM.seq(),sv=$('sv');const NS='http://www.w3.org/2000/svg';
+const C={s:'#27AE60',p:'#E74C3C',d:'#3B82F6',h:'#E67E22',x:'#8E9AAF'};
+let fly=0;
+function idle(){$('ln').setAttribute('class','line'+(fly?'':' idle'));$('idle').textContent=fly?'':'⏸ লাইন অলস বসে আছে';}
+function train(items,ms,done){const g=document.createElementNS(NS,'g');g.setAttribute('class','pk');let x=0,h='';
+  items.forEach(it=>{h+=`<rect x="${x}" y="-10" width="${it.w}" height="20" rx="3" fill="${C[it.c]}" stroke="#fff" stroke-width="1.5"/><text class="tt" x="${x+it.w/2}" y="0">${it.t}</text>`;x+=it.w;});
+  g.innerHTML=h;sv.appendChild(g);fly++;idle();IM.moveAlong(g,[[62,98],[298-x,98]],ms/player.speed,()=>{const live=g.isConnected;g.remove();if(!live)return;fly--;idle();done&&done();});}
+const frame=ch=>[{w:12,c:'s',t:'S'},{w:24,c:'d',t:ch},{w:12,c:'p',t:'P'}];
+const block=(txt)=>[{w:16,c:'h',t:'H'}].concat([...txt].map(t=>({w:14,c:'d',t}))).concat([{w:16,c:'h',t:'T'}]);
+const rcv=t=>{$('rcv').textContent+=t;};
+function asyncSend(loop){const W='HI!'.split(''),G=[300,1300,500];let i=0;const nx=()=>{if(i>=W.length){if(loop)Q.later(900,()=>{$('rcv').textContent='';i=0;nx();});return;}const ch=W[i++];
+  Q.later(G[i-1],()=>{$('se').animate([{transform:'translateY(3px)'},{transform:'none'}],{duration:200});train(frame(ch),1200,()=>{rcv(ch);nx();});});};nx();}
+function zoomAsync(){const it=[['S','s','স্টার্ট বিট (০)'],['0','d'],['1','d'],['0','d'],['0','d'],['1','d'],['0','d'],['0','d'],['0','d'],['P','p','স্টপ বিট (১)']];
+  $('zoom').innerHTML=it.map(([t,c,l],i)=>`<g style="opacity:0" class="zz"><rect x="${36+i*29}" y="160" width="27" height="26" rx="4" fill="${C[c]}"/><text class="tt" x="${49.5+i*29}" y="173" style="font-size:12px">${t}</text>${l?`<text class="sm" x="${49.5+i*29}" y="${i?200:200}" style="font-weight:800;fill:${C[c]}">${l}</text>`:''}</g>`).join('')+
+  `<text class="sm" x="180" y="214" style="font-weight:800;fill:var(--accent)">৮টি ডেটা বিট = অক্ষর 'H' (01001000)</text>`;
+  [...$('zoom').querySelectorAll('.zz')].forEach((g,i)=>Q.later(i*140,()=>g.animate([{opacity:0,transform:'translateY(-10px)'},{opacity:1,transform:'none'}],{duration:300,fill:'forwards'})));}
+function bufFill(n,cb){$('buf').innerHTML=Array.from({length:8},(_,i)=>`<rect x="${8+i*7}" y="134" width="6" height="14" rx="1"/>`).join('')+'<text class="sm" x="34" y="160">স্টোরেজ</text>';
+  const R=[...$('buf').querySelectorAll('rect')];R.forEach((r,i)=>Q.later(i*120,()=>r.classList.add('f')));Q.later(1000,()=>{R.forEach(r=>r.classList.remove('f'));cb&&cb();});}
+function syncSend(iso){const go=()=>{bufFill(8,()=>train(block('HELLO!'),iso?1000:1300,()=>{$('rcv').textContent='HELLO! ✓';$('rcv').animate([{opacity:.3},{opacity:1}],{duration:300});}));Q.later(iso?1500:1900,go);};go();}
+function ticks(on){$('ticks').innerHTML=on?Array.from({length:9},(_,i)=>`<line class="tick" x1="${70+i*28}" y1="110" x2="${70+i*28}" y2="118"/>`).join('')+'<text class="sm" x="180" y="132" style="fill:var(--signal);font-weight:800">⏱️ নির্দিষ্ট সময় পরপর, দেরি প্রায় শূন্য</text>':'';}
+const S=[
+ {m:'প্রাপকের কাছে শুধু <b>০ আর ১ এর স্রোত</b> যায়। কোথা থেকে একটা অক্ষর শুরু আর কোথায় শেষ, প্রাপক বুঝবে কীভাবে? এই সমন্বয়কে বলে <b>বিট সিনক্রোনাইজেশন</b>। এর ভিত্তিতে পদ্ধতি <b>৩টি</b>।',t:'সমস্যা: কোথায় শুরু, কোথায় শেষ?',f(){const go=()=>{train([...'0100100001101001'].map(t=>({w:12,c:'x',t})),2200,()=>{$('rcv').textContent='??? 🤔';});Q.later(2600,go);};go();}},
+ {m:'<b>এসিনক্রোনাস:</b> কী-বোর্ডে যখন যেটা চাপো, সেটাই সাথে সাথে যায়, <b>একটা একটা অক্ষর</b> করে। প্রতিটার আগে <b>স্টার্ট বিট (S)</b>, পরে <b>স্টপ বিট (P)</b>। দেখো, অক্ষরগুলোর মাঝের বিরতি <b>অসমান</b>।',t:'১. এসিনক্রোনাস (Start/Stop)',f(){asyncSend(true);}},
+ {m:'একটা অক্ষর বড় করে দেখো: <b>স্টার্ট বিট</b> → ৮টা ডেটা বিট → <b>স্টপ বিট</b> (১ বা ২টা)। তাই এর আরেক নাম <b>স্টার্ট/স্টপ ট্রান্সমিশন</b>।',t:'একটা অক্ষরের গঠন',f(){zoomAsync();train(frame('H'),1600);}},
+ {m:'এসিনক্রোনাসের সমস্যা: অক্ষরের মাঝের ফাঁকে লাইন <b>অলস বসে থাকে</b>, আর প্রতি অক্ষরে বাড়তি বিট লাগে। তাই <b>দক্ষতা ও গতি কম</b>। তবে খরচ কম, স্টোরেজ লাগে না। ব্যবহার: কী-বোর্ড → কম্পিউটার, কম্পিউটার → প্রিন্টার।',t:'এসিনক্রোনাস: সুবিধা ও অসুবিধা',f(){asyncSend(true);}},
+ {m:'<b>সিনক্রোনাস:</b> প্রেরক আগে ডেটা <b>স্টোরেজে জমায়</b>, তারপর একসাথে <b>ব্লক</b> (প্যাকেট) আকারে পাঠায়। ব্লকের শুরুতে <b>হেডার (H)</b>, শেষে <b>ট্রেইলার (T)</b>। প্রতি ব্লকে ৮০–১৩২টা অক্ষর থাকে।',t:'২. সিনক্রোনাস (ব্লক আকারে)',se:'💻',f(){syncSend(false);}},
+ {m:'দেখো, ব্লকগুলোর মাঝের বিরতি <b>সমান</b>। প্রতি অক্ষরে স্টার্ট-স্টপ বিট লাগে না, তাই <b>গতি ও দক্ষতা বেশি</b>। তবে প্রেরকে স্টোরেজ লাগে, খরচ বেশি। ব্যবহার: কম্পিউটার থেকে কম্পিউটারে, দূরে ডেটা পাঠাতে।',t:'সিনক্রোনাস: সুবিধা ও অসুবিধা',se:'💻',f(){syncSend(false);}},
+ {m:'<b>আইসোক্রোনাস:</b> সিনক্রোনাসের <b>উন্নত সংস্করণ</b>। প্রতিটা ব্লক ঠিক নির্দিষ্ট সময় পরপর পৌঁছায়, <b>দেরি (ডিলে) প্রায় শূন্য</b>। তাই লাইভ ভিডিও কল, অডিও-ভিডিও স্ট্রিমিংয়ে ব্যবহার হয়।',t:'৩. আইসোক্রোনাস (রিয়েল টাইম)',se:'🎥',re:'📺',f(){ticks(true);syncSend(true);}}];
+function render(k){const s=S[k];Q.bump();sv.querySelectorAll('.pk').forEach(e=>e.remove());fly=0;idle();$('idle').textContent='';$('ttl').textContent=s.t;
+  $('se').textContent=s.se||'⌨️';$('re').textContent=s.re||(k>=4?'🖥️':'💻');$('rcv').textContent='';$('zoom').innerHTML='';$('buf').innerHTML='';ticks(false);s.f();say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+var player=IM.player({count:()=>S.length,show:render,interval:4800,swipe:$('sv')});
+IM.compare($('cx0'),['','এসিনক্রোনাস','সিনক্রোনাস'],[
+ ['পাঠায়','একটা একটা অক্ষর','ব্লক বা প্যাকেট','সিনক্রোনাসে প্রতি ব্লকে ৮০–১৩২ অক্ষর।'],
+ ['বাড়তি বিট','প্রতি অক্ষরে স্টার্ট ও স্টপ বিট','ব্লকে হেডার ও ট্রেইলার','তাই এসিনক্রোনাসে অপচয় বেশি।'],
+ ['বিরতি','অসমান','সমান','এসিনক্রোনাসে যখন খুশি পাঠানো যায়।'],
+ ['স্টোরেজ','লাগে না','লাগে','সিনক্রোনাসে আগে জমিয়ে নিতে হয়।'],
+ ['গতি ও দক্ষতা','কম','বেশি','লাইন অলস থাকে না।'],
+ ['খরচ','কম','বেশি','স্টোরেজের জন্য খরচ বাড়ে।'],
+ ['ব্যবহার','কী-বোর্ড → কম্পিউটার, প্রিন্টার','কম্পিউটার → কম্পিউটার','সৃজনশীলে উদ্দীপক দেখে পদ্ধতি চিনতে হয়।']]);
+IM.compare($('cx1'),['পদ্ধতি','মূল বৈশিষ্ট্য'],[
+ ['এসিনক্রোনাস','অক্ষর ধরে, স্টার্ট/স্টপ বিট','টাইপ করার মতো ধীরে ধীরে ডেটা।'],
+ ['সিনক্রোনাস','ব্লক ধরে, হেডার/ট্রেইলার','অনেক ডেটা একসাথে দ্রুত।'],
+ ['আইসোক্রোনাস','সিনক্রোনাসের উন্নত রূপ, ডিলে প্রায় শূন্য','লাইভ অডিও-ভিডিওর জন্য সেরা।']]);
+IM.mcq($('quiz6'),[
+ {q:'স্টার্ট/স্টপ ট্রান্সমিশন বলা হয় কোনটিকে?',o:['সিনক্রোনাস','এসিনক্রোনাস','আইসোক্রোনাস','প্যারালাল'],a:1,w:'প্রতি অক্ষরের শুরুতে স্টার্ট ও শেষে স্টপ বিট থাকে।'},
+ {q:'সিনক্রোনাসে প্রতি ব্লকে কতটি ক্যারেক্টার থাকে?',o:['১টি','৮টি','৮০–১৩২টি','১০০০টি'],a:2,w:'কমপক্ষে ৮০ থেকে ১৩২টি।'},
+ {q:'কী-বোর্ড থেকে কম্পিউটারে কোন পদ্ধতি?',o:['এসিনক্রোনাস','সিনক্রোনাস','আইসোক্রোনাস','ব্রডকাস্ট'],a:0,w:'অপারেটর যেকোনো সময় কী চাপতে পারে।'},
+ {q:'রিয়েল টাইম ভিডিওর জন্য উপযুক্ত—',o:['এসিনক্রোনাস','সিনক্রোনাস','আইসোক্রোনাস','সিমপ্লেক্স'],a:2,w:'আইসোক্রোনাসে ডিলে প্রায় শূন্য।'}]);
+player.reset();
+</script>

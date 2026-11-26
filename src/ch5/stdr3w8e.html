@@ -1,0 +1,76 @@
+---
+ch: ৫
+kit: 1
+title: C প্রোগ্রাম চালানোর ধাপ
+eyebrow: ৫.২.৩ সি ভাষায় প্রোগ্রাম উন্নয়ন পরিবেশ
+h1: .c থেকে .exe
+lead: তোমার লেখা প্রোগ্রাম ফাইলটা কোন কোন ধাপ পেরিয়ে চালানো যায় তা দেখো। ▶ চাপো। "ভুলসহ" বাছলে দেখবে কম্পাইলার কোথায় আটকে দেয়।
+---
+<style>
+.pipe{position:relative;display:flex;flex-direction:column;gap:14px;padding-left:8px}
+.stn{position:relative;display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:center;padding:8px 10px;border-radius:12px;border:2px solid var(--line);background:var(--panel);cursor:pointer;transition:all .3s;min-height:58px}
+.stn .ic{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:var(--accent-soft);font-size:1.3rem}
+.stn b{display:block}
+.stn small{color:var(--muted);font-size:.82rem}
+.stn.on{border-color:var(--signal);background:var(--signal-soft)}
+.stn.done{border-color:var(--accent)}
+.stn.bad{border-color:var(--bad);background:var(--bad-soft)}
+.stn::after{content:"";position:absolute;left:30px;bottom:-16px;width:3px;height:14px;background:var(--wire-off)}
+.stn:last-child::after{display:none}
+.file{position:absolute;right:10px;top:0;font-family:var(--f-mono);font-weight:800;font-size:.85rem;padding:4px 10px;border-radius:8px;background:var(--signal);color:#1A1200;transition:transform .7s cubic-bezier(.5,0,.3,1),background .3s;z-index:2;box-shadow:0 4px 10px -4px rgba(0,0,0,.4)}
+.file.err{background:var(--bad);color:#fff}
+.lib{font-family:var(--f-mono);font-size:.75rem;color:var(--accent)}
+</style>
+  <div class="tabs" id="tabs">
+    <button class="tab" data-k="ok" aria-selected="true">ঠিক প্রোগ্রাম</button>
+    <button class="tab" data-k="err" aria-selected="false">ভুলসহ (; নেই)</button>
+  </div>
+  <section class="card" id="main">
+    <div class="pipe" id="pipe"><span class="file" id="file">sum.c</span></div>
+    <div class="console"><small>আউটপুট</small><span id="out"></span></div>
+    <pre id="code"></pre>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points">
+      <li><b>সোর্স প্রোগ্রাম</b> (.c): প্রোগ্রামারের লেখা প্রোগ্রাম। <b>অবজেক্ট প্রোগ্রাম</b> (.obj): কম্পাইলারের তৈরি মেশিন কোড।</li>
+      <li><b>লিংকার</b> অবজেক্ট ফাইলের সাথে লাইব্রেরি ফাংশন (যেমন printf) জুড়ে দিয়ে চালানোর যোগ্য .exe ফাইল বানায়।</li>
+      <li><b>IDE</b> (Integrated Development Environment): এডিটর, কম্পাইলার, লিংকার, ডিবাগার সব এক জায়গায়। যেমন Code::Blocks, Dev-C++, Turbo C।</li>
+    </ul>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
+<script>
+const {$,say,bn}=IM;
+let K='ok';
+const ST=[{id:'ed',ic:'✍️',t:'এডিটর',s:'প্রোগ্রাম লেখা ও সেভ করা',f:'sum.c'},{id:'pre',ic:'🔧',t:'প্রিপ্রসেসর',s:'#include এর হেডার ফাইল যুক্ত করে',f:'sum.c + stdio.h'},
+ {id:'cmp',ic:'⚙️',t:'কম্পাইলার',s:'ভুল খোঁজে, মেশিন কোডে অনুবাদ করে',f:'sum.obj'},{id:'lnk',ic:'🔗',t:'লিংকার',s:'লাইব্রেরি জুড়ে দেয়',f:'sum.exe'},{id:'run',ic:'▶️',t:'লোডার ও রান',s:'মেমোরিতে এনে চালায়',f:'sum.exe'}];
+$('pipe').insertAdjacentHTML('beforeend',ST.map(s=>`<div class="stn" id="p-${s.id}" data-x="${s.id}"><span class="ic">${s.ic}</span><span><b>${s.t}</b><small>${s.s}</small></span></div>`).join(''));
+const SRC=()=>['#include <stdio.h>','int main()','{',K==='err'?'    printf("Hello ICT")':'    printf("Hello ICT");','    return 0;','}'];
+let cv;
+function build(){cv=IM.codeView($('code'),SRC().map(IM.cHL),i=>say(`লাইন ${bn(i+1)}`,LX[i]+(K==='err'&&i===3?' এখানে শেষে সেমিকোলন (;) নেই!':''),true));}
+const LX=['<code>#include &lt;stdio.h&gt;</code> printf, scanf ব্যবহারের জন্য হেডার ফাইল যুক্ত করে। প্রিপ্রসেসর এটা পড়ে।','<code>main()</code> ফাংশন থেকেই প্রোগ্রাম চলা শুরু হয়।','{ main ফাংশনের শুরু।','<code>printf</code> স্ক্রিনে লেখা দেখায়। প্রতিটি স্টেটমেন্টের শেষে ; দিতে হয়।','<code>return 0;</code> প্রোগ্রাম ঠিকভাবে শেষ হয়েছে জানায়।','} main ফাংশনের শেষ।'];
+function steps(){const S=[
+ {at:0,f:'sum.c',m:'এডিটরে প্রোগ্রাম লিখে <code>sum.c</code> নামে সেভ করলাম। এটা সোর্স প্রোগ্রাম।'},
+ {at:1,f:'sum.c + stdio.h',m:'প্রিপ্রসেসর <code>#include</code> লাইন দেখে stdio.h হেডার ফাইলের তথ্য প্রোগ্রামে জুড়ে দিলো।'}];
+ if(K==='err'){S.push({at:2,f:'Error!',err:1,line:3,m:'কম্পাইলার লাইন ৪ এ ভুল পেলো: <code>expected ; before return</code>। সিনট্যাক্স এরর থাকলে .obj ফাইল তৈরি হয় না।'},
+   {at:0,f:'sum.c',back:1,line:3,m:'তাই আবার এডিটরে ফিরে ভুল ঠিক করতে হবে (ডিবাগিং)। উপরের "ঠিক প্রোগ্রাম" বেছে বাকিটা দেখো।'});return S;}
+ S.push({at:2,f:'sum.obj',m:'কম্পাইলার কোনো ভুল পায়নি। পুরো প্রোগ্রাম মেশিন ভাষায় অনুবাদ করে <code>sum.obj</code> (অবজেক্ট ফাইল) বানালো।'},
+  {at:3,f:'sum.exe',m:'লিংকার printf এর মতো লাইব্রেরি ফাংশনের কোড জুড়ে দিয়ে চালানোর যোগ্য <code>sum.exe</code> বানালো।'},
+  {at:4,f:'sum.exe',out:1,m:'লোডার .exe কে মেমোরিতে এনে চালালো। স্ক্রিনে এলো: Hello ICT'});return S;}
+let S;
+function place(i){const el=$('p-'+ST[i].id),f=$('file');f.style.transform=`translateY(${el.offsetTop+el.offsetHeight/2-14}px)`;}
+function render(k){const s=S[k];
+  ST.forEach((t,i)=>{const e=$('p-'+t.id);e.classList.toggle('on',i===s.at&&!s.err);e.classList.toggle('bad',!!s.err&&i===s.at);e.classList.toggle('done',i<s.at||(s.back&&i<=2&&i>0));});
+  const f=$('file');f.textContent=s.f;f.classList.toggle('err',!!s.err);place(s.at);
+  cv.on(s.line===undefined?-1:s.line);$('out').textContent=s.out?'Hello ICT':(s.err?'error: expected \';\' before \'return\'':'');
+  say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+const player=IM.player({count:()=>S.length,show:render,swipe:$('main'),interval:1900});
+IM.tapx($('pipe'),Object.fromEntries(ST.map(s=>[s.id,{t:s.t,d:{ed:'এডিটর: প্রোগ্রাম লেখার জায়গা (যেমন Code::Blocks এর এডিটর)। ফাইল .c এক্সটেনশনে সেভ হয়।',pre:'প্রিপ্রসেসর: # দিয়ে শুরু লাইনগুলো (যেমন #include, #define) কম্পাইলের আগেই প্রসেস করে।',cmp:'কম্পাইলার: পুরো সোর্স প্রোগ্রাম পড়ে ভুল খোঁজে। ভুল না থাকলে অবজেক্ট প্রোগ্রাম (.obj) বানায়।',lnk:'লিংকার: অবজেক্ট ফাইল আর লাইব্রেরি ফাইল জুড়ে এক্সিকিউটেবল (.exe) ফাইল বানায়।',run:'লোডার .exe ফাইল মেমোরিতে লোড করে, তারপর CPU চালায়।'}[s.id]}])));
+IM.tabs($('tabs'),k=>{K=k;build();S=steps();player.reset();});
+build();S=steps();player.reset();
+addEventListener('resize',()=>place(S[player.k].at));
+IM.mcq(document.getElementById('mcq45'),[{"q": "প্রোগ্রামারের লেখা প্রোগ্রামের ফাইল—", "o": [".exe", ".obj", ".c", ".lib"], "a": 2, "w": "এটাকে সোর্স প্রোগ্রাম বলে।"}, {"q": "কম্পাইলার সোর্স থেকে তৈরি করে—", "o": [".exe", ".obj (অবজেক্ট)", ".c", ".h"], "a": 1, "w": "পরে লিংকার .exe বানায়।"}, {"q": "লাইব্রেরি ফাংশন জুড়ে চালানোর যোগ্য ফাইল বানায়—", "o": ["এডিটর", "লিংকার", "লোডার", "ডিবাগার"], "a": 1, "w": "লিংকার printf এর কোড জুড়ে দেয়।"}, {"q": "এডিটর, কম্পাইলার, ডিবাগার সব এক জায়গায়—", "o": ["IDE", "OS", "DBMS", "ISP"], "a": 0, "w": "যেমন Code::Blocks।"}]);
+</script>

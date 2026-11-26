@@ -1,0 +1,105 @@
+---
+ch: ৫
+kit: 1
+title: অ্যালগরিদম ও ফ্লোচার্ট
+eyebrow: ৫.১.১০ প্রোগ্রাম তৈরির ধাপসমূহ
+h1: ফ্লোচার্ট চলছে, দেখো!
+lead: একটা সংখ্যা জোড় না বিজোড়, তা বের করার ফ্লোচার্ট। সংখ্যা বাছো, তারপর ▶ চাপো। বলটা ফ্লোচার্টের পথ ধরে চলবে আর পাশের অ্যালগরিদমের ধাপ জ্বলবে।
+---
+<style>
+.fc .shape{fill:var(--panel);stroke:var(--accent);stroke-width:2.5;transition:fill .3s,stroke .3s}
+.fc .on .shape{fill:var(--signal-soft);stroke:var(--signal)}
+.fc .done .shape{fill:var(--accent-soft)}
+.fc text{text-anchor:middle;font-size:14px;font-weight:700}
+.fc .yn{font-size:12px;fill:var(--muted)}
+.fc .ar{fill:var(--wire-off)}
+.algo{display:flex;flex-direction:column;gap:4px;font-size:.95rem}
+.algo div{padding:5px 10px;border-radius:8px;background:var(--board);color:var(--muted);transition:all .3s}
+.algo div.on{background:var(--signal-soft);color:var(--ink);font-weight:700}
+.algo div.skip{text-decoration:line-through;opacity:.5}
+.vars{display:flex;gap:10px;justify-content:center;font-family:var(--f-mono);font-weight:800}
+.vars span{padding:4px 12px;border-radius:10px;background:var(--board)}
+.leg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.leg button{font:inherit;font-size:.8rem;border:2px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);padding:6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+.leg svg{width:64px;height:34px}
+.leg svg *{fill:var(--accent-soft);stroke:var(--accent);stroke-width:2}
+.pd{display:flex;flex-direction:column;gap:6px}
+.pd button{font:inherit;text-align:left;padding:8px 12px;border-radius:10px;border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.pd button b{color:var(--accent);margin-right:6px}
+</style>
+  <div class="chips" id="nums"></div>
+  <section class="card" id="main">
+    <div class="vars"><span>N = <b id="vn">?</b></span><span>R = <b id="vr">?</b></span></div>
+    <svg class="scene fc" id="sc" viewBox="0 0 360 420"></svg>
+    <div class="algo" id="algo"></div>
+  </section>
+  <section class="card">
+    <h2>ফ্লোচার্টের প্রতীক</h2>
+    <div class="leg" id="leg"></div>
+  </section>
+  <section class="card">
+    <h2>প্রোগ্রাম তৈরির ধাপ</h2>
+    <div class="pd" id="pd"></div>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points"><li>প্রোগ্রাম তৈরির ধাপ: সমস্যা বোঝা → অ্যালগরিদম/ফ্লোচার্ট → কোডিং → টেস্টিং → ডকুমেন্টেশন।</li><li>ফ্লোচার্টে শুরু/শেষ ডিম্বাকার, প্রক্রিয়া আয়তক্ষেত্র, সিদ্ধান্ত রম্বস, ইনপুট/আউটপুট সামান্তরিক।</li><li>অ্যালগরিদম হলো ধাপে ধাপে লেখা সমাধান।</li></ul>
+  </section>
+<script>
+const {$,say,bn}=IM;
+const SH={
+ start:{t:'oval',x:180,y:30,w:110,h:40,s:'শুরু'},inp:{t:'para',x:180,y:98,w:130,h:42,s:'N ইনপুট নাও'},
+ proc:{t:'rect',x:180,y:166,w:130,h:42,s:'R = N % 2'},dec:{t:'dia',x:180,y:240,w:130,h:74,s:'R == 0 ?'},
+ even:{t:'para',x:82,y:320,w:128,h:42,s:'"জোড়" লেখো'},odd:{t:'para',x:278,y:320,w:128,h:42,s:'"বিজোড়" লেখো'},stop:{t:'oval',x:180,y:392,w:110,h:40,s:'শেষ'}};
+function shp(k){const s=SH[k],x=s.x,y=s.y,w=s.w,h=s.h;let d;
+  if(s.t==='oval')d=`<rect class="shape" x="${x-w/2}" y="${y-h/2}" width="${w}" height="${h}" rx="${h/2}"/>`;
+  if(s.t==='rect')d=`<rect class="shape" x="${x-w/2}" y="${y-h/2}" width="${w}" height="${h}"/>`;
+  if(s.t==='para')d=`<path class="shape" d="M${x-w/2+14},${y-h/2} H${x+w/2} L${x+w/2-14},${y+h/2} H${x-w/2} Z"/>`;
+  if(s.t==='dia')d=`<path class="shape" d="M${x},${y-h/2} L${x+w/2},${y} L${x},${y+h/2} L${x-w/2},${y} Z"/>`;
+  return `<g class="tapme" id="s-${k}" data-x="${s.t}">${d}<text x="${x}" y="${y+5}">${s.s}</text></g>`;}
+const A=(x,y,r)=>`<path class="ar" d="M-6,-5 L6,0 L-6,5 Z" transform="translate(${x},${y}) rotate(${r})"/>`;
+$('sc').innerHTML=`<path class="edge" id="e1" d="M180,50 V77"/><path class="edge" id="e2" d="M180,119 V145"/><path class="edge" id="e3" d="M180,187 V203"/>
+ <path class="edge" id="ey" d="M115,240 H82 V299"/><path class="edge" id="en" d="M245,240 H278 V299"/>
+ <path class="edge" id="eye" d="M82,341 V392 H125"/><path class="edge" id="ene" d="M278,341 V392 H235"/>
+ ${A(180,74,90)}${A(180,142,90)}${A(180,200,90)}${A(82,296,90)}${A(278,296,90)}${A(122,392,0)}${A(238,392,180)}
+ <text class="yn" x="98" y="232">হ্যাঁ</text><text class="yn" x="262" y="232">না</text>
+ ${Object.keys(SH).map(shp).join('')}<g id="tok"><circle class="tok" r="9"/></g>`;
+const ALG=['ধাপ ১: শুরু','ধাপ ২: একটি সংখ্যা N ইনপুট নাও','ধাপ ৩: R = N কে ২ দিয়ে ভাগ করে ভাগশেষ','ধাপ ৪: যদি R = 0 হয়, "জোড়" লেখো','ধাপ ৫: অন্যথায় "বিজোড়" লেখো','ধাপ ৬: শেষ'];
+$('algo').innerHTML=ALG.map((a,i)=>`<div id="a${i}">${a}</div>`).join('');
+let N=7;
+const PTH={start:[[180,30]],inp:[[180,50],[180,98]],proc:[[180,119],[180,166]],dec:[[180,187],[180,240]],even:[[115,240],[82,240],[82,320]],odd:[[245,240],[278,240],[278,320]],stop:null};
+function steps(){const ev=N%2===0;return [
+ {at:'start',a:0,m:'শুরু। ফ্লোচার্ট সবসময় ডিম্বাকার "শুরু" দিয়ে শুরু হয়।'},
+ {at:'inp',a:1,e:['e1'],n:1,m:`ইনপুট নেওয়া হলো: N = ${N}। ইনপুট/আউটপুটের জন্য সামান্তরিক (প্যারালেলোগ্রাম) প্রতীক।`},
+ {at:'proc',a:2,e:['e1','e2'],n:1,r:1,m:`হিসাব: R = ${N} % 2 = ${N%2}। (% মানে ভাগশেষ)। হিসাবের জন্য আয়তক্ষেত্র প্রতীক।`},
+ {at:'dec',a:ev?3:4,e:['e1','e2','e3'],n:1,r:1,m:`সিদ্ধান্ত: R == 0 ? R = ${N%2}, তাই উত্তর <span class="${ev?'t':'f'}">${ev?'হ্যাঁ':'না'}</span>। সিদ্ধান্তের জন্য রম্বস (ডায়মন্ড) প্রতীক, এর দুটো পথ।`},
+ {at:ev?'even':'odd',a:ev?3:4,e:['e1','e2','e3',ev?'ey':'en'],n:1,r:1,m:`${ev?'হ্যাঁ':'না'} পথ ধরে গেলাম। স্ক্রিনে লেখা হলো: <b>${N} ${ev?'জোড়':'বিজোড়'}</b>।`},
+ {at:'stop',a:5,e:['e1','e2','e3',ev?'ey':'en',ev?'eye':'ene'],n:1,r:1,m:'শেষ। অন্য সংখ্যা বেছে আবার চালিয়ে দেখো, পথ বদলে যাবে!'}];}
+let S=steps();
+function render(k,prev){const s=S[k];
+  Object.keys(SH).forEach(id=>{const g=$('s-'+id);g.classList.toggle('on',id===s.at);g.classList.toggle('done',S.slice(0,k).some(x=>x.at===id));});
+  $('sc').querySelectorAll('.edge').forEach(e=>e.classList.toggle('on',!!(s.e&&s.e.includes(e.id))));
+  ALG.forEach((_,i)=>{$('a'+i).className=i===s.a?'on':((N%2===0&&i===4)||(N%2&&i===3))&&k>=3?'skip':'';});
+  $('vn').textContent=s.n?N:'?';$('vr').textContent=s.r?N%2:'?';
+  const ev=N%2===0;const p=s.at==='stop'?[[ev?82:278,341],[ev?82:278,392],[180,392]]:PTH[s.at];
+  if(prev!==null&&p.length>1)IM.moveAlong($('tok'),p,800/player.speed);else{const l=s.at==='stop'?[180,392]:p[p.length-1];$('tok').setAttribute('transform',`translate(${l})`);}
+  say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
+const player=IM.player({count:()=>S.length,show:render,swipe:$('main'),interval:1700});
+$('nums').innerHTML=[7,12,25,40].map(n=>`<button class="chip" data-n="${n}">N = ${n}</button>`).join('');
+$('nums').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{N=+b.dataset.n;S=steps();player.reset();});
+const SYM={oval:{t:'টার্মিনাল (ডিম্বাকার)',d:'শুরু ও শেষ বোঝায়।'},para:{t:'ইনপুট/আউটপুট (সামান্তরিক)',d:'ডেটা নেওয়া (Read/Input) বা ফলাফল দেখানো (Print/Output)।'},rect:{t:'প্রসেস (আয়তক্ষেত্র)',d:'হিসাব-নিকাশ বা কোনো কাজ, যেমন R = N % 2।'},dia:{t:'সিদ্ধান্ত (রম্বস)',d:'প্রশ্ন বা শর্ত। উত্তর হ্যাঁ/না অনুযায়ী দুই পথে যায়।'},
+ arrow:{t:'প্রবাহ রেখা (তীর)',d:'কোন ধাপের পর কোন ধাপ, তা দেখায়।'},conn:{t:'সংযোগ চিহ্ন (বৃত্ত)',d:'ফ্লোচার্ট এক পাতা থেকে আরেক পাতায় বা দূরের অংশে যুক্ত করতে।'}};
+IM.tapx($('sc'),SYM);
+const LG={oval:'<rect x="4" y="6" width="56" height="22" rx="11"/>',para:'<path d="M14,6 H60 L50,28 H4 Z"/>',rect:'<rect x="6" y="6" width="52" height="22"/>',dia:'<path d="M32,2 L60,17 L32,32 L4,17 Z"/>',arrow:'<path d="M6,17 H50 M44,11 L54,17 L44,23" style="fill:none"/>',conn:'<circle cx="32" cy="17" r="12"/>'};
+$('leg').innerHTML=Object.keys(LG).map(k=>`<button data-x="${k}"><svg viewBox="0 0 64 34">${LG[k]}</svg>${SYM[k].t.split(' (')[0]}</button>`).join('');
+IM.tapx($('leg'),SYM);
+const PD=[['সমস্যা নির্দিষ্টকরণ','কী সমস্যার সমাধান করতে হবে তা পরিষ্কার করে বোঝা।'],['সমস্যা বিশ্লেষণ','ইনপুট কী, আউটপুট কী, কী কী হিসাব লাগবে তা ঠিক করা।'],['প্রোগ্রাম ডিজাইন','অ্যালগরিদম, ফ্লোচার্ট বা সুডোকোড দিয়ে সমাধানের ধাপ সাজানো।'],['কোডিং','কোনো প্রোগ্রামিং ভাষায় (যেমন C) প্রোগ্রাম লেখা।'],['টেস্টিং ও ডিবাগিং','প্রোগ্রাম চালিয়ে ভুল (বাগ) খুঁজে বের করে ঠিক করা।'],['ডকুমেন্টেশন','প্রোগ্রাম কীভাবে কাজ করে তা লিখে রাখা।'],['রক্ষণাবেক্ষণ','প্রয়োজনে প্রোগ্রাম আপডেট বা পরিবর্তন করা।']];
+$('pd').innerHTML=PD.map((p,i)=>`<button data-i="${i}"><b>${bn(i+1)}</b>${p[0]}</button>`).join('');
+$('pd').querySelectorAll('button').forEach(b=>b.onclick=()=>{const p=PD[+b.dataset.i];say(`ধাপ ${bn(+b.dataset.i+1)}`,`<b>${p[0]}:</b> ${p[1]}`,true);});
+player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "ফ্লোচার্টে সিদ্ধান্ত (হ্যাঁ/না) বোঝাতে কোন প্রতীক?", "o": ["আয়তক্ষেত্র", "রম্বস (ডায়মন্ড)", "ডিম্বাকার", "সামান্তরিক"], "a": 1, "w": "রম্বস থেকে দুই দিকে পথ যায়।"}, {"q": "শুরু ও শেষ বোঝাতে—", "o": ["ডিম্বাকার", "আয়তক্ষেত্র", "রম্বস", "বৃত্ত"], "a": 0, "w": "Start/End ডিম্বাকার।"}, {"q": "ইনপুট/আউটপুট বোঝাতে—", "o": ["আয়তক্ষেত্র", "সামান্তরিক", "রম্বস", "তীর"], "a": 1, "w": "Read/Print সামান্তরিকে।"}, {"q": "অ্যালগরিদম হলো—", "o": ["প্রোগ্রামের ছবি", "সমস্যা সমাধানের ধাপে ধাপে বর্ণনা", "একটি ভাষা", "একটি সফটওয়্যার"], "a": 1, "w": "ছবি দিয়ে দেখালে সেটা ফ্লোচার্ট।"}]);
+</script>

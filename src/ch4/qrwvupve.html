@@ -1,0 +1,88 @@
+---
+ch: ৪
+kit: 1
+title: ওয়েবসাইটের কাঠামো
+eyebrow: ৪.১.১ ওয়েবসাইটের কাঠামো
+h1: ৪ রকম ওয়েবসাইট কাঠামো
+lead: একটা কাঠামো বাছো, তারপর ▶ চাপো। বলটা দেখাবে ব্যবহারকারী কীভাবে এক পেজ থেকে আরেক পেজে যায়।
+---
+<style>
+.node text{text-anchor:middle;font-weight:700;font-size:13px}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.info div{background:var(--board);border-radius:10px;padding:10px}
+.info b{display:block;font-size:.85rem;color:var(--accent)}
+@media (max-width:420px){.info{grid-template-columns:1fr}}
+</style>
+  <div class="tabs" id="tabs">
+    <button class="tab" data-k="tree" aria-selected="true">ট্রি</button>
+    <button class="tab" data-k="lin" aria-selected="false">লিনিয়ার</button>
+    <button class="tab" data-k="net" aria-selected="false">নেটওয়ার্ক</button>
+    <button class="tab" data-k="hyb" aria-selected="false">হাইব্রিড</button>
+  </div>
+  <section class="card" id="main">
+    <h2 id="ttl"></h2>
+    <svg class="scene" id="sc" viewBox="0 0 360 230"></svg>
+    <div class="info" id="info"></div>
+  </section>
+  <section class="card">
+    <h2>কীভাবে চিনবে</h2>
+    <ul class="points">
+      <li><b>ট্রি/হায়ারার্কিক্যাল:</b> হোম পেজ থেকে শাখা-প্রশাখা, গাছের মতো। যেমন বিশ্ববিদ্যালয় বা সরকারি ওয়েবসাইট।</li>
+      <li><b>লিনিয়ার/সিকুয়েন্স:</b> একটার পর একটা, সামনে-পিছনে। যেমন অনলাইন টিউটোরিয়াল বা ই-বুক।</li>
+      <li><b>নেটওয়ার্ক/ওয়েব-লিংকড:</b> প্রায় সব পেজ সব পেজের সাথে যুক্ত। যেমন উইকিপিডিয়া।</li>
+      <li><b>হাইব্রিড/কম্বিনেশন:</b> একাধিক কাঠামোর মিশ্রণ। বেশিরভাগ বড় ওয়েবসাইট এমন।</li>
+    </ul>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq45"></div>
+  </section>
+<script>
+const {$,say,bn}=IM;
+const ST={
+ tree:{t:'ট্রি বা হায়ারার্কিক্যাল কাঠামো',n:{H:[180,30],A:[70,105],B:[180,105],C:[290,105],A1:[35,190],A2:[105,190],C1:[290,190]},
+   e:[['H','A'],['H','B'],['H','C'],['A','A1'],['A','A2'],['C','C1']],
+   path:['H','A','A1','A','H','C','C1'],
+   pro:'সাজানো ও সহজ। কোন পেজ কোথায় তা সহজে বোঝা যায়।',con:'দূরের পেজে যেতে উপরে উঠে আবার নামতে হয়।'},
+ lin:{t:'সিকুয়েন্স বা লিনিয়ার কাঠামো',n:{H:[40,110],P1:[110,110],P2:[180,110],P3:[250,110],P4:[320,110]},
+   e:[['H','P1'],['P1','P2'],['P2','P3'],['P3','P4']],path:['H','P1','P2','P3','P4','P3'],
+   pro:'ধারাবাহিকভাবে পড়ার জন্য সবচেয়ে ভালো।',con:'মাঝখান থেকে সরাসরি শেষ পেজে যাওয়া যায় না।'},
+ net:{t:'ওয়েব লিংকড বা নেটওয়ার্ক কাঠামো',n:{H:[180,30],P1:[300,95],P2:[255,195],P3:[105,195],P4:[60,95]},
+   e:[['H','P1'],['H','P2'],['H','P3'],['H','P4'],['P1','P2'],['P2','P3'],['P3','P4'],['P4','P1'],['P1','P3'],['P2','P4']],path:['H','P3','P1','P4','P2'],
+   pro:'যেকোনো পেজ থেকে যেকোনো পেজে সরাসরি যাওয়া যায়।',con:'পেজ বেশি হলে জট পাকায়, ব্যবহারকারী হারিয়ে যেতে পারে।'},
+ hyb:{t:'হাইব্রিড বা কম্বিনেশন কাঠামো',n:{H:[180,30],A:[70,100],B:[180,100],C:[290,100],B1:[120,190],B2:[190,190],B3:[260,190]},
+   e:[['H','A'],['H','B'],['H','C'],['B','B1'],['B1','B2'],['B2','B3'],['B3','C'],['A','C']],path:['H','B','B1','B2','B3','C'],
+   pro:'বিভিন্ন কাঠামোর সুবিধা একসাথে পাওয়া যায়।',con:'নকশা করা তুলনামূলক জটিল।'}};
+const NAME=k=>k==='H'?'হোম':k.replace('P','পেজ ');
+let K='tree';
+function key(a,b){return [a,b].sort().join('-');}
+function draw(){const s=ST[K],w=$('sc');
+  w.innerHTML=s.e.map(([a,b])=>`<path class="edge" id="e-${key(a,b)}" d="M${s.n[a]} L${s.n[b]}"/>`).join('')+
+   Object.entries(s.n).map(([k,[x,y]])=>`<g class="node tapme" id="n-${k}" data-x="${k}"><rect x="${x-30}" y="${y-18}" width="60" height="36" rx="10"/><text x="${x}" y="${y+5}">${NAME(k)}</text></g>`).join('')+
+   `<g id="tok"><circle class="tok" r="8"/></g>`;
+  $('ttl').textContent=s.t;
+  $('info').innerHTML=`<div><b>সুবিধা</b>${s.pro}</div><div><b>অসুবিধা</b>${s.con}</div>`;}
+function render(k,prev){const s=ST[K],p=s.path,cur=p[k];
+  Object.keys(s.n).forEach(n=>{const g=$('n-'+n);g.classList.toggle('on',n===cur);g.classList.toggle('done',n!==cur&&p.slice(0,k).includes(n));});
+  $('sc').querySelectorAll('.edge').forEach(e=>e.classList.remove('on'));
+  for(let i=1;i<=k;i++)$('e-'+key(p[i-1],p[i])).classList.add('on');
+  const at=s.n[cur],off=[at[0]+26,at[1]-16];
+  if(prev!==null&&k>0){const f=s.n[p[k-1]];IM.moveAlong($('tok'),[[f[0]+26,f[1]-16],off],700/player.speed);}else $('tok').setAttribute('transform',`translate(${off})`);
+  let m;
+  if(k===0)m=`সবাই <b>হোম পেজ</b> থেকে শুরু করে।`;
+  else{const a=NAME(p[k-1]),b=NAME(cur),back=p.slice(0,k-1).includes(cur);
+    m=`${a} থেকে লিংকে চাপ দিয়ে <b>${b}</b> এ গেলাম।${back?' (আগের পেজে ফিরে আসলাম)':''}`;
+    if(K==='tree'&&back)m+=' ট্রি কাঠামোতে অন্য শাখায় যেতে আগে উপরে ফিরতে হয়।';
+    if(K==='lin')m+=' লিনিয়ারে শুধু সামনে বা পিছনের পেজেই যাওয়া যায়।';
+    if(K==='net')m+=' নেটওয়ার্কে যেকোনো পেজ থেকে সরাসরি অন্য পেজে লাফ দেওয়া যায়।';
+    if(K==='hyb'&&cur==='B1')m+=' এই অংশটা লিনিয়ার, একটার পর একটা।';
+    if(K==='hyb'&&cur==='C')m+=' আবার একটা সরাসরি লিংক দিয়ে অন্য শাখায় চলে গেলাম। তাই এটা মিশ্র (হাইব্রিড)।';}
+  say(`ধাপ ${bn(k+1)} / ${bn(p.length)}`,m);}
+const player=IM.player({count:()=>ST[K].path.length,show:render,swipe:$('main'),interval:1500});
+$('sc').addEventListener('click',e=>{const g=e.target.closest('[data-x]');if(!g)return;const n=g.dataset.x,s=ST[K];
+  const nb=s.e.filter(x=>x.includes(n)).map(x=>NAME(x[0]===n?x[1]:x[0]));
+  say(NAME(n),`${NAME(n)} থেকে সরাসরি যাওয়া যায়: <b>${nb.join(', ')}</b>। মোট ${bn(nb.length)}টি লিংক।`,true);});
+IM.tabs($('tabs'),k=>{K=k;draw();player.reset();});
+draw();player.reset();
+IM.mcq(document.getElementById('mcq45'),[{"q": "বিশ্ববিদ্যালয়ের ওয়েবসাইট সাধারণত কোন কাঠামোর?", "o": ["লিনিয়ার", "ট্রি/হায়ারার্কিক্যাল", "নেটওয়ার্ক", "কোনোটিই না"], "a": 1, "w": "হোম পেজ থেকে অনুষদ, বিভাগ… গাছের মতো শাখা।"}, {"q": "অনলাইন টিউটোরিয়ালে আগে-পরে যাওয়া কোন কাঠামো?", "o": ["লিনিয়ার", "ট্রি", "নেটওয়ার্ক", "হাইব্রিড"], "a": 0, "w": "একটার পর একটা পেজ।"}, {"q": "প্রায় সব পেজ সব পেজের সাথে যুক্ত—", "o": ["ট্রি", "লিনিয়ার", "নেটওয়ার্ক/ওয়েব-লিংকড", "হাইব্রিড"], "a": 2, "w": "যেমন উইকিপিডিয়া।"}, {"q": "বেশিরভাগ বড় ওয়েবসাইট কোন কাঠামোর?", "o": ["লিনিয়ার", "হাইব্রিড", "ট্রি", "নেটওয়ার্ক"], "a": 1, "w": "কয়েকটা কাঠামো মিশিয়ে বানানো।"}]);
+</script>

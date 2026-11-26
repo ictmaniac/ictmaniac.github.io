@@ -1,0 +1,109 @@
+---
+title: সত্যক সারণি মেকার
+eyebrow: ৩.২.২ সত্যক সারণি
+h1: সত্যক সারণি বানাও, ধাপে ধাপে
+lead: যেকোনো বুলিয়ান রাশি লেখো। প্রথমে ইনপুটের সারিগুলো, তারপর ছোট ছোট অংশের কলাম, শেষে উত্তর, একটা একটা করে আসবে।
+---
+<style>
+#tt td.hide,#tt th.hide{visibility:hidden;border-left-color:transparent}
+#tt th.newc,#tt td.newc{background:var(--signal-soft)}
+#tt td.one{color:var(--accent);font-weight:800}
+#tt td.zero{color:var(--muted)}
+#tt th.fin,#tt td.fin{border-left:2px solid var(--accent)}
+.kbd{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.kbd button{font:inherit;font-family:var(--f-mono);font-weight:700;font-size:1.05rem;min-height:42px;border-radius:8px;border:1px solid var(--line);background:var(--board);color:var(--ink);cursor:pointer}
+</style>
+  <section class="card">
+    <div class="field"><label for="ex">বুলিয়ান রাশি</label><input id="ex" value="A'B + AC" autocomplete="off" autocapitalize="characters" spellcheck="false"></div>
+    <div class="kbd" id="kbd"></div>
+    <div class="chips" id="chips"></div>
+    <p class="err" id="err" aria-live="polite"></p>
+    <p class="hint" id="info"></p>
+    <div class="btns"><button class="btn primary" id="next">পরের কলাম</button><button class="btn" id="all">পুরো সারণি</button></div>
+  </section>
+
+  <section class="card">
+    <div class="scroll-x"><table id="tt"></table></div>
+    <p class="hint" id="say" aria-live="polite"></p>
+    <div id="sop" hidden class="answer" style="font-size:1rem"></div>
+  </section>
+
+  <section class="card">
+    <h2>সারণি বানানোর নিয়ম</h2>
+    <ul class="points">
+      <li>চলক n টি হলে সারি হবে <b>2<sup>n</sup></b> টি। ২ চলকে 4, ৩ চলকে 8, ৪ চলকে 16।</li>
+      <li>প্রথম কলামে অর্ধেক 0, অর্ধেক 1। পরের কলামে তার অর্ধেক করে পালাক্রমে। শেষ কলামে 0,1,0,1…। এভাবে 0 থেকে 2<sup>n</sup>−1 পর্যন্ত বাইনারিতে গোনা হয়।</li>
+      <li>জটিল রাশিকে ছোট ছোট অংশে ভাগ করো (যেমন আগে A', তারপর A'B), প্রতিটির জন্য আলাদা কলাম, শেষে সব মিলিয়ে উত্তর।</li>
+      <li>যে সারিগুলোতে উত্তর 1, সেগুলো থেকে SOP (গুণফলের যোগফল) রূপ লেখা যায়।</li>
+    </ul>
+  </section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq3"></div>
+  </section>
+<script>
+const {$}=IM;
+const EX=["A'B + AC","(A + B)'","AB + BC + CA","A ⊕ B","(A + B)(A' + C)","A'B'C + ABC'","AB'C + A'BD + CD'"];
+$('chips').innerHTML=EX.map(e=>`<button class="chip">${e}</button>`).join('');
+$('chips').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{$('ex').value=c.textContent;build();});
+const KEYS=['A','B','C','D',"'",'+','·','(',')','⊕','⌫','মুছো'];
+$('kbd').innerHTML=KEYS.map(k=>`<button>${k}</button>`).join('');
+$('kbd').querySelectorAll('button').forEach(b=>b.onclick=()=>{const k=b.textContent,i=$('ex');
+  if(k==='⌫') i.value=i.value.slice(0,-1); else if(k==='মুছো') i.value=''; else i.value+=k; build();});
+let shown=0, total=0;
+function build(){
+  $('err').textContent=''; $('sop').hidden=true;
+  let P; try{P=IM.parse($('ex').value);}catch(e){$('err').textContent=e.message;$('tt').innerHTML='';total=0;upd();return;}
+  let vars=P.vars; if(vars.length>4){$('err').textContent='৪টির বেশি চলক নয় (A, B, C, D)।';return;} if(!vars.length) vars=['A'];
+  // collect sub-expressions in evaluation order
+  const subs=[], seen=new Set();
+  (function walk(n){ if(n.op==='P'){walk(n.a);return;} if(n.a)walk(n.a); if(n.b)walk(n.b);
+    if(n.op==='V'||n.op==='C') return; const s=IM.show(n); if(!seen.has(s)){seen.add(s);subs.push({s,n});} })(P.ast);
+  if(!subs.length) subs.push({s:IM.show(P.ast),n:P.ast});
+  const R=IM.rows(vars.length);
+  $('info').innerHTML=`চলক ${vars.length} টি (${vars.join(', ')}) → সারি 2<sup>${vars.length}</sup> = <b>${R.length}</b> টি। উত্তরের আগে ${subs.length-1} টি সহায়ক কলাম।`;
+  const ncol=vars.length+subs.length;
+  let h='<thead><tr>'+vars.map((v,k)=>`<th data-c="${k}">${v}</th>`).join('')+subs.map((s,k)=>`<th data-c="${vars.length+k}" class="${k===subs.length-1?'fin':''}">${s.s}</th>`).join('')+'</tr></thead><tbody>';
+  R.forEach(r=>{const e=IM.envOf(vars,r); h+='<tr>'+r.map((x,k)=>`<td data-c="${k}">${x}</td>`).join('')+subs.map((s,k)=>{const x=IM.ev(s.n,e);return `<td data-c="${vars.length+k}" class="${x?'one':'zero'} ${k===subs.length-1?'fin y':''}">${x}</td>`}).join('')+'</tr>';});
+  $('tt').innerHTML=h+'</tbody>';
+  build.meta={vars,subs,R,P};
+  total=ncol; shown=vars.length; paint(); $('say').textContent='ইনপুটের সব সম্ভাব্য সমাবেশ লেখা হলো। এবার "পরের কলাম" চাপো।';
+}
+function paint(){
+  $('tt').querySelectorAll('[data-c]').forEach(c=>{const k=+c.dataset.c;c.classList.toggle('hide',k>=shown);c.classList.toggle('newc',k===shown-1&&shown>build.meta.vars.length);});
+  upd();
+}
+function next(){ if(shown>=total) return; shown++; paint();
+  const {vars,subs}=build.meta, k=shown-1-vars.length, s=subs[k];
+  const why={NOT:'প্রতি সারিতে মান উল্টে দাও',AND:'দুটোই 1 হলে তবেই 1',OR:'যেকোনো একটি 1 হলেই 1',XOR:'দুটো আলাদা হলে 1',XNOR:'দুটো একই হলে 1'}[s.n.op]||'';
+  $('say').innerHTML=`নতুন কলাম <span class="mono">${s.s}</span>: ${why}।`;
+  if(shown===total) finish(); }
+function finish(){
+  const {vars,R,P}=build.meta;
+  const mins=R.filter(r=>IM.ev(P.ast,IM.envOf(vars,r)));
+  const term=r=>r.map((x,k)=>vars[k]+(x?'':"'")).join('');
+  $('sop').hidden=false;
+  $('sop').innerHTML= mins.length===0? 'উত্তর সব সারিতে 0।' : mins.length===R.length? 'উত্তর সব সারিতে 1।' :
+    `উত্তর 1 এমন সারি ${mins.length} টি → SOP রূপ:<br><span class="v">${mins.map(term).join(' + ')}</span>`;
+  $('say').innerHTML='সারণি সম্পূর্ণ। শেষ কলামটিই উত্তর।';
+}
+function upd(){ $('next').disabled=$('all').disabled=shown>=total; }
+$('next').onclick=next; $('all').onclick=()=>{while(shown<total)next();};
+$('ex').oninput=build;
+build();
+IM.mcq(document.getElementById('mcq3'),[{"q": "৩টি চলকের সত্যক সারণিতে সারি কয়টি?", "o": ["3", "6", "8", "9"], "a": 2, "w": "2³ = 8।"}, {"q": "৪টি চলকে সারি কয়টি?", "o": ["8", "12", "16", "32"], "a": 2, "w": "2⁴ = 16।"}, {"q": "A·B এর মান 1 হয় কখন?", "o": ["A=0,B=0", "A=1,B=0", "A=0,B=1", "A=1,B=1"], "a": 3, "w": "AND এ দুটোই 1 হতে হবে।"}, {"q": "A+B এর মান 0 হয় কখন?", "o": ["A=0,B=0", "A=1,B=0", "A=0,B=1", "A=1,B=1"], "a": 0, "w": "OR এ সব 0 হলেই শুধু 0।"}]);
+
+/*TOUR*/{const T=IM.T;
+const EXL=i=>T.click(`#chips .chip:nth-child(${i})`);
+IM.tour([
+ {m:'সত্যক সারণি: প্রতিটি ইনপুট সমন্বয়ে আউটপুট কত হয়, সেটা সারি ধরে লেখা। n চলকে <b>2ⁿ</b> সারি।',do(){EXL(1);}},
+ {m:'রাশি <b>A\'B + AC</b>: ৩টি চলক, তাই 2³ = <b>8</b> সারি।',el:'#tt',do(){EXL(1);}},
+ {m:'প্রথমে ছোট অংশ: A\' এর কলাম। A এর মান উল্টে দিলেই হয়।',el:'#tt',do(){EXL(1);T.click('#next');}},
+ {m:'এবার A\'B: A\' আর B দুটোই 1 হলেই 1।',el:'#tt',do(){EXL(1);T.click('#next',2);}},
+ {m:'এভাবে এক এক কলাম করে শেষে পুরো রাশির মান বের হয়।',el:'#tt',do(){EXL(1);T.click('#all');}},
+ {m:'আরেকটা: <b>(A + B)\'</b>। শুধু A = B = 0 হলে 1।',el:'#tt',do(){EXL(2);T.click('#all');}},
+ {m:'<b>A ⊕ B</b>: আলাদা হলে 1। নিচে ১ এর সারিগুলো থেকে SOP রাশিও লেখা হয়।',el:'#sop',do(){EXL(4);T.click('#all');}},
+ {m:'নিজে লেখো: উপরের বাক্সে যেকোনো রাশি লিখলে সারণি তৈরি হবে।',el:'#ex'}
+]);
+}/*ENDTOUR*/
+</script>
