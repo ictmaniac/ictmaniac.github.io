@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=8">
+<link rel="stylesheet" href="../../a/im.css?v=10">
 <style>
 #main{position:relative}
 .cz{display:flex;flex-direction:column;gap:10px}
@@ -104,7 +104,7 @@
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
-<script src="../../a/im.js?v=8"></script>
+<script src="../../a/im.js?v=10"></script>
 <script>
 const {$,say,bn}=IM;
 const AZ='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -165,7 +165,7 @@ $('az').addEventListener('click',e=>{const z=e.target.closest('b');if(!z)return;
 addEventListener('resize',()=>{if(K!=='cz')scRender(player.k,false);});
 build();player.reset();
 IM.compare($('cx0'),["", "সিমেট্রিক (গোপন কী)", "অ্যাসিমেট্রিক (পাবলিক কী)"],[["কী কয়টি", "একটি, দুজনের কাছে একই", "দুটি: পাবলিক ও প্রাইভেট", "সিমেট্রিকে একই চাবি দিয়ে তালা দেওয়া ও খোলা। পাবলিক কী পদ্ধতিতে আলাদা দুই চাবি।"], ["এনক্রিপ্ট", "শেয়ার্ড কী দিয়ে", "প্রাপকের পাবলিক কী দিয়ে", "পাবলিক কী সবাই জানতে পারে, এটা দিয়ে শুধু তালা দেওয়া যায়।"], ["ডিক্রিপ্ট", "একই কী দিয়ে", "প্রাপকের প্রাইভেট কী দিয়ে", "প্রাইভেট কী শুধু প্রাপকের কাছে, তাই অন্য কেউ খুলতে পারে না।"], ["গতি", "দ্রুত", "তুলনামূলক ধীর", "বড় ডেটার জন্য সিমেট্রিক দ্রুত।"], ["ঝামেলা", "কী গোপনে পাঠাতে হয়", "কী পাঠানোর ঝামেলা নেই", "সিমেট্রিকে চাবি চুরি হলে সব শেষ। পাবলিক কী পদ্ধতিতে প্রাইভেট কী কখনো পাঠাতে হয় না।"], ["উদাহরণ", "DES, IDEA, AES", "RSA", "পাঠ্যবইয়ে DES, IDEA। এখন AES ও RSA বেশি ব্যবহৃত।"]]);
-IM.mcq($('quiz6'),[{"q": "সিজার কোডে (কী = ৩) \"ICT\" এর সাইফারটেক্সট—", "o": ["JDU", "LFW", "KEV", "FZQ"], "a": 1, "w": "I→L, C→F, T→W। উপরে \"ICT\" লিখে নিজে দেখো!"}, {"q": "এনক্রিপ্ট করার আগের পাঠযোগ্য বার্তা—", "o": ["সাইফারটেক্সট", "প্লেইনটেক্সট", "কী", "অ্যালগরিদম"], "a": 1, "w": "আগে প্লেইনটেক্সট, পরে সাইফারটেক্সট।"}, {"q": "পাবলিক কী পদ্ধতিতে বার্তা খোলা হয়—", "o": ["প্রেরকের পাবলিক কী", "প্রাপকের পাবলিক কী", "প্রাপকের প্রাইভেট কী", "যেকোনো কী"], "a": 2, "w": "প্রাপকের পাবলিক কী দিয়ে তালা, প্রাপকের প্রাইভেট কী দিয়ে খোলা।"}]);
+IM.mcq($('quiz6'),[{"q": "সাইফারটেক্সট মানে—", "o": ["মূল লেখা", "এনক্রিপ্ট করা লেখা", "পাসওয়ার্ড", "কী"], "a": 1, "w": "প্লেইনটেক্সট এনক্রিপ্ট হয়ে সাইফারটেক্সট হয়।"}, {"q": "সিজার কোডে (কী = ৩) \"ICT\" এর সাইফারটেক্সট—", "o": ["JDU", "LFW", "KEV", "FZQ"], "a": 1, "w": "I→L, C→F, T→W। উপরে \"ICT\" লিখে নিজে দেখো!"}, {"q": "এনক্রিপ্ট করার আগের পাঠযোগ্য বার্তা—", "o": ["সাইফারটেক্সট", "প্লেইনটেক্সট", "কী", "অ্যালগরিদম"], "a": 1, "w": "আগে প্লেইনটেক্সট, পরে সাইফারটেক্সট।"}, {"q": "পাবলিক কী পদ্ধতিতে বার্তা খোলা হয়—", "o": ["প্রেরকের পাবলিক কী", "প্রাপকের পাবলিক কী", "প্রাপকের প্রাইভেট কী", "যেকোনো কী"], "a": 2, "w": "প্রাপকের পাবলিক কী দিয়ে তালা, প্রাপকের প্রাইভেট কী দিয়ে খোলা।"}]);
 </script>
 </body>
 </html>

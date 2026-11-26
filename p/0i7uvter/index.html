@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=8">
+<link rel="stylesheet" href="../../a/im.css?v=10">
 <style>
 .laws{display:flex;flex-wrap:wrap;gap:8px}
 .law{font:inherit;font-size:.9rem;font-weight:600;padding:6px 12px;border-radius:999px;border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;min-height:40px}
@@ -83,7 +83,7 @@
   </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=8"></script>
+<script src="../../a/im.js?v=10"></script>
 <script>
 const {$}=IM;
 const LAWS=[
@@ -131,6 +131,20 @@ function check(){
 $('x1').oninput=check; $('x2').oninput=check;
 pick(17); check();
 IM.mcq(document.getElementById('mcq3'),[{"q": "A + 0 = ?", "o": ["0", "1", "A", "A'"], "a": 2, "w": "0 এর সাথে OR করলে মান বদলায় না।"}, {"q": "A · 0 = ?", "o": ["0", "1", "A", "A'"], "a": 0, "w": "AND এ একটা 0 থাকলেই ফল 0।"}, {"q": "A + A' = ?", "o": ["0", "1", "A", "A'"], "a": 1, "w": "একটা অবশ্যই 1, তাই OR = 1।"}, {"q": "A + AB = ?", "o": ["AB", "B", "A", "A+B"], "a": 2, "w": "শোষণ (Absorption) সূত্র।"}]);
+
+/*TOUR*/{const T=IM.T;
+const LB=i=>document.querySelector(`#laws .law[data-i="${i}"]`).click();
+IM.tour([
+ {m:'বুলিয়ান চলকের মান শুধু <b>0</b> বা <b>1</b>। নিয়মগুলো সত্যক সারণি দিয়ে প্রমাণ করা যায়।'},
+ {m:'<b>A + 0 = A</b>: 0 এর সাথে OR করলে মান বদলায় না। A = 0 হলে বাম পাশ 0, ডান পাশও 0।',el:'#lf',do(){LB(0);T.tog('#tg','A',0);}},
+ {m:'A = 1 করলাম: বাম পাশ 1, ডান পাশও 1। দুই অবস্থাতেই সমান, তাই নিয়ম প্রমাণিত।',el:'#lf',do(){LB(0);T.tog('#tg','A',1);}},
+ {m:'<b>A · 0 = 0</b>: AND এ একটা 0 থাকলেই ফল 0, A যাই হোক।',el:'#lf',do(){LB(3);T.tog('#tg','A',1);}},
+ {m:'<b>A + A\' = 1</b>: A আর A\' এর একটা অবশ্যই 1, তাই OR সবসময় 1।',el:'#lf',do(){LB(6);T.tog('#tg','A',0);}},
+ {m:'<b>শোষণ সূত্র: A + AB = A</b>। নিচে বীজগণিত দিয়ে প্রমাণ দেখো: A(1 + B) = A·1 = A।',el:'#proof',do(){LB(15);}},
+ {m:'<b>A + A\'B = A + B</b>: পরীক্ষায় খুব আসে। সত্যক সারণির প্রতিটি সারিতে দুই পাশ সমান।',el:'#tt',do(){LB(17);}},
+ {m:'নিজে চেষ্টা করো: যেকোনো নিয়মে টাচ করো, সুইচ বদলাও, আর দেখো দুই পাশ সবসময় সমান থাকে।',el:'#laws'}
+]);
+}/*ENDTOUR*/
 </script>
 </body>
 </html>

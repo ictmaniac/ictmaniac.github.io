@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=8">
+<link rel="stylesheet" href="../../a/im.css?v=10">
 <style>
 .keys{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
 .key{font:inherit;font-family:var(--f-mono);font-weight:700;font-size:1.05rem;min-height:52px;border-radius:12px;border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
@@ -87,7 +87,7 @@
   </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=8"></script>
+<script src="../../a/im.js?v=10"></script>
 <script>
 const {$}=IM;
 // 2-to-4 decoder
@@ -129,6 +129,19 @@ IM.tabs($('etabs'),k=>{E=+k;pressed=Math.min(pressed,E-1);enc();});
 IM.tabs($('tabs'),k=>{$('p-dec').hidden=k!=='dec';$('p-enc').hidden=k!=='enc';});
 enc();
 IM.mcq(document.getElementById('mcq3'),[{"q": "৮টি ইনপুট লাইনের এনকোডারে আউটপুট লাইন কয়টি?", "o": ["2", "3", "4", "8"], "a": 1, "w": "2³ = 8, তাই ৩টি।"}, {"q": "3-to-8 ডিকোডারে আউটপুট কয়টি?", "o": ["3", "6", "8", "16"], "a": 2, "w": "n ইনপুটে 2ⁿ আউটপুট।"}, {"q": "ডিকোডারে একসাথে কয়টি আউটপুট 1 হয়?", "o": ["সবগুলো", "একটি", "দুটি", "কোনোটিই না"], "a": 1, "w": "ইনপুট কোড অনুযায়ী ঠিক একটি লাইন চালু হয়।"}, {"q": "কিবোর্ডের চাপা কী থেকে কোড বানায়—", "o": ["ডিকোডার", "এনকোডার", "অ্যাডার", "কাউন্টার"], "a": 1, "w": "এনকোডার অনেক লাইন থেকে কোড বানায়।"}]);
+
+/*TOUR*/{const T=IM.T;
+IM.tour([
+ {m:'<b>ডিকোডার</b> বাইনারি কোড পড়ে ঠিক <b>একটি</b> আউটপুট লাইন জ্বালায়। n ইনপুটে 2ⁿ আউটপুট।',do(){T.tab('dec','#tabs');}},
+ {m:'A = 0, B = 0 → কোড 00 = 0, তাই শুধু <b>D0</b> জ্বলছে (A\'B\')।',el:'#c1',do(){T.tab('dec','#tabs');T.tog('#tg1','A',0);T.tog('#tg1','B',0);}},
+ {m:'A = 1, B = 0 → কোড 10 = 2, তাই এবার শুধু <b>D2</b> জ্বলছে (AB\')।',el:'#c1',do(){T.tab('dec','#tabs');T.tog('#tg1','A',1);T.tog('#tg1','B',0);}},
+ {m:'A = 1, B = 1 → 11 = 3, শুধু <b>D3</b>। প্রতিটি আউটপুট একটা AND গেট।',el:'#c1',do(){T.tab('dec','#tabs');T.tog('#tg1','A',1);T.tog('#tg1','B',1);}},
+ {m:'৩ থেকে ৮ লাইন ডিকোডার: ABC = 101 = 5, তাই শুধু <b>D5</b> জ্বলে।',el:'#leds3',do(){T.tab('dec','#tabs');T.tog('#tg3','A',1);T.tog('#tg3','B',0);T.tog('#tg3','C',1);}},
+ {m:'<b>এনকোডার</b> উল্টো কাজ করে: অনেক ইনপুটের একটা চাপলে তার বাইনারি কোড বের হয়।',el:'#keys',do(){T.tab('enc','#tabs');T.tab('8','#etabs');}},
+ {m:'D6 চাপলে আউটপুট <b>110</b>। এনকোডার শুধু OR গেট দিয়ে তৈরি।',el:'#obits',do(){T.tab('enc','#tabs');T.tab('8','#etabs');T.click('#keys .key:nth-child(7)');}},
+ {m:'দশমিক থেকে BCD: ৯ চাপলে ৪ বিটের কোড <b>1001</b>। কিবোর্ডে এভাবেই কোড তৈরি হয়।',el:'#obits',do(){T.tab('enc','#tabs');T.tab('10','#etabs');T.click('#keys .key:nth-child(10)');}}
+]);
+}/*ENDTOUR*/
 </script>
 </body>
 </html>

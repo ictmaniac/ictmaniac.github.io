@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=8">
+<link rel="stylesheet" href="../../a/im.css?v=10">
 <style>
 #main{position:relative}
 .fld{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
@@ -124,7 +124,7 @@ svg.ov polygon{fill:var(--signal);opacity:0;animation:fadein .2s .8s forwards}
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
-<script src="../../a/im.js?v=8"></script>
+<script src="../../a/im.js?v=10"></script>
 <script>
 const {$,say,bn}=IM;
 const D=[{r:101,n:'Rahim',m:72},{r:102,n:'Karim',m:85},{r:103,n:'Ayesha',m:91},{r:104,n:'Nila',m:64},{r:105,n:'Babu',m:78},{r:106,n:'Mitu',m:69}];
@@ -235,7 +235,7 @@ $('cmp').querySelectorAll('.c').forEach(c=>c.onclick=()=>{const i=+c.dataset.i;$
 IM.tabs($('tabs'),k=>{K=k;build();player.reset();});
 $('fld').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{F=c.dataset.f;$('fld').querySelectorAll('.chip').forEach(x=>x.classList.toggle('sel',x===c));build();player.reset();});
 build();player.reset();
-IM.mcq($('quiz6'),[{"q": "কোনটিতে মূল টেবিলের রেকর্ডের ক্রম বদলে যায়?", "o": ["ইনডেক্সিং", "সর্টিং", "দুটোই", "কোনোটিই না"], "a": 1, "w": "সর্টিংয়ে আসল সারিগুলো সরে যায়।"}, {"q": "কোনটিতে বেশি মেমোরি লাগে (পাঠ্যবই)?", "o": ["সর্টিং", "ইনডেক্সিং", "সমান", "বলা যায় না"], "a": 1, "w": "আলাদা ইনডেক্স ফাইল তৈরি হয় বলে।"}, {"q": "নতুন রেকর্ড যোগ হলে নিজে থেকে হালনাগাদ হয়—", "o": ["ইনডেক্স", "সর্ট করা টেবিল", "দুটোই", "কোনোটিই না"], "a": 0, "w": "ইনডেক্স স্বয়ংক্রিয়ভাবে আপডেট হয়, সর্ট আবার করতে হয়।"}]);
+IM.mcq($('quiz6'),[{"q": "ইনডেক্স করলে মূল টেবিলের রেকর্ডের ক্রম—", "o": ["বদলে যায়", "একই থাকে", "মুছে যায়", "উল্টে যায়"], "a": 1, "w": "আলাদা ইনডেক্স ফাইলে সাজানো থাকে।"}, {"q": "কোনটিতে মূল টেবিলের রেকর্ডের ক্রম বদলে যায়?", "o": ["ইনডেক্সিং", "সর্টিং", "দুটোই", "কোনোটিই না"], "a": 1, "w": "সর্টিংয়ে আসল সারিগুলো সরে যায়।"}, {"q": "কোনটিতে বেশি মেমোরি লাগে (পাঠ্যবই)?", "o": ["সর্টিং", "ইনডেক্সিং", "সমান", "বলা যায় না"], "a": 1, "w": "আলাদা ইনডেক্স ফাইল তৈরি হয় বলে।"}, {"q": "নতুন রেকর্ড যোগ হলে নিজে থেকে হালনাগাদ হয়—", "o": ["ইনডেক্স", "সর্ট করা টেবিল", "দুটোই", "কোনোটিই না"], "a": 0, "w": "ইনডেক্স স্বয়ংক্রিয়ভাবে আপডেট হয়, সর্ট আবার করতে হয়।"}]);
 </script>
 </body>
 </html>

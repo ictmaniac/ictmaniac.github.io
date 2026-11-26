@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=8">
+<link rel="stylesheet" href="../../a/im.css?v=10">
 <style>
 .grid{display:grid;gap:2px;justify-content:end;font-family:var(--f-mono);font-weight:700}
 .grid .c{width:30px;height:38px;display:grid;place-items:center;border-radius:6px;font-size:1.25rem;transition:background .25s}
@@ -64,9 +64,17 @@
   </section>
 
   <section class="card" id="quiz"></section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq3"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points"><li><b>যোগ:</b> 0+0=0, 0+1=1, 1+1=10 (হাতে 1), 1+1+1=11।</li><li><b>বিয়োগ:</b> 0−1 করতে পাশের ঘর থেকে ধার নিতে হয়, তখন 10−1=1।</li><li>ভগ্নাংশে বিন্দু (.) মিলিয়ে বসাতে হয়।</li></ul>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=8"></script>
+<script src="../../a/im.js?v=10"></script>
 <script>
 const {$}=IM;
 let OP='+', cols=[], k=0;
@@ -148,6 +156,20 @@ $('qc').onclick=()=>{ const v=$('qi').value.trim().replace(/^0+(?=.)/,''); if(!v
 $('qi').addEventListener('keydown',e=>{if(e.key==='Enter')$('qc').click();});
 $('qn').onclick=newQ;
 chips(); prep(); newQ();
+
+IM.mcq(document.getElementById('mcq3'),[{"q": "1 + 1 = ? (বাইনারি)", "o": ["2", "10", "11", "1"], "a": 1, "w": "লিখি 0, হাতে থাকে 1।"}, {"q": "1 + 1 + 1 = ? (বাইনারি)", "o": ["11", "10", "111", "3"], "a": 0, "w": "লিখি 1, হাতে 1।"}, {"q": "1011 + 111 = ?", "o": ["10010", "10000", "1111", "11010"], "a": 0, "w": "11 + 7 = 18 = 10010।"}, {"q": "0 − 1 করতে কী লাগে?", "o": ["ক্যারি", "পাশের ঘর থেকে ধার", "কিছু না", "2's complement"], "a": 1, "w": "ধার নিলে 10 − 1 = 1।"}]);
+/*TOUR*/{const T=IM.T;
+IM.tour([
+ {m:'বাইনারি যোগের নিয়ম: 0+0=0, 0+1=1, 1+1=<b>10</b> (লিখি 0, হাতে থাকে 1), 1+1+1=<b>11</b>।',do(){T.tab('+','#ops');T.click('#chips .chip:nth-child(1)');}},
+ {m:'1011 + 111: ডান দিক থেকে ঘর ধরে ধরে যোগ শুরু।',el:'#grid',do(){T.tab('+','#ops');$('a').value='1011';$('b').value='111';prep();}},
+ {m:'প্রথম ঘর: 1 + 1 = 10, লিখি <b>0</b>, হাতে <b>1</b> (ক্যারি)।',el:'#grid',do(){T.tab('+','#ops');$('a').value='1011';$('b').value='111';prep();stepOnce();}},
+ {m:'হাতের 1 পরের ঘরে যোগ হয়। এভাবে সব ঘর শেষে উত্তর <b>10010</b>।',el:'#grid',do(){T.tab('+','#ops');$('a').value='1011';$('b').value='111';prep();showAll();}},
+ {m:'বাইনারি বিয়োগের নিয়ম: 0−1 করতে পাশের ঘর থেকে <b>ধার</b> (বরো) নিতে হয়, তখন 10−1 = 1।',el:'#grid',do(){T.tab('-','#ops');T.click('#chips .chip:nth-child(1)');}},
+ {m:'10000 − 1: অনেক ঘর পেরিয়ে ধার আনতে হয়। উত্তর <b>1111</b>।',el:'#grid',do(){T.tab('-','#ops');T.click('#chips .chip:nth-child(2)');}},
+ {m:'ভগ্নাংশেও একই নিয়ম, শুধু বিন্দু (.) মিলিয়ে বসাতে হয়।',el:'#grid',do(){T.tab('+','#ops');T.click('#chips .chip:nth-child(4)');}},
+ {m:'নিজে চেষ্টা করো: নিচের প্রশ্নে উত্তর লিখে যাচাই করো।',el:'#qa'}
+]);
+}/*ENDTOUR*/
 </script>
 </body>
 </html>

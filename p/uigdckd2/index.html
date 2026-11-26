@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=8">
+<link rel="stylesheet" href="../../a/im.css?v=10">
 <style>
 .ffs{display:flex;gap:8px;justify-content:center;align-items:flex-end}
 .ff{display:flex;flex-direction:column;align-items:center;gap:2px}
@@ -70,9 +70,13 @@ svg.wave{width:100%;height:auto;display:block}
   </section>
 
   <section class="card" id="quiz"></section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq3"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=8"></script>
+<script src="../../a/im.js?v=10"></script>
 <script>
 const {$}=IM;
 let M='16', n=0, hist=[0], timer=null;
@@ -131,6 +135,20 @@ function newQ(){
   $('qb').querySelectorAll('button').forEach(b=>b.onclick=()=>{const ok=b.textContent===ans;total++;if(ok)right++;$('qf').className='feedback '+(ok?'ok':'bad');$('qf').textContent=ok?'ঠিক!':'হয়নি। সঠিক উত্তর: '+ans;$('qs').textContent=`স্কোর: ${right}/${total}`;$('qb').querySelectorAll('button').forEach(x=>x.disabled=true);});
 }
 $('qn').onclick=newQ; newQ();
+
+IM.mcq(document.getElementById('mcq3'),[{"q": "৪টি ফ্লিপ-ফ্লপের কাউন্টার কয়টি অবস্থা গুনতে পারে?", "o": ["৪", "৮", "১৬", "১০"], "a": 2, "w": "2⁴ = 16।"}, {"q": "ডিকেড কাউন্টার 9 এর পরে যায়—", "o": ["10", "0", "15", "1"], "a": 1, "w": "Mod-10, তাই 0 তে ফেরে।"}, {"q": "কাউন্টার তৈরি হয়—", "o": ["ফ্লিপ-ফ্লপ দিয়ে", "অ্যাডার দিয়ে", "এনকোডার দিয়ে", "শুধু AND দিয়ে"], "a": 0, "w": "প্রতিটি ফ্লিপ-ফ্লপ ১ বিট।"}, {"q": "কাউন্টার এক ধাপ বাড়ে কখন?", "o": ["ইনপুট বদলালে", "প্রতি ক্লক পালসে", "রিসেট দিলে", "কখনো না"], "a": 1, "w": "ক্লক পালস গোনে।"}]);
+/*TOUR*/{const T=IM.T;
+IM.tour([
+ {m:'<b>কাউন্টার</b> হলো ফ্লিপ-ফ্লপের সারি, যা প্রতিটি <b>ক্লক পালসে</b> এক করে গোনে।',do(){T.tab('16','#mode');}},
+ {m:'৪টি ফ্লিপ-ফ্লপ দিয়ে 0000 থেকে 1111, মানে 0 থেকে 15 পর্যন্ত গোনা যায় (16টি অবস্থা)।',el:'#ffs',do(){T.tab('16','#mode');T.click('#rst');}},
+ {m:'একটা ক্লক দিলাম: 0000 → <b>0001</b>। ডানের বিট সবসময় বদলায়।',el:'#ffs',do(){T.tab('16','#mode');T.click('#rst');T.click('#clk');}},
+ {m:'আরও ক্লক: 0001 → 0010 → 0011। কোনো বিট 1 থেকে 0 হলে পাশের বিট উল্টায়।',el:'#ffs',do(){T.tab('16','#mode');T.click('#rst');T.click('#clk',3);}},
+ {m:'তরঙ্গচিত্রে দেখো: প্রতিটি বিট আগেরটার অর্ধেক গতিতে বদলায়।',el:'#wave',do(){T.tab('16','#mode');T.click('#rst');T.click('#clk',6);}},
+ {m:'<b>ডিকেড কাউন্টার</b> (Mod-10): 9 (1001) এর পরেই 0 তে ফিরে যায়।',el:'#ffs',do(){T.tab('10','#mode');T.click('#clk',9);}},
+ {m:'<b>ডাউন কাউন্টার</b>: 15 থেকে উল্টো দিকে গোনে।',el:'#ffs',do(){T.tab('d','#mode');T.click('#clk',2);}},
+ {m:'নিজে চেষ্টা করো: "▶ চালাও" চেপে কাউন্টার চলতে দেখো।',el:'#run'}
+]);
+}/*ENDTOUR*/
 </script>
 </body>
 </html>

@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=8">
+<link rel="stylesheet" href="../../a/im.css?v=10">
 <style>
 .cells{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
 .cell{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 10px;border-radius:10px;background:var(--board);font-family:var(--f-mono)}
@@ -95,9 +95,13 @@
   </section>
 
   <section class="card" id="quiz"></section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq3"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=8"></script>
+<script src="../../a/im.js?v=10"></script>
 <script>
 const {$}=IM;
 const b4=n=>n.toString(2).padStart(4,'0');
@@ -157,6 +161,20 @@ function newQ(){
   $('qb').querySelectorAll('button').forEach(b=>b.onclick=()=>{const ok=b.textContent===ans;total++;if(ok)right++;$('qf').className='feedback '+(ok?'ok':'bad');$('qf').innerHTML=ok?'ঠিক!':`হয়নি। সঠিক উত্তর: <span class="mono">${ans}</span>`;$('qs').textContent=`স্কোর: ${right}/${total}`;$('qb').querySelectorAll('button').forEach(x=>x.disabled=true);});
 }
 $('qn').onclick=newQ; newQ();
+
+IM.mcq(document.getElementById('mcq3'),[{"q": "ASCII কয় বিটের কোড?", "o": ["৪", "৭", "১৬", "৩২"], "a": 1, "w": "৭ বিটে 128টি অক্ষর।"}, {"q": "'A' এর ASCII মান—", "o": ["97", "65", "48", "32"], "a": 1, "w": "a = 97, পার্থক্য 32।"}, {"q": "সব ভাষার জন্য একক কোড—", "o": ["BCD", "ASCII", "EBCDIC", "ইউনিকোড"], "a": 3, "w": "বাংলাও ইউনিকোডে আসে।"}, {"q": "BCD তে 25 লেখা হয়—", "o": ["11001", "0010 0101", "0001 1001", "00100101 (বাইনারি)"], "a": 1, "w": "প্রতিটি অঙ্ক আলাদা ৪ বিটে।"}]);
+/*TOUR*/{const T=IM.T;
+IM.tour([
+ {m:'কম্পিউটার শুধু 0 আর 1 বোঝে। তাই প্রতিটি অক্ষর আর অঙ্কের জন্য একটা <b>কোড</b> ঠিক করা আছে।',do(){T.tab('bcd','#tabs');}},
+ {m:'<b>BCD</b>: দশমিকের প্রতিটি অঙ্ক আলাদা করে ৪ বিটে লেখা হয়। 259 → 0010 0101 1001।',el:'#bCells',do(){T.tab('bcd','#tabs');T.val('#bIn','259');}},
+ {m:'খেয়াল করো: BCD আর সাধারণ বাইনারি আলাদা। 259 এর বাইনারি 100000011।',el:'#bBin',do(){T.tab('bcd','#tabs');T.val('#bIn','259');}},
+ {m:'<b>ASCII</b>: ইংরেজি অক্ষরের ৭ বিটের কোড, মোট 128টি। A = 65, a = 97।',el:'#aCells',do(){T.tab('ascii','#tabs');T.val('#aIn','ICT');}},
+ {m:'বড় হাতের আর ছোট হাতের অক্ষরের কোডে পার্থক্য সবসময় <b>32</b>।',el:'#aCells',do(){T.tab('ascii','#tabs');T.val('#aIn','Aa');}},
+ {m:'<b>EBCDIC</b>: IBM এর ৮ বিটের কোড, মেইনফ্রেম কম্পিউটারে ব্যবহার হয়।',el:'#eCells',do(){T.tab('ebcdic','#tabs');T.val('#eIn','HSC 26');}},
+ {m:'<b>ইউনিকোড</b>: পৃথিবীর সব ভাষার জন্য একটাই কোড। বাংলা লেখা এর কারণেই কম্পিউটারে আসে।',el:'#uCells',do(){T.tab('uni','#tabs');}},
+ {m:'নিজে চেষ্টা করো: বাক্সে কিছু লিখে দেখো তার কোড কী হয়।',el:'#quiz'}
+]);
+}/*ENDTOUR*/
 </script>
 </body>
 </html>

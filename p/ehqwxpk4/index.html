@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=8">
+<link rel="stylesheet" href="../../a/im.css?v=10">
 <style>
 .cols{display:flex;gap:6px;justify-content:center}
 .col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1 1 0;max-width:72px;min-width:0}
@@ -77,9 +77,13 @@
   </section>
 
   <section class="card" id="quiz"></section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq3"></div>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=8"></script>
+<script src="../../a/im.js?v=10"></script>
 <script>
 const {$}=IM; const DIG='0123456789ABCDEF';
 let B=10, N=5, d=[], timer=null;
@@ -129,6 +133,20 @@ function newQ(){
 }
 $('qn').onclick=newQ; newQ();
 setBase(10);
+
+IM.mcq(document.getElementById('mcq3'),[{"q": "বাইনারি পদ্ধতির ভিত্তি—", "o": ["2", "8", "10", "16"], "a": 0, "w": "অঙ্ক শুধু 0 ও 1।"}, {"q": "হেক্সাডেসিমালে F এর মান—", "o": ["14", "15", "16", "10"], "a": 1, "w": "A=10 … F=15।"}, {"q": "(505)₁₀ এ বাম দিকের 5 এর স্থানীয় মান—", "o": ["5", "50", "500", "5000"], "a": 2, "w": "5 × 10² = 500।"}, {"q": "অক্টালে ব্যবহৃত অঙ্ক—", "o": ["0–7", "0–8", "1–8", "0–9"], "a": 0, "w": "ভিত্তি 8, তাই 0 থেকে 7।"}]);
+/*TOUR*/{const T=IM.T;
+IM.tour([
+ {m:'একই অঙ্ক কোন <b>ঘরে</b> বসেছে, তার উপর তার মান নির্ভর করে। এটাকে <b>স্থানীয় মান</b> বলে।',do(){T.tab('10','#bases');}},
+ {m:'দশমিকে 505: বাম দিকের 5 এর মান 5×10² = <b>500</b>, ডানের 5 এর মান মাত্র <b>5</b>।',el:'#cols',do(){T.tab('10','#bases');}},
+ {m:'প্রতিটি ঘরের মান = অঙ্ক × ভিত্তি<sup>ঘর</sup>। সব যোগ করলে সংখ্যার মান।',el:'#sum',do(){T.tab('10','#bases');}},
+ {m:'বাইনারিতে ভিত্তি <b>2</b>, অঙ্ক শুধু 0 আর 1। ঘরের মান 1, 2, 4, 8, 16…',el:'#cols',do(){T.tab('2','#bases');}},
+ {m:'+1 গুনলাম: শেষ ঘরে 1 এর বেশি হতে পারে না, তাই 0 হয়ে পাশের ঘরে <b>হাতে ১</b> যায়।',el:'#cols',do(){T.tab('2','#bases');T.click('#inc');}},
+ {m:'অক্টালে ভিত্তি <b>8</b>, অঙ্ক 0–7। ঘরের মান 1, 8, 64…',el:'#cols',do(){T.tab('8','#bases');}},
+ {m:'হেক্সাডেসিমালে ভিত্তি <b>16</b>, অঙ্ক 0–9 আর A–F (A = 10 … F = 15)।',el:'#cols',do(){T.tab('16','#bases');}},
+ {m:'নিজে চেষ্টা করো: ▲ ▼ চেপে অঙ্ক বদলাও, মান কীভাবে বদলায় দেখো।',el:'#num'}
+]);
+}/*ENDTOUR*/
 </script>
 </body>
 </html>

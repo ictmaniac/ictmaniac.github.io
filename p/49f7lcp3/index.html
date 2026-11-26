@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=8">
+<link rel="stylesheet" href="../../a/im.css?v=10">
 <style>
 #main{position:relative}
 .lad{display:flex;align-items:center;gap:2px;flex-wrap:nowrap;justify-content:center}
@@ -79,7 +79,7 @@
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
-<script src="../../a/im.js?v=8"></script>
+<script src="../../a/im.js?v=10"></script>
 <script>
 const {$,say,bn}=IM;
 const H=['Roll','Name','Dept','GPA'];
@@ -131,7 +131,7 @@ $('res').onclick=()=>say('Result টেবিল','আরেকটা টেব�
 addEventListener('resize',()=>{if(S[player.k].link)link();});
 player.reset();
 IM.compare($('cx0'),["", "টেবিলে কোথায়", "উদাহরণ", "উপমা"],[["ডেটা", "একটা ঘর", "101, Rafi", "ফর্মে লেখা একটা শব্দ", "ডেটা হলো কাঁচা মান। শুধু \"101\" দেখে বোঝা যায় না এটা রোল না নম্বর।"], ["ফিল্ড", "কলাম", "Roll, Name", "ফর্মের একটা ঘর (নাম:___)", "ফিল্ড হলো একটা বৈশিষ্ট্যের নাম, ডেটাবেজের ক্ষুদ্রতম একক। সব রেকর্ডে একই ফিল্ড থাকে।"], ["রেকর্ড", "সারি", "101, Rafi, Science, 5.00", "একজনের পূরণ করা ফর্ম", "রেকর্ড হলো একজনের সব ফিল্ডের মান একসাথে।"], ["টেবিল", "পুরো ছক", "Student", "ফর্মে ভরা একটা ফাইল", "একই ধরনের অনেক রেকর্ড মিলে টেবিল (ফাইল)।"], ["ডেটাবেজ", "কয়েকটা ছক", "College", "ফাইল রাখার আলমারি", "সম্পর্কযুক্ত কয়েকটা টেবিল মিলে ডেটাবেজ। টেবিলগুলো কমন ফিল্ড (Roll) দিয়ে যুক্ত।"]]);
-IM.mcq($('quiz6'),[{"q": "ডেটাবেজের ক্ষুদ্রতম একক কোনটি?", "o": ["রেকর্ড", "ফিল্ড", "টেবিল", "ডেটাবেজ"], "a": 1, "w": "ফিল্ড হলো ডেটাবেজের ক্ষুদ্রতম একক ও ভিত্তি।"}, {"q": "টেবিলের প্রতিটি সারিকে কী বলে?", "o": ["ফিল্ড", "কলাম", "রেকর্ড", "কী"], "a": 2, "w": "সারি = রেকর্ড, কলাম = ফিল্ড।"}, {"q": "সম্পর্কযুক্ত কয়েকটি টেবিলের সমষ্টি—", "o": ["ফাইল", "রেকর্ড", "ফিল্ড", "ডেটাবেজ"], "a": 3, "w": "এক বা একাধিক সম্পর্কযুক্ত টেবিল মিলে ডেটাবেজ।"}]);
+IM.mcq($('quiz6'),[{"q": "ডেটাবেজে একটি সারিকে বলে—", "o": ["ফিল্ড", "রেকর্ড", "টেবিল", "কী"], "a": 1, "w": "কলাম হলো ফিল্ড, সারি হলো রেকর্ড।"}, {"q": "ডেটাবেজের ক্ষুদ্রতম একক কোনটি?", "o": ["রেকর্ড", "ফিল্ড", "টেবিল", "ডেটাবেজ"], "a": 1, "w": "ফিল্ড হলো ডেটাবেজের ক্ষুদ্রতম একক ও ভিত্তি।"}, {"q": "টেবিলের প্রতিটি সারিকে কী বলে?", "o": ["ফিল্ড", "কলাম", "রেকর্ড", "কী"], "a": 2, "w": "সারি = রেকর্ড, কলাম = ফিল্ড।"}, {"q": "সম্পর্কযুক্ত কয়েকটি টেবিলের সমষ্টি—", "o": ["ফাইল", "রেকর্ড", "ফিল্ড", "ডেটাবেজ"], "a": 3, "w": "এক বা একাধিক সম্পর্কযুক্ত টেবিল মিলে ডেটাবেজ।"}]);
 </script>
 </body>
 </html>

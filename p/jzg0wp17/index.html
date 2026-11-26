@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=10">
 <style>
 :root{
   --board:#F3F6FC;--panel:#FFFFFF;--ink:#14213D;--muted:#5A6785;--line:#D5DEEE;
@@ -173,10 +174,11 @@ footer{font-size:.85rem;color:var(--muted);text-align:center}
     <div style="overflow-x:auto"><table id="ref"></table></div>
   </section>
 
-  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+  <section class="card"><h2>নিজেকে যাচাই করো</h2><div id="mcq9"></div></section>
+<footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 
-<script src="../../a/im.js?v=8"></script>
+<script src="../../a/im.js?v=10"></script>
 <script>
 const $=id=>document.getElementById(id);
 const DIG='0123456789ABCDEF';
@@ -365,6 +367,21 @@ $('ref').innerHTML='<tr><th>দশমিক</th><th>বাইনারি</th><t
   [...Array(16)].map((_,n)=>`<tr><td>${n}</td><td>${n.toString(2).padStart(4,'0')}</td><td>${n.toString(8)}</td><td>${DIG[n]}</td></tr>`).join('');
 
 setMode('dec');
+
+IM.mcq(document.getElementById('mcq9'),[{"q": "(13)₁₀ = (?)₂", "o": ["1101", "1011", "1110", "1001"], "a": 0, "w": "8 + 4 + 1 = 13।"}, {"q": "(0.5)₁₀ = (?)₂", "o": ["0.1", "0.01", "0.11", "0.5"], "a": 0, "w": "0.5 × 2 = 1.0, তাই 0.1।"}, {"q": "বাইনারি থেকে অক্টালে নিতে কয়টি করে বিটের দল?", "o": ["২", "৩", "৪", "৮"], "a": 1, "w": "2³ = 8।"}, {"q": "(1F)₁₆ = (?)₁₀", "o": ["31", "25", "15", "30"], "a": 0, "w": "1×16 + 15 = 31।"}]);
+/*TOUR*/{const T=IM.T;const $=id=>document.getElementById(id);
+const M=m=>{const t=document.querySelector(`.tab[data-m="${m}"]`);if(t.getAttribute('aria-selected')!=='true')t.click();};
+const C=(i,n)=>{const c=document.querySelectorAll('#chips .chip')[i];if(c){$('num').value=c.dataset.v;if(mode!=='dec'){$('from').value=c.dataset.b;syncGrp();}prepare();for(let j=0;j<n;j++)nextStep();}};
+IM.tour([
+ {m:'দশমিক থেকে বাইনারি: <b>পূর্ণ অংশকে বারবার ২ দিয়ে ভাগ</b>, ভাগশেষগুলো নিচ থেকে উপরে পড়ো।',do(){M('dec');C(0,0);}},
+ {m:'প্রথম ভাগ: ভাগফল আর ভাগশেষ লেখা হলো।',el:'#work',do(){M('dec');C(0,1);}},
+ {m:'ভাগফল 0 না হওয়া পর্যন্ত ভাগ চলতে থাকে।',el:'#work',do(){M('dec');C(0,3);}},
+ {m:'ভগ্নাংশ অংশকে <b>বারবার ২ দিয়ে গুণ</b>, পূর্ণ অংশগুলো উপর থেকে নিচে পড়ো।',el:'#work',do(){M('dec');C(0,99);}},
+ {m:'অন্য পদ্ধতি থেকে দশমিক: প্রতিটি অঙ্ক × ভিত্তি<sup>ঘর</sup>, তারপর সব যোগ।',el:'#work',do(){M('toDec');C(0,99);}},
+ {m:'বাইনারি থেকে অক্টাল: ডান দিক থেকে <b>৩টি</b> করে বিটের দল। হেক্সাতে <b>৪টি</b> করে।',el:'#work',do(){M('grp');C(0,99);}},
+ {m:'নিচের টেবিলে বাইনারি, অক্টাল, হেক্সার মিল মুখস্থ রাখো।',el:'#ref'}
+]);
+}/*ENDTOUR*/
 </script>
 </body>
 </html>

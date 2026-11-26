@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=8">
+<link rel="stylesheet" href="../../a/im.css?v=10">
 <style>
 .rip{display:flex;flex-direction:column;gap:8px;align-items:stretch}
 .rrow{display:grid;grid-template-columns:52px repeat(4,1fr);gap:6px;align-items:center}
@@ -70,9 +70,17 @@
   </section>
 
   <section class="card" id="quiz"></section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq3"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points"><li>হাফ অ্যাডার: S = A ⊕ B, C = A·B।</li><li>ফুল অ্যাডার: S = A ⊕ B ⊕ Cin, Cout = AB + Cin(A ⊕ B)।</li><li>ফুল অ্যাডার = দুটি হাফ অ্যাডার + একটি OR গেট।</li></ul>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=8"></script>
+<script src="../../a/im.js?v=10"></script>
 <script>
 const {$}=IM;
 const sh={A:0,B:0};
@@ -125,6 +133,19 @@ IM.tabs($('tabs'),k=>{['h','f','r'].forEach(x=>$('p-'+x).hidden=x!==k);});
 
 IM.quiz01($('quiz'),()=>{ const full=Math.random()<.5, a=IM.rnd(0,1),b=IM.rnd(0,1),c=full?IM.rnd(0,1):0, sum=a+b+c, askS=Math.random()<.5;
   return {ask:`${full?'ফুল':'হাফ'} অ্যাডারে A = ${a}, B = ${b}${full?`, C<sub>in</sub> = ${c}`:''} হলে ${askS?'যোগফল S':'ক্যারি C'} কত?`, ans: askS? sum&1 : sum>>1, why:`${a} + ${b}${full?' + '+c:''} = ${sum} = ${(sum>>1)}${sum&1}₂`}; });
+
+IM.mcq(document.getElementById('mcq3'),[{"q": "হাফ অ্যাডারের যোগফল S = ?", "o": ["A·B", "A + B", "A ⊕ B", "(AB)'"], "a": 2, "w": "XOR গেট।"}, {"q": "হাফ অ্যাডারের ক্যারি C = ?", "o": ["A·B", "A ⊕ B", "A + B", "A'B"], "a": 0, "w": "AND গেট।"}, {"q": "ফুল অ্যাডারে ইনপুট কয়টি?", "o": ["২", "৩", "৪", "১"], "a": 1, "w": "A, B আর Cin।"}, {"q": "একটি ফুল অ্যাডার = ?", "o": ["দুটি হাফ অ্যাডার + OR গেট", "দুটি AND", "একটি XOR", "তিনটি হাফ অ্যাডার"], "a": 0, "w": "সবচেয়ে বেশি আসা প্রশ্ন।"}]);
+/*TOUR*/{const T=IM.T;
+IM.tour([
+ {m:'<b>হাফ অ্যাডার</b> দুটি বিট যোগ করে: যোগফল <b>S = A ⊕ B</b>, হাতে থাকে <b>C = A · B</b>।',do(){T.tab('h','#tabs');T.tog('#tgh','A',0);T.tog('#tgh','B',0);}},
+ {m:'1 + 0 = 1: S = 1, C = 0।',el:'#ch',do(){T.tab('h','#tabs');T.tog('#tgh','A',1);T.tog('#tgh','B',0);}},
+ {m:'1 + 1 = 10: S = <b>0</b>, C = <b>1</b>। তাই XOR আর AND গেট লাগে।',el:'#ch',do(){T.tab('h','#tabs');T.tog('#tgh','A',1);T.tog('#tgh','B',1);}},
+ {m:'হাফ অ্যাডার আগের ঘরের হাতের সংখ্যা নিতে পারে না। তাই <b>ফুল অ্যাডার</b> লাগে: ৩টি বিট যোগ (A, B, Cin)।',el:'#cf',do(){T.tab('f','#tabs');T.tog('#tgf','A',0);T.tog('#tgf','B',0);T.tog('#tgf','Ci',0);}},
+ {m:'1 + 1 + 1 = 11: S = 1, Cout = 1।',el:'#cf',do(){T.tab('f','#tabs');T.tog('#tgf','A',1);T.tog('#tgf','B',1);T.tog('#tgf','Ci',1);}},
+ {m:'একটা ফুল অ্যাডার = দুটো হাফ অ্যাডার + একটা OR গেট।',el:'#ttf',do(){T.tab('f','#tabs');}},
+ {m:'৪ বিটের <b>প্যারালাল অ্যাডার</b>: ৪টি ফুল অ্যাডার পাশাপাশি, একটার Cout পরেরটার Cin এ যায়।',el:'#rs',do(){T.tab('r','#tabs');T.click('#go');}}
+]);
+}/*ENDTOUR*/
 </script>
 </body>
 </html>

@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=8">
+<link rel="stylesheet" href="../../a/im.css?v=10">
 <style>
 .sub{display:flex;gap:8px}
 .sub .tab{font-size:.95rem}
@@ -52,9 +52,17 @@
   </section>
 
   <section class="card" id="quiz"></section>
+  <section class="card">
+    <h2>নিজেকে যাচাই করো</h2>
+    <div id="mcq3"></div>
+  </section>
+  <section class="card">
+    <h2>মনে রাখো</h2>
+    <ul class="points"><li><b>NAND</b> = AND + NOT, <b>NOR</b> = OR + NOT।</li><li>এদের <b>সার্বজনীন গেট</b> বলে, কারণ শুধু এদের দিয়েই AND, OR, NOT সব বানানো যায়।</li><li>NAND এর দুই ইনপুট জুড়লে NOT গেট হয়।</li></ul>
+  </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=8"></script>
+<script src="../../a/im.js?v=10"></script>
 <script>
 const {$}=IM;
 let G='NAND', B='NOT';
@@ -99,6 +107,20 @@ IM.tabs($('sub'),k=>{B=k; build();});
 const q=IM.quiz01($('quiz'),()=>{const a=IM.rnd(0,1),b=IM.rnd(0,1),y=G==='NAND'?1-(a&b):1-(a|b);
   return {ask:`${G} গেটে A = <span class="mono">${a}</span>, B = <span class="mono">${b}</span> হলে Y কত?`,ans:y,after:()=>{st.A=a;st.B=b;r1();}};});
 main();
+
+IM.mcq(document.getElementById('mcq3'),[{"q": "সার্বজনীন গেট কোনগুলো?", "o": ["AND, OR", "NAND, NOR", "XOR, XNOR", "NOT, AND"], "a": 1, "w": "এদের দিয়েই সব গেট বানানো যায়।"}, {"q": "NAND গেটে A = B = 1 হলে Y—", "o": ["1", "0", "A", "B"], "a": 1, "w": "AND = 1, উল্টে 0।"}, {"q": "NOR গেটে Y = 1 হয় কখন?", "o": ["A=B=1", "A=B=0", "A=1,B=0", "সবসময়"], "a": 1, "w": "OR = 0 হলেই।"}, {"q": "NAND এর দুই ইনপুট জুড়ে দিলে পাওয়া যায়—", "o": ["AND", "OR", "NOT", "XOR"], "a": 2, "w": "(A·A)' = A'।"}]);
+/*TOUR*/{const T=IM.T;
+IM.tour([
+ {m:'<b>NAND</b> = AND এর পরে NOT। শুধু দুটো ইনপুট 1 হলেই আউটপুট 0, বাকি সব 1।',do(){T.tab('NAND','#tabs');T.tog('#tg','A',0);T.tog('#tg','B',0);}},
+ {m:'A = 1, B = 1: AND = 1, উল্টে Y = <b>0</b>।',el:'#g1',do(){T.tab('NAND','#tabs');T.tog('#tg','A',1);T.tog('#tg','B',1);}},
+ {m:'<b>NOR</b> = OR এর পরে NOT। শুধু দুটো ইনপুট 0 হলেই আউটপুট 1।',el:'#g1',do(){T.tab('NOR','#tabs');T.tog('#tg','A',0);T.tog('#tg','B',0);}},
+ {m:'NAND আর NOR কে <b>সার্বজনীন গেট</b> বলে, কারণ শুধু এদের দিয়েই সব গেট বানানো যায়।',el:'#tt',do(){T.tab('NOR','#tabs');}},
+ {m:'শুধু NAND দিয়ে <b>NOT</b>: দুই ইনপুট জুড়ে দিলে (A·A)\' = A\'।',el:'#g2',do(){T.tab('NAND','#tabs');T.tab('NOT','#sub');}},
+ {m:'শুধু NAND দিয়ে <b>AND</b>: NAND এর পরে আরেকটা NAND (NOT হিসেবে)।',el:'#g2',do(){T.tab('NAND','#tabs');T.tab('AND','#sub');}},
+ {m:'শুধু NAND দিয়ে <b>OR</b>: আগে দুটো ইনপুট উল্টাও, তারপর NAND। ডি-মরগান থেকে আসে।',el:'#g2',do(){T.tab('NAND','#tabs');T.tab('OR','#sub');}},
+ {m:'নিচে কয়টা গেট লাগলো সেটা লেখা আছে। নিজে সুইচ চেপে মিলিয়ে দেখো।',el:'#cnt'}
+]);
+}/*ENDTOUR*/
 </script>
 </body>
 </html>

@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=10">
 <style>
 :root{
   --board:#F3F6FC;--panel:#FFFFFF;--ink:#14213D;--muted:#5A6785;--line:#D5DEEE;
@@ -197,10 +198,12 @@ footer{font-size:.85rem;color:var(--muted);text-align:center}
     </div>
   </section>
 
-  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+  <section class="card"><h2>নিজেকে যাচাই করো</h2><div id="mcq9"></div></section>
+<section class="card"><h2>মনে রাখো</h2><ul class="points"><li><b>AND:</b> সব ইনপুট 1 হলে আউটপুট 1 (Y = A·B)।</li><li><b>OR:</b> যেকোনো একটি ইনপুট 1 হলে আউটপুট 1 (Y = A + B)।</li><li><b>NOT:</b> ইনপুট উল্টে দেয় (Y = A')।</li></ul></section>
+<footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 
-<script src="../../a/im.js?v=8"></script>
+<script src="../../a/im.js?v=10"></script>
 <script>
 const $ = id => document.getElementById(id);
 const SHAPES = {
@@ -323,6 +326,21 @@ $('q0').onclick=()=>answer(0); $('q1').onclick=()=>answer(1); $('qNext').onclick
 const pick = new URLSearchParams(location.search).get('g');
 if (pick && GATES[pick.toUpperCase()]) GATE = pick.toUpperCase();
 build();
+
+IM.mcq(document.getElementById('mcq9'),[{"q": "AND গেটের আউটপুট 1 হয় যখন—", "o": ["যেকোনো একটি ইনপুট 1", "সব ইনপুট 1", "সব ইনপুট 0", "কখনো না"], "a": 1, "w": "সব 1 হলেই শুধু 1।"}, {"q": "OR গেটের আউটপুট 0 হয় যখন—", "o": ["সব ইনপুট 0", "একটি ইনপুট 1", "সব ইনপুট 1", "সবসময়"], "a": 0, "w": "একটা 1 থাকলেই OR = 1।"}, {"q": "NOT গেটে ইনপুট কয়টি?", "o": ["১", "২", "৩", "যেকোনো"], "a": 0, "w": "একটি ইনপুট উল্টে দেয়।"}, {"q": "সিরিজে লাগানো দুটি সুইচ কোন গেটের মতো?", "o": ["OR", "AND", "NOT", "XOR"], "a": 1, "w": "দুটোই চালু হলে বাতি জ্বলে।"}]);
+/*TOUR*/{const T=IM.T;const $=id=>document.getElementById(id);
+const G=g=>{const t=document.querySelector(`.tab[data-g="${g}"]`);if(t.getAttribute('aria-selected')!=='true')t.click();};
+const SI=(k,v)=>{if(+$('bit'+k).textContent!==v)$('t'+k).click();};
+IM.tour([
+ {m:'<b>AND গেট</b>: সব ইনপুট <b>1</b> হলেই শুধু আউটপুট 1। যেকোনো একটা 0 হলেই 0।',do(){G('AND');SI('A',0);SI('B',0);}},
+ {m:'A = 1, B = 0: একটা ইনপুট 0, তাই বাল্ব জ্বলে না। Y = <b>0</b>।',el:'#gate',do(){G('AND');SI('A',1);SI('B',0);}},
+ {m:'A = 1, B = 1: দুটোই 1, তাই Y = <b>1</b>। দুটো সুইচ সিরিজে লাগানো বাতির মতো।',el:'#gate',do(){G('AND');SI('A',1);SI('B',1);}},
+ {m:'<b>OR গেট</b>: যেকোনো একটা ইনপুট 1 হলেই আউটপুট 1।',el:'#gate',do(){G('OR');SI('A',0);SI('B',1);}},
+ {m:'OR এ শুধু A = B = 0 হলেই Y = <b>0</b>। প্যারালাল সুইচের মতো।',el:'#gate',do(){G('OR');SI('A',0);SI('B',0);}},
+ {m:'<b>NOT গেট</b>: ইনপুট উল্টে দেয়। 1 দিলে 0, 0 দিলে 1।',el:'#gate',do(){G('NOT');SI('A',1);}},
+ {m:'সত্যক সারণিতে সব সম্ভাব্য ইনপুটের আউটপুট একসাথে দেখো।',el:'#tt',do(){G('AND');}}
+]);
+}/*ENDTOUR*/
 </script>
 </body>
 </html>

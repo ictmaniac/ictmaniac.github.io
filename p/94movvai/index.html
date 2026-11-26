@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=8">
+<link rel="stylesheet" href="../../a/im.css?v=10">
 <style>
 .warn{padding:10px 12px;border-radius:10px;background:var(--bad-soft);color:var(--bad);font-weight:600}
 .state{padding:10px 12px;border-radius:10px;background:var(--board);font-weight:600;text-align:center}
@@ -103,7 +103,7 @@
   </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=8"></script>
+<script src="../../a/im.js?v=10"></script>
 <script>
 const {$}=IM;
 // SR latch
@@ -146,6 +146,19 @@ $('rclr').onclick=()=>{R=[0,0,0,0]; rlog.push('সব মুছে 0000'); rr();
 rr();
 IM.tabs($('tabs'),k=>{['sr','d','reg'].forEach(x=>$('p-'+x).hidden=x!==k);});
 IM.mcq(document.getElementById('mcq3'),[{"q": "ফ্লিপ-ফ্লপ কয় বিট মনে রাখতে পারে?", "o": ["১", "২", "৪", "৮"], "a": 0, "w": "একটি ফ্লিপ-ফ্লপ = ১ বিট মেমোরি।"}, {"q": "SR ফ্লিপ-ফ্লপে S=1, R=1 হলে—", "o": ["সেট", "রিসেট", "অবৈধ অবস্থা", "আগের মান"], "a": 2, "w": "তাই SR এ এটা নিষিদ্ধ।"}, {"q": "ফ্লিপ-ফ্লপ দিয়ে তৈরি হয়—", "o": ["রেজিস্টার", "অ্যাডার", "এনকোডার", "ডিকোডার"], "a": 0, "w": "রেজিস্টার ও কাউন্টার ফ্লিপ-ফ্লপের সমষ্টি।"}, {"q": "ফ্লিপ-ফ্লপ কোন ধরনের সার্কিট?", "o": ["কম্বিনেশনাল", "সিকুয়েন্সিয়াল", "অ্যানালগ", "কোনোটিই না"], "a": 1, "w": "আউটপুট আগের অবস্থার উপরও নির্ভর করে।"}]);
+
+/*TOUR*/{const T=IM.T;
+IM.tour([
+ {m:'<b>ফ্লিপ-ফ্লপ</b> এমন সার্কিট যা ১ বিট <b>মনে রাখে</b>। ইনপুট সরিয়ে নিলেও আউটপুট থেকে যায়।',do(){T.tab('sr');}},
+ {m:'S = 1 (সেট): আউটপুট Q = <b>1</b> হলো।',el:'#csr',do(){T.tab('sr');T.tog('#tgsr','R',0);T.tog('#tgsr','S',1);}},
+ {m:'এবার S = 0 করলাম, কিন্তু Q এখনো <b>1</b>! সার্কিট মনে রেখেছে। এটাই মেমোরি।',el:'#csr',do(){T.tab('sr');T.tog('#tgsr','R',0);T.tog('#tgsr','S',0);}},
+ {m:'R = 1 (রিসেট): Q = <b>0</b> হয়ে গেলো। S = R = 1 একসাথে দেওয়া <b>নিষিদ্ধ</b>।',el:'#csr',do(){T.tab('sr');T.tog('#tgsr','S',0);T.tog('#tgsr','R',1);}},
+ {m:'<b>D ফ্লিপ-ফ্লপ</b>: D বদলালেও Q বদলায় না, <b>ক্লক</b> পালস এলে তবেই D এর মান Q তে যায়।',el:'#p-d',do(){T.tab('d');}},
+ {m:'ক্লক দিলাম: এখন D এর মান Q তে চলে এলো। নিচের লগে প্রতিটি ঘটনা লেখা থাকে।',el:'#dQ',do(){T.tab('d');T.click('#dClk');}},
+ {m:'<b>রেজিস্টার</b> হলো কয়েকটা ফ্লিপ-ফ্লপ পাশাপাশি। প্রতি ক্লকে বিটগুলো এক ঘর করে সরে (শিফট)।',el:'#regv',do(){T.tab('reg');T.click('#rclr');T.click('#rClk');}},
+ {m:'প্যারালাল লোড: ৪টি বিট একসাথে রেজিস্টারে ঢুকলো।',el:'#regv',do(){T.tab('reg');T.click('#load');}}
+]);
+}/*ENDTOUR*/
 </script>
 </body>
 </html>

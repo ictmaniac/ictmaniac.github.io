@@ -269,7 +269,7 @@ const IM = (() => {
       if (sp) { b.classList.add('in-dock'); sp.appendChild(b); } else { b.classList.add('float'); document.body.appendChild(b); } }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount); else setTimeout(mount, 0);
     /* generic click sounds for buttons that are not handled elsewhere */
-    document.addEventListener('click', e => { const t = e.target.closest('button,.tab,.toggle,.sw,[data-x],.c,tr[data-r]'); if (!t || t.closest('.dock') || t.closest('.mcq') || t.classList.contains('sndb') || t.closest('.q-btns')) return;
+    document.addEventListener('click', e => { if (!e.isTrusted) return; const t = e.target.closest('button,.tab,.toggle,.sw,[data-x],.c,tr[data-r]'); if (!t || t.closest('.dock') || t.closest('.mcq') || t.classList.contains('sndb') || t.closest('.q-btns')) return;
       play(t.matches('[data-x],.c') ? 'hl' : 'tap'); }, true);
     return { play, get on() { return on; } };
   })();
@@ -373,6 +373,42 @@ const IM = (() => {
   /* HTML colouring */
   const hHL = s => esc(s).replace(/([a-z-]+)="([^"]*)"/g, '\u0001$1\u0002="$2"').replace(/(&lt;\/?)([a-zA-Z0-9]+)/g, '$1<span class="tg">$2</span>').replace(/\u0001/g, '<span class="at">').replace(/\u0002/g, '</span>');
 
+
+
+  /* same section order on every page: … → quiz → মনে রাখো (last) */
+  function tidy() { const qz = document.querySelector('.mcq'); const qs = qz && qz.closest('section'); if (!qs) return; const par = qs.parentNode;
+    let pts = [...document.querySelectorAll('section')].find(x => { const h = x.querySelector('h2'); return h && h.textContent.trim() === 'মনে রাখো'; });
+    if (!pts) { const uls = [...document.querySelectorAll('ul.points')].filter(u => !u.closest('#main') && !u.closest('[hidden]') && u.id !== 'pts'); const ul = uls[uls.length - 1];
+      if (ul) { const sec = ul.closest('section'); const solo = sec && sec.parentNode === par && [...sec.children].every(c => c === ul || /^H[23]$/.test(c.tagName) || (c.tagName === 'P' && c.textContent.length < 160));
+        if (solo) { pts = sec; let h = sec.querySelector('h2'); if (!h) { h = document.createElement('h2'); sec.prepend(h); } h.textContent = 'মনে রাখো'; }
+        else { pts = document.createElement('section'); pts.className = 'card'; pts.innerHTML = '<h2>মনে রাখো</h2>'; pts.appendChild(ul); } } }
+    const foot = [...par.children].find(x => x.tagName === 'FOOTER'); par.insertBefore(qs, foot || null); if (pts) par.insertBefore(pts, foot || null); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', tidy); else setTimeout(tidy, 0);
+
+  /* ---------- guided tour: gives lab pages the same explain bar + step dock as every other page ----------
+     steps = [{m:'html', do(){...set the lab...}, el:'#selector to scroll to'}] (each step sets its own state) */
+  const DOCK = '<div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>';
+  function focusEl(sel) { const el = typeof sel === 'string' ? document.querySelector(sel) : sel; if (!el) return; const ex = document.querySelector('.explain');
+    const off = (ex ? ex.getBoundingClientRect().height : 0) + 14, r = el.getBoundingClientRect(), dockH = (document.querySelector('.dock') || { offsetHeight: 0 }).offsetHeight;
+    if (r.top < off || r.bottom > innerHeight - dockH - 10) window.scrollTo({ top: Math.max(0, r.top + scrollY - off), behavior: reduce() ? 'auto' : 'smooth' });
+    try { el.animate([{ boxShadow: '0 0 0 0 rgba(245,166,35,0)' }, { boxShadow: '0 0 0 4px rgba(245,166,35,.85)', offset: .3 }, { boxShadow: '0 0 0 0 rgba(245,166,35,0)' }], { duration: 1300 }); } catch (e) {} }
+  function tour(steps, o) { o = o || {};
+    if (!document.querySelector('.explain')) { const ex = document.createElement('div'); ex.className = 'explain'; ex.setAttribute('aria-live', 'polite'); ex.innerHTML = '<span class="tag" id="extag">শুরু</span><p id="extx"></p>';
+      const h = document.querySelector('header'); h ? h.after(ex) : document.body.prepend(ex); }
+    if (!document.querySelector('.dock')) document.body.insertAdjacentHTML('beforeend', DOCK);
+    document.body.classList.add('kit'); let started = false;
+    const p = player({ count: () => steps.length, interval: o.interval || 3400, swipe: o.swipe,
+      show(k) { const s = steps[k]; try { s.do && s.do(); } catch (e) { console.error(e); } if (started && s.el) setTimeout(() => focusEl(s.el), 60); started = true; say(`ধাপ ${bn(k + 1)} / ${bn(steps.length)}`, s.m); } });
+    p.reset(); return p; }
+  /* helpers for tour steps */
+  const T = {
+    tab(k, within) { const r = within ? (typeof within === 'string' ? document.querySelector(within) : within) : document; const b = r.querySelector(`.tab[data-k="${k}"]`); if (b && b.getAttribute('aria-selected') !== 'true') b.click(); },
+    sw(svg, id, v) { const g = document.querySelector(`${svg} .sw[data-i="${id}"]`); if (g && g.classList.contains('on') !== !!v) g.dispatchEvent(new MouseEvent('click', { bubbles: true })); },
+    tog(cont, key, v) { const b = document.querySelector(`${cont} .toggle[data-k="${key}"]`); if (b && (b.getAttribute('aria-pressed') === 'true') !== !!v) b.click(); },
+    click(sel, n) { const b = document.querySelector(sel); for (let i = 0; i < (n || 1); i++) if (b && !b.disabled) b.click(); },
+    val(sel, v) { const e = document.querySelector(sel); if (e) { e.value = v; e.dispatchEvent(new Event('input', { bubbles: true })); e.dispatchEvent(new Event('change', { bubbles: true })); } }
+  };
+
   /* ---------- motion helpers (Ch6+) ---------- */
   function rel(root, el) { const m = root.getBoundingClientRect(), r = el.getBoundingClientRect(); return { x: r.left - m.left, y: r.top - m.top, w: r.width, h: r.height }; }
   function fly(root, from, to, html, o) { o = o || {}; const f = document.createElement('div'); f.className = 'flyer' + (o.cls ? ' ' + o.cls : ''); f.innerHTML = html; root.appendChild(f);
@@ -407,5 +443,5 @@ const IM = (() => {
     if (!o.quiet && fresh(1500)) sfx((o.dur || 1000) >= 700 ? 'whoosh' : 'pop'); g.innerHTML = o.raw || `<circle r="${o.r || 11}" class="pkc"/><text text-anchor="middle" dominant-baseline="central" font-size="${o.fs || 12}">${txt}</text>`; svg.appendChild(g);
     moveAlong(g, pts, (o.dur || 1000) / SPD, () => { const live = g.isConnected; if (!o.keep) g.remove(); if (live) o.done && o.done(g); }); return g; }
   function mark(root, sel, ids, cls) { cls = cls || 'on'; ids = [].concat(ids); root.querySelectorAll(sel).forEach(e => e.classList.toggle(cls, ids.includes(e.dataset.k || e.id))); }
-  return { sfx, mark, $, parse, ev, show, rows, envOf, toggles, tt, circuit, tabs, quiz01, rnd, FN, bn, reduce, say, player, codeView, tapx, moveAlong, esc, cHL, hHL, rel, fly, compare, mcq, seq, emit, setSpd(v){ SPD = v; } };
+  return { DOCK, tour, T, focusEl, sfx, mark, $, parse, ev, show, rows, envOf, toggles, tt, circuit, tabs, quiz01, rnd, FN, bn, reduce, say, player, codeView, tapx, moveAlong, esc, cHL, hHL, rel, fly, compare, mcq, seq, emit, setSpd(v){ SPD = v; } };
 })();

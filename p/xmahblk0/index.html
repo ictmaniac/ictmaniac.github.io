@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=8">
+<link rel="stylesheet" href="../../a/im.css?v=10">
 <style>
 .pair{display:grid;grid-template-columns:1fr;gap:10px}
 .cbox{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:8px 8px 10px}
@@ -66,7 +66,7 @@
   </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=8"></script>
+<script src="../../a/im.js?v=10"></script>
 <script>
 const {$}=IM;
 const st={A:0,B:0};
@@ -114,6 +114,18 @@ $('next').onclick=()=>{ if(k<list.length){$('steps').children[k].classList.add('
 $('all').onclick=()=>{ while(k<list.length){$('steps').children[k].classList.add('show');k++;} upd(); };
 mk(); load(2);
 IM.mcq(document.getElementById('mcq3'),[{"q": "(AB)' = ?", "o": ["A'B'", "A'+B'", "A+B", "AB"], "a": 1, "w": "AND এর NOT = NOT গুলোর OR।"}, {"q": "(A+B)' = ?", "o": ["A'+B'", "A'B'", "AB", "A+B"], "a": 1, "w": "OR এর NOT = NOT গুলোর AND।"}, {"q": "ডি-মরগানে কী বদলায়?", "o": ["AND ↔ OR আর প্রতিটির NOT", "শুধু চলক", "শুধু ক্রম", "কিছুই না"], "a": 0, "w": "ভাঙো লাইন, বদলাও চিহ্ন।"}, {"q": "NAND গেট আর কোনটা সমান (ডি-মরগান অনুযায়ী)?", "o": ["ইনপুট উল্টানো OR", "ইনপুট উল্টানো AND", "XOR", "NOR"], "a": 0, "w": "(AB)' = A' + B'।"}]);
+
+/*TOUR*/{const T=IM.T;
+IM.tour([
+ {m:'<b>ডি-মরগানের প্রথম উপপাদ্য</b>: (A + B)\' = A\' · B\'। OR এর NOT = NOT গুলোর AND।',do(){T.tab('0','#tabs');T.tog('#tg','A',0);T.tog('#tg','B',0);}},
+ {m:'A = 0, B = 0: দুই সার্কিটেই আউটপুট <b>1</b>।',el:'#c1',do(){T.tab('0','#tabs');T.tog('#tg','A',0);T.tog('#tg','B',0);}},
+ {m:'A = 1, B = 0: দুই পাশেই <b>0</b>। যেকোনো ইনপুটে দুই সার্কিট সমান।',el:'#c2',do(){T.tab('0','#tabs');T.tog('#tg','A',1);T.tog('#tg','B',0);}},
+ {m:'<b>দ্বিতীয় উপপাদ্য</b>: (A · B)\' = A\' + B\'। AND এর NOT = NOT গুলোর OR।',el:'#c1',do(){T.tab('1','#tabs');T.tog('#tg','A',1);T.tog('#tg','B',1);}},
+ {m:'সত্যক সারণির প্রতিটি সারিতে দুই পাশ সমান ✔',el:'#tt',do(){T.tab('1','#tabs');}},
+ {m:'মনে রাখার কৌশল: <b>দাগ ভাঙো, চিহ্ন বদলাও</b>। + হবে ·, আর · হবে +।',el:'#steps',do(){T.click('#chips .chip:nth-child(1)');}},
+ {m:'বড় রাশিতে ধাপে ধাপে ডি-মরগান প্রয়োগ।',el:'#steps',do(){T.click('#chips .chip:nth-child(1)');T.click('#all');}}
+]);
+}/*ENDTOUR*/
 </script>
 </body>
 </html>

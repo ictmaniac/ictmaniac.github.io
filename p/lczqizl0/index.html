@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-<link rel="stylesheet" href="../../a/im.css?v=8">
+<link rel="stylesheet" href="../../a/im.css?v=10">
 <style>
 .reg{display:flex;flex-direction:column;gap:2px;align-items:center}
 .lbls{display:flex;gap:4px;justify-content:center}
@@ -84,7 +84,7 @@
   </section>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
-<script src="../../a/im.js?v=8"></script>
+<script src="../../a/im.js?v=10"></script>
 <script>
 const {$}=IM;
 const W=[128,64,32,16,8,4,2,1];
@@ -157,6 +157,18 @@ $('schips').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{$('sa').value=c.
 $('n').addEventListener('input',convN); $('sa').addEventListener('input',sub); $('sb').addEventListener('input',sub);
 renderReg(); convN(); sub();
 IM.mcq(document.getElementById('mcq3'),[{"q": "৮ বিটে -5 এর 2's complement—", "o": ["10000101", "11111010", "11111011", "00000101"], "a": 2, "w": "5 = 00000101, উল্টে 11111010, +1 = 11111011।"}, {"q": "চিহ্ন বিট 1 মানে সংখ্যাটি—", "o": ["ধনাত্মক", "ঋণাত্মক", "শূন্য", "দশমিক"], "a": 1, "w": "বাম দিকের বিট 1 হলে ঋণাত্মক।"}, {"q": "1's complement বানাতে—", "o": ["সব বিট উল্টাও", "1 যোগ করো", "বাম দিকে সরাও", "কিছু না"], "a": 0, "w": "0 কে 1, 1 কে 0।"}, {"q": "2's complement = ?", "o": ["1's complement − 1", "1's complement + 1", "মূল সংখ্যা × 2", "চিহ্ন বিট বাদ"], "a": 1, "w": "উল্টে তারপর 1 যোগ।"}]);
+
+/*TOUR*/{const T=IM.T;
+IM.tour([
+ {m:'কম্পিউটার ঋণাত্মক সংখ্যা রাখে <b>চিহ্ন বিট</b> দিয়ে: বাম দিকের বিট 0 মানে ধনাত্মক, 1 মানে ঋণাত্মক।',do(){T.click('#zero');}},
+ {m:'৮ বিটের রেজিস্টারে এখন সব 0। বিটে টাচ করে মান বদলানো যায়।',el:'#reg',do(){T.click('#zero');}},
+ {m:'<b>1\'s complement</b>: সব বিট উল্টে দাও, 0 হবে 1 আর 1 হবে 0।',el:'#reg',do(){T.click('#zero');T.click('#inv');}},
+ {m:'<b>2\'s complement</b> = 1\'s complement + 1। এটাই কম্পিউটারে ঋণাত্মক সংখ্যা রাখার আসল নিয়ম।',el:'#nsteps',do(){T.click('#nchips .chip:nth-child(1)');}},
+ {m:'−1 এর 2\'s complement <b>11111111</b>। −128 হলো ৮ বিটের সবচেয়ে ছোট সংখ্যা।',el:'#nsteps',do(){T.click('#nchips .chip:nth-child(2)');}},
+ {m:'2\'s complement দিয়ে বিয়োগ <b>যোগের</b> মতো করা যায়: A − B = A + (B এর 2\'s complement)।',el:'#ssteps',do(){T.click('#schips .chip:nth-child(1)');}},
+ {m:'45 − 18: শেষে ক্যারি বাদ দিলে উত্তর ধনাত্মক 27।',el:'#ssteps',do(){T.click('#schips .chip:nth-child(2)');}}
+]);
+}/*ENDTOUR*/
 </script>
 </body>
 </html>
