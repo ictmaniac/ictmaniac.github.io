@@ -10,28 +10,82 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
 <link rel="stylesheet" href="../../a/im.css?v=1">
 <style>
-.code{margin:0;padding:10px 0;border-radius:12px;background:var(--board);font-family:var(--f-mono);font-size:.95rem;line-height:1.75;overflow-x:auto;font-feature-settings:"calt" 0,"liga" 0}
-.code .ln{display:grid;grid-template-columns:28px 1fr;white-space:pre;padding-right:10px;transition:background .25s}
-.code .ln i{font-style:normal;color:var(--muted);text-align:right;padding-right:10px;font-size:.8rem}
+body{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--board)}
+.explain{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:var(--accent);color:var(--panel);border-radius:0 0 14px 14px;padding:10px 14px 12px;margin-inline:-4px;box-shadow:0 6px 16px -10px rgba(0,0,0,.5);min-height:4.6em}
+.explain .tag{display:inline-block;font-size:.78rem;font-weight:700;padding:1px 8px;border-radius:999px;background:color-mix(in srgb,var(--panel) 22%,transparent);margin-bottom:3px}
+.explain .tag.tap{background:var(--signal);color:#1A1200}
+.explain p{font-size:1.02rem;font-weight:600;line-height:1.5}
+.explain p.fade{animation:fadeup .3s ease-out}
+.explain .t{color:#B9F5CF;font-weight:800}.explain .f{color:#FFC2B5;font-weight:800}
+@keyframes fadeup{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.setrow{display:flex;gap:10px}
+.setrow .field{flex:1 1 0}
+.setrow select{min-height:44px;padding:6px 10px;font-family:var(--f-mono);font-size:1.05rem}
+/* wheel */
+.wheel{display:block;width:100%;height:auto;max-height:300px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.ring{fill:none;stroke:var(--wire-off);stroke-width:7}
+.ringflow{fill:none;stroke:var(--signal);stroke-width:7;stroke-dasharray:10 18;opacity:0;transition:opacity .3s}
+.playing .ringflow{opacity:.55;animation:spin 1.1s linear infinite}
+@keyframes spin{to{stroke-dashoffset:-28}}
+.arrow{fill:var(--wire-off)}
+.link{stroke:var(--wire-off);stroke-width:5;stroke-linecap:round;fill:none;stroke-dasharray:2 9}
+.st{cursor:pointer}
+.st rect{fill:var(--panel);stroke:var(--line);stroke-width:2.5;transition:fill .3s,stroke .3s}
+.st .a{font-family:var(--f-mono);font-weight:700;font-size:14px;fill:var(--ink);text-anchor:middle;font-feature-settings:"calt" 0,"liga" 0}
+.st .b{font-family:var(--f-body);font-weight:600;font-size:11.5px;fill:var(--muted);text-anchor:middle}
+.st.on rect{stroke:var(--signal);fill:var(--signal-soft)}
+.st.on.ok rect{stroke:var(--ok);fill:color-mix(in srgb,var(--ok) 22%,var(--panel))}
+.st.on.no rect{stroke:var(--bad);fill:var(--bad-soft)}
+.st.hl rect{stroke:var(--accent);stroke-width:3.5}
+.lapc{text-anchor:middle;fill:var(--muted);font-family:var(--f-body);font-size:13px;font-weight:600}
+.lapn{text-anchor:middle;fill:var(--accent);font-family:var(--f-display);font-size:40px;font-weight:800}
+.lapn.pop{animation:lappop .45s ease-out;transform-box:fill-box;transform-origin:center}
+@keyframes lappop{0%{transform:scale(1.6)}100%{transform:scale(1)}}
+.ball circle:first-child{fill:var(--signal);opacity:.3}
+.ball circle:last-child{fill:var(--signal);stroke:var(--panel);stroke-width:2.5}
+.badge{font-family:var(--f-body);font-weight:800;font-size:13px;text-anchor:middle}
+/* vars */
+.vars{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.var{position:relative;overflow:hidden;border:2px solid var(--line);border-radius:12px;padding:4px 6px 6px;display:flex;flex-direction:column;align-items:center;background:var(--panel);cursor:pointer;min-width:0}
+.var small{color:var(--muted);font-size:.78rem;font-family:var(--f-mono);font-weight:700;position:relative}
+.var .num{position:relative;height:1.35em;overflow:hidden;font-family:var(--f-mono);font-weight:800;font-size:1.6rem;line-height:1.35em;width:100%;text-align:center}
+.var .num span{display:block}
+.var .num .in{animation:rollin .4s ease-out}
+.var .num .outg{position:absolute;inset:0;animation:rollout .4s ease-out forwards}
+@keyframes rollin{from{transform:translateY(100%)}to{transform:none}}
+@keyframes rollout{to{transform:translateY(-100%);opacity:0}}
+.var .fill{position:absolute;left:0;right:0;bottom:0;background:var(--signal-soft);height:0;transition:height .5s ease-out}
+.var.ch{border-color:var(--signal)}
+/* code */
+.code{margin:0;padding:8px 0;border-radius:12px;background:var(--board);font-family:var(--f-mono);font-size:.93rem;line-height:1.8;overflow-x:auto;font-feature-settings:"calt" 0,"liga" 0}
+.code .ln{display:grid;grid-template-columns:26px 1fr;white-space:pre;padding-right:10px;transition:background .25s;cursor:pointer}
+.code .ln i{font-style:normal;color:var(--muted);text-align:right;padding-right:9px;font-size:.78rem}
 .code .ln.on{background:var(--signal-soft)}
 .code .ln.on i{color:var(--ink);font-weight:700}
-.code .sg{border-radius:5px;padding:1px 2px;transition:all .25s}
+.code .ln.hl{box-shadow:inset 4px 0 0 var(--accent)}
+.code .sg{border-radius:5px;padding:1px 2px;transition:background .25s}
 .code .sg.on{background:var(--signal);color:#1A1200;font-weight:700}
 .code .kw{color:var(--accent);font-weight:700}
-.vars{display:flex;gap:10px;flex-wrap:wrap}
-.var{flex:1 1 90px;border:2px solid var(--line);border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;background:var(--panel)}
-.var small{color:var(--muted);font-size:.8rem}
-.var b{font-family:var(--f-mono);font-size:1.6rem;line-height:1.2}
-.var.ch{border-color:var(--signal);animation:pop .35s ease-out}
-.note{padding:10px 12px;border-radius:10px;background:var(--accent-soft);font-weight:600;min-height:3.2em}
-.note .t{color:var(--ok)}.note .f{color:var(--bad)}
-.console{font-family:var(--f-mono);background:#10191B;color:#E3ECEA;border-radius:12px;padding:10px 12px;min-height:56px;white-space:pre-wrap;word-break:break-all;font-size:1rem}
-.console small{display:block;color:#93A6A8;font-size:.75rem;margin-bottom:2px;font-family:var(--f-body)}
+.console{font-family:var(--f-mono);background:#10191B;color:#E3ECEA;border-radius:12px;padding:8px 12px;min-height:52px;white-space:pre-wrap;word-break:break-all;font-size:1rem}
+.console small{display:block;color:#93A6A8;font-size:.75rem;font-family:var(--f-body)}
 .trace th,.trace td{font-size:.95rem;padding:6px 4px}
 .trace tr.new{animation:pop .35s ease-out;background:var(--signal-soft)}
 .cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .cmp div{border-radius:12px;background:var(--board);padding:10px;text-align:center}
 .cmp b{display:block;font-family:var(--f-mono);font-size:1.5rem;color:var(--accent)}
+/* bottom dock */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:8;background:var(--panel);border-top:1px solid var(--line);box-shadow:0 -8px 20px -14px rgba(0,0,0,.45);
+  padding:8px max(16px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.dock .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:58px 1fr 58px 64px;gap:8px;align-items:center}
+.dock button{font:inherit;font-weight:800;padding:0;border-radius:14px;border:2px solid var(--accent);background:var(--panel);color:var(--accent);min-height:56px;cursor:pointer;font-size:1.25rem;touch-action:manipulation}
+.dock #nx{background:var(--accent);color:var(--panel);font-size:1.1rem}
+.dock #au[aria-pressed="true"]{background:var(--signal);border-color:var(--signal);color:#1A1200}
+.dock #sp,.dock #au{font-size:.95rem}
+.dock button:disabled{opacity:.4}
+.dock .cnt{grid-column:1/-1;text-align:center;font-size:.78rem;color:var(--muted);margin-top:-2px}
+.dock .bar{grid-column:1/-1;height:4px;border-radius:4px;background:var(--board);overflow:hidden}
+.dock .bar i{display:block;height:100%;background:var(--signal);width:0;transition:width .3s}
 </style>
 </head>
 <body>
@@ -39,41 +93,38 @@
   <header>
     <span class="brand"><i>IM</i>ICT Maniac</span>
     <span class="eyebrow">অধ্যায় ৫ · ৫.২.১২ লুপ কন্ট্রোল স্টেটমেন্ট</span>
-    <h1>লুপ ধাপে ধাপে</h1>
-    <p class="lead">"পরের ধাপ" চাপো। কোন লাইন চলছে, শর্ত সত্য না মিথ্যা, চলকের মান কত, আর আউটপুটে কী আসছে সব দেখা যাবে।</p>
+    <h1>লুপ ঘুরছে, দেখো!</h1>
+    <p class="lead">নিচের ▶ বোতাম চাপো বা ডানে-বামে সোয়াইপ করো। বলটা লুপের চাকায় ঘুরবে। যেকোনো লাইন, স্টেশন বা বক্সে আঙুল দিলে উপরে তার মানে দেখাবে।</p>
   </header>
+  <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">ধাপ</span><p id="extx"></p></div>
+
   <div class="tabs" id="tabs">
     <button class="tab m" data-k="for" aria-selected="true">for</button>
     <button class="tab m" data-k="while" aria-selected="false">while</button>
     <button class="tab m" data-k="do" aria-selected="false">do…while</button>
   </div>
 
-  <section class="card">
+  <section class="card" id="main">
     <h2 id="ttl"></h2>
-    <div class="row">
+    <div class="setrow">
       <div class="field" id="f-s"><label for="s">শুরুর মান (i)</label><select id="s"></select></div>
       <div class="field"><label for="n">n এর মান</label><select id="n"></select></div>
     </div>
-    <div class="scroll-x"><pre class="code" id="code"></pre></div>
+    <svg class="wheel" id="wheel" viewBox="0 0 360 250" aria-label="লুপের চাকা"></svg>
     <div class="vars" id="vars"></div>
-    <p class="note" id="note" aria-live="polite"></p>
-    <div class="btns">
-      <button class="btn primary" id="nx">পরের ধাপ ▶</button>
-      <button class="btn" id="au">অটো চালাও</button>
-      <button class="btn" id="rs">আবার শুরু</button>
-    </div>
-    <div class="console" id="con"><small>আউটপুট (স্ক্রিন)</small><span id="out"></span></div>
+    <div class="scroll-x"><pre class="code" id="code"></pre></div>
+    <div class="console"><small>আউটপুট (স্ক্রিন)</small><span id="out"></span></div>
   </section>
 
   <section class="card">
     <h2>ড্রাই রান টেবিল</h2>
-    <p class="hint">বোর্ড পরীক্ষায় লুপ কতবার চলে বা আউটপুট কী, তা এভাবে টেবিল বানিয়ে বের করা যায়।</p>
+    <p class="hint">বোর্ড পরীক্ষায় লুপ কতবার চলে বা আউটপুট কী, তা এভাবে টেবিল বানিয়ে বের করা যায়। প্রতিটা পাকে একটা করে সারি যোগ হচ্ছে।</p>
     <div class="scroll-x"><table class="trace" id="trace"></table></div>
   </section>
 
   <section class="card">
     <h2>while বনাম do…while</h2>
-    <p class="hint">শর্ত শুরুতেই মিথ্যা হলে কী হয়? শুরুর মান n এর চেয়ে বড় দিয়ে দেখো।</p>
+    <p class="hint">শর্ত শুরুতেই মিথ্যা হলে কী হয়? নিচের বোতাম চেপে দেখো, বলটা চাকায় ঢোকে কিনা।</p>
     <div class="cmp" id="cmp"></div>
     <button class="btn" id="try10">i = 10, n = 5 দিয়ে দেখো</button>
     <ul class="points">
@@ -82,74 +133,163 @@
       <li>do…while এর শেষে <b>while (শর্ত);</b> এর পরে সেমিকোলন লাগে।</li>
     </ul>
   </section>
+
+  <div class="dock"><div class="in">
+    <button id="pv" aria-label="আগের ধাপ">◀</button>
+    <button id="nx">পরের ধাপ ▶</button>
+    <button id="au" aria-pressed="false">অটো</button>
+    <button id="sp" aria-label="গতি">১x</button>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="cnt" id="cnt"></div>
+  </div></div>
   <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
 </div>
 <script src="../../a/im.js?v=1"></script>
 <script>
 const {$}=IM;
+const bn=x=>String(x).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
 const K=s=>s.replace(/\b(int|for|while|do|printf)\b/g,'<span class="kw">$1</span>');
+const T_=b=>b?'<span class="t">সত্য ✓</span>':'<span class="f">মিথ্যা ✗</span>';
+// wheel geometry
+const CX=180,CY=130,RR=86;
+const pt=a=>[CX+RR*Math.cos(a*Math.PI/180),CY+RR*Math.sin(a*Math.PI/180)];
 const P={
- for:{ttl:'for লুপ: 1 + 2 + … + n এর যোগফল',vars:['i','sum'],cols:['ধাপ','i','i <= n ?','sum'],
+ for:{ttl:'for লুপ: 1 + 2 + … + n এর যোগফল',vars:['i','sum'],cols:['পাক','i','i <= n ?','sum'],
+  st:{start:{xy:[46,34],a:'i = 1',b:'শুরু'},cond:{ang:-90,a:'i <= N ?',b:'শর্ত'},work:{ang:30,a:'sum += i',b:'কাজ'},upd:{ang:150,a:'i++',b:'বাড়াও'},end:{xy:[314,34],a:'printf',b:'শেষ'}},
+  first:'cond',
   lines:(s,n)=>['int i, sum = 0;',`for (<span class="sg" data-s="init">i = 1</span>; <span class="sg" data-s="cond">i &lt;= ${n}</span>; <span class="sg" data-s="upd">i++</span>)`,'{','    sum = sum + i;','}','printf("Sum = %d", sum);'],
-  *run(s,n){let i='?',sum=0,k=0;
-   yield {l:0,v:{i,sum},m:'চলক তৈরি হলো। sum = 0 দিয়ে শুরু, কারণ যোগফল 0 থেকে গুনতে হয়।'};
-   i=1; yield {l:1,sg:'init',v:{i,sum},m:'শুরুর মান: i = 1। এই অংশ শুধু একবারই চলে।'};
-   while(true){const ok=i<=n;
-    yield {l:1,sg:'cond',v:{i,sum},m:`শর্ত দেখো: ${i} <= ${n} → ${ok?'<span class="t">সত্য</span>, তাই ভিতরে যাও।':'<span class="f">মিথ্যা</span>, তাই লুপ শেষ।'}`};
-    if(!ok)break; const o=sum; sum+=i; k++;
-    yield {l:3,v:{i,sum},ch:'sum',row:[k,i,'সত্য',`${o} + ${i} = ${sum}`],m:`sum = ${o} + ${i} = ${sum}`};
-    i++; yield {l:1,sg:'upd',v:{i,sum},ch:'i',m:`i++ → i এখন ${i}। আবার শর্ত দেখতে যাও।`};}
-   yield {l:5,v:{i,sum},out:`Sum = ${sum}`,row:['শেষ',i,'মিথ্যা',sum],m:`লুপ ${k} বার চলেছে। ফলাফল ছাপা হলো: Sum = ${sum}`,end:1};}},
- while:{ttl:'while লুপ: i থেকে n পর্যন্ত সংখ্যা ছাপা',vars:['i'],cols:['ধাপ','i','i <= n ?','ছাপা হলো'],
+  lx:['চলক i আর sum তৈরি হচ্ছে। sum = 0, কারণ যোগফল শূন্য থেকে গুনতে হয়।','for লাইনে ৩টি অংশ, সেমিকোলন দিয়ে আলাদা: শুরুর মান; শর্ত; পরিবর্তন।','{ থেকে } পর্যন্ত লুপের শরীর। এটাই বারবার চলে।','প্রতি পাকে sum এর সাথে i যোগ হয়। এটাই লুপের কাজ।','লুপের শরীর এখানে শেষ। এরপর আবার i++ আর শর্তে ফিরে যায়।','লুপ শেষ হলে মাত্র একবার ফলাফল ছাপা হয়।'],
+  sx:{init:'শুরুর মান i = 1। পুরো লুপে এই অংশ মাত্র একবার চলে।',cond:'শর্ত। প্রতি পাকের আগে দেখা হয়। সত্য হলে ভিতরে যায়, মিথ্যা হলে লুপ শেষ।',upd:'i++ মানে i এর মান ১ বাড়াও। প্রতি পাকের শেষে চলে।'},
+  steps(s,n){const S=[];let i='?',sum=0,lap=0;const v=()=>({i,sum});
+   S.push({at:'start',l:0,v:v(),m:'চলক তৈরি হলো। sum = 0 দিয়ে শুরু।'});
+   i=1;S.push({at:'start',l:1,sg:'init',v:v(),ch:'i',m:'শুরুর মান বসলো: i = 1। এই কাজ শুধু একবার হয়।'});
+   for(;;){const ok=i<=n;
+    S.push({at:'cond',l:1,sg:'cond',v:v(),ok,lap,m:`শর্ত দেখো: ${i} <= ${n} ? ${T_(ok)} ${ok?'তাই বল ভিতরে ঘুরবে।':'তাই বল চাকা থেকে বের হয়ে যাবে।'}`});
+    if(!ok)break;lap++;const o=sum;sum+=i;
+    S.push({at:'work',l:3,v:v(),ch:'sum',lap,row:[lap,i,'সত্য',`${o} + ${i} = ${sum}`],m:`${bn(lap)} নম্বর পাক: sum = ${o} + ${i} = ${sum}`});
+    i++;S.push({at:'upd',l:1,sg:'upd',v:v(),ch:'i',lap,m:`i++ করলাম, i এখন ${i}। আবার শর্তের কাছে ফিরে যাও।`});}
+   S.push({at:'end',l:5,v:v(),lap,out:`Sum = ${sum}`,row:['শেষ',i,'মিথ্যা',sum],m:`লুপ মোট ${bn(lap)} বার ঘুরেছে। স্ক্রিনে ছাপা হলো: Sum = ${sum}`,end:1});return S;}},
+ while:{ttl:'while লুপ: i থেকে n পর্যন্ত সংখ্যা ছাপা',vars:['i'],cols:['পাক','i','i <= n ?','ছাপা হলো'],
+  st:{start:{xy:[46,34],a:'i = S',b:'শুরু'},cond:{ang:-90,a:'i <= N ?',b:'শর্ত'},work:{ang:30,a:'printf i',b:'কাজ'},upd:{ang:150,a:'i++',b:'বাড়াও'},end:{xy:[314,34],a:'End',b:'শেষ'}},
+  first:'cond',
   lines:(s,n)=>[`int i = ${s};`,`while (<span class="sg" data-s="cond">i &lt;= ${n}</span>)`,'{','    printf("%d ", i);','    i++;','}','printf("\\nEnd");'],
-  *run(s,n){let i=s,k=0,out='';
-   yield {l:0,v:{i},m:`i = ${s} দিয়ে শুরু।`};
-   while(true){const ok=i<=n;
-    yield {l:1,sg:'cond',v:{i},m:`আগে শর্ত: ${i} <= ${n} → ${ok?'<span class="t">সত্য</span>, তাই ভিতরে যাও।':'<span class="f">মিথ্যা</span>, তাই লুপ শেষ।'}`};
-    if(!ok)break; k++; out+=i+' ';
-    yield {l:3,v:{i},out,row:[k,i,'সত্য',i],m:`স্ক্রিনে ${i} ছাপা হলো।`};
-    i++; yield {l:4,v:{i},ch:'i',m:`i++ → i এখন ${i}। আবার শর্ত দেখতে উপরে যাও।`};}
-   out+='\nEnd'; yield {l:6,v:{i},out,row:['শেষ',i,'মিথ্যা','–'],m:k?`লুপ ${k} বার চলেছে।`:'শর্ত শুরুতেই মিথ্যা, তাই while লুপ একবারও চলেনি!',end:1};}},
- do:{ttl:'do…while লুপ: আগে কাজ, পরে শর্ত',vars:['i'],cols:['ধাপ','i (ছাপা)','পরে i','i <= n ?'],
+  lx:['লুপ শুরুর আগেই i এর শুরুর মান দিতে হয়।','while আগে শর্ত দেখে। সত্য হলেই ভিতরে ঢোকে।','লুপের শরীর শুরু।','প্রতি পাকে i এর মান স্ক্রিনে ছাপা হয়।','i++ না দিলে i কখনো বাড়বে না, শর্ত সবসময় সত্য থাকবে। লুপ আর থামবে না (অসীম লুপ)!','লুপের শরীর শেষ। এরপর আবার শর্তে ফিরে যায়।','লুপ শেষে নতুন লাইনে End ছাপা হয়।'],
+  sx:{cond:'শর্ত। প্রতি পাকের আগে দেখা হয়। সত্য হলে ভিতরে যায়, মিথ্যা হলে লুপ শেষ।'},
+  steps(s,n){const S=[];let i=s,lap=0,out='';const v=()=>({i});
+   S.push({at:'start',l:0,v:v(),ch:'i',m:`i = ${s} দিয়ে শুরু।`});
+   for(;;){const ok=i<=n;
+    S.push({at:'cond',l:1,sg:'cond',v:v(),ok,lap,out,m:`আগে শর্ত: ${i} <= ${n} ? ${T_(ok)} ${ok?'তাই ভিতরে যাও।':'তাই লুপ শেষ।'}`});
+    if(!ok)break;lap++;out+=i+' ';
+    S.push({at:'work',l:3,v:v(),lap,out,row:[lap,i,'সত্য',i],m:`${bn(lap)} নম্বর পাক: স্ক্রিনে ${i} ছাপা হলো।`});
+    i++;S.push({at:'upd',l:4,v:v(),ch:'i',lap,out,m:`i++ করলাম, i এখন ${i}। আবার শর্তে ফিরে যাও।`});}
+   out+='\nEnd';S.push({at:'end',l:6,v:v(),lap,out,row:['শেষ',i,'মিথ্যা','–'],m:lap?`লুপ মোট ${bn(lap)} বার ঘুরেছে।`:'শর্ত শুরুতেই মিথ্যা! তাই বল চাকায় একবারও ঢোকেনি। while লুপ একবারও চলেনি।',end:1});return S;}},
+ do:{ttl:'do…while লুপ: আগে কাজ, পরে শর্ত',vars:['i'],cols:['পাক','i (ছাপা)','পরে i','i <= n ?'],
+  st:{start:{xy:[46,34],a:'i = S',b:'শুরু'},work:{ang:-90,a:'printf i',b:'কাজ'},upd:{ang:30,a:'i++',b:'বাড়াও'},cond:{ang:150,a:'i <= N ?',b:'শর্ত'},end:{xy:[46,228],a:'End',b:'শেষ'}},
+  first:'work',
   lines:(s,n)=>[`int i = ${s};`,'do','{','    printf("%d ", i);','    i++;',`} while (<span class="sg" data-s="cond">i &lt;= ${n}</span>);`,'printf("\\nEnd");'],
-  *run(s,n){let i=s,k=0,out='';
-   yield {l:0,v:{i},m:`i = ${s} দিয়ে শুরু।`};
-   yield {l:1,v:{i},m:'do: শর্ত না দেখেই সরাসরি ভিতরে ঢোকো।'};
-   while(true){k++; out+=i+' '; const p=i;
-    yield {l:3,v:{i},out,m:`স্ক্রিনে ${i} ছাপা হলো।`};
-    i++; yield {l:4,v:{i},ch:'i',m:`i++ → i এখন ${i}।`};
+  lx:['লুপ শুরুর আগেই i এর শুরুর মান দিতে হয়।','do মানে "করো"। শর্ত না দেখেই সরাসরি ভিতরে ঢোকে।','লুপের শরীর শুরু।','প্রতি পাকে i এর মান স্ক্রিনে ছাপা হয়।','i এর মান ১ বাড়ে।','শর্ত একদম শেষে। খেয়াল করো, এখানে সেমিকোলন (;) লাগে।','লুপ শেষে নতুন লাইনে End ছাপা হয়।'],
+  sx:{cond:'শর্ত শেষে দেখা হয়। তাই শর্ত প্রথম থেকে মিথ্যা হলেও কাজ একবার হয়ে যায়।'},
+  steps(s,n){const S=[];let i=s,lap=0,out='';const v=()=>({i});
+   S.push({at:'start',l:0,v:v(),ch:'i',m:`i = ${s} দিয়ে শুরু।`});
+   for(;;){lap++;out+=i+' ';const p=i;
+    S.push({at:'work',l:3,v:v(),lap,out,m:`${bn(lap)} নম্বর পাক: শর্ত না দেখেই স্ক্রিনে ${i} ছাপা হলো।`});
+    i++;S.push({at:'upd',l:4,v:v(),ch:'i',lap,out,m:`i++ করলাম, i এখন ${i}।`});
     const ok=i<=n;
-    yield {l:5,sg:'cond',v:{i},row:[k,p,i,ok?'সত্য':'মিথ্যা'],m:`এবার শর্ত: ${i} <= ${n} → ${ok?'<span class="t">সত্য</span>, তাই আবার do তে ফিরে যাও।':'<span class="f">মিথ্যা</span>, তাই লুপ শেষ।'}`};
+    S.push({at:'cond',l:5,sg:'cond',v:v(),ok,lap,out,row:[lap,p,i,ok?'সত্য':'মিথ্যা'],m:`এবার শর্ত: ${i} <= ${n} ? ${T_(ok)} ${ok?'তাই আবার কাজে ফিরে যাও।':'তাই লুপ শেষ।'}`});
     if(!ok)break;}
-   out+='\nEnd'; yield {l:6,v:{i},out,m:`লুপ ${k} বার চলেছে।${s>n?' শর্ত শুরু থেকেই মিথ্যা ছিল, তবুও do…while একবার চলেছে!':''}`,end:1};}}};
-let T='for',S=1,N=5,gen,st,timer=null,rows=[];
+   out+='\nEnd';S.push({at:'end',l:6,v:v(),lap,out,m:`লুপ মোট ${bn(lap)} বার ঘুরেছে।${s>n?' শর্ত শুরু থেকেই মিথ্যা ছিল, তবুও do…while একবার চলেছে!':''}`,end:1});return S;}}};
+const SX={start:'শুরু: লুপে ঢোকার আগে চলকের প্রথম মান বসে। এটা একবারই হয়।',cond:'শর্ত: সত্য হলে বল চাকায় ঘুরতে থাকে, মিথ্যা হলে চাকা থেকে বের হয়ে যায়।',work:'কাজ: লুপের আসল কাজ। প্রতি পাকে একবার হয়।',upd:'বাড়াও: i এর মান ১ বাড়ে, যাতে একসময় শর্ত মিথ্যা হয়ে লুপ থামে।',end:'শেষ: লুপ থেকে বের হয়ে পরের লাইনে যায়।'};
+const VX={i:'i হলো লুপ কাউন্টার। এর মান দেখে বোঝা যায় কোন পাক চলছে।',sum:'sum এ যোগফল জমা হয়। বালতির মতো প্রতি পাকে একটু একটু ভরছে।',n:'n বলে দেয় লুপ কতদূর পর্যন্ত চলবে।'};
+
+let T='for',S=1,N=5,steps=[],k=0,timer=null,spd=1,pos=null,anim=0;
 $('s').innerHTML=[...Array(12)].map((_,i)=>`<option ${i+1===S?'selected':''}>${i+1}</option>`).join('');
 $('n').innerHTML=[...Array(10)].map((_,i)=>`<option ${i+1===N?'selected':''}>${i+1}</option>`).join('');
-function stop(){clearInterval(timer);timer=null;$('au').textContent='অটো চালাও';}
-function reset(){stop();const p=P[T];gen=p.run(S,N);rows=[];
-  $('ttl').textContent=p.ttl;$('f-s').hidden=T==='for';
-  $('code').innerHTML=p.lines(S,N).map((t,i)=>`<span class="ln" data-l="${i}"><i>${i+1}</i><span>${K(t)}</span></span>`).join('');
-  $('trace').innerHTML='<thead><tr>'+p.cols.map(c=>`<th>${c}</th>`).join('')+'</tr></thead><tbody></tbody>';
-  $('out').textContent='';$('nx').disabled=false;
-  step();cmp();}
-function step(){const r=gen.next();if(r.done)return;st=r.value;const p=P[T];
-  $('code').querySelectorAll('.ln').forEach(e=>e.classList.toggle('on',+e.dataset.l===st.l));
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+function stXY(p,id){const s=p.st[id];return s.xy||pt(s.ang);}
+function drawWheel(){const p=P[T],w=$('wheel');
+  const arrows=[-30,90,210].map(a=>{const [x,y]=pt(a);return `<path class="arrow" d="M-7,-7 L7,0 L-7,7 Z" transform="translate(${x},${y}) rotate(${a+90})"/>`;}).join('');
+  const [fx,fy]=stXY(p,p.first),[sx,sy]=p.st.start.xy,[ex,ey]=p.st.end.xy,[cx,cy]=stXY(p,'cond');
+  const st=id=>{const [x,y]=stXY(p,id),s=p.st[id],a=s.a.replace('N',N).replace('S',S),wd=Math.max(70,a.length*8.6+14);
+    return `<g class="st" data-st="${id}" tabindex="0" role="button"><rect x="${x-wd/2}" y="${y-21}" width="${wd}" height="42" rx="11"/><text class="a" x="${x}" y="${y-2}">${a.replace(/</g,'&lt;')}</text><text class="b" x="${x}" y="${y+14}">${s.b}</text></g>`;};
+  w.innerHTML=`<circle class="ring" cx="${CX}" cy="${CY}" r="${RR}"/><circle class="ringflow" cx="${CX}" cy="${CY}" r="${RR}"/>${arrows}
+   <line class="link" x1="${sx}" y1="${sy}" x2="${fx}" y2="${fy}"/><line class="link" x1="${cx}" y1="${cy}" x2="${ex}" y2="${ey}"/>
+   <text class="lapc" x="${CX}" y="${CY-14}">পাক</text><text class="lapn" id="lapn" x="${CX}" y="${CY+26}">০</text>
+   <g class="ball" id="ball"><circle r="16"/><circle r="9"/></g>
+   ${['start','end','cond','work','upd'].map(st).join('')}
+   <text class="badge" id="badge" x="0" y="0"></text>`;
+  w.querySelectorAll('.st').forEach(g=>{const f=()=>{tapExplain('স্টেশন: '+p.st[g.dataset.st].b,(T==='do'&&g.dataset.st==='cond'?p.sx.cond:SX[g.dataset.st]));w.querySelectorAll('.st').forEach(x=>x.classList.toggle('hl',x===g));};g.onclick=f;g.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f();}};});
+}
+function place(x,y){$('ball').setAttribute('transform',`translate(${x},${y})`);}
+function moveBall(from,to){const p=P[T];cancelAnimationFrame(anim);
+  const B=stXY(p,to);
+  if(!from||reduce||from===to){pos=to;place(...B);return;}
+  const A=stXY(p,from),ring=id=>p.st[id].ang!==undefined;
+  let f;
+  if(ring(from)&&ring(to)){let a0=p.st[from].ang,a1=p.st[to].ang;if(a1<=a0)a1+=360;f=t=>pt(a0+(a1-a0)*t);}
+  else f=t=>[A[0]+(B[0]-A[0])*t,A[1]+(B[1]-A[1])*t];
+  const dur=600/spd,t0=performance.now();
+  const go=now=>{let t=Math.min(1,(now-t0)/dur);const e=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;place(...f(e));if(t<1)anim=requestAnimationFrame(go);};
+  anim=requestAnimationFrame(go);pos=to;}
+function setNum(el,val){const cur=el.dataset.v;if(cur===String(val))return;el.dataset.v=val;
+  if(cur===undefined||reduce){el.innerHTML=`<span>${val}</span>`;return;}
+  el.innerHTML=`<span class="outg">${cur}</span><span class="in">${val}</span>`;}
+let tapMode=false;
+function tapExplain(tag,txt){tapMode=true;$('extag').textContent='👆 '+tag;$('extag').className='tag tap';const p=$('extx');p.innerHTML=txt;p.classList.remove('fade');void p.offsetWidth;p.classList.add('fade');}
+function render(prevAt){const p=P[T],st=steps[k];
+  tapMode=false;$('extag').className='tag';$('extag').textContent=`ধাপ ${bn(k+1)} / ${bn(steps.length)}`;
+  const tx=$('extx');tx.innerHTML=st.m;tx.classList.remove('fade');void tx.offsetWidth;tx.classList.add('fade');
+  $('code').querySelectorAll('.ln').forEach(e=>{e.classList.toggle('on',+e.dataset.l===st.l);e.classList.remove('hl');});
   $('code').querySelectorAll('.sg').forEach(e=>e.classList.toggle('on',e.dataset.s===st.sg));
-  $('vars').innerHTML=p.vars.map(v=>`<div class="var ${st.ch===v?'ch':''}"><small>${v}</small><b>${st.v[v]}</b></div>`).join('')+`<div class="var"><small>n</small><b>${N}</b></div>`;
-  $('note').innerHTML=st.m;
-  if(st.out!==undefined)$('out').textContent=st.out;
-  if(st.row){const tb=$('trace').querySelector('tbody');tb.querySelectorAll('tr').forEach(t=>t.classList.remove('new'));
-    tb.insertAdjacentHTML('beforeend','<tr class="new">'+st.row.map(c=>`<td>${c}</td>`).join('')+'</tr>');}
-  if(st.end){$('nx').disabled=true;stop();}}
+  $('wheel').querySelectorAll('.st').forEach(g=>{const on=g.dataset.st===st.at;g.classList.toggle('on',on);g.classList.remove('hl');g.classList.toggle('ok',on&&st.ok===true);g.classList.toggle('no',on&&st.ok===false);});
+  moveBall(prevAt,st.at);
+  const ln=$('lapn'),lap=st.lap||0;if(ln.textContent!==bn(lap)){ln.textContent=bn(lap);ln.classList.remove('pop');void ln.getBBox();ln.classList.add('pop');}
+  const b=$('badge');if(st.ok!==undefined){const [x,y]=stXY(p,'cond');b.setAttribute('x',x);b.setAttribute('y',p.st.cond.ang===-90?y+38:y-28);b.textContent=st.ok?'সত্য ✓':'মিথ্যা ✗';b.style.fill=st.ok?'var(--ok)':'var(--bad)';}else b.textContent='';
+  // vars
+  const fin=steps[steps.length-1].v;
+  p.vars.forEach(v=>{const box=$('var-'+v);setNum(box.querySelector('.num'),st.v[v]);box.classList.toggle('ch',st.ch===v);
+    if(v==='sum'){const mx=Math.max(1,fin.sum);box.querySelector('.fill').style.height=(100*st.v.sum/mx)+'%';}});
+  $('out').textContent=st.out||'';
+  // trace rows so far
+  const rows=steps.slice(0,k+1).filter(x=>x.row);
+  $('trace').querySelector('tbody').innerHTML=rows.map((x,j)=>`<tr class="${j===rows.length-1&&st.row?'new':''}">${x.row.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('');
+  $('pv').disabled=k===0;$('nx').disabled=k===steps.length-1;
+  $('bar').style.width=(100*(k+1)/steps.length)+'%';
+  $('cnt').textContent=st.end?'শেষ! আবার দেখতে "অটো" চাপো':'সোয়াইপ করেও ধাপ বদলানো যায়';
+}
+function reset(){stop();const p=P[T];steps=p.steps(S,N);k=0;pos=null;
+  $('ttl').textContent=p.ttl;$('f-s').hidden=T==='for';
+  drawWheel();
+  $('vars').innerHTML=[...p.vars,'n'].map(v=>`<div class="var" id="var-${v}" role="button" tabindex="0">${v==='sum'?'<div class="fill"></div>':''}<small>${v}</small><div class="num"></div></div>`).join('')+(p.vars.length<2?'<div></div>':'');
+  $('vars').querySelectorAll('.var').forEach(b=>{const v=b.id.slice(4);b.onclick=()=>tapExplain('চলক: '+v,VX[v]);});
+  setNum($('var-n').querySelector('.num'),N);
+  $('code').innerHTML=p.lines(S,N).map((t,i)=>`<span class="ln" data-l="${i}"><i>${i+1}</i><span>${K(t)}</span></span>`).join('');
+  $('code').querySelectorAll('.ln').forEach(e=>e.onclick=()=>{$('code').querySelectorAll('.ln').forEach(x=>x.classList.toggle('hl',x===e));tapExplain(`লাইন ${bn(+e.dataset.l+1)}`,p.lx[+e.dataset.l]);});
+  $('code').querySelectorAll('.sg').forEach(e=>e.onclick=ev=>{ev.stopPropagation();tapExplain('অংশ: '+e.textContent.replace('&lt;','<'),p.sx[e.dataset.s]);});
+  $('trace').innerHTML='<thead><tr>'+p.cols.map(c=>`<th>${c}</th>`).join('')+'</tr></thead><tbody></tbody>';
+  render(null);cmp();}
+function next(){if(k<steps.length-1){const a=steps[k].at;k++;render(a);}else stop();}
+function prev(){if(k>0){k--;render(null);}}
+function stop(){clearInterval(timer);timer=null;$('au').setAttribute('aria-pressed','false');$('au').textContent='অটো';$('main').classList.remove('playing');}
+function play(){if(k>=steps.length-1){k=0;pos=null;render(null);}
+  $('au').setAttribute('aria-pressed','true');$('au').textContent='থামো';$('main').classList.add('playing');
+  timer=setInterval(()=>{next();if(k>=steps.length-1)stop();},1500/spd);}
 function cmp(){const s=T==='for'?1:S,w=Math.max(0,N-s+1),d=Math.max(1,N-s+1);
-  $('cmp').innerHTML=`<div>while<b>${w} বার</b><small>i = ${s}, n = ${N}</small></div><div>do…while<b>${d} বার</b><small>i = ${s}, n = ${N}</small></div>`;}
-$('nx').onclick=()=>{stop();step();};
-$('au').onclick=()=>{if(timer)return stop();if($('nx').disabled)reset();$('au').textContent='থামাও';timer=setInterval(step,matchMedia('(prefers-reduced-motion:reduce)').matches?1400:900);};
-$('rs').onclick=reset;
+  $('cmp').innerHTML=`<div>while<b>${bn(w)} বার</b><small>i = ${s}, n = ${N}</small></div><div>do…while<b>${bn(d)} বার</b><small>i = ${s}, n = ${N}</small></div>`;}
+$('nx').onclick=()=>{stop();next();};$('pv').onclick=()=>{stop();prev();};
+$('au').onclick=()=>timer?stop():play();
+const SP=[1,1.5,0.6],SPL=['১x','দ্রুত','ধীরে'];let si=0;
+$('sp').onclick=()=>{si=(si+1)%3;spd=SP[si];$('sp').textContent=SPL[si];if(timer){stop();play();}};
 $('s').onchange=e=>{S=+e.target.value;reset();};
 $('n').onchange=e=>{N=+e.target.value;reset();};
-$('try10').onclick=()=>{S=10;N=5;$('s').value=10;$('n').value=5;if(T==='for'){T='do';document.querySelectorAll('#tabs .tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.k==='do'));}reset();};
-IM.tabs($('tabs'),k=>{T=k;reset();});
+$('try10').onclick=()=>{S=10;N=5;$('s').value=10;$('n').value=5;if(T==='for'){T='while';document.querySelectorAll('#tabs .tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.k===T));}reset();$('main').scrollIntoView({behavior:reduce?'auto':'smooth'});};
+IM.tabs($('tabs'),k_=>{T=k_;reset();});
+// swipe
+let tx0=null,ty0=0;
+$('main').addEventListener('touchstart',e=>{const t=e.touches[0];tx0=t.clientX;ty0=t.clientY;},{passive:true});
+$('main').addEventListener('touchend',e=>{if(tx0===null)return;const t=e.changedTouches[0],dx=t.clientX-tx0,dy=t.clientY-ty0;tx0=null;
+  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.5){stop();dx<0?next():prev();}},{passive:true});
+document.addEventListener('keydown',e=>{if(e.target.closest('select'))return;if(e.key==='ArrowRight'){stop();next();}if(e.key==='ArrowLeft'){stop();prev();}});
 reset();
 </script>
 </body>
