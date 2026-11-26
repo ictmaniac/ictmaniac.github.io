@@ -47,8 +47,16 @@ nav .links a:hover{background:var(--blue-soft);color:var(--blue)}
 .cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;border-radius:14px;padding:12px 20px;min-height:52px;text-decoration:none;border:2px solid var(--blue);color:var(--blue);background:#fff;font-size:1rem;cursor:pointer;font-family:inherit}
 .btn.p{background:var(--blue);color:#fff}
-.btn.g{background:var(--green);border-color:var(--green);color:#fff}
+.btn.g{background:#E9F8EF;border-color:#8FD6AE;color:var(--green)}
 .btn:active{transform:scale(.98)}
+.menu{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
+
+.menu a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-decoration:none;text-align:center;font-weight:700;font-size:.92rem;line-height:1.25;color:var(--ink);border:1.5px solid var(--line);border-radius:16px;padding:12px 4px;min-height:86px;background:#fff;transition:transform .12s,box-shadow .12s}
+.menu a i{font-style:normal;font-size:1.6rem;line-height:1}
+.menu a:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(37,99,235,.12)}
+.menu a:active{transform:scale(.96)}
+.menu .t1{background:#EAF2FF;border-color:#BCD3FA}.menu .t2{background:#FDECE8;border-color:#F5C4B8}.menu .t3{background:#E9F8EF;border-color:#B5E3C7}
+.menu .t4{background:#FFF6D6;border-color:#F5DC85}.menu .t5{background:#F1EDFF;border-color:#D3C8FA}.menu .t6{background:#E8F7F8;border-color:#B4E1E5}
 /* hero art */
 .art{background:#fff;border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:0 12px 40px rgba(37,99,235,.10)}
 .art svg{width:100%;height:auto;display:block}
@@ -112,17 +120,20 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:.9rem;text-align:center;
 <body>
 <nav><div class="w">
   <a class="brand" href="./"><i>IM</i>ICT Maniac</a>
-  </div>
-<div class="chips"><div class="w"><a href="#anim">🎬 অ্যানিমেশন</a><a href="#video">▶ ভিডিও</a><a href="#free">📝 ফ্রি পরীক্ষা</a><a href="p/j7fmpkps/?s=free">🏆 লিডারবোর্ড</a><a href="#demo">📖 বইয়ের পাতা</a><a href="#contact">☎ যোগাযোগ</a></div></div></nav>
+  </div></nav>
 
 <header class="hero"><div class="w">
   <div>
     <span class="tag">HSC ICT · স্মার্ট বুক ২০২৭</span>
     <h1>ICT শেখার নতুন উপায়: <em>দেখে বোঝো</em>, তারপর যাচাই করো</h1>
     <p class="lead">ICT Maniac স্মার্ট বুক HSC তথ্য ও যোগাযোগ প্রযুক্তির সম্পূর্ণ সিলেবাসকে সহজ ভাষায় সাজিয়েছে। প্রতিটি গুরুত্বপূর্ণ টপিকের সাথে রয়েছে ইন্টারেক্টিভ অ্যানিমেশন, আর প্রতিটি অংশ শেষে অনলাইন মডেল টেস্ট, ব্যাখ্যাসহ ফলাফল ও লিডারবোর্ড।</p>
-    <div class="cta">
-      <a class="btn g" href="#free">📝 ফ্রি পরীক্ষা দাও</a>
-      <a class="btn" href="#anim">🎬 অ্যানিমেশন দেখো</a>
+    <div class="menu">
+      <a class="t1" href="#anim"><i>🎬</i>অ্যানিমেশন</a>
+      <a class="t2" href="#video"><i>▶️</i>ভিডিও</a>
+      <a class="t3" href="#free"><i>📝</i>ফ্রি পরীক্ষা</a>
+      <a class="t4" href="p/j7fmpkps/?s=free"><i>🏆</i>লিডারবোর্ড</a>
+      <a class="t5" href="#demo"><i>📖</i>বইয়ের পাতা</a>
+      <a class="t6" href="#contact"><i>☎️</i>যোগাযোগ</a>
     </div>
   </div>
   <div class="art" aria-hidden="true">
