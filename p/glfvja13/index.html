@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>3D ডেমো: জেনেটিক ইঞ্জিনিয়ারিং · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=10">
+<style>
+:root{--blue:#2F6FEB;--blue-s:#E6F0FF;--green:#1FA463;--green-s:#DDF5E8;--yel:#F5B800;--yel-s:#FFF4CC;--off:#B9C4D8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--blue:#6EA0FF;--blue-s:#1A2B52;--green:#4CC27E;--green-s:#173A28;--yel:#F7C744;--yel-s:#4A3A10;--off:#3A4A6B}}
+:root[data-theme="dark"]{--blue:#6EA0FF;--blue-s:#1A2B52;--green:#4CC27E;--green-s:#173A28;--yel:#F7C744;--yel-s:#4A3A10;--off:#3A4A6B}
+.demo-tag{align-self:flex-start;background:var(--yel-s);color:var(--ink);border:1px solid var(--yel);border-radius:99px;padding:2px 10px;font-size:.8rem;font-weight:700}
+.fmap{display:flex;gap:3px;align-items:center}
+.fmap .st{flex:1 1 0;min-width:0;text-align:center;font-size:.72rem;font-weight:700;line-height:1.2;padding:5px 1px;border-radius:10px;background:var(--board);color:var(--muted);border:2px solid transparent;transition:all .3s}
+.fmap .st b{display:block;font-size:.95rem}
+.fmap .ar{color:var(--off);font-weight:800;flex:0 0 auto;font-size:.8rem}
+.fmap .st.done{background:var(--green-s);color:var(--green)}
+.fmap .st.cur{background:var(--blue);color:#fff;border-color:var(--blue);transform:scale(1.06)}
+.cam3{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:linear-gradient(#FFFFFF,#EAF3FF);height:max(320px,calc(100svh - 400px));touch-action:pan-y}
+.cam3 canvas{display:block;width:100%;height:100%;cursor:grab}
+.cam3 canvas:active{cursor:grabbing}
+.tag3{position:absolute;left:0;top:0;transform:translate(-50%,-130%);background:rgba(255,255,255,.92);border:1.5px solid var(--blue);color:var(--ink);font:700 .78rem var(--f-body);padding:1px 8px;border-radius:99px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .4s;box-shadow:0 3px 8px -4px rgba(0,0,0,.3)}
+.tag3.show{opacity:1}
+.tag3.y{border-color:#D9A300;background:#FFF8DC}
+.tag3.g{border-color:var(--green);background:#F0FBF5}
+.ovb{position:absolute;left:8px;top:8px;border:1.5px solid var(--line);background:var(--panel);color:var(--blue);font:700 .8rem var(--f-body);border-radius:99px;padding:4px 10px;cursor:pointer;z-index:2}
+.ovb[aria-pressed="true"]{background:var(--blue);color:#fff;border-color:var(--blue)}
+.hint3{position:absolute;right:8px;bottom:8px;font-size:.72rem;font-weight:700;color:var(--muted);background:rgba(255,255,255,.85);border-radius:8px;padding:2px 8px;pointer-events:none}
+.nogl{padding:20px;text-align:center}
+.what{font-size:.92rem}.what li{margin-bottom:4px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cam3{background:linear-gradient(#141F36,#0D1526)}:root:not([data-theme="light"]) .tag3{background:rgba(20,31,54,.92)}}
+</style>
+</head>
+<body class="kit">
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="demo-tag">ডেমো · 3D নতুন স্টাইল</span>
+    <span class="eyebrow">অধ্যায় ১ · ১.১৪.৯ জেনেটিক ইঞ্জিনিয়ারিং</span>
+    <h1>ব্যাকটেরিয়া দিয়ে ইনসুলিন, 3D তে</h1>
+    <p class="lead">কোষের ভিতরে ঢুকে DNA দেখো, জিন কাটো, প্লাজমিডে বসাও। আঙুল দিয়ে টেনে ছবিটা ঘুরিয়ে চারদিক থেকে দেখতে পারো।</p>
+  </header>
+  <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
+
+  <section class="card" id="main">
+    <div id="view" style="display:flex;flex-direction:column;gap:10px">
+      <div class="fmap" id="fmap" aria-label="ঘটনার ক্রম">
+        <div class="st" data-k="1"><b>①</b>জিন খোঁজা</div><span class="ar">›</span>
+        <div class="st" data-k="2"><b>②</b>কাটা</div><span class="ar">›</span>
+        <div class="st" data-k="3"><b>③</b>জোড়া</div><span class="ar">›</span>
+        <div class="st" data-k="4"><b>④</b>ঢোকানো</div><span class="ar">›</span>
+        <div class="st" data-k="5"><b>⑤</b>ইনসুলিন</div>
+      </div>
+      <div class="cam3" id="cam3">
+        <button class="ovb" id="ovb" aria-pressed="false">🔭 পুরো ছবি</button>
+        <span class="hint3">👆 টেনে ঘোরাও</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="card what">
+    <h2>এই ডেমোতে নতুন কী</h2>
+    <ul>
+      <li><b>সত্যিকারের 3D:</b> DNA পেঁচানো সিঁড়ির মতো, প্লাজমিড গোল আংটির মতো দেখা যায়।</li>
+      <li><b>ক্যামেরা চলে:</b> কোষ থেকে ভিতরে ঢুকে DNA পর্যন্ত যায়, শেষে পিছিয়ে পুরো ছবি দেখায়।</li>
+      <li><b>ঘুরিয়ে দেখা:</b> আঙুল দিয়ে টানলে চারপাশ থেকে দেখা যায়।</li>
+      <li><b>ক্রমের সারি (① থেকে ⑤):</b> এখন কোন ধাপ চলছে, সবসময় চোখে থাকে।</li>
+      <li>পুরোনো ফোনে 3D না চললে নিজে থেকেই পুরোনো 2D পেজের লিংক দেখাবে।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
+<script src="../../a/im.js?v=10"></script>
+<script src="../../a/three.min.js"></script>
+<script>
+(() => {
+const box = document.getElementById('cam3');
+const spd = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--spd')) || 1;
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fmap = k => document.querySelectorAll('#fmap .st').forEach(s => { const i = +s.dataset.k; s.classList.toggle('cur', i === k); s.classList.toggle('done', i < k); });
+
+let R;
+try { R = new THREE.WebGLRenderer({ antialias: true, alpha: true }); if (!R.getContext()) throw 0; }
+catch (e) { box.innerHTML = '<p class="nogl">এই ফোনে 3D চলছে না। <a href="../lt7c6wi0/">2D সংস্করণ দেখো</a></p>'; return; }
+R.setPixelRatio(Math.min(devicePixelRatio || 1, 2)); box.prepend(R.domElement);
+const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(45, 1, .1, 200);
+scene.add(new THREE.HemisphereLight(0xffffff, 0xcfe0ff, .9));
+const sun = new THREE.DirectionalLight(0xffffff, .75); sun.position.set(5, 10, 8); scene.add(sun);
+const C = { blue: 0x2F6FEB, blueL: 0x9CC0FF, white: 0xFFFFFF, green: 0x1FA463, greenL: 0x8FE0B5, yel: 0xF5B800, cell: 0xBFD7FF };
+const mat = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .45, metalness: .05 }, o));
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+
+/* ---------- objects: every object has a target (pos, scale, opacity) and eases toward it ---------- */
+const objs = [];
+function track(o, extra) { const t = Object.assign({ o, p: o.position.clone(), s: o.scale.x, a: 1, mats: [] }, extra || {});
+  o.traverse(m => { if (m.material) { m.material.transparent = true; t.mats.push([m.material, m.material.opacity]); } }); objs.push(t); return t; }
+
+/* DNA: two blue strands + rungs; the insulin gene part is yellow */
+function helix(x0, x1, strandC, rungC) { const g = new THREE.Group(), r = .75, P = 3.2;
+  [0, Math.PI].forEach(ph => { const pts = []; for (let x = x0; x <= x1 + 1e-6; x += .1) { const a = x / P * 2 * Math.PI + ph; pts.push(V(x, r * Math.cos(a), r * Math.sin(a))); }
+    g.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), Math.round((x1 - x0) * 12), .13, 8), mat(strandC))); });
+  for (let x = x0 + .2, i = 0; x < x1; x += .4, i++) { const a = x / P * 2 * Math.PI, p1 = V(x, r * Math.cos(a), r * Math.sin(a)), p2 = V(x, -r * Math.cos(a), -r * Math.sin(a));
+    const cy = new THREE.Mesh(new THREE.CylinderGeometry(.07, .07, 2 * r, 6), mat(rungC[i % rungC.length]));
+    cy.position.copy(p1).add(p2).multiplyScalar(.5); cy.quaternion.setFromUnitVectors(V(0, 1, 0), p2.clone().sub(p1).normalize()); g.add(cy); }
+  return g; }
+const DNA_Y = 5.5;
+const L = helix(-5, -1, C.blue, [C.white, C.blueL]), Rr = helix(1, 5, C.blue, [C.white, C.blueL]), G = helix(-1, 1, C.yel, [C.yel, 0xFFE27A]);
+const dna = new THREE.Group(); dna.position.set(0, DNA_Y, 0); scene.add(dna);
+const geneWrap = new THREE.Group(); geneWrap.add(G); dna.add(L, Rr, geneWrap);
+const tL = track(L), tR = track(Rr), tG = track(geneWrap), tD = track(dna);
+
+/* human cell with nucleus (the zoom starts here) */
+const cell = new THREE.Group(); cell.position.set(0, DNA_Y, 0); scene.add(cell);
+cell.add(new THREE.Mesh(new THREE.SphereGeometry(3.4, 40, 30), mat(C.cell, { opacity: .35, depthWrite: false })));
+cell.add(new THREE.Mesh(new THREE.SphereGeometry(1.3, 32, 24), mat(0x7FA8F5, { opacity: .55, depthWrite: false })));
+const tC = track(cell);
+
+/* bacterium (E. coli) = green capsule, with a plasmid ring inside */
+function bacterium() { const g = new THREE.Group(); const b = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 20), mat(C.greenL, { opacity: .45, depthWrite: false }));
+  b.scale.set(1.6, .85, .85); g.add(b); const e = new THREE.Mesh(new THREE.SphereGeometry(1.02, 24, 16), new THREE.MeshBasicMaterial({ color: C.green, wireframe: true, opacity: .12 })); e.scale.copy(b.scale); g.add(e); return g; }
+const BAC = V(-3.2, -1.5, 0), PLA = V(3.2, -1.5, 0);
+const bac = bacterium(); bac.scale.setScalar(1.7); bac.position.copy(BAC); scene.add(bac); const tB = track(bac);
+
+/* plasmid: blue ring that can open a gap; the gene becomes a yellow arc in the gap */
+const plasmid = new THREE.Group(); plasmid.position.copy(BAC); scene.add(plasmid);
+const ringM = mat(C.blue), RAD = 1.1, TUBE = .16, GAP = .9; let gapNow = 0, gapWant = 0;
+const ring = new THREE.Mesh(new THREE.TorusGeometry(RAD, TUBE, 10, 60, Math.PI * 2), ringM); plasmid.add(ring);
+const ins = new THREE.Mesh(new THREE.TorusGeometry(RAD, TUBE * 1.15, 10, 16, GAP), mat(C.yel, { emissive: 0x553f00 })); ins.rotation.z = Math.PI / 2 - GAP / 2; plasmid.add(ins);
+const tP = track(plasmid), tI = track(ins); tI.mats.forEach(m => m[1] = 1);
+const glow = new THREE.Mesh(new THREE.TorusGeometry(RAD, .45, 8, 60), new THREE.MeshBasicMaterial({ color: C.yel, opacity: 0, transparent: true, depthWrite: false })); plasmid.add(glow);
+function setGap(g) { ring.geometry.dispose(); ring.geometry = new THREE.TorusGeometry(RAD, TUBE, 10, 60, Math.PI * 2 - g); ring.rotation.z = Math.PI / 2 + g / 2; }
+
+/* scissors cut flashes and electric sparks */
+const flashM = new THREE.MeshBasicMaterial({ color: 0xFF7A59, opacity: 0, transparent: true, depthWrite: false });
+const cuts = [-1, 1].map(x => { const m = new THREE.Mesh(new THREE.RingGeometry(.9, 1.25, 40), flashM); m.rotation.y = Math.PI / 2; m.position.x = x; dna.add(m); return m; });
+const sparks = new THREE.Group(); scene.add(sparks); const sparkM = new THREE.LineBasicMaterial({ color: C.yel, transparent: true, opacity: 0 });
+for (let i = 0; i < 7; i++) { const pts = [], a = i / 7 * Math.PI * 2; for (let j = 0; j < 5; j++) { const r = 3.4 - j * .35; pts.push(V(Math.cos(a + (j % 2 ? .18 : -.18)) * r * 1.3, Math.sin(a + (j % 2 ? .18 : -.18)) * r * .8, 0)); }
+  sparks.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), sparkM)); }
+sparks.position.copy(BAC);
+
+/* colony: 8 bacteria, each with a little yellow ring */
+const SLOT = [[-4.2, -7], [-1.4, -7], [1.4, -7], [4.2, -7], [-4.2, -9.6], [-1.4, -9.6], [1.4, -9.6], [4.2, -9.6]].map(([x, y]) => V(x, y, 0));
+const colony = SLOT.map((p, i) => { const g = bacterium(); g.scale.setScalar(.85); const r = new THREE.Mesh(new THREE.TorusGeometry(.42, .08, 8, 30), mat(C.yel)); g.add(r);
+  const r2 = new THREE.Mesh(new THREE.TorusGeometry(.42, .081, 8, 30, Math.PI * 1.4), mat(C.blue)); r2.rotation.z = 1.2; g.add(r2);
+  g.position.copy(SLOT[0]); scene.add(g); return track(g, { home: p }); });
+
+/* insulin: small yellow crystals rising from the colony */
+const insulin = []; const insG = new THREE.IcosahedronGeometry(.16, 0), insM = mat(C.yel, { emissive: 0x6b5200 });
+for (let i = 0; i < 40; i++) { const m = new THREE.Mesh(insG, insM.clone()); m.visible = false; scene.add(m); insulin.push({ m, t: Math.random() * 3, s: SLOT[i % 8] }); }
+let insOn = false;
+
+/* labels in HTML, pinned to 3D points */
+const TAGS = {};
+[['cell', 'মানুষের কোষ', '', () => V(0, DNA_Y + 3.4, 0)], ['nuc', 'নিউক্লিয়াস', '', () => V(0, DNA_Y + 1.3, 0)], ['dna', 'DNA', '', () => V(-3.5, DNA_Y + .9, 0)],
+ ['gene', 'ইনসুলিন জিন', 'y', () => geneWrap.getWorldPosition(V()).add(V(0, .9, 0))], ['pl', 'প্লাজমিড', '', () => plasmid.getWorldPosition(V()).add(V(0, RAD * plasmid.scale.y + .3, 0))],
+ ['bac', 'ব্যাকটেরিয়া (E. coli)', 'g', () => bac.getWorldPosition(V()).add(V(0, 1.6, 0))], ['rec', 'রিকম্বিনেন্ট DNA', 'y', () => plasmid.getWorldPosition(V()).add(V(0, -RAD * plasmid.scale.y - .2, 0))],
+ ['col', 'ব্যাকটেরিয়ার কলোনি', 'g', () => V(0, -5.7, 0)], ['ins', 'ইনসুলিন 💉', 'y', () => V(0, -3.9, 0)]]
+  .forEach(([k, t, c, at]) => { const d = document.createElement('span'); d.className = 'tag3 ' + c; d.textContent = t; box.appendChild(d); TAGS[k] = { d, at }; });
+function tags(list) { for (const k in TAGS) TAGS[k].d.classList.toggle('show', list.includes(k)); }
+const tagNow = () => [...document.querySelectorAll('.tag3.show')].length;
+
+/* ---------- camera: fly between poses, drag to look around ---------- */
+const POSE = {
+  cell: [V(3, DNA_Y + 2, 10), V(0, DNA_Y, 0)], dna: [V(2.5, DNA_Y + 2.5, 9.5), V(0, DNA_Y, 0)], gene: [V(1.2, DNA_Y + 1.2, 4.8), V(0, DNA_Y + .2, 0)],
+  cut: [V(1.5, DNA_Y + 2.5, 7), V(0, DNA_Y + .6, 0)], bac: [V(0, 0, 16), V(0, -1.5, 0)], join: [V(2.5, 3.5, 19), V(1.2, 2.6, 0)],
+  shock: [V(-1.5, .5, 8), V(-3.2, -1.5, 0)], colony: [V(0, -6, 15), V(0, -8, 0)], all: [V(0, -1, 30), V(0, -1.5, 0)] };
+let camFrom = null, camTo = POSE.cell, camT = 1, camDur = 1, yaw = 0, pitch = 0, hold = false, curPose = 'cell';
+const camPos = POSE.cell[0].clone(), camLook = POSE.cell[1].clone();
+function fly(k, quiet) { curPose = k; const to = hold ? POSE.all : POSE[k]; if (!quiet) { const d0 = camPos.distanceTo(camLook), d1 = to[0].distanceTo(to[1]); if (d1 < d0 - 1) IM.sfx('zin'); else if (d1 > d0 + 1) IM.sfx('zout'); }
+  camFrom = [camPos.clone(), camLook.clone()]; camTo = to; camT = 0; camDur = RM ? .01 : 1.6 / spd(); yaw *= .3; pitch *= .3; }
+document.getElementById('ovb').onclick = function () { hold = !hold; this.setAttribute('aria-pressed', hold); fly(curPose); };
+let drag = null;
+R.domElement.addEventListener('pointerdown', e => { drag = [e.clientX, e.clientY, yaw, pitch]; });
+addEventListener('pointermove', e => { if (!drag) return; yaw = drag[2] - (e.clientX - drag[0]) / 120; pitch = Math.max(-1, Math.min(1, drag[3] + (e.clientY - drag[1]) / 160)); });
+addEventListener('pointerup', () => drag = null);
+
+/* ---------- the steps (each sets the whole scene, so ◀ works) ---------- */
+let timers = [];
+function later(ms, f) { timers.push(setTimeout(f, ms / spd())); }
+function base() { timers.forEach(clearTimeout); timers = []; insOn = false; flashM.opacity = 0; sparkM.opacity = 0; glow.material.opacity = 0; }
+const set = (t, p, s, a) => { if (p) t.p.copy(p); if (s !== undefined) t.s = s; if (a !== undefined) t.a = a; };
+function dnaWhole(cut) { set(tL, V(cut ? -.7 : 0, 0, 0)); set(tR, V(cut ? .7 : 0, 0, 0)); }
+function colonyAt(n) { colony.forEach((c, i) => { set(c, i < n ? c.home : SLOT[0], i < n ? .85 : .2, i < n ? 1 : 0); }); }
+function scene0(k) { base(); // shared resting state for step k
+  set(tC, null, 1, k === 0 ? 1 : 0); set(tD, null, k === 0 ? .2 : 1, 1); dnaWhole(k >= 2); set(tG, k >= 2 ? V(0, 1.9, 0) : V(0, 0, 0), 1, 1);
+  set(tB, BAC, 1.7, k >= 3 ? 1 : .0); set(tP, k >= 5 ? BAC : k >= 3 ? PLA : BAC, k >= 5 ? .75 : k >= 3 ? 1.4 : .75, k >= 3 ? 1 : 0); gapWant = k >= 3 ? GAP : 0; set(tI, null, k >= 4 ? 1 : .01, k >= 4 ? 1 : 0);
+  if (k >= 6) { set(tB, SLOT[0], .85, 1); set(tP, SLOT[0], .38, 1); } colonyAt(k >= 6 ? 8 : 0); }
+const STEPS = [
+  { m: 'প্রাণী বা উদ্ভিদের ক্ষুদ্রতম একক <b>কোষ</b>। কোষের ভিতরে <b>নিউক্লিয়াস</b>, তার ভিতরে <b>DNA</b> (পেঁচানো সিঁড়ির মতো)। DNA এর ছোট ছোট অংশ হলো <b>জিন</b>। ক্যামেরা এখন কোষের ভিতরে ঢুকছে…', f: 1,
+    go() { scene0(0); fly('cell', true); tags(['cell', 'nuc']);
+      later(1700, () => { set(tC, null, 1.6, 0); set(tD, null, 1); fly('dna'); tags(['dna', 'gene']); }); } },
+  { m: 'কাছ থেকে দেখো: DNA এর মাঝের <b>হলুদ অংশটা ইনসুলিন জিন</b>। ডায়াবেটিস রোগীর শরীরে ইনসুলিন কম তৈরি হয়। লক্ষ্য: এই জিন দিয়ে প্রচুর ইনসুলিন বানানো।', f: 1,
+    go() { scene0(1); fly('gene'); tags(['gene']); } },
+  { m: '<b>রেস্ট্রিকশন এনজাইম ✂️</b> (আণবিক কাঁচি) DNA কে দুই জায়গায় কাটলো (লাল আলো)। হলুদ <b>ইনসুলিন জিন আলাদা হয়ে উপরে উঠে গেলো</b>।', f: 2,
+    go() { scene0(1); fly('cut'); tags(['gene', 'dna']); later(500, () => { flashM.opacity = 1; IM.sfx('pop'); }); later(1100, () => { dnaWhole(true); set(tG, V(0, 1.9, 0)); IM.sfx('whoosh'); }); } },
+  { m: 'নিচে একটা <b>ব্যাকটেরিয়া</b> (সবুজ)। তার ভিতরে ছোট্ট গোল DNA, নাম <b>প্লাজমিড</b> (নীল আংটি)। প্লাজমিড বের করে <b>একই কাঁচি দিয়ে কাটা হলো</b>, উপরে একটা ফাঁক।', f: 2,
+    go() { scene0(2); set(tB, BAC, 1.7, 1); set(tP, BAC, .75, 1); fly('bac'); tags(['bac', 'pl']); later(1000, () => { set(tP, PLA, 1.4, 1); IM.sfx('whoosh'); }); later(2000, () => { gapWant = GAP; IM.sfx('pop'); }); } },
+  { m: 'হলুদ জিনটা উড়ে গিয়ে প্লাজমিডের <b>ফাঁকে বসলো</b>। <b>লাইগেজ এনজাইম</b> (আণবিক আঠা) জোড়া লাগালো (হলুদ আলো)। তৈরি হলো <b>রিকম্বিনেন্ট DNA</b>!', f: 3,
+    go() { scene0(3); fly('join'); tags(['gene', 'pl']); const top = PLA.clone().add(V(0, RAD * 1.4, 0)).sub(dna.position);
+      later(400, () => { set(tG, top, .45, 1); IM.sfx('whoosh'); }); later(1900, () => { set(tG, top, .45, 0); set(tI, null, 1, 1); glow.material.opacity = .55; IM.sfx('ok'); tags(['rec']); }); } },
+  { m: 'রিকম্বিনেন্ট DNA কে <b>ইলেকট্রিক শক ⚡</b> দিয়ে আবার <b>ব্যাকটেরিয়ার ভিতরে</b> ঢোকানো হলো। এখন ব্যাকটেরিয়ার ভিতরে মানুষের ইনসুলিন জিন!', f: 4,
+    go() { scene0(4); set(tG, null, .45, 0); fly('shock'); tags(['bac', 'rec']); later(600, () => { sparkM.opacity = 1; IM.sfx('zin'); }); later(1400, () => { set(tP, BAC, .75, 1); }); later(2300, () => { sparkM.opacity = 0; }); } },
+  { m: 'ব্যাকটেরিয়া খুব দ্রুত <b>বংশবৃদ্ধি</b> করে: ১ → ২ → ৪ → ৮… প্রতিটা নতুন ব্যাকটেরিয়ার ভিতরেও <b>হলুদ রিং</b> (ইনসুলিন জিন) আছে!', f: 4,
+    go() { scene0(5); set(tG, null, .45, 0); fly('colony'); tags(['col']); colonyAt(0); set(tB, SLOT[0], .85, 1); set(tP, SLOT[0], .38, 1);
+      [[700, 2], [1500, 4], [2300, 8]].forEach(([t, n]) => later(t, () => { colonyAt(n); IM.sfx('pop'); })); } },
+  { m: 'প্রতিটা ব্যাকটেরিয়া এখন ছোট্ট কারখানা: মানুষের <b>ইনসুলিন</b> (হলুদ দানা) তৈরি করছে! পুরো ছবিতে দেখো, ধাপগুলো উপর থেকে নিচে সাজানো। একইভাবে <b>GMO</b> তৈরি হয়।', f: 5,
+    go() { scene0(6); set(tG, null, .45, 0); fly('all'); tags(['dna', 'gene', 'col', 'ins']); later(600, () => { insOn = true; IM.sfx('done'); }); } }
+];
+IM.tour(STEPS.map(s => ({ m: s.m, el: '#view', do() { s.go(); fmap(s.f); } })), { interval: 5200 });
+
+/* ---------- loop ---------- */
+function size() { const w = box.clientWidth, h = box.clientHeight; R.setSize(w, h, false); cam.aspect = w / h; cam.fov = w / h < .9 ? 52 : 42; cam.updateProjectionMatrix(); }
+addEventListener('resize', size); size();
+let last = performance.now(), visible = true;
+new IntersectionObserver(e => visible = e[0].isIntersecting).observe(box);
+const ease = k => k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2, tmp = V(), off = V();
+function frame(now) { requestAnimationFrame(frame); const dt = Math.min(.05, (now - last) / 1000); last = now; if (!visible) return;
+  const k = RM ? 1 : 1 - Math.exp(-dt * 3.2 * spd());
+  objs.forEach(t => { t.o.position.lerp(t.p, k); const s = t.o.scale.x + (t.s - t.o.scale.x) * k; t.o.scale.setScalar(s);
+    t.cur = t.cur === undefined ? t.a : t.cur + (t.a - t.cur) * k; t.mats.forEach(([m, base]) => m.opacity = base * t.cur); t.o.visible = t.cur > .02; });
+  if (Math.abs(gapNow - gapWant) > .004) { gapNow += (gapWant - gapNow) * k; setGap(gapNow); }
+  [L, Rr, G].forEach(h => h.rotation.x += dt * .5 * spd()); plasmid.rotation.y = Math.sin(now / 1400) * .35; bac.rotation.y = Math.sin(now / 1700) * .25;
+  if (flashM.opacity > 0) flashM.opacity = Math.max(0, flashM.opacity - dt * .8);
+  if (glow.material.opacity > 0) glow.material.opacity = Math.max(0, glow.material.opacity - dt * .35);
+  if (sparkM.opacity > 0) { sparks.rotation.z += dt * 3; sparks.visible = Math.random() > .25; }
+  insulin.forEach(p => { p.m.visible = insOn; if (!insOn) return; p.t += dt * spd() * .6; if (p.t > 3) p.t = 0; const u = p.t / 3;
+    p.m.position.set(p.s.x + Math.sin(p.t * 3 + p.s.y) * .5, p.s.y + .4 + u * 3.6, Math.cos(p.t * 2 + p.s.x) * .6); p.m.material.opacity = 1 - u; p.m.rotation.set(p.t, p.t * 1.3, 0); });
+  if (camT < 1) { camT = Math.min(1, camT + dt / camDur); const e = ease(camT); camPos.lerpVectors(camFrom[0], camTo[0], e); camLook.lerpVectors(camFrom[1], camTo[1], e); }
+  if (!drag && !RM) { yaw *= .995; pitch *= .995; }
+  off.copy(camPos).sub(camLook); const r = off.length(), th = Math.atan2(off.x, off.z) + yaw + (RM ? 0 : Math.sin(now / 5000) * .06), ph = Math.acos(Math.max(-1, Math.min(1, off.y / r))) - pitch;
+  const phc = Math.max(.15, Math.min(Math.PI - .15, ph));
+  cam.position.set(camLook.x + r * Math.sin(phc) * Math.sin(th), camLook.y + r * Math.cos(phc), camLook.z + r * Math.sin(phc) * Math.cos(th)); cam.lookAt(camLook);
+  R.render(scene, cam);
+  const w = box.clientWidth, h = box.clientHeight;
+  for (const key in TAGS) { const t = TAGS[key]; if (!t.d.classList.contains('show')) continue; tmp.copy(t.at()).project(cam);
+    t.d.style.transform = `translate(${(tmp.x * .5 + .5) * w}px,${(-tmp.y * .5 + .5) * h}px) translate(-50%,-130%)`; t.d.style.visibility = tmp.z < 1 ? '' : 'hidden'; } }
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

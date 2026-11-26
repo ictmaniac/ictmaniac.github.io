@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>2D ডেমো: হাফ অ্যাডার · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/im.css?v=10">
+<style>
+:root{--blue:#2F6FEB;--blue-s:#E6F0FF;--green:#1FA463;--green-s:#DDF5E8;--yel:#F5B800;--yel-s:#FFF4CC;--off:#B9C4D8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--blue:#6EA0FF;--blue-s:#1A2B52;--green:#4CC27E;--green-s:#173A28;--yel:#F7C744;--yel-s:#4A3A10;--off:#3A4A6B}}
+:root[data-theme="dark"]{--blue:#6EA0FF;--blue-s:#1A2B52;--green:#4CC27E;--green-s:#173A28;--yel:#F7C744;--yel-s:#4A3A10;--off:#3A4A6B}
+.demo-tag{align-self:flex-start;background:var(--yel-s);color:var(--ink);border:1px solid var(--yel);border-radius:99px;padding:2px 10px;font-size:.8rem;font-weight:700}
+/* flow map: where are we in the order of events */
+.fmap{display:flex;gap:4px;align-items:center;flex-wrap:nowrap;overflow:hidden}
+.fmap .st{flex:1 1 0;min-width:0;text-align:center;font-size:.78rem;font-weight:700;line-height:1.25;padding:6px 2px;border-radius:10px;background:var(--board);color:var(--muted);border:2px solid transparent;transition:all .3s}
+.fmap .st b{display:block;font-family:var(--f-mono);font-size:.95rem}
+.fmap .ar{color:var(--off);font-weight:800;flex:0 0 auto}
+.fmap .st.done{background:var(--green-s);color:var(--green)}
+.fmap .st.cur{background:var(--blue);color:#fff;border-color:var(--blue);transform:scale(1.06)}
+/* stage with camera */
+.cam{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.cam svg.main{display:block;width:100%;height:auto;aspect-ratio:340/460;max-height:max(300px,calc(100svh - 400px));margin:0 auto;touch-action:manipulation}
+.mini{position:absolute;right:8px;top:8px;width:76px;aspect-ratio:340/460;background:var(--panel);border:1.5px solid var(--line);border-radius:8px;box-shadow:0 4px 12px -6px rgba(0,0,0,.35);opacity:0;transform:scale(.8);transition:all .35s;pointer-events:none}
+.mini.show{opacity:1;transform:none}
+.mini svg{width:100%;height:100%;display:block}
+.mini .vw{fill:rgba(47,111,235,.12);stroke:var(--blue);stroke-width:5}
+.ovb{position:absolute;left:8px;top:8px;border:1.5px solid var(--line);background:var(--panel);color:var(--blue);font:700 .8rem var(--f-body);border-radius:99px;padding:4px 10px;cursor:pointer}
+.ovb[aria-pressed="true"]{background:var(--blue);color:#fff;border-color:var(--blue)}
+.lvl{position:absolute;left:8px;top:42px;font-size:.75rem;font-weight:700;color:var(--muted);background:var(--panel);border-radius:8px;padding:2px 8px;border:1px solid var(--line)}
+/* circuit */
+.w{fill:none;stroke:var(--off);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.wl{fill:none;stroke:var(--yel);stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+.wf{fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-dasharray:3 13;opacity:0;animation:wfl calc(.9s / var(--spd,1)) linear infinite}
+.wf.on{opacity:.95}
+@keyframes wfl{to{stroke-dashoffset:-16}}
+.jn{fill:var(--off);transition:fill .3s}.jn.on{fill:var(--yel)}
+.gate path.b{fill:var(--panel);stroke:var(--blue);stroke-width:3.5;transition:fill .35s,stroke .35s}
+.gate.on path.b{fill:var(--yel-s)}
+.gate.focus path.b{stroke-width:5}
+.gate text{font:800 15px var(--f-mono);fill:var(--blue);text-anchor:middle}
+.gate .sub{font:700 10px var(--f-body);fill:var(--muted)}
+.sw rect{fill:var(--panel);stroke:var(--blue);stroke-width:3;transition:fill .3s}
+.sw.on rect{fill:var(--yel);stroke:#C99400}
+.sw text{text-anchor:middle;font-family:var(--f-mono);font-weight:800}
+.sw .v{font-size:22px;fill:var(--ink)}
+.sw .n{font-size:13px;fill:var(--blue)}
+.sw{cursor:pointer}
+.lamp circle.g{fill:var(--board);stroke:var(--off);stroke-width:3;transition:all .35s}
+.lamp.on circle.g{fill:var(--green);stroke:var(--green)}
+.lamp .halo{fill:var(--green);opacity:0;transition:opacity .35s}
+.lamp.on .halo{opacity:.22}
+.lamp text{text-anchor:middle;font-family:var(--f-mono);font-weight:800}
+.lamp .v{font-size:20px;fill:var(--muted)}.lamp.on .v{fill:#fff}
+.lamp .n{font:700 12px var(--f-body);fill:var(--ink)}
+.sum{font:800 20px var(--f-mono);text-anchor:middle;fill:var(--ink)}
+.sum .c{fill:var(--green)}
+.lbl{font:600 11px var(--f-body);fill:var(--muted);text-anchor:middle}
+.pkt{fill:var(--yel);stroke:#fff;stroke-width:2}
+/* truth table synced with the circuit */
+.tt2{width:100%;border-collapse:separate;border-spacing:0 4px;font-family:var(--f-mono);text-align:center}
+.tt2 th{font-size:.8rem;color:var(--muted);font-weight:700}
+.tt2 td{padding:6px 0;background:var(--board);font-weight:800;font-size:1.05rem;color:var(--off);transition:all .3s}
+.tt2 td:first-child{border-radius:8px 0 0 8px}.tt2 td:last-child{border-radius:0 8px 8px 0}
+.tt2 tr.fill td{color:var(--ink);background:var(--green-s)}
+.tt2 tr.cur td{background:var(--yel-s);color:var(--ink);box-shadow:inset 0 2px 0 var(--yel),inset 0 -2px 0 var(--yel)}
+.tt2 td.o{border-left:2px solid var(--panel)}
+.tt2 .one{color:var(--green)}
+.fx{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;font:800 1rem var(--f-mono)}
+.fx span{background:var(--blue-s);color:var(--blue);border-radius:10px;padding:6px 12px;transition:all .3s}
+.fx span.on{background:var(--green);color:#fff}
+.what{font-size:.92rem}
+.what li{margin-bottom:4px}
+</style>
+</head>
+<body class="kit">
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="demo-tag">ডেমো · 2D নতুন স্টাইল</span>
+    <span class="eyebrow">অধ্যায় ৩ · ৩.২.১০ হাফ অ্যাডার</span>
+    <h1>হাফ অ্যাডার: সংকেত কোন পথে যায়</h1>
+    <p class="lead">আগে পুরো সার্কিট উপর থেকে দেখো, তারপর ক্যামেরা ধাপে ধাপে যেখানে কাজ হচ্ছে সেখানে কাছে যাবে। উপরের সারি বলে দেবে এখন কোন ধাপ চলছে।</p>
+  </header>
+  <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
+
+  <section class="card" id="main">
+    <div id="view" style="display:flex;flex-direction:column;gap:10px">
+    <div class="fmap" id="fmap" aria-label="ঘটনার ক্রম">
+      <div class="st" data-k="1"><b>①</b>ইনপুট</div><span class="ar">›</span>
+      <div class="st" data-k="2"><b>②</b>XOR</div><span class="ar">›</span>
+      <div class="st" data-k="3"><b>③</b>AND</div><span class="ar">›</span>
+      <div class="st" data-k="4"><b>④</b>আউটপুট</div>
+    </div>
+    <div class="cam">
+      <svg class="main" id="sv" viewBox="0 0 340 460" aria-label="হাফ অ্যাডার সার্কিট">
+          <g id="root">
+            <rect x="0" y="0" width="340" height="460" fill="transparent"/>
+            <!-- wires: data-v = which signal they carry, data-l = how far from the input (for the travel delay) -->
+            <g id="wires">
+              <path data-v="A" data-l="0" d="M90 82 V160"/>
+              <path data-v="B" data-l="0" d="M250 82 V185"/>
+              <path data-v="A" data-l="1" d="M90 160 H82 V224"/>
+              <path data-v="A" data-l="1" d="M90 160 H222 V224"/>
+              <path data-v="B" data-l="1" d="M250 185 H228 A6 6 0 0 0 216 185 H118 V224"/>
+              <path data-v="B" data-l="1" d="M250 185 H258 V224"/>
+              <path data-v="S" data-l="2" d="M100 296 V352"/>
+              <path data-v="C" data-l="2" d="M240 296 V352"/>
+            </g>
+            <g id="lit"></g>
+            <circle class="jn" data-v="A" cx="90" cy="160" r="6"/>
+            <circle class="jn" data-v="B" cx="250" cy="185" r="6"/>
+            <!-- inputs -->
+            <g class="sw" id="swA" data-k="A"><rect x="60" y="30" width="60" height="52" rx="12"/><text class="n" x="90" y="24">A</text><text class="v" x="90" y="64">0</text></g>
+            <g class="sw" id="swB" data-k="B"><rect x="220" y="30" width="60" height="52" rx="12"/><text class="n" x="250" y="24">B</text><text class="v" x="250" y="64">0</text></g>
+            <!-- gates (pointing down, signal flows top to bottom) -->
+            <g class="gate" id="gX" data-k="X">
+              <path class="b" d="M66 228 Q100 244 134 228 Q134 268 100 296 Q66 268 66 228 Z"/>
+              <path class="b" d="M66 220 Q100 236 134 220" fill="none" style="fill:none"/>
+              <text x="100" y="266">XOR</text><text class="sub" x="100" y="210" text-anchor="middle">গেট ②</text>
+            </g>
+            <g class="gate" id="gA" data-k="N">
+              <path class="b" d="M206 226 H274 V254 Q274 296 240 296 Q206 296 206 254 Z"/>
+              <text x="240" y="266">AND</text><text class="sub" x="240" y="210" text-anchor="middle">গেট ③</text>
+            </g>
+            <!-- outputs -->
+            <g class="lamp" id="lS" data-k="S"><circle class="halo" cx="100" cy="376" r="36"/><circle class="g" cx="100" cy="376" r="24"/><text class="v" x="100" y="383">0</text><text class="n" x="100" y="420">S (যোগফল)</text></g>
+            <g class="lamp" id="lC" data-k="C"><circle class="halo" cx="240" cy="376" r="36"/><circle class="g" cx="240" cy="376" r="24"/><text class="v" x="240" y="383">0</text><text class="n" x="240" y="420">C (ক্যারি)</text></g>
+            <text class="sum" id="sum" x="170" y="450"></text>
+            <g id="pk"></g>
+          </g>
+      </svg>
+      <div class="mini" id="mini"><svg viewBox="0 0 340 460"><use href="#root"/><rect class="vw" id="vw" x="0" y="0" width="340" height="460" rx="8"/></svg></div>
+      <button class="ovb" id="ovb" aria-pressed="false">🔭 পুরো ছবি</button>
+      <span class="lvl" id="lvl">পুরো সার্কিট</span>
+    </div>
+    </div>
+    <p class="hint">টিপস: A বা B সুইচে চাপ দিয়ে নিজে বদলাও। গেট বা বাতিতে চাপ দিলে ব্যাখ্যা দেখবে।</p>
+  </section>
+
+  <section class="card">
+    <h2>সত্যক সারণি (সার্কিটের সাথে মিলিয়ে)</h2>
+    <table class="tt2" id="tt"><thead><tr><th>A</th><th>B</th><th>S</th><th>C</th></tr></thead><tbody></tbody></table>
+    <div class="fx"><span id="fS">S = A ⊕ B</span><span id="fC">C = A · B</span></div>
+  </section>
+
+  <section class="card what">
+    <h2>এই ডেমোতে নতুন কী</h2>
+    <ul>
+      <li><b>উপর থেকে আগে পুরোটা:</b> প্রথম ধাপে পুরো সার্কিট, তারপর ক্যামেরা কাছে যায়।</li>
+      <li><b>ক্রমের সারি (① ② ③ ④):</b> এখন কোন ধাপ চলছে, সবসময় চোখে থাকে।</li>
+      <li><b>ছোট ম্যাপ (ডান কোণে):</b> কাছে গেলে দেখায় পুরো ছবির কোন অংশে আছো।</li>
+      <li><b>চলমান সংকেত:</b> হলুদ তার মানে 1, ভিতরে সাদা বিন্দু দেখায় সংকেত কোন দিকে যাচ্ছে।</li>
+      <li><b>মোবাইলের মাপে খাড়া ছবি:</b> উপর থেকে নিচে পড়ো, পাশে স্ক্রল করতে হয় না।</li>
+    </ul>
+  </section>
+  <footer>© ICT Maniac · HSC ICT ইন্টারঅ্যাক্টিভ ল্যাব</footer>
+</div>
+<div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
+<script src="../../a/im.js?v=10"></script>
+<script>
+(() => {
+const NS = 'http://www.w3.org/2000/svg', $ = id => document.getElementById(id), sv = $('sv');
+const spd = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--spd')) || 1;
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const W = 340, H = 460, FULL = [0, 0, W, H];
+/* camera boxes: same shape as the stage so nothing stretches */
+const BOX = { full: FULL, in: fit(30, 0, 280, 200), x: fit(40, 140, 140, 300), n: fit(180, 140, 140, 300), out: fit(40, 290, 260, 170) };
+function fit(x, y, w, h) { const a = W / H; if (w / h > a) { const nh = w / a; y -= (nh - h) / 2; h = nh; } else { const nw = h * a; x -= (nw - w) / 2; w = nw; }
+  x = Math.max(0, Math.min(x, W - w)); y = Math.max(0, Math.min(y, H - h)); return [x, y, w, h]; }
+
+/* ---- lit wire overlays: a yellow copy that draws itself along the wire, plus moving dots ---- */
+const wires = [...document.querySelectorAll('#wires path')];
+wires.forEach(p => p.setAttribute('class', 'w'));
+const lit = wires.map(p => { const g = document.createElementNS(NS, 'g'); const d = p.getAttribute('d');
+  g.innerHTML = `<path class="wl" d="${d}" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/><path class="wf" d="${d}"/>`; $('lit').appendChild(g);
+  return { v: p.dataset.v, l: +p.dataset.l, d, a: g.firstChild, f: g.lastChild, on: false }; });
+
+let A = 0, B = 0, seen = new Set(), rowCur = -1, view = FULL.slice(), want = FULL, hold = false;
+const out = () => ({ A, B, S: A ^ B, C: A & B });
+
+function setWire(w, on, delay) { if (w.on === on) return; w.on = on;
+  w.a.getAnimations().forEach(x => x.cancel());
+  if (!on || RM) { w.a.setAttribute('stroke-dashoffset', on ? 0 : 1); w.f.classList.toggle('on', on); return; }
+  w.a.setAttribute('stroke-dashoffset', 1); w.f.classList.remove('on');
+  const an = w.a.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: 520 / spd(), delay: delay / spd(), easing: 'ease-in', fill: 'forwards' });
+  an.onfinish = () => { if (w.on) { w.a.setAttribute('stroke-dashoffset', 0); w.f.classList.add('on'); } }; }
+
+let tmr = [];
+function later(ms, fn) { tmr.push(setTimeout(fn, ms / spd())); }
+function render(anim) { tmr.forEach(clearTimeout); tmr = []; const o = out(), D = anim ? 1 : 0;
+  ['A', 'B'].forEach(k => { const g = $('sw' + k); g.classList.toggle('on', !!o[k]); g.querySelector('.v').textContent = o[k]; });
+  lit.forEach(w => setWire(w, !!o[w.v], D * w.l * 480));
+  document.querySelectorAll('.jn').forEach(j => j.classList.toggle('on', !!o[j.dataset.v]));
+  const gate = (id, v) => later(D * 1000, () => $(id).classList.toggle('on', !!v));
+  gate('gX', o.S); gate('gA', o.C);
+  const lamp = (id, v) => later(D * 1250, () => { const l = $(id), was = l.classList.contains('on'); l.classList.toggle('on', !!v); l.querySelector('.v').textContent = v; if (v && !was && anim) IM.sfx('pop'); });
+  lamp('lS', o.S); lamp('lC', o.C);
+  if (anim) [['A', 90, 82], ['B', 250, 82]].forEach(([k, x, y]) => { if (o[k]) packet(x, y); });
+  $('sum').innerHTML = ''; }
+
+/* a single bright packet travelling from the switch to the gates, to show the order */
+function packet(x, y) { if (RM) return; const c = document.createElementNS(NS, 'circle'); c.setAttribute('r', 7); c.setAttribute('class', 'pkt'); $('pk').appendChild(c);
+  const to = x === 90 ? [[90, 160], [82, 224]] : [[250, 185], [258, 224]]; const pts = [[x, y], ...to];
+  c.animate(pts.map(p => ({ transform: `translate(${p[0]}px,${p[1]}px)` })), { duration: 900 / spd(), easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => c.remove(); }
+
+/* ---- camera ---- */
+function camTo(box, quiet) { want = box; const b = hold ? FULL : box; const from = view.slice(), t0 = performance.now(), dur = RM ? 1 : 750 / spd();
+  const zoomIn = b[2] < from[2] - 1, zoomOut = b[2] > from[2] + 1; if (!quiet) { if (zoomIn) IM.sfx('zin'); else if (zoomOut) IM.sfx('zout'); }
+  cancelAnimationFrame(camTo.r);
+  (function f(t) { let k = Math.min(1, (t - t0) / dur); k = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+    view = from.map((v, i) => v + (b[i] - v) * k); sv.setAttribute('viewBox', view.join(' '));
+    const vw = $('vw'); vw.setAttribute('x', view[0]); vw.setAttribute('y', view[1]); vw.setAttribute('width', view[2]); vw.setAttribute('height', view[3]);
+    $('mini').classList.toggle('show', view[2] < W - 2); if (k < 1) camTo.r = requestAnimationFrame(f); })(t0);
+  $('lvl').textContent = b[2] >= W - 1 ? 'পুরো সার্কিট' : '🔍 কাছ থেকে'; }
+$('ovb').onclick = () => { hold = !hold; $('ovb').setAttribute('aria-pressed', hold); camTo(want); };
+
+/* ---- flow map + table ---- */
+function flow(k) { document.querySelectorAll('#fmap .st').forEach(s => { const i = +s.dataset.k; s.classList.toggle('cur', i === k); s.classList.toggle('done', k > 0 && i < k); }); }
+const ROWS = [[0, 0], [0, 1], [1, 0], [1, 1]];
+$('tt').tBodies[0].innerHTML = ROWS.map((r, i) => `<tr data-i="${i}"><td>${r[0]}</td><td>${r[1]}</td><td class="o">·</td><td>·</td></tr>`).join('');
+function table(filled, cur) { [...$('tt').tBodies[0].rows].forEach((tr, i) => { const f = filled.includes(i), [a, b] = ROWS[i];
+  const was = tr.classList.contains('fill'); tr.classList.toggle('fill', f); tr.classList.toggle('cur', i === cur);
+  tr.cells[2].textContent = f ? a ^ b : '·'; tr.cells[3].textContent = f ? a & b : '·';
+  tr.cells[2].classList.toggle('one', f && !!(a ^ b)); tr.cells[3].classList.toggle('one', f && !!(a & b));
+  if (f && !was) IM.sfx('hl'); }); }
+function fx(on) { $('fS').classList.toggle('on', on); $('fC').classList.toggle('on', on); }
+
+/* each step sets the whole state, so ◀ and the step ladder always work */
+const S = [
+  { m: 'এটা পুরো সার্কিট, <b>উপর থেকে দেখা</b>। উপরে দুই ইনপুট <b>A, B</b>, মাঝে দুই গেট <b>XOR, AND</b>, নিচে দুই আউটপুট <b>S, C</b>। সংকেত সবসময় উপর থেকে নিচে চলে।', ab: [0, 0], cam: 'full', f: 0, t: [], c: -1, quiet: 1 },
+  { m: 'ক্যামেরা গেলো ইনপুটে। শুরুতে <b>A = 0, B = 0</b>। কোনো তারে বিদ্যুৎ নেই, তাই সব তার <b>ধূসর</b>।', ab: [0, 0], cam: 'in', f: 1, t: [], c: 0 },
+  { m: 'পুরো ছবিতে দেখো: দুই গেটেই 0 ঢুকলো, তাই <b>S = 0, C = 0</b>। সারণির <b>১ম সারি</b> পূর্ণ হলো।', ab: [0, 0], cam: 'full', f: 4, t: [0], c: 0 },
+  { m: 'এবার <b>B = 1</b>। <b>হলুদ</b> মানে 1। দেখো, জোড়া বিন্দুতে B এর সংকেত <b>দুই ভাগ</b> হয়ে দুই গেটেই যাচ্ছে।', ab: [0, 1], cam: 'in', f: 1, t: [0], c: 1 },
+  { m: '<b>XOR গেট:</b> দুই ইনপুট <b>আলাদা</b> (0 আর 1), তাই আউটপুট 1। <b>S বাতি জ্বললো</b>।', ab: [0, 1], cam: 'x', f: 2, t: [0], c: 1 },
+  { m: '<b>AND গেট:</b> দুটোই 1 হলে তবেই 1। এখানে একটা 0, তাই <b>C = 0</b>। সারণির <b>২য় সারি</b> পূর্ণ।', ab: [0, 1], cam: 'n', f: 3, t: [0, 1], c: 1 },
+  { m: 'পুরো ছবি: <b>A = 1, B = 0</b> হলেও একই ফল, <b>S = 1, C = 0</b>। কারণ ০+১ আর ১+০ একই কথা। <b>৩য় সারি</b> পূর্ণ।', ab: [1, 0], cam: 'full', f: 4, t: [0, 1, 2], c: 2 },
+  { m: 'শেষ জোড়া: <b>A = 1, B = 1</b>। দুই সংকেতই ভাগ হয়ে দুই গেটে যাচ্ছে।', ab: [1, 1], cam: 'in', f: 1, t: [0, 1, 2], c: 3 },
+  { m: '<b>XOR গেট:</b> দুই ইনপুট <b>একই</b> (1 আর 1), তাই আউটপুট 0। <b>S বাতি নিভে গেলো</b>।', ab: [1, 1], cam: 'x', f: 2, t: [0, 1, 2], c: 3 },
+  { m: '<b>AND গেট:</b> দুটোই 1, তাই <b>C = 1</b>। এটাই <b>হাতে থাকা ১ (ক্যারি)</b>!', ab: [1, 1], cam: 'n', f: 3, t: [0, 1, 2], c: 3 },
+  { m: 'আউটপুট পাশাপাশি পড়ো: <b>C S = 1 0</b>। মানে বাইনারিতে <b>১ + ১ = ১০</b>। <b>৪র্থ সারি</b> পূর্ণ।', ab: [1, 1], cam: 'out', f: 4, t: [0, 1, 2, 3], c: 3, sum: 1 },
+  { m: 'পুরো ছবি আর সূত্র: <b>S = A ⊕ B</b> (XOR), <b>C = A · B</b> (AND)। এবার নিজে <b>A, B সুইচে চাপ</b> দিয়ে মিলিয়ে দেখো।', ab: [1, 1], cam: 'full', f: 0, t: [0, 1, 2, 3], c: -1, sum: 1, fx: 1 }
+];
+function sumText(on) { const o = out(); $('sum').innerHTML = on ? `${A} + ${B} = <tspan class="c">${o.C}</tspan>${o.S}` : ''; }
+let started = false;
+const P = IM.tour(S.map(s => ({ m: s.m, el: '#view', do() {
+  const ch = A !== s.ab[0] || B !== s.ab[1]; A = s.ab[0]; B = s.ab[1]; render(started && ch);
+  camTo(BOX[s.cam], s.quiet || !started); flow(s.f); table(s.t, s.c); fx(!!s.fx);
+  later(s.sum ? 1300 : 0, () => sumText(!!s.sum)); started = true;
+  document.querySelectorAll('.gate').forEach(g => g.classList.toggle('focus', (s.cam === 'x' && g.id === 'gX') || (s.cam === 'n' && g.id === 'gA'))); } })), { interval: 4200 });
+
+/* tap to try / tap to explain */
+const INFO = { X: ['XOR গেট', 'ইনপুট দুটি <b>আলাদা</b> হলে 1, একই হলে 0। এটাই যোগফল <b>S</b> দেয়।'], N: ['AND গেট', 'দুটি ইনপুটই 1 হলে তবেই 1। এটাই হাতে থাকা <b>C</b> দেয়।'],
+  S: ['S (যোগফল)', 'এক ঘরের যোগফল। S = A ⊕ B।'], C: ['C (ক্যারি)', 'পরের ঘরে যাওয়া হাতের ১। C = A · B।'] };
+sv.addEventListener('click', e => { const sw = e.target.closest('.sw'), g = e.target.closest('.gate,.lamp');
+  if (sw) { if (sw.dataset.k === 'A') A ^= 1; else B ^= 1; render(true); IM.sfx('tap'); const i = A * 2 + B, o = out();
+    table([...new Set([...seen, i])], i); seen.add(i); flow(4); sumText(true); camTo(BOX.full, true);
+    IM.say('নিজে চেষ্টা', `A = ${A}, B = ${B} → <b>S = ${o.S}, C = ${o.C}</b>। ${A} + ${B} = ${o.C}${o.S} (বাইনারি)।`, true); return; }
+  if (g && INFO[g.dataset.k]) IM.say(INFO[g.dataset.k][0], INFO[g.dataset.k][1], true); });
+render(false);
+})();
+</script>
+</body>
+</html>
