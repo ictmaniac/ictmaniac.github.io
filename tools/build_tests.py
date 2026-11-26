@@ -15,7 +15,7 @@ import sys, os, json, glob, html
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC, OUT = os.path.join(ROOT, 'src', 'tests'), os.path.join(ROOT, 'p')
-V = '1'  # bump after changing a/mt.css or a/mt.js
+V = '2'  # bump after changing a/mt.css or a/mt.js
 BN = str.maketrans('0123456789', '০১২৩৪৫৬৭৮৯')
 
 PAGE = '''<!doctype html>
@@ -73,7 +73,7 @@ PAGE = '''<!doctype html>
   <div class="btns" id="after" hidden>
     <button type="button" class="btn primary" id="again">↻ আবার পরীক্ষা দাও</button>{nextbtn}
   </div>
-  <footer>© ICT Maniac · HSC ICT মডেল টেস্ট</footer>
+  <footer><a href="../67gsxrfm/" style="color:inherit">📚 সব মডেল টেস্ট</a> · © ICT Maniac</footer>
 </div>
 <div class="dock" id="dock" hidden><div class="in">
   <div id="confirm" hidden><p class="msg" id="cmsg"></p><div class="btns" style="margin-top:6px"><button type="button" class="btn" id="no">ফিরে যাও</button><button type="button" class="btn green" id="yes">হ্যাঁ, জমা দাও</button></div></div>
@@ -99,13 +99,71 @@ def build(path):
     open(os.path.join(OUT, code, 'index.html'), 'w', encoding='utf-8').write(page)
 
 
+HUB = '67gsxrfm'
+
+
+def build_hub():
+    h = json.load(open(os.path.join(SRC, '_hub.json'), encoding='utf-8'))
+    rows = []
+    for ch, name in h['ch'].items():
+        items = ''.join(
+            f'<a class="ti" href="../{t["code"]}/"><b>মডেল টেস্ট {str(t["k"]).translate(BN)}</b><span>{html.escape(t["sec"])} · {html.escape(t["name"])}</span><i>▶</i></a>'
+            for t in h['hub'] if t['ch'] == ch)
+        rows.append(f'<section class="card"><h2>অধ্যায় {ch.translate(BN)} · {html.escape(name)}</h2>{items}</section>')
+    items = ''.join(f'<a class="ti" href="../{t["code"]}/"><b>পূর্ণ সিলেবাস মডেল টেস্ট {str(t["k"]).translate(BN)}</b><span>অধ্যায় ১–৬ · ২৫টি প্রশ্ন</span><i>▶</i></a>'
+                    for t in h['hub'] if t['ch'] == 'F')
+    rows.append(f'<section class="card"><h2>📘 পুরো বই · পূর্ণ সিলেবাস</h2>{items}</section>')
+    page = HUBPAGE.format(v=V, body=''.join(rows))
+    os.makedirs(os.path.join(OUT, HUB), exist_ok=True)
+    open(os.path.join(OUT, HUB, 'index.html'), 'w', encoding='utf-8').write(page)
+
+
+HUBPAGE = '''<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#F2F7FF">
+<title>মডেল টেস্ট · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../../a/mt.css?v={v}">
+<style>
+.card h2{{font-family:var(--f-display);font-size:1.1rem;margin:0 0 10px;color:var(--ink)}}
+.ti{{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:8px;background:#fff}}
+.ti b{{font-weight:700;color:var(--blue)}} .ti span{{grid-column:1;font-size:.86rem;color:var(--muted)}} .ti i{{grid-row:1/3;grid-column:2;font-style:normal;color:var(--green);font-size:1.1rem}}
+.ti:active{{background:var(--blue-soft)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">HSC ICT · অনলাইন পরীক্ষা</span>
+    <h1>মডেল টেস্ট</h1>
+  </header>
+  <p class="card">প্রতিটি অধ্যায়ের টেস্ট আলাদা অংশ (সেগমেন্ট) থেকে। কোন টেস্টে কোন অংশ, নিচে লেখা আছে। প্রতিটি টেস্টে ২৫টি প্রশ্ন, ২৫ মিনিট। জমা দিলে ভুলের ব্যাখ্যা দেখবে।</p>
+  {body}
+  <footer>© ICT Maniac · HSC ICT মডেল টেস্ট</footer>
+</div>
+</body>
+</html>
+'''
+
+
 def main():
     pick = sys.argv[1] if len(sys.argv) > 1 else ''
     n = 0
     for f in sorted(glob.glob(os.path.join(SRC, '*.json'))):
         if pick and os.path.basename(f)[:-5] != pick:
             continue
+        if os.path.basename(f).startswith('_'):
+            continue
         build(f); n += 1
+    if not pick or pick == HUB:
+        build_hub(); n += 1
     print(f'built {n} test(s)')
 
 

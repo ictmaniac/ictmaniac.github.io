@@ -5,6 +5,7 @@
   var BN = '০১২৩৪৫৬৭৮৯', L = ['ক', 'খ', 'গ', 'ঘ'], R = ['i', 'ii', 'iii'];
   function bn(n) { return String(n).replace(/\d/g, function (d) { return BN[d]; }); }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function fmt(s) { return esc(s).replace(/⦃([^⦄]*)⦄/g, '<sub>$1</sub>').replace(/⦅([^⦆]*)⦆/g, '<sup>$1</sup>'); }
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
   var KEY = 'im-mt-' + D.code, N = D.qs.length, TOTAL = D.minutes * 60;
   var ans = [], left = TOTAL, tick = null, started = 0, running = false, sound = true;
@@ -35,7 +36,7 @@
     var out = '', code = [];
     function flush() { if (code.length) { out += '<div class="code">' + esc(code.join('\n')) + '</div>'; code = []; } }
     txt.split(' ¦ ').forEach(function (line) {
-      if (!/[ঀ-৿]/.test(line)) code.push(line); else { flush(); out += '<p>' + esc(line) + '</p>'; }
+      if (!/[ঀ-৿]/.test(line)) code.push(line); else { flush(); out += '<p>' + fmt(line) + '</p>'; }
     });
     flush();
     return '<b>' + (from === to ? bn(from) + ' নং প্রশ্নের' : bn(from) + (to - from > 1 ? '–' : ' ও ') + bn(to) + ' নং প্রশ্নের') + ' জন্য উদ্দীপক</b>' +
@@ -50,14 +51,14 @@
       list.appendChild(el('div', 'stim', stimHTML(q.c, i + 1, to + 1)));
     }
     var card = el('div', 'card q'); card.id = 'q' + (i + 1);
-    var h = '<div class="qh"><span class="qn">' + bn(i + 1) + '</span><div class="qt">' + esc(q.s) + (q.b ? '<span class="board">বোর্ড</span>' : '');
+    var h = (q.tp ? '<p class="tp">' + esc(q.tp) + '</p>' : '') + '<div class="qh"><span class="qn">' + bn(i + 1) + '</span><div class="qt">' + fmt(q.s) + (q.b ? '<span class="board">বোর্ড</span>' : '');
     if (q.code) h += '<div class="code">' + esc(q.code) + '</div>';
-    if (q.st && q.st.length) h += '<ul class="st">' + q.st.map(function (s, k) { return '<li><span>' + R[k] + '.</span><span>' + esc(s) + '</span></li>'; }).join('') + '</ul>';
-    if (q.t) h += '<p class="tail">' + esc(q.t) + '</p>';
+    if (q.st && q.st.length) h += '<ul class="st">' + q.st.map(function (s, k) { return '<li><span>' + R[k] + '.</span><span>' + fmt(s) + '</span></li>'; }).join('') + '</ul>';
+    if (q.t) h += '<p class="tail">' + fmt(q.t) + '</p>';
     h += '</div></div>';
     var short = q.o.every(function (o) { return o.length <= 18; });
     h += '<div class="opts' + (short ? ' short' : '') + '" role="radiogroup" aria-label="প্রশ্ন ' + bn(i + 1) + ' এর উত্তর">' + q.o.map(function (o, k) {
-      return '<button type="button" class="op" role="radio" aria-checked="false" data-k="' + k + '"><span class="bub">' + L[k] + '</span><span class="tx">' + esc(o) + '</span></button>';
+      return '<button type="button" class="op" role="radio" aria-checked="false" data-k="' + k + '"><span class="bub">' + L[k] + '</span><span class="tx">' + fmt(o) + '</span></button>';
     }).join('') + '</div><div class="fb" hidden></div>';
     card.innerHTML = h;
     card.querySelectorAll('.op').forEach(function (b) {
@@ -130,7 +131,7 @@
       if (a === q.a) { ok++; st = '✓ সঠিক হয়েছে'; cls = 'ok'; c.dataset.r = 'ok'; }
       else if (a === undefined) { skip++; st = '○ উত্তর দাওনি। সঠিক উত্তর (' + L[q.a] + ')'; cls = 'skip'; c.dataset.r = 'skip'; }
       else { bad++; st = '✗ ভুল হয়েছে। সঠিক উত্তর (' + L[q.a] + ')'; cls = 'no'; c.dataset.r = 'bad'; }
-      var exHTML = '<div class="ex"><b>ব্যাখ্যা: </b>' + esc(q.e || '') + '</div>';
+      var exHTML = '<div class="ex"><b>ব্যাখ্যা: </b>' + fmt(q.e || '') + '</div>';
       fb.innerHTML = '<p class="status ' + cls + '">' + st + '</p>' + (cls === 'ok' ? '<button type="button" class="exbtn">ব্যাখ্যা দেখো ▾</button><div hidden>' + exHTML + '</div>' : exHTML);
       var eb = $('.exbtn', fb); if (eb) eb.addEventListener('click', function () { eb.nextSibling.hidden = !eb.nextSibling.hidden; eb.textContent = eb.nextSibling.hidden ? 'ব্যাখ্যা দেখো ▾' : 'ব্যাখ্যা লুকাও ▴'; });
       fb.hidden = false;
