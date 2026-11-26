@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#F2F7FF">
+<title>লিডারবোর্ড ডেমো · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../../a/mt.css?v=2">
+<style>
+.demo{background:var(--yellow-soft);border:2px dashed var(--yellow);border-radius:14px;padding:10px 14px;font-weight:600;color:#6B4F00;font-size:.95rem}
+.demo b{color:#8A6500}
+label{font-weight:700;display:flex;flex-direction:column;gap:6px}
+label small{font-weight:500;color:var(--muted)}
+input{font:inherit;font-size:1.1rem;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:#fff;color:var(--ink);min-height:50px;width:100%}
+input:focus{outline:none;border-color:var(--blue)}
+input.bad{border-color:var(--red);background:var(--red-soft)}
+.err{color:var(--red);font-weight:700;font-size:.92rem;min-height:1.4em}
+.steps{display:flex;gap:6px}
+.steps span{flex:1;text-align:center;font-size:.8rem;font-weight:700;padding:6px 2px;border-radius:10px;background:var(--line);color:var(--muted)}
+.steps span.on{background:var(--blue);color:#fff}
+.steps span.ok{background:var(--green-soft);color:var(--green)}
+.who{display:flex;align-items:center;gap:10px;background:var(--blue-soft);border-radius:12px;padding:8px 12px;font-weight:700;color:var(--blue)}
+.who .av{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--blue);color:#fff;font-family:var(--f-display)}
+.send{display:flex;flex-direction:column;gap:8px}
+.pipe{display:flex;align-items:center;justify-content:space-between;gap:4px;font-size:.82rem;font-weight:700;color:var(--muted);text-align:center}
+.pipe div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.pipe .ic{font-size:1.6rem;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:var(--blue-soft);transition:background .3s,transform .3s}
+.pipe .ic.lit{background:var(--green-soft);transform:scale(1.08)}
+.pipe .ar{flex:none;width:26px;height:4px;border-radius:2px;background:var(--line);position:relative;overflow:hidden}
+.pipe .ar.go::after{content:"";position:absolute;inset:0;background:var(--green);animation:flow .5s ease-out forwards}
+@keyframes flow{from{transform:translateX(-100%)}to{transform:none}}
+.row{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.8rem;background:#F6F9FF;border:1px solid var(--line);border-radius:10px;padding:8px;overflow-x:auto;white-space:nowrap}
+.row b{color:var(--green)}
+table.lb{width:100%;border-collapse:collapse;font-size:.95rem}
+.lb th{font-size:.8rem;color:var(--muted);text-align:left;padding:4px 6px;border-bottom:2px solid var(--line)}
+.lb td{padding:7px 6px;border-bottom:1px solid var(--line)}
+.lb td.n{width:2.4em;font-weight:800;color:var(--muted);text-align:center}
+.lb td.s{text-align:right;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.lb td.t{text-align:right;color:var(--muted);font-size:.82rem;white-space:nowrap}
+.lb .tail{color:var(--muted);font-weight:500;font-size:.82rem}
+.lb tr.me td{background:var(--green-soft)}
+.lb tr.me td:first-child{border-radius:10px 0 0 10px}.lb tr.me td:last-child{border-radius:0 10px 10px 0}
+.lb tr.me .nm::after{content:" (তুমি)";color:var(--green);font-weight:800}
+.medal{font-size:1.15rem}
+.myrank{font-family:var(--f-display);font-size:1.15rem;font-weight:800;color:var(--green);text-align:center}
+.mini{font-size:.88rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow">মডেল টেস্ট · লিডারবোর্ড</span>
+    <h1>লিডারবোর্ড কেমন হবে (ডেমো)</h1>
+  </header>
+
+  <div class="demo">⚠️ <b>এটা শুধু ডেমো।</b> এখানে কোনো নম্বর কোথাও জমা হয় না। তালিকার নাম ও নম্বর বানানো। আসল ৩০টি টেস্ট আগের মতোই আছে।</div>
+
+  <div class="steps" aria-hidden="true"><span id="s1" class="on">১. কোড ও নাম</span><span id="s2">২. টেস্ট</span><span id="s3">৩. লিডারবোর্ড</span></div>
+
+  <!-- 1: code + nickname -->
+  <section class="card fade" id="v1">
+    <h2>টেস্ট শুরুর আগে</h2>
+    <p>বই কেনার সাথে প্রতিটি শিক্ষার্থী একটা <b>বই কোড</b> পাবে। কোড আর একটা ডাকনাম দিলেই টেস্ট শুরু।</p>
+    <label>বই কোড <small>বইয়ের প্রথম পাতায় লেখা থাকবে (ডেমোর জন্য: ICTM-1234)</small>
+      <input id="code" value="ICTM-1234" autocomplete="off" autocapitalize="characters" inputmode="text"></label>
+    <label>ডাকনাম <small>লিডারবোর্ডে এই নামটা দেখাবে</small>
+      <input id="nick" placeholder="যেমন: রাফি" maxlength="16" autocomplete="off"></label>
+    <div class="err" id="err" role="alert"></div>
+    <button class="btn primary" id="go" type="button">টেস্ট শুরু করো →</button>
+    <p class="mini">একবার দিলে ফোন মনে রাখবে। পরের টেস্টে আবার লিখতে হবে না।</p>
+  </section>
+
+  <!-- 2: tiny test -->
+  <section class="card fade" id="v2" hidden>
+    <div class="who"><span class="av" id="av">র</span><span id="whoT"></span></div>
+    <p class="mini">ডেমো তাই মাত্র ৫টি প্রশ্ন। আসল টেস্টে ২৫টি।</p>
+    <div id="qs" style="display:flex;flex-direction:column;gap:14px"></div>
+    <button class="btn green" id="sub" type="button">জমা দাও ✓</button>
+  </section>
+
+  <!-- 3: sending + leaderboard -->
+  <section class="card fade res" id="v3" hidden>
+    <div class="ring" id="ring"><div><strong id="sc">0</strong><span>৫ এর মধ্যে</span></div></div>
+    <p class="cheer" id="cheer"></p>
+    <div class="send" style="width:100%">
+      <div class="pipe">
+        <div><span class="ic" id="p1">📱</span>ছাত্রের ফোন</div><span class="ar" id="a1"></span>
+        <div><span class="ic" id="p2">🌐</span>ইন্টারনেট</div><span class="ar" id="a2"></span>
+        <div><span class="ic" id="p3">📊</span>গুগল শিট</div>
+      </div>
+      <p class="mini" id="sendT">নম্বর জমা হচ্ছে…</p>
+      <div class="row" id="rowT" hidden></div>
+    </div>
+    <p class="myrank" id="myrank" hidden></p>
+  </section>
+
+  <section class="card fade" id="v4" hidden>
+    <h2>🏆 সেরা ২০</h2>
+    <div class="filter" role="group"><button type="button" id="tA" aria-pressed="true">এই টেস্ট</button><button type="button" id="tB" aria-pressed="false">সব টেস্ট মিলিয়ে</button></div>
+    <p class="mini" id="lbNote"></p>
+    <table class="lb"><thead><tr><th>ক্রম</th><th>নাম</th><th style="text-align:right">নম্বর</th><th style="text-align:right">সময়</th></tr></thead><tbody id="lb"></tbody></table>
+    <p class="mini">নামের পাশে কোডের শেষ ৩টা সংখ্যা থাকে, যাতে একই নামের দুজনকে আলাদা চেনা যায়। পুরো কোড কেউ দেখতে পায় না। নম্বর সমান হলে যে কম সময়ে শেষ করেছে সে উপরে।</p>
+    <button class="btn" id="again" type="button">↻ আবার চেষ্টা করো</button>
+  </section>
+
+  <footer>ICT Maniac · ডেমো পেজ</footer>
+</div>
+<script>
+(function(){
+var bn=function(n){return String(n).replace(/\d/g,function(d){return"০১২৩৪৫৬৭৮৯"[d]})};
+var $=function(i){return document.getElementById(i)};
+var Q=[
+ ["ICT এর পূর্ণরূপ কী?",["Information and Communication Technology","International Computer Technology","Internet Control Tool","Information Center Technology"],0],
+ ["বাইনারি সংখ্যা পদ্ধতির বেস কত?",["২","৮","১০","১৬"],0],
+ ["কোন গেটের আউটপুট তখনই ১ যখন সব ইনপুট ১?",["OR","AND","NOT","XOR"],1],
+ ["HTML এ নতুন লাইনের জন্য কোন ট্যাগ?",["&lt;p&gt;","&lt;hr&gt;","&lt;br&gt;","&lt;b&gt;"],2],
+ ["C ভাষায় প্রতিটি স্টেটমেন্ট শেষে কী দিতে হয়?",["কমা (,)","কোলন (:)","ডট (.)","সেমিকোলন (;)"],3]];
+var NAMES=["তাসনিম","রাফি","নাফিসা","আরিয়ান","সামিয়া","ফাহিম","মেহজাবিন","সাকিব","ইশরাত","তানভীর","জান্নাত","রিয়াদ","নুসরাত","আবির","সুমাইয়া","শাহরিয়ার","মিম","রাহাত","তাহমিদ","অর্পা","সাদিয়া","ইমন"];
+var me={},picks=[],t0=0,secs=0,score=0,tab="A";
+function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+var sc=store("lbdemo_code"),sn=store("lbdemo_nick");if(sc)$("code").value=sc;if(sn)$("nick").value=sn;
+function step(n){for(var i=1;i<=3;i++){var s=$("s"+i);s.className=i<n?"ok":i===n?"on":""}window.scrollTo({top:0,behavior:"smooth"})}
+$("go").onclick=function(){
+  var c=$("code").value.trim().toUpperCase().replace(/\s/g,""),n=$("nick").value.trim(),e="";
+  $("code").classList.remove("bad");$("nick").classList.remove("bad");
+  if(!/^ICTM-\d{4}$/.test(c)){e="কোডটা ঠিক নেই। এরকম হবে: ICTM-1234";$("code").classList.add("bad")}
+  else if(n.length<2){e="একটা ডাকনাম লেখো (কমপক্ষে ২ অক্ষর)।";$("nick").classList.add("bad")}
+  $("err").textContent=e;if(e)return;
+  store("lbdemo_code",c);store("lbdemo_nick",n);
+  me={code:c,nick:n,tail:c.slice(-3)};
+  $("av").textContent=n.charAt(0);$("whoT").textContent=n+" · …"+bn(me.tail);
+  var h="";Q.forEach(function(q,i){h+='<div class="q"><p class="qt" style="font-weight:700;margin:0 0 8px">'+bn(i+1)+". "+q[0]+'</p><div class="opts">';
+    q[1].forEach(function(o,j){h+='<button type="button" class="op" data-q="'+i+'" data-o="'+j+'"><span class="bub">'+"কখগঘ"[j]+'</span><span class="tx">'+o+'</span></button>'});h+="</div></div>"});
+  $("qs").innerHTML=h;picks=[];
+  $("qs").querySelectorAll(".op").forEach(function(b){b.onclick=function(){var q=+b.dataset.q;picks[q]=+b.dataset.o;
+    $("qs").querySelectorAll('.op[data-q="'+q+'"]').forEach(function(x){x.classList.toggle("sel",x===b)})}});
+  $("v1").hidden=true;$("v2").hidden=false;step(2);t0=Date.now();
+};
+$("sub").onclick=function(){
+  score=0;Q.forEach(function(q,i){if(picks[i]===q[2])score++});
+  secs=Math.max(20,Math.round((Date.now()-t0)/1000));
+  $("v2").hidden=true;$("v3").hidden=false;step(3);
+  $("sc").textContent=bn(score);$("ring").style.setProperty("--p",score*20);
+  $("cheer").textContent=score===5?"অসাধারণ! সব ঠিক 🎉":score>=3?"ভালো হয়েছে! 👍":"আরেকবার চেষ্টা করো 💪";
+  ["p1","p2","p3"].forEach(function(p){$(p).classList.remove("lit")});$("a1").className="ar";$("a2").className="ar";
+  $("rowT").hidden=true;$("myrank").hidden=true;$("v4").hidden=true;$("sendT").textContent="নম্বর জমা হচ্ছে…";
+  setTimeout(function(){$("p1").classList.add("lit");$("a1").classList.add("go")},300);
+  setTimeout(function(){$("p2").classList.add("lit");$("a2").classList.add("go")},900);
+  setTimeout(function(){$("p3").classList.add("lit");
+    $("sendT").textContent="✓ জমা হয়েছে! গুগল শিটে নিচের মতো একটা লাইন যোগ হলো (আসলটায়):";
+    var d=new Date();$("rowT").innerHTML=d.toLocaleDateString("en-GB")+" | ch1-t1 | "+me.code+" | "+me.nick.replace(/</g,"")+" | <b>"+score+"/5</b> | "+secs+"s";$("rowT").hidden=false;
+    showLB();},1500);
+};
+function fmt(s){return bn(Math.floor(s/60))+":"+bn(("0"+s%60).slice(-2))}
+function fake(seed,max,n){var r=seed,out=[];function rnd(){r=(r*9301+49297)%233280;return r/233280}
+  for(var i=0;i<n;i++){var s=Math.max(1,Math.round(max*(0.55+0.45*rnd())));out.push({nick:NAMES[i%NAMES.length],tail:String(100+Math.floor(rnd()*900)),score:s,secs:Math.round(60+rnd()*(max>10?900:200))})}return out}
+function showLB(){
+  var list,max,unit;
+  if(tab==="A"){max=5;list=fake(7,5,24);list.push({nick:me.nick,tail:me.tail,score:score,secs:secs,me:1});$("lbNote").textContent="এই টেস্টে যারা অংশ নিয়েছে, তাদের সেরা ২০ জন। প্রত্যেকের সবচেয়ে ভালো নম্বরটা ধরা হয়।"}
+  else{max=750;list=fake(3,750,24).map(function(x){x.secs=x.secs*20;return x});list.push({nick:me.nick,tail:me.tail,score:410+score,secs:secs+5400,me:1});$("lbNote").textContent="৩০টি টেস্টের প্রতিটির সেরা নম্বর যোগ করে মোট নম্বর (সর্বোচ্চ ৭৫০)।"}
+  list.sort(function(a,b){return b.score-a.score||a.secs-b.secs});
+  var rank=0;list.forEach(function(x,i){if(x.me)rank=i+1});
+  var h="";list.slice(0,20).forEach(function(x,i){var m=i===0?"🥇":i===1?"🥈":i===2?"🥉":bn(i+1);
+    h+='<tr'+(x.me?' class="me"':'')+'><td class="n">'+(i<3?'<span class="medal">'+m+'</span>':m)+'</td><td><span class="nm">'+x.nick.replace(/</g,"")+'</span> <span class="tail">…'+bn(x.tail)+'</span></td><td class="s">'+bn(x.score)+'</td><td class="t">'+fmt(x.secs)+'</td></tr>'});
+  $("lb").innerHTML=h;
+  $("myrank").hidden=false;$("myrank").textContent=rank<=20?"তুমি এখন "+bn(rank)+" নম্বরে! 🏆":"তোমার অবস্থান "+bn(rank)+"। সেরা ২০ এ উঠতে আরেকবার চেষ্টা করো!";
+  $("v4").hidden=false;
+}
+$("tA").onclick=function(){tab="A";this.setAttribute("aria-pressed","true");$("tB").setAttribute("aria-pressed","false");showLB()};
+$("tB").onclick=function(){tab="B";this.setAttribute("aria-pressed","true");$("tA").setAttribute("aria-pressed","false");showLB()};
+$("again").onclick=function(){$("v3").hidden=true;$("v4").hidden=true;$("v1").hidden=false;step(1)};
+})();
+</script>
+</body>
+</html>
