@@ -1,4 +1,4 @@
-/* ICT Maniac model test kit. Page sets window.MT = {code, minutes, qs:[{s, st, t, o, a, e, c, code, b}]} */
+/* ICT Maniac model test kit. Page sets window.MT = {code, series, minutes, qs:[{s, st, t, o, a, e, c, code, b}]}. Leaderboard hooks: window.IMLB (a/lb.js) */
 (function () {
   'use strict';
   var D = window.MT, $ = function (s, r) { return (r || document).querySelector(s); };
@@ -150,6 +150,7 @@
     filter(bad + skip > 0 ? 'miss' : 'all');
     window.scrollTo(0, 0);
     chime(pct >= 60);
+    if (window.IMLB) { var as = ''; for (var k = 0; k < N; k++) as += ans[k] === undefined ? '-' : ans[k]; window.IMLB.done(as, used); }
   }
 
   function filter(f) {
@@ -164,7 +165,7 @@
   /* wiring */
   var best0 = store(KEY);
   if (best0 !== null) { $('#best').hidden = false; $('#best').textContent = '⭐ তোমার আগের সেরা নম্বর: ' + bn(best0) + '/' + bn(N); }
-  $('#start').addEventListener('click', start);
+  $('#start').addEventListener('click', function () { if (window.IMLB && !window.IMLB.check()) return; start(); });
   $('#submit').addEventListener('click', trySubmit);
   $('#yes').addEventListener('click', function () { submit(false); });
   $('#no').addEventListener('click', function () {

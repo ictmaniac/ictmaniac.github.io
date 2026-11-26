@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#F2F7FF">
+<title>লিডারবোর্ড · ICT Maniac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../../a/mt.css?v=3">
+<style>
+select{font:inherit;font-weight:600;width:100%;min-height:48px;border-radius:12px;border:2px solid var(--line);background:#fff;color:var(--ink);padding:8px 10px}
+select:focus{outline:none;border-color:var(--blue)}
+.mine{font-family:var(--f-display);font-weight:800;color:var(--green);font-size:1.1rem}
+.mine:empty{display:none}
+.top3{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:8px;align-items:end;text-align:center}
+.top3 div{background:var(--blue-soft);border-radius:14px;padding:10px 4px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.top3 .p1{background:var(--yellow-soft);padding-top:16px}
+.top3 .m{font-size:1.8rem;line-height:1}
+.top3 b{overflow-wrap:anywhere;font-size:.95rem}
+.top3 span{font-size:.8rem;color:var(--muted)}
+.top3 strong{font-family:var(--f-display);font-size:1.3rem;color:var(--blue)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="brand"><i>IM</i>ICT Maniac</span>
+    <span class="eyebrow" id="sname">HSC ICT · অনলাইন পরীক্ষা</span>
+    <h1>🏆 লিডারবোর্ড</h1>
+  </header>
+
+  <section class="card">
+    <div class="filter" role="group" aria-label="কোন লিডারবোর্ড">
+      <button type="button" id="bAll" aria-pressed="true">সব টেস্ট মিলিয়ে</button><button type="button" id="bOne" aria-pressed="false">একটা টেস্ট</button>
+    </div>
+    <select id="series" aria-label="পরীক্ষার ধরন" hidden></select>
+    <select id="test" aria-label="টেস্ট বেছে নাও" hidden></select>
+    <p class="lbnote" id="note"></p>
+  </section>
+
+  <section class="card" id="board">
+    <p class="lbwait"><span class="spin"></span> লোড হচ্ছে…</p>
+  </section>
+
+  <p class="lbnote" style="text-align:center">নামের পাশে মোবাইল নম্বরের শুধু শেষ ৩টা সংখ্যা। প্রত্যেকের সবচেয়ে ভালো নম্বর ধরা হয়। নম্বর সমান হলে কম সময় যার, সে উপরে। প্রতি মিনিটে আপডেট হয়।</p>
+  <footer><a id="hub" href="../67gsxrfm/" style="color:inherit">📚 সব টেস্ট</a> · © ICT Maniac</footer>
+</div>
+<script src="../../a/lb-config.js?v=3"></script>
+<script>
+(function () {
+  var $ = function (i) { return document.getElementById(i); };
+  var BN = '০১২৩৪৫৬৭৮৯';
+  function bn(n) { return String(n).replace(/\d/g, function (d) { return BN[d]; }); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function clock(s) { var h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = ('0' + s % 60).slice(-2); return bn(h ? h + ':' + ('0' + m).slice(-2) + ':' + x : m + ':' + x); }
+  function store(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  var q = new URLSearchParams(location.search), reg = null, S = q.get('s') || 'book', T = q.get('t') || '';
+  var URL = window.IM_LB_URL, me = store('im-lb-phone'), myName = store('im-lb-name');
+  if (!URL) { $('board').innerHTML = '<p class="lbmsg">লিডারবোর্ড খুব শীঘ্রই চালু হবে। 🙂</p>'; return; }
+
+  function setUrl() { history.replaceState(null, '', '?s=' + encodeURIComponent(S) + (T ? '&t=' + encodeURIComponent(T) : '')); }
+  function fill() {
+    var s = reg.series[S] || reg.series.book; if (!reg.series[S]) S = 'book';
+    $('sname').textContent = s.title;
+    if (s.hub) $('hub').href = '../' + s.hub + '/';
+    var keys = Object.keys(reg.series);
+    $('series').hidden = keys.length < 2;
+    $('series').innerHTML = keys.map(function (k) { return '<option value="' + k + '"' + (k === S ? ' selected' : '') + '>' + esc(reg.series[k].title) + '</option>'; }).join('');
+    $('test').innerHTML = s.tests.map(function (t) { return '<option value="' + t.code + '"' + (t.code === T ? ' selected' : '') + '>' + esc(t.title) + '</option>'; }).join('');
+    $('test').hidden = !T;
+    $('bAll').setAttribute('aria-pressed', !T); $('bOne').setAttribute('aria-pressed', !!T);
+    $('note').textContent = T ? 'এই টেস্টে সেরা ২০ জন।' : s.title + ': সব টেস্টের সেরা নম্বর যোগ করে সেরা ২০ জন।';
+  }
+  function load() {
+    fill(); setUrl();
+    $('board').innerHTML = '<p class="lbwait"><span class="spin"></span> লোড হচ্ছে…</p>';
+    fetch(URL + '?series=' + encodeURIComponent(S) + '&test=' + encodeURIComponent(T) + (me ? '&me=' + me : ''))
+      .then(function (r) { return r.json(); })
+      .then(draw, function () { $('board').innerHTML = '<p class="lbmsg">📶 লোড হয়নি। ইন্টারনেট দেখে আবার খোলো।</p>'; });
+  }
+  function draw(j) {
+    var top = j.top || [], h = '';
+    if (!top.length) { $('board').innerHTML = '<p class="lbmsg">এখনো কেউ জমা দেয়নি। প্রথম হও তুমি! 🚀</p>'; return; }
+    if (j.me) h += '<p class="mine">তুমি এখন ' + bn(j.me.rank) + ' নম্বরে (' + bn(j.me.of) + ' জনের মধ্যে) · নম্বর ' + bn(j.me.s) + '</p>';
+    if (top.length >= 3) {
+      h += '<div class="top3">' + [1, 0, 2].map(function (i) { var x = top[i];
+        return '<div class="p' + (i + 1) + '"><span class="m">' + ['🥇', '🥈', '🥉'][i] + '</span><b>' + esc(x.n) + '</b><span>…' + bn(x.t) + '</span><strong>' + bn(x.s) + '</strong></div>'; }).join('') + '</div>';
+    }
+    var t = me ? me.slice(-3) : null;
+    h += '<table class="lbt"><thead><tr><th>ক্রম</th><th>নাম</th><th class="r">নম্বর</th><th class="r">সময়</th></tr></thead><tbody>' +
+      top.map(function (x, i) {
+        var mine = t && x.t === t && x.n === myName;
+        return '<tr' + (mine ? ' class="me"' : '') + '><td class="k">' + (['🥇', '🥈', '🥉'][i] || bn(i + 1)) + '</td><td>' + esc(x.n) + ' <span class="tl">…' + bn(x.t) + '</span>' + (mine ? ' <b class="you">(তুমি)</b>' : '') +
+          (x.k ? '<span class="sub">' + bn(x.k) + 'টি টেস্ট</span>' : '') + '</td><td class="r s">' + bn(x.s) + '</td><td class="r d">' + clock(x.d) + '</td></tr>';
+      }).join('') + '</tbody></table>';
+    $('board').innerHTML = h;
+  }
+  $('bAll').onclick = function () { T = ''; load(); };
+  $('bOne').onclick = function () { T = T || reg.series[S].tests[0].code; load(); };
+  $('test').onchange = function () { T = this.value; load(); };
+  $('series').onchange = function () { S = this.value; T = ''; load(); };
+  fetch('../../a/lb-tests.json?v=3&t=' + Math.floor(Date.now() / 600000)).then(function (r) { return r.json(); }).then(function (j) { reg = j; load(); },
+    function () { $('board').innerHTML = '<p class="lbmsg">📶 লোড হয়নি। ইন্টারনেট দেখে আবার খোলো।</p>'; });
+})();
+</script>
+</body>
+</html>
