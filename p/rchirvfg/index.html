@@ -34,6 +34,11 @@ svg.scene .res{font-size:13px;font-weight:800;text-anchor:middle}
   </header>
   <div class="explain" id="ex" aria-live="polite"><span class="tag" id="extag">শুরু</span><p id="extx"></p></div>
   <section class="card" id="main">
+    <div class="v3" id="v3">
+      <div class="fmap" id="fm"><div class="st" data-k="1"><b>①</b>কেন</div><span class="ar">›</span><div class="st" data-k="2"><b>②</b>নিবন্ধন</div><span class="ar">›</span><div class="st" data-k="3"><b>③</b>যাচাই</div><span class="ar">›</span><div class="st" data-k="4"><b>④</b>অচেনা</div><span class="ar">›</span><div class="st" data-k="5"><b>⑤</b>প্রকার ও ব্যবহার</div></div>
+      <div id="w3"></div>
+    </div>
+    <div id="old2d" hidden>
     <div class="sbox">
     <svg class="scene" id="sv" viewBox="0 0 360 230">
       <defs><clipPath id="fpc"><ellipse cx="60" cy="104" rx="38" ry="50"/></clipPath></defs>
@@ -54,6 +59,7 @@ svg.scene .res{font-size:13px;font-weight:800;text-anchor:middle}
       <circle cx="338" cy="128" r="4" fill="#5B4632" id="knob"/>
       <text id="lock" class="emo" x="310" y="30" font-size="16">🔒</text>
     </svg>
+    </div>
     </div>
     <div class="parts" id="parts">
       <span class="grp">শারীরিক বৈশিষ্ট্য</span>
@@ -87,8 +93,14 @@ svg.scene .res{font-size:13px;font-weight:800;text-anchor:middle}
 </div>
 <div class="dock"><div class="in"><button class="pv" aria-label="আগের ধাপ">◀</button><button class="nx">পরের ধাপ ▶</button><button class="au" aria-pressed="false"><span>▶ অটো</span><i class="tm"></i></button><div class="spd" role="group" aria-label="গতি"><span>গতি</span><button data-s="0.55">🐢 ধীরে</button><button data-s="1" class="sel">স্বাভাবিক</button><button data-s="1.8">🐇 দ্রুত</button></div><div class="bar"><i></i></div><div class="cnt"></div></div></div>
 <script src="../../a/im.js?v=14"></script>
+<script src="../../a/three.min.js"></script>
+<script src="../../a/im3d.js?v=14"></script>
 <script>
-const {$,say,bn}=IM;const Q=IM.seq(),sv=$('sv');
+const {$,say,bn}=IM;
+const X={fp:{t:'👆 আঙুলের ছাপ',d:'প্রত্যেকের আঙুলের ছাপ অদ্বিতীয়। রিডার ত্বকের টিস্যু ও নিচের রক্ত সঞ্চালন পড়ে ইলেকট্রোম্যাগনেটিক পদ্ধতিতে।'},who:{t:'ব্যবহারকারী',d:'যে দরজা খুলতে চাইছে। তার বৈশিষ্ট্য ডেটাবেজের সাথে মিলতে হবে।'},db:{t:'🗄️ ডেটাবেজ',d:'নিবন্ধনের সময় প্রত্যেকের কোড তার নামের সাথে এখানে জমা থাকে।'},door:{t:'🚪 দরজা',d:'কোড মিললেই খোলে। এভাবে প্রবেশাধিকার নিয়ন্ত্রণ করা হয় (Access Control)।'},
+ f:{t:'👆 ফিংগার প্রিন্ট রিডার',d:'সবচেয়ে বেশি ব্যবহৃত। মোবাইল, হাজিরা মেশিনে থাকে।'},fa:{t:'🙂 ফেইস রিকগনিশন',d:'দুই চোখের দূরত্ব, নাকের দৈর্ঘ্য, চোয়ালের কোণ মাপে। চুল, মেকআপ বা আলোয় ভুল হতে পারে।'},h:{t:'✋ হ্যান্ড জিওমিট্রি',d:'হাতের আকার মাপে, ৩১,০০০ এর বেশি বিন্দু, ৫ সেকেন্ডের কম সময়ে। ব্যবহার সবচেয়ে সহজ।'},i:{t:'👁️ আইরিস ও রেটিনা',d:'আইরিস: চোখের মণির চারপাশের রঙিন অংশ। রেটিনা: চোখের পেছনের রক্তনালি। খুব নির্ভুল কিন্তু ব্যয়বহুল।'},d:{t:'🧬 DNA',d:'রক্ত, চুল বা ত্বকের DNA মেলানো হয়। সবচেয়ে নির্ভুল, কিন্তু সময়সাপেক্ষ ও ব্যয়বহুল।'},
+ v:{t:'🗣️ ভয়েস রিকগনিশন',d:'কণ্ঠস্বরের বৈশিষ্ট্য মেলায়। ঠান্ডা লাগলে বা কোলাহলে ভুল হতে পারে।'},s:{t:'✍️ সিগনেচার ভেরিফিকেশন',d:'বিশেষ কলম-প্যাডে স্বাক্ষরের আকার, গতি, সময় আর চাপ মাপে। ব্যাংক ও বিমায় ব্যবহৃত।'},t:{t:'⌨️ টাইপিং কীস্ট্রোক',d:'কে কোন ছন্দে ও গতিতে টাইপ করে তা মেলায়।'}};
+function old2D(){const Q=IM.seq(),sv=$('sv');
 $('rid').innerHTML=[6,11,16,21,26,31,36,41,46].map((r,i)=>`<ellipse class="ridge" cx="${60+(i%2)}" cy="${110-i}" rx="${r*.8}" ry="${r}" stroke-dasharray="${30+i*9} ${3+i%3*2}"/>`).join('');
 const MP=[[44,84],[72,78],[52,120],[80,112],[60,140],[38,104]];
 $('mns').innerHTML=MP.map(([x,y])=>`<circle class="mn" cx="${x}" cy="${y}" r="4"/>`).join('');
@@ -119,10 +131,8 @@ const S=[
 function render(k){const s=S[k];Q.bump();sv.querySelectorAll('.pk').forEach(e=>e.remove());$('sl').setAttribute('class','sline hide');who('🧑','রহিম');$('mns').removeAttribute('transform');
   mns(s.mn||0);setRow('cn',s.cn||null);setRow('cs',s.st?RA:null);res('','');door(false);parts('',[]);s.f();say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
 var player=IM.player({count:()=>S.length,show:render,interval:4200,swipe:$('sv')});
-const X={fp:{t:'👆 আঙুলের ছাপ',d:'প্রত্যেকের আঙুলের ছাপ অদ্বিতীয়। রিডার ত্বকের টিস্যু ও নিচের রক্ত সঞ্চালন পড়ে ইলেকট্রোম্যাগনেটিক পদ্ধতিতে।'},who:{t:'ব্যবহারকারী',d:'যে দরজা খুলতে চাইছে। তার বৈশিষ্ট্য ডেটাবেজের সাথে মিলতে হবে।'},db:{t:'🗄️ ডেটাবেজ',d:'নিবন্ধনের সময় প্রত্যেকের কোড তার নামের সাথে এখানে জমা থাকে।'},door:{t:'🚪 দরজা',d:'কোড মিললেই খোলে। এভাবে প্রবেশাধিকার নিয়ন্ত্রণ করা হয় (Access Control)।'},
- f:{t:'👆 ফিংগার প্রিন্ট রিডার',d:'সবচেয়ে বেশি ব্যবহৃত। মোবাইল, হাজিরা মেশিনে থাকে।'},fa:{t:'🙂 ফেইস রিকগনিশন',d:'দুই চোখের দূরত্ব, নাকের দৈর্ঘ্য, চোয়ালের কোণ মাপে। চুল, মেকআপ বা আলোয় ভুল হতে পারে।'},h:{t:'✋ হ্যান্ড জিওমিট্রি',d:'হাতের আকার মাপে, ৩১,০০০ এর বেশি বিন্দু, ৫ সেকেন্ডের কম সময়ে। ব্যবহার সবচেয়ে সহজ।'},i:{t:'👁️ আইরিস ও রেটিনা',d:'আইরিস: চোখের মণির চারপাশের রঙিন অংশ। রেটিনা: চোখের পেছনের রক্তনালি। খুব নির্ভুল কিন্তু ব্যয়বহুল।'},d:{t:'🧬 DNA',d:'রক্ত, চুল বা ত্বকের DNA মেলানো হয়। সবচেয়ে নির্ভুল, কিন্তু সময়সাপেক্ষ ও ব্যয়বহুল।'},
- v:{t:'🗣️ ভয়েস রিকগনিশন',d:'কণ্ঠস্বরের বৈশিষ্ট্য মেলায়। ঠান্ডা লাগলে বা কোলাহলে ভুল হতে পারে।'},s:{t:'✍️ সিগনেচার ভেরিফিকেশন',d:'বিশেষ কলম-প্যাডে স্বাক্ষরের আকার, গতি, সময় আর চাপ মাপে। ব্যাংক ও বিমায় ব্যবহৃত।'},t:{t:'⌨️ টাইপিং কীস্ট্রোক',d:'কে কোন ছন্দে ও গতিতে টাইপ করে তা মেলায়।'}};
-IM.tapx(sv,X);IM.tapx($('parts'),X);
+IM.tapx(sv,X);player.reset();}
+IM.tapx($('parts'),X);
 IM.compare($('cx0'),['','শারীরিক','আচরণগত'],[
  ['কী মাপে','দেহের গঠন','কাজ করার ধরন','শারীরিক বৈশিষ্ট্য সহজে বদলায় না, আচরণ একটু বদলাতে পারে।'],
  ['উদাহরণ','আঙুলের ছাপ, মুখ, আইরিস, DNA','কণ্ঠস্বর, স্বাক্ষর, টাইপিং','বোর্ডে প্রায়ই জিজ্ঞেস করে কোনটা কোন ভাগে।'],
@@ -137,7 +147,101 @@ IM.mcq($('quiz6'),[
  {q:'সবচেয়ে নির্ভুল কিন্তু সময়সাপেক্ষ পদ্ধতি—',o:['ফেইস রিকগনিশন','DNA','হ্যান্ড জিওমিট্রি','ভয়েস'],a:1,w:'DNA সবচেয়ে নির্ভুল, তবে ব্যয়বহুল ও সময়সাপেক্ষ।'},
  {q:'চোখের পেছনের রক্তনালির বিন্যাস পরীক্ষা করে কোনটি?',o:['আইরিস স্ক্যান','রেটিনা স্ক্যান','ফেইস রিকগনিশন','ফিংগার প্রিন্ট'],a:1,w:'আইরিস হলো মণির চারপাশের রঙিন অংশ, রেটিনা পেছনের রক্তনালি।'},
  {q:'বায়োমেট্রিক ডিভাইস বৈশিষ্ট্যকে কীসে রূপান্তর করে?',o:['ছবিতে','ডিজিটাল কোডে','শব্দে','আলোতে'],a:1,w:'ডিজিটাল কোড বানিয়ে সংরক্ষিত কোডের সাথে তুলনা করে।'}]);
-player.reset();
+/* ---------- 3D: fingerprint door lock (falls back to the 2D scene above) ---------- */
+const W=IM3.world($('w3'));
+if(!W){$('v3').hidden=true;$('old2d').hidden=false;old2D();}else{
+const {T,V,C,mat,scene}=W,M=IM3;
+const parts3=(on,done)=>$('parts').querySelectorAll('button').forEach(b=>{b.classList.toggle('on',b.dataset.k===on);b.classList.toggle('done',(done||[]).includes(b.dataset.k));});
+const at=(m,x,y,z)=>{m.position.set(x,y,z);return m;};
+const box=(w,h,d,c,o)=>new T.Mesh(new T.BoxGeometry(w,h,d),mat(c,o));
+/* room: floor, wall, door, scanner, database */
+scene.add(at(box(12,.2,8,0xEEF3FA,{roughness:.9}),0,-.1,1));
+scene.add(at(box(9,4,.3,0xF7F9FC),-.5,2,-1.15));
+scene.add(at(box(1.7,2.7,.34,0xC9D6EA),.95,1.35,-1.1));
+const hinge=new T.Group();hinge.position.set(.3,0,-.9);scene.add(hinge);
+const door=at(box(1.3,2.45,.1,0x9CC0FF,{metalness:.15}),.65,1.23,0);hinge.add(door);
+hinge.add(at(new T.Mesh(new T.SphereGeometry(.07,12,10),mat(C.yel,{metalness:.6})),1.15,1.15,.1));
+W.pick(door,X.door);let doorWant=0;
+const scn=new T.Group();scn.position.set(-.6,1.35,-.95);scene.add(scn);
+scn.add(at(box(.5,.7,.12,0x2E3A55),0,0,0));const glass=at(box(.32,.32,.02,0x7FD6A8,{emissive:0x1d6b45,emissiveIntensity:.3}),0,-.08,.07);scn.add(glass);
+const lamp=at(new T.Mesh(new T.SphereGeometry(.05,12,10),new T.MeshBasicMaterial({color:C.red})),0,.24,.07);scn.add(lamp);W.pick(scn,X.fp);
+const db=new T.Group();db.position.set(-3.4,0,-.4);scene.add(db);
+for(let i=0;i<3;i++){const d=new T.Mesh(new T.CylinderGeometry(.55,.55,.42,28),mat(i%2?0xBFD7FB:C.blueL,{metalness:.2}));d.position.y=.3+i*.48;db.add(d);
+  const r=new T.Mesh(new T.TorusGeometry(.55,.02,6,28),mat(C.blue));r.rotation.x=Math.PI/2;r.position.y=.51+i*.48;db.add(r);}
+W.pick(db,X.db);
+/* people */
+const rahim=M.person(C.blue);rahim.position.set(-.6,0,1.6);rahim.rotation.y=Math.PI;scene.add(rahim);const tR=W.track(rahim);W.pick(rahim,X.who);
+const str=M.person(C.purple);str.position.set(-.6,0,1.6);str.rotation.y=Math.PI;scene.add(str);const tS=W.track(str);W.pick(str,X.who);
+const hat=new T.Mesh(new T.CylinderGeometry(.36,.36,.08,20),mat(C.ink));hat.position.y=.12;str.userData.head.add(hat);const hat2=new T.Mesh(new T.CylinderGeometry(.24,.26,.3,20),mat(C.ink));hat2.position.y=.28;str.userData.head.add(hat2);
+const arm=new T.Mesh(new T.CylinderGeometry(.07,.07,.9,10),mat(C.skin));arm.rotation.x=Math.PI/2;let armOn=null;scene.add(arm);const tArm=W.track(arm);
+/* big fingerprint above the scanner */
+function fpTex(seed){const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');x.fillStyle='#FBE3CC';x.beginPath();x.ellipse(128,128,110,124,0,0,Math.PI*2);x.fill();
+  x.strokeStyle='#B97C5A';x.lineWidth=5;let r=seed;const rnd=()=>(r=(r*9301+49297)%233280)/233280;
+  for(let i=1;i<14;i++){const ry=i*9,rx=i*7.4;const a0=rnd()*.6,gap=.2+rnd()*.35;x.beginPath();x.ellipse(128,140-i*1.5,rx,ry,0,a0+gap,a0+Math.PI*2-.15);x.stroke();}
+  const t=new T.CanvasTexture(c);return t;}
+const fp=new T.Group();fp.position.set(-.6,3.1,-.5);scene.add(fp);
+const fpM=new T.MeshBasicMaterial({map:fpTex(7),transparent:true});const disk=new T.Mesh(new T.CircleGeometry(.95,48),fpM);disk.scale.y=1.12;fp.add(disk);
+const ring=new T.Mesh(new T.TorusGeometry(1.0,.03,8,48),mat(C.blue));ring.scale.y=1.12;fp.add(ring);const tFp=W.track(fp);W.pick(disk,X.fp);
+const MPA=[[-.42,.42],[.25,.55],[-.2,-.05],[.38,.05],[-.05,-.6],[-.55,-.3]],MPB=[[.45,.35],[-.3,.62],[.1,-.2],[-.45,.1],[.3,-.55],[.6,-.15]];
+const dots=MPA.map(()=>{const d=new T.Mesh(new T.SphereGeometry(.07,12,10),new T.MeshBasicMaterial({color:C.red}));fp.add(d);return d;});
+const setDots=(P,n)=>dots.forEach((d,i)=>{d.position.set(P[i][0],P[i][1],.03);d.visible=i<n;});
+const sline=at(new T.Mesh(new T.BoxGeometry(2.1,.05,.02),new T.MeshBasicMaterial({color:0x3BD47A,transparent:true,opacity:.85})),0,0,.05);fp.add(sline);let scanT=-1,scanDone=null;
+/* code cubes: new code (row n) and stored code (row s) */
+const RA=[1,0,1,1,0,1,1,0],ST=[0,1,1,0,0,1,0,1];
+const dTex=['0','1'].map(t=>{const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,64,64);x.fillStyle='#14213D';x.font='800 44px sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText(t,32,35);return new T.CanvasTexture(c);});
+const cx=i=>-.6+(i-3.5)*.42;
+function row(y){return RA.map((b,i)=>{const m=new T.Mesh(new T.BoxGeometry(.34,.34,.34),new T.MeshStandardMaterial({map:dTex[b],color:0xffffff}));m.position.set(cx(i),y,-.5);scene.add(m);const t=W.track(m);t.m=m;return t;});}
+const rN=row(4.55),rS=row(5.05);
+const setBits=(r,bits)=>r.forEach((t,i)=>{t.m.material.map=dTex[bits[i]];t.m.material.needsUpdate=true;});
+const tint=(r,c)=>r.forEach((t,i)=>t.m.material.color.setHex(Array.isArray(c)?c[i]:c));
+W.tag('who','🧑 রহিম','',()=>(tS.a>.5?str:rahim).userData.head.getWorldPosition(V()).add(V(0,.6,0)));
+W.tag('ln','নতুন কোড','',()=>V(1.75,4.55,-.5));W.tag('ls','জমা কোড','g',()=>V(1.75,5.05,-.5));
+W.tag('dbl','🗄️ ডেটাবেজ','',()=>V(-3.4,1.9,-.4));W.tag('res','','big',()=>V(.3,2.9,-.2));
+const FT=[['f','👆 আঙুলের ছাপ',-.6,3.1],['fa','🙂 মুখমণ্ডল',-1.9,2.3],['h','✋ হাত',.7,2.3],['i','👁️ আইরিস',-2,1.5],['d','🧬 DNA',.8,1.5],['v','🗣️ কণ্ঠস্বর',-2,.8],['s','✍️ স্বাক্ষর',.8,.8],['t','⌨️ টাইপিং',-.6,.35]];
+FT.forEach(([k,t,x,y])=>W.tag('ft'+k,t,['v','s','t'].includes(k)?'y':'g',()=>V(x,y,1.6)));
+const USE=[['📱 মোবাইল আনলক',-2.6,3.6],['🏦 ব্যাংক',1.6,3.6],['🛂 পাসপোর্ট',-2.6,2.6],['👮 অপরাধী শনাক্ত',1.6,2.6]];
+USE.forEach(([t,x,y],i)=>W.tag('u'+i,t,'y',()=>V(x,y,0)));
+W.tick((dt,now,k)=>{hinge.rotation.y+=(doorWant-hinge.rotation.y)*k;
+  if(scanT>=0){scanT+=dt*W.spd()/1.4;const u=scanT<1?scanT:2-scanT;sline.position.y=1.0-2.0*Math.min(1,Math.max(0,u));sline.visible=true;if(scanT>=2){scanT=-1;sline.visible=false;const f=scanDone;scanDone=null;f&&f();}}
+  if(armOn){const h=armOn.userData.head.getWorldPosition(V());arm.position.set(-.6,1.33,h.z-.85);}});
+const scan=done=>{scanT=0;scanDone=done;IM.sfx('type');};
+W.poses={all:[V(.3,3.4,10.5),V(-.6,2.6,0)],scan:[V(-.2,3.4,5.6),V(-.6,3.4,-.5)],code:[V(-.3,4.3,9.6),V(-.3,3.7,-.5)],door:[V(.6,2.4,7.8),V(-.1,1.9,-.4)]};
+function base(o){o=o||{};scanT=-1;scanDone=null;sline.visible=false;doorWant=0;lamp.material.color.setHex(C.red);
+  W.set(tR,null,1,o.str?0:1);W.set(tS,null,1,o.str?1:0);armOn=o.arm?(o.str?str:rahim):null;W.set(tArm,null,1,o.arm?1:0);
+  W.set(tFp,null,1,o.fp===0?0:1);setDots(o.str?MPB:MPA,o.dots||0);
+  rN.forEach((t,i)=>W.set(t,V(cx(i),4.55,-.5),1,o.n?1:0));rS.forEach((t,i)=>W.set(t,V(cx(i),5.05,-.5),1,o.s?1:0));
+  setBits(rN,o.str?ST:RA);setBits(rS,RA);tint(rN,0xffffff);tint(rS,0xffffff);
+  W.tagText('who',o.str?'🕵️ অচেনা':'🧑 রহিম');W.tagText('res','');parts3('');}
+const tagsFor=extra=>W.tags(['who'].concat(extra||[]));
+function compare(bits,done){bits.forEach((b,i)=>W.later(300+i*220,()=>{const m=b===RA[i];[rN[i],rS[i]].forEach(t=>t.m.material.color.setHex(m?0x8FE0B5:0xFF9C8A));IM.sfx(m?'tap':'no');
+  if(i===bits.length-1)W.later(350,()=>done(bits.every((x,j)=>x===RA[j])));}));}
+const S3=[
+ {f:1,m:'পাসওয়ার্ড ভুলে যাওয়া যায়, চাবি হারিয়ে যায়, চুরিও হয়। কিন্তু তোমার <b>আঙুলের ছাপ</b> পৃথিবীতে শুধু তোমারই, কারও সাথে মেলে না। একেই কাজে লাগায় <b>বায়োমেট্রিক্স</b>।',
+  go(){base();W.fly('all');tagsFor(['dbl']);}},
+ {f:2,m:'<b>নিবন্ধন (Enrollment):</b> রহিম প্রথমবার স্ক্যানারে আঙুল রাখলো। সবুজ আলো পুরো ছাপ স্ক্যান করছে, আর ছাপের বিশেষ বিন্দুগুলো (লাল) খুঁজে বের করছে।',
+  go(){base({arm:1});W.fly('scan');tagsFor();W.later(400,()=>scan());MPA.forEach((_,i)=>W.later(900+i*300,()=>{setDots(MPA,i+1);IM.sfx('pop',i);}));}},
+ {f:2,m:'বিন্দুগুলোর অবস্থান থেকে তৈরি হলো একটা <b>ডিজিটাল কোড</b>। কোডটা রহিমের নামে <b>ডেটাবেজে</b> জমা রাখা হলো।',
+  go(){base({dots:6,n:1});W.fly('code');tagsFor(['ln','dbl']);rN.forEach((t,i)=>{t.m.position.set(-.6,3.1,-.5);t.cur=0;});
+   W.later(1700,()=>{IM.sfx('whoosh');rN.forEach(t=>W.set(t,V(-3.4,1.6,-.4),.3,0));W.later(900,()=>{IM.sfx('ok');W.tagText('res','🗄️ জমা হলো');W.tags(['who','dbl','res']);});});}},
+ {f:3,m:'<b>যাচাই (Verification):</b> পরের দিন রহিম দরজায় এসে আঙুল রাখলো। আবার স্ক্যান হয়ে নতুন কোড তৈরি হলো, আর ডেটাবেজ থেকে সংরক্ষিত কোড আনা হলো।',
+  go(){base({arm:1,n:1,s:1});W.fly('code');tagsFor(['ln','ls','dbl']);rN.forEach(t=>{t.m.position.set(-.6,3.1,-.5);t.cur=0;W.set(t,null,1,0);});rS.forEach(t=>{t.m.position.set(-3.4,1.6,-.4);t.cur=0;});
+   W.later(300,()=>scan(()=>{setDots(MPA,6);rN.forEach(t=>W.set(t,null,1,1));IM.sfx('pop');}));W.later(600,()=>IM.sfx('whoosh'));}},
+ {f:3,m:'এবার দুই কোড <b>ঘর ধরে ঘর মেলানো</b> হচ্ছে। সব ঘর মিলে গেলো ✅। তাই দরজা খুলে গেলো!',
+  go(){base({dots:6,n:1,s:1});W.fly('code');tagsFor(['ln','ls']);
+   compare(RA,()=>{W.tagText('res','✅ মিলেছে! স্বাগতম');W.tags(['who','ln','ls','res']);lamp.material.color.setHex(C.green);W.fly('door');W.later(500,()=>{doorWant=-1.6;IM.sfx('done');});});}},
+ {f:4,m:'এবার এক <b>অচেনা লোক 🕵️</b> আঙুল রাখলো। তার ছাপের বিন্দু আলাদা জায়গায়, তাই কোডও আলাদা। না মেলায় দরজা <b>বন্ধ</b> থাকলো ❌',
+  go(){base({str:1,arm:1,s:1,n:1});W.fly('code');tagsFor(['ln','ls']);rN.forEach(t=>W.set(t,null,1,0));
+   W.later(300,()=>scan(()=>{setDots(MPB,6);rN.forEach(t=>W.set(t,null,1,1));
+    compare(ST,()=>{W.tagText('res','❌ মেলেনি! প্রবেশ নিষেধ');W.tags(['who','ln','ls','res']);W.fly('door');IM.sfx('no');
+     let n=0;const sh=()=>{lamp.material.color.setHex(n%2?C.red:0xffffff);if(++n<6)W.later(160,sh);else lamp.material.color.setHex(C.red);};sh();});}));}},
+ {f:5,m:'বায়োমেট্রিক্স দুই রকম। <b>শারীরিক বৈশিষ্ট্য</b> (সবুজ): আঙুলের ছাপ, মুখমণ্ডল, হাতের গঠন, আইরিস-রেটিনা, DNA। <b>আচরণগত বৈশিষ্ট্য</b> (হলুদ): কণ্ঠস্বর, স্বাক্ষর, টাইপ করার ধরন।',
+  go(){base({dots:6,fp:0});W.set(tR,V(-.6,0,1.6),1,1);W.fly('all');tagsFor();const ks=FT.map(f=>f[0]);
+   ks.forEach((k,i)=>W.later(300+i*420,()=>{parts3(k,ks.slice(0,i));W.tags(['who'].concat(ks.slice(0,i+1).map(x=>'ft'+x)));IM.sfx('pop',i);}));W.later(ks.length*420+500,()=>parts3('',ks));}},
+ {f:5,m:'ব্যবহার: মোবাইল আনলক, অফিসে <b>হাজিরা</b>, পাসপোর্ট ও জাতীয় পরিচয়পত্র, ব্যাংকের লেনদেন, সিম নিবন্ধন আর <b>অপরাধী শনাক্তকরণ</b>।',
+  go(){base({dots:6});lamp.material.color.setHex(C.green);doorWant=-1.6;W.fly('all');tagsFor();
+   USE.forEach(([t,x,y],i)=>W.later(300+i*500,()=>{W.send([V(-.6,1.4,-.85),V((x-.6)/2,4.2,.2),V(x,y,0)],{r:.1,dur:800,sound:i===0});W.later(800,()=>W.tags(['who'].concat(USE.slice(0,i+1).map((_,j)=>'u'+j))));}));}}];
+W.shadows(7);IM3.steps(W,S3,{flow:'#fm',interval:6000});
+}
 </script>
 </body>
 </html>

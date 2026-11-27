@@ -1,6 +1,7 @@
 ---
 ch: ১
 kit: 1
+three: 1
 title: টেলিমেডিসিন
 eyebrow: ১.৫ চিকিৎসা: টেলিমেডিসিন (Telemedicine)
 h1: গ্রামে বসেই শহরের ডাক্তার
@@ -14,6 +15,11 @@ svg.scene .scr{font-size:9px;font-weight:800;fill:var(--accent);text-anchor:midd
 svg.scene .road{stroke:#B8C4D9;stroke-width:8;stroke-linecap:round}
 </style>
   <section class="card" id="main">
+    <div class="v3" id="v3">
+      <div class="fmap" id="fm"><div class="st" data-k="1"><b>①</b>সমস্যা</div><span class="ar">›</span><div class="st" data-k="2"><b>②</b>সেবা কেন্দ্র</div><span class="ar">›</span><div class="st" data-k="3"><b>③</b>ইন্টারনেট</div><span class="ar">›</span><div class="st" data-k="4"><b>④</b>ভিডিও কল</div><span class="ar">›</span><div class="st" data-k="5"><b>⑤</b>সুস্থ</div></div>
+      <div id="w3"></div>
+    </div>
+    <div id="old2d" hidden>
     <div class="sbox">
     <svg class="scene" id="sv" viewBox="0 0 360 230">
       <g class="node hit" data-k="vil" data-x="vil"><rect x="6" y="40" width="112" height="130" rx="12"/></g>
@@ -36,6 +42,7 @@ svg.scene .road{stroke:#B8C4D9;stroke-width:8;stroke-linecap:round}
       <text id="bus" class="mid" x="0" y="0" transform="translate(40,196)">🚌</text>
       <text id="tag" class="lbl" x="180" y="182" style="fill:var(--signal)"></text>
     </svg>
+    </div>
     </div>
     <div class="parts" id="parts"><button data-k="t" data-x="t">⏱️ সময় বাঁচে</button><button data-k="m" data-x="m">💰 খরচ কমে</button><button data-k="s" data-x="s">👨‍⚕️ বিশেষজ্ঞ পাওয়া যায়</button></div>
   </section>
@@ -61,7 +68,10 @@ svg.scene .road{stroke:#B8C4D9;stroke-width:8;stroke-linecap:round}
     </ul>
   </section>
 <script>
-const {$,say,bn}=IM;const Q=IM.seq(),sv=$('sv');
+const {$,say,bn}=IM;
+const X={vil:{t:'🏡 ইউনিয়ন তথ্য ও সেবা কেন্দ্র',d:'গ্রামের ডিজিটাল সেন্টার। এখানে কম্পিউটার, ক্যামেরা, ইন্টারনেট আর মেডিকেল সেন্সর থাকে।'},doc:{t:'🏥 বিশেষজ্ঞ ডাক্তার',d:'শহরের বা বিদেশের হাসপাতালে বসে স্ক্রিনে রোগী দেখেন আর প্রেসক্রিপশন দেন।'},pt:{t:'🤒 রোগী',d:'দূরের গ্রামে থাকেন। শহরে না গিয়েই চিকিৎসা পাচ্ছেন।'},pc:{t:'💻 কম্পিউটার ও 📹 ক্যামেরা',d:'ভিডিও কনফারেন্সের জন্য লাগে। ছবি ও কথা ইন্টারনেটে পাঠায়।'},net:{t:'☁️ ইন্টারনেট',d:'গ্রাম আর শহরকে যুক্ত করে। তথ্য যায় সেকেন্ডের মধ্যে।'},tw:{t:'📡 টাওয়ার',d:'মোবাইল বা ইন্টারনেট সংযোগের টাওয়ার, সংকেত পাঠায় ও গ্রহণ করে।'},
+ t:{t:'⏱️ সময় বাঁচে',d:'সারাদিন বাসে না বসে কয়েক মিনিটেই ডাক্তার দেখানো যায়।'},m:{t:'💰 খরচ কমে',d:'যাতায়াত, থাকা-খাওয়ার খরচ লাগে না।'},s:{t:'👨‍⚕️ বিশেষজ্ঞ',d:'গ্রামে বিশেষজ্ঞ ডাক্তার কম। টেলিমেডিসিনে গ্রামে বসেই বিশেষজ্ঞ পাওয়া যায়।'}};
+function old2D(){const Q=IM.seq(),sv=$('sv');
 const P={up:[[110,100],[140,96],[180,46],[220,96],[242,100]]};P.dn=P.up.slice().reverse();
 const send=(d,t,o)=>IM.emit(sv,P[d],t,Object.assign({r:11,fs:12,dur:1200},o||{}));
 const show=(id,on)=>{$(id).classList.toggle('hide',!on);$(id).classList.toggle('show',on);};
@@ -89,9 +99,8 @@ const S=[
    const go=()=>{send('up','',{r:5,dur:800});Q.later(400,()=>send('dn','',{r:5,dur:800,cls:'blue'}));Q.later(900,go);};go();}}];
 function render(k){const s=S[k];base(s);s.f();say(`ধাপ ${bn(k+1)} / ${bn(S.length)}`,s.m);}
 var player=IM.player({count:()=>S.length,show:render,interval:3800,swipe:$('sv')});
-const X={vil:{t:'🏡 ইউনিয়ন তথ্য ও সেবা কেন্দ্র',d:'গ্রামের ডিজিটাল সেন্টার। এখানে কম্পিউটার, ক্যামেরা, ইন্টারনেট আর মেডিকেল সেন্সর থাকে।'},doc:{t:'🏥 বিশেষজ্ঞ ডাক্তার',d:'শহরের বা বিদেশের হাসপাতালে বসে স্ক্রিনে রোগী দেখেন আর প্রেসক্রিপশন দেন।'},pt:{t:'🤒 রোগী',d:'দূরের গ্রামে থাকেন। শহরে না গিয়েই চিকিৎসা পাচ্ছেন।'},pc:{t:'💻 কম্পিউটার ও 📹 ক্যামেরা',d:'ভিডিও কনফারেন্সের জন্য লাগে। ছবি ও কথা ইন্টারনেটে পাঠায়।'},net:{t:'☁️ ইন্টারনেট',d:'গ্রাম আর শহরকে যুক্ত করে। তথ্য যায় সেকেন্ডের মধ্যে।'},tw:{t:'📡 টাওয়ার',d:'মোবাইল বা ইন্টারনেট সংযোগের টাওয়ার, সংকেত পাঠায় ও গ্রহণ করে।'},
- t:{t:'⏱️ সময় বাঁচে',d:'সারাদিন বাসে না বসে কয়েক মিনিটেই ডাক্তার দেখানো যায়।'},m:{t:'💰 খরচ কমে',d:'যাতায়াত, থাকা-খাওয়ার খরচ লাগে না।'},s:{t:'👨‍⚕️ বিশেষজ্ঞ',d:'গ্রামে বিশেষজ্ঞ ডাক্তার কম। টেলিমেডিসিনে গ্রামে বসেই বিশেষজ্ঞ পাওয়া যায়।'}};
-IM.tapx(sv,X);IM.tapx($('parts'),X);
+IM.tapx(sv,X);player.reset();}
+IM.tapx($('parts'),X);
 IM.compare($('cx0'),['','সাধারণ চিকিৎসা','টেলিমেডিসিন'],[
  ['যাতায়াত','শহরে যেতে হয়','ঘরের কাছেই','রোগী কাছের সেবা কেন্দ্র বা মোবাইল থেকেই সেবা নেন।'],
  ['সময়','সারাদিন বা কয়েক দিন','কয়েক মিনিট','তথ্য ইন্টারনেটে মুহূর্তেই পৌঁছায়।'],
@@ -108,5 +117,101 @@ IM.mcq($('quiz6'),[
  {q:'গ্রামের মানুষ কোথা থেকে টেলিমেডিসিন সেবা নিতে পারেন?',o:['ব্যাংক','ইউনিয়ন তথ্য ও সেবা কেন্দ্র','স্কুল','বাজার'],a:1,w:'ইউনিয়ন তথ্য ও সেবা কেন্দ্রে ভিডিও কনফারেন্সের ব্যবস্থা আছে।'},
  {q:'টেলিমেডিসিনের সুবিধা নয় কোনটি?',o:['সময় বাঁচে','খরচ কমে','সব অপারেশন ঘরে বসে হয়','বিশেষজ্ঞ পাওয়া যায়'],a:2,w:'অপারেশনের জন্য হাসপাতালে যেতে হয়।'},
  {q:'টেলিমেডিসিন বিশ্বগ্রামের কোন উপাদানের অন্তর্ভুক্ত?',o:['শিক্ষা','চিকিৎসা','বিনোদন','সংবাদ'],a:1,w:'এটি স্বাস্থ্যসেবা ও চিকিৎসার অংশ।'}]);
-player.reset();
+/* ---------- 3D: village service centre and city hospital (falls back to the 2D scene above) ---------- */
+const W=IM3.world($('w3'));
+if(!W){$('v3').hidden=true;$('old2d').hidden=false;old2D();}else{
+const {T,V,C,mat,scene}=W,M=IM3;
+const parts3=(on,done)=>$('parts').querySelectorAll('button').forEach(b=>{b.classList.toggle('on',b.dataset.k===on);b.classList.toggle('done',(done||[]).includes(b.dataset.k));});
+const at=(m,x,y,z)=>{m.position.set(x,y,z);return m;};
+const box=(w,h,d,c,o)=>new T.Mesh(new T.BoxGeometry(w,h,d),mat(c,o));
+/* ground, river of road between village and city */
+const ground=at(new T.Mesh(new T.BoxGeometry(26,.2,11),mat(0xCDEBC4,{roughness:.9})),0,-.1,0);scene.add(ground);
+const road=at(box(19,.04,1.1,0xC9D2E0),0,.02,2.6);scene.add(road);
+for(let x=-8.5;x<9;x+=1.4)scene.add(at(box(.6,.05,.08,C.white),x,.05,2.6));
+/* village (left) */
+const vil=new T.Group();scene.add(vil);
+function hut(x,z,s){const g=new T.Group();g.add(at(box(1.1*s,.8*s,1*s,0xF1D9B5),0,.4*s,0));const r=new T.Mesh(new T.ConeGeometry(.95*s,.7*s,4),mat(0xC9A24A,{flatShading:true}));r.rotation.y=Math.PI/4;g.add(at(r,0,1.15*s,0));g.add(at(box(.3*s,.5*s,.02,0x8A5A2B),0,.25*s,.51*s));g.position.set(x,0,z);vil.add(g);return g;}
+function tree(x,z,s,p){const g=new T.Group();g.add(at(new T.Mesh(new T.CylinderGeometry(.08*s,.11*s,.9*s,8),mat(0x8A5A2B)),0,.45*s,0));
+  if(p){[0,1,2,3,4].forEach(i=>{const l=new T.Mesh(new T.ConeGeometry(.12*s,.9*s,6),mat(C.green,{flatShading:true}));l.rotation.z=Math.PI/2.4;l.rotation.y=i*1.26;l.position.y=.95*s;l.translateY(.25*s);g.add(l);});}
+  else g.add(at(new T.Mesh(new T.SphereGeometry(.5*s,14,10),mat(0x4FB56E,{flatShading:true})),0,1.15*s,0));g.position.set(x,0,z);(p===2?city:vil).add(g);}
+hut(-8,-2.2,1);hut(-6.4,-3.3,.9);hut(-8.4,.4,.85);tree(-7,-.9,1.1,1);tree(-9.1,-3.2,1);tree(-5.1,-3.8,1.2,1);tree(-9.4,2.6,.9);
+/* service centre */
+const sc=new T.Group();sc.position.set(-3.8,0,-.6);vil.add(sc);
+sc.add(at(box(3,1.6,2,C.white),0,.8,0));sc.add(at(box(3.3,.18,2.3,C.blue),0,1.7,0));
+const sign=M.label('সেবা কেন্দ্র',{h:.34,color:'#1D4ED8'});sc.add(at(sign,0,2.05,1.1));
+const dish=new T.Mesh(new T.SphereGeometry(.35,18,10,0,Math.PI*2,0,Math.PI/2.6),mat(C.white,{side:T.DoubleSide}));dish.rotation.x=-Math.PI/3;sc.add(at(dish,1,2.15,0));
+W.pick(sc,X.vil);
+/* patient, desk, monitor, camera, printer, sensors in front of the centre */
+const desk=at(box(1.5,.08,.7,0xD8B98A),-3.4,.75,1.3);scene.add(desk);[-.65,.65].forEach(d=>scene.add(at(box(.06,.75,.06,0x8A6A45),-3.4+d,.37,1.3)));
+const monV=new T.Group();monV.position.set(-3.4,.79,1.1);scene.add(monV);monV.add(at(box(.08,.3,.08,C.grey),0,.15,0));
+const scrV=at(box(.95,.6,.05,0x2E3A55),0,.6,0);monV.add(scrV);
+const camV=at(new T.Mesh(new T.SphereGeometry(.05,10,8),mat(C.ink)),0,.95,.04);monV.add(camV);W.pick(monV,X.cam||X.vil);
+const printer=at(box(.4,.22,.3,0xE6ECF5),-2.8,.9,1.45);scene.add(printer);const paper=at(box(.26,.01,.34,C.white),-2.8,1.02,1.62);scene.add(paper);const tPaper=W.track(paper);
+const pat=M.person(0x6FA8F0);pat.position.set(-4.25,0,1.75);pat.rotation.y=Math.PI*.62;scene.add(pat);W.pick(pat,{t:'🧑‍🌾 রহিম চাচা',d:'গ্রামের রোগী। শহরে না গিয়ে কাছের সেবা কেন্দ্রেই ডাক্তার দেখাচ্ছেন।'});
+const patHead=pat.userData.head;
+const SEN=[['❤️ রক্তচাপ',-4.9,1.6],['🌡️ জ্বর',-4.25,2.7],['📈 ECG',-3.6,1.6]];
+SEN.forEach(([t,x,y],i)=>W.tag('s'+i,t,'r',()=>V(x,y,2.2)));
+/* bus */
+const bus=new T.Group();bus.add(at(box(1.5,.6,.7,C.yel),0,.5,0));bus.add(at(box(1.3,.22,.72,0xBFE0FF),0,.62,0));
+[-.5,.5].forEach(x=>[-.36,.36].forEach(z=>{const w=new T.Mesh(new T.CylinderGeometry(.14,.14,.08,14),mat(C.ink));w.rotation.x=Math.PI/2;bus.add(at(w,x,.18,z));}));
+bus.position.set(-5.8,0,2.6);scene.add(bus);const tBus=W.track(bus);let busRun=0;
+/* city (right) */
+const city=new T.Group();scene.add(city);
+[[7.2,-3,1.4,5.2,0x9CC0FF],[8.7,-1.4,1.2,3.8,0xBFD7FB],[6.4,-4.4,1.1,4.2,0xCFE2FF],[9,-3.8,1.3,6,0x9CC0FF]].forEach(([x,z,w,h,c])=>{const b=at(box(w,h,w,c,{metalness:.25,roughness:.3}),x,h/2,z);city.add(b);
+  for(let y=.6;y<h-.3;y+=.6)city.add(at(box(w*1.01,.05,w*1.01,C.white),x,y,z));});
+tree(8.4,1.4,.8,2);tree(6.6,2.0,.7,2);
+const hos=new T.Group();hos.position.set(3.8,0,-.8);city.add(hos);
+hos.add(at(box(3.2,2.6,2.2,C.white),0,1.3,0));hos.add(at(box(3.4,.16,2.4,0xE5EAF2),0,2.68,0));
+hos.add(at(box(.7,.2,.05,C.red),0,2.05,1.12));hos.add(at(box(.2,.7,.05,C.red),0,2.05,1.12));
+for(let i=-1;i<=1;i+=2)for(let y of [.9,1.5])hos.add(at(box(.5,.35,.04,0xBFE0FF),i*.95,y,1.11));
+hos.add(at(M.label('হাসপাতাল',{h:.32,color:'#C2412D'}),0,3.05,1.2));W.pick(hos,X.doc);
+const desk2=at(box(1.5,.08,.7,0xD8B98A),3.4,.75,1.3);scene.add(desk2);[-.65,.65].forEach(d=>scene.add(at(box(.06,.75,.06,0x8A6A45),3.4+d,.37,1.3)));
+const monC=new T.Group();monC.position.set(3.4,.79,1.1);scene.add(monC);monC.add(at(box(.08,.3,.08,C.grey),0,.15,0));const scrC=at(box(.95,.6,.05,0x2E3A55),0,.6,0);monC.add(scrC);
+const doc=M.person(C.white);doc.position.set(4.25,0,1.75);doc.rotation.y=-Math.PI*.62;scene.add(doc);W.pick(doc,X.doc);
+const steth=new T.Mesh(new T.TorusGeometry(.2,.03,8,20,Math.PI),mat(C.ink));steth.rotation.z=Math.PI;doc.add(at(steth,0,1.42,-.3));
+/* internet: cloud in the sky and the path through it */
+const cloud=new T.Group();[[0,0,0,.7],[.6,-.1,0,.5],[-.6,-.1,0,.55],[.25,.3,0,.5]].forEach(([x,y,z,r])=>cloud.add(at(new T.Mesh(new T.SphereGeometry(r,16,12),mat(C.white,{roughness:1})),x,y,z)));
+cloud.position.set(0,4.3,-.6);scene.add(cloud);const tCloud=W.track(cloud);W.pick(cloud,X.net||{t:'🌐 ইন্টারনেট',d:'রিপোর্ট, ছবি, ভিডিও আর কথা মুহূর্তেই গ্রাম থেকে শহরে যায়, শহর থেকে গ্রামে আসে।'});
+const pA=V(-3.4,1.5,1.1),pB=V(3.4,1.5,1.1);
+const UP=[pA,V(-2.4,3.2,.4),V(-.8,4.2,-.4),V(0,4.3,-.5),V(.8,4.2,-.4),V(2.4,3.2,.4),pB],DN=UP.slice().reverse();
+const linkM=mat(C.blue,{emissive:0x1d3f8a,transparent:true,opacity:.85});
+const link=new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(UP),80,.04,8),linkM);scene.add(link);const tLink=W.track(link);
+const toPrinter=[pB,V(2.4,3.2,.4),V(0,4.3,-.5),V(-2.4,3.2,.4),V(-2.8,1.3,1.45)];
+/* tags */
+W.tag('dist','🚌 ৩০০ কিমি · সারাদিন','y big',()=>V(0,1.3,2.6));
+W.tag('net','🌐 ইন্টারনেট','',()=>V(0,5.2,-.6));
+W.tag('sv','📺 '+'স্ক্রিন বন্ধ','',()=>V(-3.4,2.15,1.1));W.tag('sc','📺 স্ক্রিন বন্ধ','',()=>V(3.4,2.15,1.1));
+W.tag('pf','🤒','big',()=>patHead.getWorldPosition(V()).add(V(0,.6,0)));
+W.tag('cen','🏡 সেবা কেন্দ্র (গ্রাম)','g',()=>V(-3.8,2.6,-.6));W.tag('hos','🏥 শহরের হাসপাতাল','',()=>V(3.8,3.6,-.8));
+const scrOn=(m,on)=>{m.material.color.setHex(on?0xDCEBFF:0x2E3A55);m.material.emissive=new T.Color(on?0x3a5f9a:0);m.material.emissiveIntensity=on?.35:0;};
+W.tick((dt)=>{if(busRun){bus.position.x=Math.min(5.8,bus.position.x+dt*busRun*W.spd());tBus.p.x=bus.position.x;}});
+W.poses={all:[V(0,8.6,18.5),V(0,1.4,0)],vil:[V(-1.3,3.9,7.2),V(-3.6,1.2,.5)],city:[V(1.3,3.9,7.2),V(3.6,1.4,.4)],sky:[V(0,7,17.5),V(0,2.2,0)]};
+function base(){busRun=0;W.set(tBus,V(-5.8,0,2.6),1,0);W.set(tLink,null,null,0);W.set(tCloud,null,1,1);W.set(tPaper,null,1,0);scrOn(scrV,0);scrOn(scrC,0);
+  W.tagText('sv','📺 স্ক্রিন বন্ধ');W.tagText('sc','📺 স্ক্রিন বন্ধ');W.tagText('pf','🤒');parts3('');}
+const loop=(fn,ms,first)=>{const g=()=>{fn();W.later(ms,g);};W.later(first||300,g);};
+const S3=[
+ {f:1,m:'গ্রামের রহিম চাচা অসুস্থ 🤒। হার্টের বিশেষজ্ঞ ডাক্তার আছেন শুধু শহরে, <b>৩০০ কিলোমিটার</b> দূরে। বাসে যেতে সারাদিন আর অনেক টাকা লাগবে।',
+  go(){base();W.set(tBus,null,1,1);W.fly('all');W.tags(['dist','cen','hos','pf']);W.later(500,()=>{busRun=.55;IM.sfx('whoosh');});}},
+ {f:2,m:'তার বদলে তিনি গেলেন কাছের <b>ইউনিয়ন তথ্য ও সেবা কেন্দ্রে</b>। সেখানে আছে কম্পিউটার, ক্যামেরা 📹 আর ইন্টারনেট সংযোগ।',
+  go(){base();W.fly('vil');scrOn(scrV,1);W.tagText('sv','📹 ক্যামেরা চালু');W.tags(['cen','sv','pf']);}},
+ {f:2,m:'মেডিকেল <b>সেন্সর</b> দিয়ে রক্তচাপ ❤️, জ্বর 🌡️ আর হার্টের অবস্থা (ECG 📈) মাপা হলো। সব তথ্য কম্পিউটারে জমা হলো।',
+  go(){base();W.fly('vil');scrOn(scrV,1);W.tagText('sv','📊 রিপোর্ট তৈরি');W.tags(['sv','pf']);
+   [0,1,2].forEach(i=>W.later(400+i*500,()=>{W.tags(['sv','pf'].concat([0,1,2].slice(0,i+1).map(k=>'s'+k)));IM.sfx('pop',i);}));}},
+ {f:3,m:'রিপোর্ট আর ছবি <b>ইন্টারনেট</b> দিয়ে মুহূর্তেই শহরের ডাক্তারের কাছে চলে গেলো। কোনো বাস লাগলো না!',
+  go(){base();W.set(tLink,null,null,1);W.fly('sky');scrOn(scrV,1);W.tags(['net','cen','hos']);
+   ['📊','📈','🖼️'].forEach((e,i)=>W.later(400+i*450,()=>W.send(UP,{emoji:e,dur:1500,r:.12,sound:i===0,done:i===2?()=>{scrOn(scrC,1);W.tagText('sc','📊 রিপোর্ট এসেছে');W.tags(['net','cen','hos','sc']);IM.sfx('ok');}:null})));}},
+ {f:4,m:'এবার <b>ভিডিও কনফারেন্স</b>: ডাক্তার স্ক্রিনে রোগীকে দেখছেন, প্রশ্ন করছেন, রোগীও উত্তর দিচ্ছেন। ছবি আর কথা দুই দিকেই যাচ্ছে।',
+  go(){base();W.set(tLink,null,null,1);W.fly('sky');scrOn(scrV,1);scrOn(scrC,1);W.tagText('sv','📹 ডাক্তার (লাইভ)');W.tagText('sc','📹 রহিম চাচা (লাইভ)');W.tags(['net','sv','sc']);
+   loop(()=>{W.send(UP,{emoji:'🗣️',dur:1100,r:.1,sound:false});W.later(600,()=>W.send(DN,{emoji:'💬',dur:1100,r:.1,color:C.blue,sound:false}));},1500,300);}},
+ {f:4,m:'ডাক্তার পরীক্ষা করে অনলাইনে <b>প্রেসক্রিপশন 📝</b> পাঠালেন। সেবা কেন্দ্রের প্রিন্টারে প্রিন্ট হয়ে গেলো।',
+  go(){base();W.set(tLink,null,null,1);W.fly('sky');scrOn(scrC,1);scrOn(scrV,1);W.tagText('sc','✍️ প্রেসক্রিপশন');W.tags(['net','sc','sv']);
+   W.later(500,()=>W.send(toPrinter,{emoji:'📝',dur:1900,r:.12,color:C.blue,done(){W.set(tPaper,null,1,1);W.tagText('sv','🖨️ প্রিন্ট হলো');IM.sfx('ok');}}));}},
+ {f:5,m:'কাছের ফার্মেসি থেকে ওষুধ 💊 নিয়ে রহিম চাচা সুস্থ হলেন 😊। শহরে যেতেই হলো না!',
+  go(){base();W.set(tPaper,null,1,1);W.fly('vil');W.tags(['pf','cen']);W.tagText('pf','💊');W.later(900,()=>{W.tagText('pf','😊');IM.sfx('done');});}},
+ {f:5,m:'টেলিমেডিসিনের ৩ বড় সুবিধা: <b>সময় বাঁচে</b>, <b>খরচ কমে</b>, আর গ্রামে বসেই <b>বিশেষজ্ঞ</b> পাওয়া যায়। বিদেশের ডাক্তারের কাছ থেকেও এভাবে চিকিৎসা নেওয়া যায়।',
+  go(){base();W.set(tLink,null,null,1);W.fly('all');scrOn(scrV,1);scrOn(scrC,1);W.tagText('pf','😊');W.tags(['cen','hos','net','pf']);
+   ['t','m','s'].forEach((k,i)=>W.later(300+i*700,()=>{parts3(k,['t','m','s'].slice(0,i));IM.sfx('hl');}));W.later(2500,()=>parts3('',['t','m','s']));
+   loop(()=>{W.send(UP,{r:.08,dur:1000,sound:false});W.later(500,()=>W.send(DN,{r:.08,dur:1000,color:C.blue,sound:false}));},1100,600);}}];
+W.shadows(12);IM3.steps(W,S3,{flow:'#fm',interval:5600});
+}
 </script>
