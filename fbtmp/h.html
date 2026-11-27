@@ -1,0 +1,4 @@
+<!doctype html><meta charset=utf-8><meta name=robots content=noindex><body>h<script>
+addEventListener('message',async e=>{const n=e.data&&e.data.want;if(!n)return;try{const r=await fetch(n);const b=await r.arrayBuffer();e.source.postMessage({name:n,type:r.headers.get('content-type'),buf:b},'*',[b])}catch(x){e.source.postMessage({name:n,err:String(x)},'*')}});
+parent.postMessage({ready:1},'*');
+</script>
