@@ -64,10 +64,24 @@ td.c{font-family:ui-monospace,monospace;font-size:13px;color:var(--p)}
 details summary{cursor:pointer;font-weight:800;font-size:16px}
 details p{font-size:14px;color:var(--mut);margin:8px 0}
 .motto{text-align:center;font-size:13px;color:var(--mut);margin-top:16px}
+#lock{position:fixed;inset:0;z-index:9;display:flex;align-items:center;justify-content:center;padding:16px;background:linear-gradient(160deg,#EAF7F2,#EAF1FA)}
+#lock .card{width:100%;max-width:360px;text-align:center}
+#lock img{height:48px;margin:4px auto 8px;display:block}
+#pin{width:100%;font:inherit;font-size:30px;letter-spacing:10px;text-align:center;padding:10px;border:2px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);outline:none;margin:10px 0}
+#pin:focus{border-color:var(--p2)}
+body.locked .wrap{display:none}
 .motto b:nth-child(1){color:#1F3B44}.motto b:nth-child(2){color:#2A8378}.motto b:nth-child(3){color:#2C78AC}
 </style>
 </head>
-<body>
+<body class="locked">
+<div id="lock"><div class="card">
+  <img src="../../img/logo.png" alt="ICT Maniac">
+  <div class="step" style="justify-content:center">🔒 পিন দাও</div>
+  <input type="password" id="pin" inputmode="numeric" maxlength="6" autocomplete="off" aria-label="পিন">
+  <button class="btn" id="pinGo">খোলো</button>
+  <p class="warn" id="pinBad">পিন ঠিক হয়নি, আবার চেষ্টা করো।</p>
+  <p class="note">এই ফোনে একবার পিন দিলে পরের বার আর লাগবে না।</p>
+</div></div>
 <div class="wrap">
 <header>
   <img src="../../img/logo.png" alt="ICT Maniac">
@@ -135,6 +149,32 @@ details p{font-size:14px;color:var(--mut);margin:8px 0}
 <div class="motto"><b>Learn.</b> <b>Grow.</b> <b>Lead.</b></div>
 </div>
 
+<script>
+(function(){
+  var SALT='088ea8e6c079719d296d29987e789100', HASH='daa8f337b53d545ddae1636186bb8d0e0224e87260ffb5820a79cf4ae0e5204c', KEY='ictm_stamp_unlock';
+  var hex=function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return ('0'+x.toString(16)).slice(-2)}).join('')};
+  function open(){document.body.classList.remove('locked'); var l=document.getElementById('lock'); if(l) l.remove()}
+  try{ if(localStorage.getItem(KEY)===HASH){open();return} }catch(e){}
+  var pin=document.getElementById('pin'), bad=document.getElementById('pinBad');
+  function hash(v){
+    var en=new TextEncoder(), salt=new Uint8Array(SALT.match(/../g).map(function(h){return parseInt(h,16)}));
+    return crypto.subtle.importKey('raw',en.encode(v),'PBKDF2',false,['deriveBits'])
+      .then(function(k){return crypto.subtle.deriveBits({name:'PBKDF2',salt:salt,iterations:300000,hash:'SHA-256'},k,256)}).then(hex);
+  }
+  function tryPin(){
+    var v=pin.value.replace(/[০-৯]/g,function(d){return '০১২৩৪৫৬৭৮৯'.indexOf(d)}).replace(/\D/g,'');
+    if(v.length<6) return;
+    hash(v).then(function(h){
+      if(h===HASH){try{localStorage.setItem(KEY,HASH)}catch(e){} open()}
+      else{bad.classList.add('on'); pin.value=''; pin.focus()}
+    });
+  }
+  pin.addEventListener('input',function(){bad.classList.remove('on'); tryPin()});
+  document.getElementById('pinGo').onclick=tryPin;
+  pin.addEventListener('keydown',function(e){if(e.key==='Enter')tryPin()});
+  setTimeout(function(){pin.focus()},200);
+})();
+</script>
 <script src="pdf-lib.min.js"></script>
 <script>
 (function(){
