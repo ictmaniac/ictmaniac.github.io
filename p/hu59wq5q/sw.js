@@ -1,5 +1,5 @@
 // Offline cache for the stamp tool. Bump V when files change.
-var V = 'stamp-v1';
+var V = 'stamp-v2';
 var FILES = ['./', 'index.html', 'pdf-lib.min.js', 'manifest.json', 'icon-192.png', 'icon-512.png',
   'f/anek-bn-600.woff2', 'f/anek-lat-600.woff2', 'f/anek-bn-800.woff2', 'f/anek-lat-800.woff2', '../../img/logo.png'];
 self.addEventListener('install', function (e) {
